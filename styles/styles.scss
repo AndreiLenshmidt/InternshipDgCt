@@ -1,0 +1,215 @@
+@import "vars-fonts-mixins";
+@import "reset";
+
+body {
+  font-family: "ArchivoBlack", sans-serif;
+}
+a {
+  text-decoration: none;
+  color: $black;
+  outline: none;
+}
+
+.wrapper {
+}
+.wrap {
+  width: 1280px;
+  margin: 0 auto;
+
+  @media (width < 1280px) {
+    width: calc(768px - 64px);
+    padding: 0 32px;
+  }
+  @media (width < 768px) {
+    width: calc(320px - 16px);
+    padding: 0 8px;
+  }
+}
+
+.header {
+  &__box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 16px;
+    padding-bottom: 16px;
+    flex-wrap: wrap;
+    @media (width < 1280px) {
+      display: flex;
+      padding-bottom: 0px;
+    }
+    @media (width < 768px) {
+      display: flex;
+      padding-bottom: 0px;
+    }
+  }
+  &__logo {
+    height: 40px;
+    width: 109px;
+    fill: $black;
+    transition: fill 0.3s;
+  }
+  &__logo:hover {
+    fill: $pink-dark;
+  }
+  &__nav {
+    @media (width < 1280px) {
+      display: flex;
+      overflow-y: auto;
+      padding-top: 24px;
+      order: 4;
+    }
+  }
+  &__nav::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+  }
+  &__link:not(:last-child) {
+    margin-right: 10px;
+  }
+  &__link {
+    padding: 8px 18px;
+    border: 1.2px solid $pale;
+    border-radius: 20px;
+    @include Nunito15M-SLS;
+    color: $black;
+    user-select: none;
+  }
+
+  &__search {
+    display: flex;
+    justify-content: end;
+  }
+  &__search-img {
+    padding-right: 27px;
+  }
+  &__search-span {
+    padding-right: 9px;
+    text-transform: uppercase;
+    @include Nunito15M-SLS;
+    position: relative;
+  }
+  &__search-span::before {
+    content: "";
+    display: block;
+    height: 1.5px;
+    width: 0%;
+    background-color: $grass;
+    position: absolute;
+    bottom: 0;
+    right: -17px;
+    transition: width 0.4s;
+  }
+  &__search-span:hover::before {
+    width: 67px;
+    left: 0;
+  }
+}
+
+.button {
+  &__carrera,
+  &__gaming,
+  &__marketing,
+  &__software,
+  &__diseno,
+  &__programacion,
+  &__audiovisual,
+  &__negocios {
+    background-color: $white;
+    transition: background-color 0.3s;
+  }
+  &__carrera:disabled,
+  &__gaming:disabled,
+  &__marketing:disabled,
+  &__software:disabled,
+  &__diseno:disabled,
+  &__programacion:disabled,
+  &__audiovisual:disabled,
+  &__negocios:disabled {
+    opacity: 0.6;
+  }
+  &__carrera:hover {
+    background-color: $mint;
+  }
+  &__gaming:hover {
+    background-color: $grass;
+  }
+  &__marketing:hover {
+    background-color: $tangerine;
+  }
+  &__software:hover {
+    background-color: $turquoise;
+  }
+  &__diseno:hover {
+    background-color: $pink;
+  }
+  &__programacion:hover {
+    background-color: $sky;
+  }
+  &__audiovisual:hover {
+    background-color: $violet;
+  }
+  &__negocios:hover {
+    background-color: $coral;
+  }
+  &__carrera:active {
+    background-color: $mint-dark;
+  }
+  &__gaming:active {
+    background-color: $grass-dark;
+  }
+  &__marketing:active {
+    background-color: $tangerine-dark;
+  }
+  &__software:active {
+    background-color: $turquoise-dark;
+  }
+  &__diseno:active {
+    background-color: $pink-dark;
+  }
+  &__programacion:active {
+    background-color: $sky-dark;
+  }
+  &__audiovisual:active {
+    background-color: $violet-dark;
+  }
+  &__negocios:active {
+    background-color: $coral-dark;
+  }
+}
+
+.runnig-string {
+  overflow: hidden;
+  &__text {
+    padding: 27px 48px 23px;
+  }
+  &__box {
+    display: flex;
+    animation: running-string 40s infinite linear;
+  }
+  &__text > path {
+    fill: $black;
+  }
+}
+
+@keyframes running-string {
+  0% {
+    transform: translate(0%, 0);
+  }
+
+  100% {
+    transform: translate(-150%, 0);
+  }
+}
+
+@keyframes bottom-grass-line {
+  0% {
+    width: 0%;
+  }
+
+  100% {
+    width: 30px;
+  }
+}
+
+@import "main";
