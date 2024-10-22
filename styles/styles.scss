@@ -3,6 +3,7 @@
 
 body {
   font-family: "ArchivoBlack", sans-serif;
+  // font-family: "Archivo Black", sans-serif;
 }
 a {
   text-decoration: none;
@@ -10,15 +11,35 @@ a {
   outline: none;
 }
 
+input[type="checkbox"] {
+  position: absolute;
+  z-index: -1;
+  opacity: 0;
+}
+button {
+  padding: 0;
+  border: none;
+  font: inherit;
+  color: inherit;
+  background-color: transparent;
+  /* отображаем курсор в виде руки при наведении; некоторые
+  считают, что необходимо оставлять стрелочный вид для кнопок */
+  cursor: pointer;
+}
+
+details summary::marker {
+  font-size: 0%;
+}
+
 .wrapper {
 }
 .wrap {
-  width: 1280px;
+  width: 1210px;
   margin: 0 auto;
 
-  @media (width < 1280px) {
-    width: calc(768px - 64px);
+  @media (width < 1210px) {
     padding: 0 32px;
+    width: calc(768px - 64px);
   }
   @media (width < 768px) {
     width: calc(320px - 16px);
@@ -32,32 +53,43 @@ a {
     justify-content: space-between;
     align-items: center;
     padding-top: 16px;
-    padding-bottom: 16px;
+    padding-bottom: 15.2px;
     flex-wrap: wrap;
-    @media (width < 1280px) {
+    @media (width < 1210px) {
       display: flex;
       padding-bottom: 0px;
     }
     @media (width < 768px) {
       display: flex;
       padding-bottom: 0px;
+      padding-top: 12px;
     }
   }
   &__logo {
     height: 40px;
-    width: 109px;
+    width: 108.9px;
     fill: $black;
     transition: fill 0.3s;
+    @media (width < 768px) {
+      width: 140px;
+      height: 48px;
+      margin-left: -5px;
+    }
   }
   &__logo:hover {
     fill: $pink-dark;
   }
   &__nav {
-    @media (width < 1280px) {
+    width: 698px;
+    @media (width < 1210px) {
+      width: auto;
       display: flex;
       overflow-y: auto;
-      padding-top: 24px;
+      padding-top: 21px;
       order: 4;
+    }
+    @media (width < 768px) {
+      padding-top: 13px;
     }
   }
   &__nav::-webkit-scrollbar {
@@ -74,17 +106,28 @@ a {
     @include Nunito15M-SLS;
     color: $black;
     user-select: none;
+    @media (width < 1210px) {
+      // font-family: "Nunito";
+      // font-weight: 500;
+      // font-size: 15px;
+    }
   }
 
   &__search {
     display: flex;
     justify-content: end;
+    @media (width < 1210px) {
+      margin-top: -4px;
+    }
   }
   &__search-img {
     padding-right: 27px;
+    @media (width < 768px) {
+      padding-right: 22px;
+    }
   }
   &__search-span {
-    padding-right: 9px;
+    padding-right: 11px;
     text-transform: uppercase;
     @include Nunito15M-SLS;
     position: relative;
@@ -103,6 +146,12 @@ a {
   &__search-span:hover::before {
     width: 67px;
     left: 0;
+  }
+  &__search-span:hover::before {
+    @media (width <320px) {
+      width: 67px;
+      left: 0;
+    }
   }
 }
 
@@ -180,15 +229,43 @@ a {
 
 .runnig-string {
   overflow: hidden;
-  &__text {
-    padding: 27px 48px 23px;
+  &__text_artigos {
+    padding: 27px 48px 27px;
+    @media (width < 1210px) {
+      padding: 21px 48px 17px;
+      width: 320px;
+    }
   }
+  &__text_webinars {
+    @media (width < 1210px) {
+      padding: 20px 38px 16px;
+      width: 156px;
+    }
+  }
+  &__text_subscribe {
+    @media (width < 1210px) {
+      padding: 20px 50px 16px;
+      width: 180px;
+    }
+  }
+  &__text_descuento {
+    @media (width < 1210px) {
+      padding: 17px 50px 13px;
+      width: 690px;
+    }
+    @media (width < 768px) {
+      padding: 21px 50px 18px;
+      width: 475px;
+    }
+  }
+
   &__box {
     display: flex;
     animation: running-string 40s infinite linear;
   }
-  &__text > path {
-    fill: $black;
+
+  &_bottom {
+    margin-top: -20px;
   }
 }
 
@@ -202,14 +279,18 @@ a {
   }
 }
 
-@keyframes bottom-grass-line {
-  0% {
-    width: 0%;
-  }
+// @keyframes bottom-grass-line {
+//   0% {
+//     width: 0%;
+//   }
 
-  100% {
-    width: 30px;
-  }
-}
+//   100% {
+//     width: 30px;
+//   }
+// }
 
 @import "main";
+@import "articles";
+@import "webinars";
+@import "form";
+@import "footer";

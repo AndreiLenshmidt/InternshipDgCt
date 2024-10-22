@@ -1,28 +1,30 @@
 @font-face {
   font-family: "ArchivoBlack";
-  src: local("ArchivoBlack-Regular"), local("ArchivoBlack-Regular"),
-    url("ArchivoBlack-Regular.ttf") format("ttf");
+  font-style: normal;
   font-weight: normal;
-}
-
-@font-face {
-  font-family: "Nunito";
-  src: local("Nunito-VariableFont_wght"), local("Nunito-VariableFont_wght"),
-    url("Nunito-VariableFont_wght.ttf") format("ttf");
+  src: local("ArchivoBlack-Regular"), local("ArchivoBlack-Regular"),
+    url("/fonts/ArchivoBlack-Regular.ttf") format("truetype");
 }
 
 @font-face {
   font-family: "Nunito Regular";
-  src: local("Nunito-Regular"), local("Nunito-Regular"),
-    url("Nunito-Regular.ttf") format("ttf");
-  font-weight: 400;
+  font-style: normal;
+  font-weight: normal;
+  src: local("Nunito"), url("../fonts/Nunito-Regular.ttf") format("truetype");
 }
 
 @font-face {
   font-family: "Nunito Medium";
-  src: local("Nunito-Medium"), local("Nunito-Medium"),
-    url("Nunito-Medium.ttf") format("ttf");
-  font-weight: 500;
+  font-style: normal;
+  font-weight: medium;
+  src: local("Nunito"), url("../fonts/Nunito-Medium.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Nunito Bold";
+  font-style: normal;
+  font-weight: bold;
+  src: local("Nunito"), url("../fonts/Nunito-Bold.ttf") format("truetype");
 }
 
 $black: #1b1f21;
@@ -32,9 +34,9 @@ $gray35: #aeaeae;
 $gray20: #d9d9d8;
 $gray15: #e8e8e8;
 $gray5: #f2f2f2;
-// $gray5TR20: #f2f2f2; ???
+$gray5TR20: #f2f2f220;
 $white: #fcfaf9;
-// $whiteTR90: #fcfaf9;
+$whiteTR90: #fcfaf990;
 $pale: #e8e8e8;
 $pink: #ec95b1;
 $sky: #a4ccfe;
@@ -54,44 +56,44 @@ $tangerine-dark: #ef9700;
 $coral-dark: #fe6d44;
 $mint-dark: #57bcaa;
 $marine-dark: #22c98b;
-$achivo-black: "ArchivoBlack";
-$nunito: "Nunito";
+$nunito: "Nunito Medium";
+$nunito-bold: "Nunito Bold";
 $nunito-regular: "Nunito Regular";
 $nunito-medium: "Nunito Medium";
 
 @mixin AchivoH1 {
-  font-family: $achivo-black;
+  font-family: "ArchivoBlack";
   font-weight: 400;
   font-size: 58px;
   line-height: 120%;
   letter-spacing: 0.01em;
 }
 @mixin AchivoH2 {
-  font-family: $achivo-black;
+  font-family: "ArchivoBlack";
   font-weight: 400;
   font-size: 46px;
   line-height: 120%;
 }
 @mixin AchivoH3 {
-  font-family: $achivo-black;
+  font-family: "ArchivoBlack";
   font-weight: 400;
   font-size: 36px;
   line-height: 120%;
 }
 @mixin AchivoH4 {
-  font-family: $achivo-black;
+  font-family: "ArchivoBlack";
   font-weight: 400;
   font-size: 30px;
   line-height: 120%;
 }
 @mixin AchivoH5 {
-  font-family: $achivo-black;
+  font-family: "ArchivoBlack";
   font-weight: 400;
   font-size: 26px;
   line-height: 120%;
 }
 @mixin Nunito21B {
-  font-family: $nunito;
+  font-family: $nunito-bold;
   font-weight: 700;
   font-size: 21px;
   line-height: 160%;
@@ -109,7 +111,7 @@ $nunito-medium: "Nunito Medium";
   line-height: 160%;
 }
 @mixin Nunito18B {
-  font-family: $nunito;
+  font-family: $nunito-bold;
   font-weight: 700;
   font-size: 18px;
   line-height: 160%;
@@ -127,7 +129,7 @@ $nunito-medium: "Nunito Medium";
   line-height: 140%;
 }
 @mixin Nunito15B-SLS {
-  font-family: $nunito;
+  font-family: $nunito-bold;
   font-weight: 700;
   font-size: 15px;
   line-height: 140%;
@@ -140,7 +142,7 @@ $nunito-medium: "Nunito Medium";
   text-transform: uppercase;
 }
 @mixin Nunito13B-UP {
-  font-family: $nunito;
+  font-family: $nunito-bold;
   font-weight: 700;
   font-size: 13px;
   line-height: 160%;
@@ -151,7 +153,6 @@ $nunito-medium: "Nunito Medium";
   font-weight: 400;
   font-size: 13px;
   line-height: 140%;
-  text-transform: uppercase;
 }
 @mixin Nunito13M-SLS {
   font-family: $nunito-medium;

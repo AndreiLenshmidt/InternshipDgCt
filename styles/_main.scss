@@ -3,7 +3,7 @@
     padding-top: 80px;
     position: relative;
     overflow: hidden;
-    @media (width < 1280px) {
+    @media (width < 1210px) {
       padding-top: 64px;
     }
     @media (width < 768px) {
@@ -12,13 +12,10 @@
   }
   &__bkg-img {
     position: absolute;
-    width: 1623px;
-    height: 993.5px;
-    top: 70px;
-    left: calc(50% - 811px);
+    top: -80px;
+    left: calc(50% - 900px);
     z-index: -10;
-    transform: rotate(170.7deg);
-    @media (width < 1280px) {
+    @media (width < 1210px) {
       width: 1752px;
       height: 1072px;
       transform: rotate(-10.5deg);
@@ -36,7 +33,7 @@
     display: flex;
     justify-content: flex-start;
     gap: 40px;
-    @media (width < 1280px) {
+    @media (width < 1210px) {
       flex-direction: column;
       align-items: center;
       // padding-bottom: 53.5px;
@@ -52,7 +49,7 @@
     height: 560px;
     overflow: hidden;
     position: relative;
-    @media (width < 1280px) {
+    @media (width < 1210px) {
       height: 320px;
       width: 720px;
     }
@@ -62,39 +59,48 @@
     }
   }
   &__pic {
-    margin-top: -160px;
+    margin-top: -133px;
     width: 480px;
+    height: 690px;
     mask-image: url(/images/masks/pic1.svg);
     mask-position: bottom;
     mask-repeat: no-repeat;
-    @media (width < 1280px) {
+    @media (width < 1210px) {
       mask-image: url(/images/masks/pic1-v2.svg);
       margin-top: -380px;
       width: 720px;
+      height: auto;
       mask-position: center;
     }
     @media (width < 768px) {
       mask-image: url(/images/masks/pic1-v3.svg);
       width: 304px;
-      margin-top: -52px;
+      height: 431px;
+      margin-top: -80px;
+      mask-position: bottom;
     }
   }
   &__stiker {
     position: absolute;
     right: 0;
     transition: transform 0.9s;
+    @media (width < 1210px) {
+      right: 16px;
+      top: 8px;
+      width: 120px;
+    }
     @media (width < 768px) {
       right: 8px;
       top: 8px;
       width: 104px;
     }
   }
-  &__stiker:hover {
+  &__pic-box:hover &__stiker {
     transform: rotate(180deg);
   }
   &__box {
     width: 688px;
-    @media (width < 1280px) {
+    @media (width < 1210px) {
       width: 704px;
       display: flex;
       flex-wrap: wrap;
@@ -108,64 +114,74 @@
     display: flex;
     justify-content: flex-start;
     padding-top: 46px;
-    padding-bottom: 18px;
-    @media (width < 1280px) {
-      width: 220px;
-      justify-content: center;
-      align-content: flex-start;
+    padding-bottom: 17px;
+    @media (width < 1210px) {
+      flex-basis: 34.5%;
+      justify-content: flex-end;
+      align-self: flex-start;
       flex-wrap: wrap;
       padding-top: 0;
     }
     @media (width < 768px) {
+      flex-basis: 100%;
       padding-bottom: 18px;
       width: 304px;
-      justify-content: space-between;
+      justify-content: flex-start;
     }
   }
-  &__article-item:not(:last-child) {
-    margin-right: 10px;
-  }
   &__article-item {
+    margin-right: 10px;
     padding: 8px 0px;
     color: $grass;
     @include Nunito15M-SLS;
-    @media (width < 1280px) {
+    @media (width < 1210px) {
       padding: 8px 0px;
     }
   }
+  &__article-item:last-child {
+    margin-right: 24px;
+    @media (width < 768px) {
+      margin-right: 0px;
+    }
+  }
   &__article-item_active {
+    margin-right: 16px;
     border-radius: 20px;
     padding: 8px 18px;
     background-color: $grass;
     color: $black;
-    @media (width < 1280px) {
+    @media (width < 1210px) {
       margin-left: 80px;
+      margin-right: 24px;
+      margin-bottom: 2px;
     }
     @media (width < 768px) {
       margin-left: 0px;
+      margin-right: 16px;
     }
   }
   &__title {
-    // @include AchivoH2;
-    font-size: 46px;
+    @include AchivoH3;
     color: $black;
     padding-bottom: 16px;
-    font-weight: 900;
-    line-height: 120%;
-    width: 800px;
-    @media (width < 1280px) {
+    font-weight: 800;
+    line-height: 119%;
+    // width: 800px;
+    @media (width < 1210px) {
       width: 461px;
       font-size: 26px;
+      margin-top: -2px;
       color: $black;
       padding-bottom: 16px;
-      font-weight: 900;
+      font-weight: 500;
       line-height: 120%;
       // padding-top: 24px;
       padding-bottom: 8px;
     }
-    @media (width < 1280px) {
-      width: 304px;
+    @media (width < 768px) {
       padding-bottom: 16px;
+      width: 308px;
+      margin-top: -6px;
     }
   }
   &__text {
@@ -173,9 +189,9 @@
     color: $gray70;
     padding-bottom: 16px;
     width: 480px;
-    @media (width < 1280px) {
-      width: 440px;
-      padding-bottom: 48px;
+    @media (width < 1210px) {
+      width: 455px;
+      padding-bottom: 54px;
     }
     @media (width < 768px) {
       width: 304px;
@@ -186,63 +202,94 @@
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    padding-bottom: 56px;
-    @media (width < 1280px) {
+    padding-bottom: 60px;
+    @media (width < 1210px) {
       flex-wrap: wrap;
-      width: 190px;
+      flex-basis: 34.5%;
       justify-content: flex-end;
-      margin-top: -302px;
+      margin-top: -298px;
+      z-index: -1;
       align-content: center;
     }
     @media (width < 768px) {
+      flex-basis: 100%;
       width: 304px;
       justify-content: flex-start;
       margin-top: 0;
+      padding-bottom: 60px;
     }
   }
   &__span {
     @include Nunito15R-SLS;
     color: $gray35;
     padding-left: 8px;
-    @media (width < 1280px) {
+    margin-top: 2px;
+    @media (width < 1210px) {
       padding-right: 9px;
+      order: 1;
+      margin-top: 7px;
+    }
+    @media (width < 768px) {
+      margin-top: 2px;
+      padding-left: 6px;
     }
   }
   &__span:not(:last-child) {
     padding-right: 24px;
-    @media (width < 1280px) {
+    @media (width < 1210px) {
       padding-right: 9px;
+      padding-left: 60px;
+      order: -1;
     }
     @media (width < 768px) {
-      @media (width < 768px) {
-        padding-right: 24px;
-      }
+      padding-right: 23px;
+      padding-left: 6px;
+    }
+  }
+  &__icon {
+    width: 17px;
+    height: 17px;
+    fill: $gray35;
+    margin-left: 1px;
+    @media (width < 1210px) {
+      order: 4;
+      margin-right: 24px;
+      margin-top: 6px;
+    }
+
+    @media (width < 768px) {
+      order: -1;
+      margin-top: 2px;
+      margin-right: 2px;
     }
   }
   &__icon:first-child {
-    @media (width < 1280px) {
-      order: 2;
+    @media (width < 1210px) {
+      order: 1;
     }
     @media (width < 768px) {
-      order: 0;
+      order: -1;
     }
   }
   &__btn {
-    border: 1.5px solid $black;
-    box-shadow: 0 0 0 5px $grass;
+    border: 2px solid #1b1f21;
+    box-shadow: 0 0 0 5px #bedb39;
     border-radius: 30px;
-    padding: 10px 50px;
+    padding: 8px 49px;
     @include Nunito18M;
-    color: $black;
-    background-color: $grass;
+    color: #1b1f21;
+    margin-left: 6px;
+    background-color: #bedb39;
     transition: all 0.3s;
     box-sizing: border-box;
-    @media (width < 1280px) {
-      margin-left: 37px;
+    @media (width < 1210px) {
+      margin-left: 4px;
+      padding: 8px 48px;
+      font-weight: 600;
     }
-    @media (width < 1280px) {
-      width: 100%;
-      margin-left: 0;
+    @media (width < 768px) {
+      width: 96%;
+      margin-left: 6px;
     }
   }
   &__btn:hover,
@@ -260,20 +307,38 @@
     opacity: 0.6;
   }
   &__btn:focus {
-    border: 1.5px solid transparent;
-    box-shadow: 0 0 0 2px $black;
+    border: 2px solid transparent;
+    box-shadow: 0 0 0 2px #1b1f21;
     outline: none;
+    padding: 8px 48px;
   }
   &__runnig-string {
     @include AchivoH1;
     color: $black;
     background-color: $turquoise;
     width: 3250px;
-    transform: skewY(-4deg);
+    transform: rotate(-4deg);
     margin-bottom: 224px;
-    margin-top: 80px;
-    @media (width < 1280px) {
-      margin-top: 0;
+    padding-top: 10px;
+    padding-bottom: 5px;
+    margin-left: -10px;
+    margin-top: 62px;
+    @media (width > 1440px) {
+      margin-bottom: 212px;
+      padding-top: 10px;
+      padding-bottom: 2px;
+      margin-left: -10px;
+      margin-top: 78px;
+    }
+    @media (width < 1210px) {
+      margin-top: 26px;
+      transform: rotate(-3deg);
+      width: 2150px;
+      margin-bottom: 194px;
+    }
+    @media (width < 768px) {
+      margin-top: -10px;
+      transform: rotate(-4deg);
     }
   }
 }
