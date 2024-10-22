@@ -161,3 +161,21 @@ $nunito-medium: "Nunito Medium";
   line-height: 140%;
   text-transform: uppercase;
 }
+
+@mixin ValidationImg {
+  position: absolute;
+  width: 25px;
+  height: 25px;
+  border-radius: 100%;
+  top: 27px;
+  left: 42%;
+  @media (width < 1210px) {
+    top: 12px;
+    left: auto;
+    right: 102px;
+  }
+  @media (width < 768px) {
+    top: 93px;
+    right: 15px;
+  }
+}

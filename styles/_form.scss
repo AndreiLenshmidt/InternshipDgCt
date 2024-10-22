@@ -1,0 +1,357 @@
+.form {
+  width: 100%;
+  height: 518px;
+  background: $turquoise-dark url(/images/Line-bg-form1.png) 45% 23% no-repeat;
+  mask-image: url(/images/masks/form-bkg1.svg);
+  mask-position: center;
+  mask-repeat: no-repeat;
+  margin-bottom: 125px;
+  overflow: hidden;
+  @media (width < 1210px) {
+    background: $turquoise-dark url(/images/Line-bg-form2.png) 50% 23% no-repeat;
+    mask-image: url(/images/masks/form-bkg1-2.svg);
+    height: auto;
+    margin-bottom: 57px;
+  }
+  @media (width < 768px) {
+    mask-image: url(/images/masks/form-bkg3.svg);
+    height: 1132px;
+    mask-position: center -30px;
+  }
+
+  &__container {
+    display: flex;
+    justify-content: space-between;
+    @media (width < 768px) {
+      flex-wrap: wrap;
+    }
+  }
+  &__content {
+    flex-basis: 69.5%;
+    box-sizing: border-box;
+    padding: 64px 64px 64px 104px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    @media (width < 1210px) {
+      padding: 40px 24px;
+      width: 368px;
+      flex-basis: 59%;
+    }
+    @media (width < 768px) {
+      width: 304px;
+      padding: 64px 24px 80px;
+    }
+  }
+  &__letter {
+    flex-basis: 37%;
+    width: 418px;
+    height: 518px;
+    background-image: url(/images/letter-bkg.svg);
+    mask-image: url(/images/masks/form-bkg1.svg);
+    background-repeat: no-repeat;
+    position: relative;
+    @media (width < 1210px) {
+      height: 498px;
+      background-image: url(/images/form-bkg2-2.svg);
+      mask-image: url(/images/masks/form-bkg2.svg);
+      flex-basis: 41%;
+      width: 400px;
+    }
+    @media (width < 768px) {
+      background-image: url(/images/form-bkg2-3.svg);
+      mask-image: none;
+      flex-basis: 100%;
+    }
+  }
+  &__letter-img {
+    position: absolute;
+    top: 39%;
+    left: 66px;
+    @media (width < 1210px) {
+      top: 49%;
+      left: 38px;
+      height: 162px;
+      width: 209px;
+    }
+    @media (width < 768px) {
+      top: 34%;
+      left: 46px;
+    }
+  }
+  &__letter::after {
+    content: "";
+    background-image: url(/images/icons/letter-after.svg);
+    background-position: 50% 50%;
+    border-radius: 100%;
+    position: absolute;
+    top: 35%;
+    right: 53px;
+    width: 69px;
+    height: 70px;
+    @media (width < 1210px) {
+      background-size: 100% 100%;
+      top: 46%;
+      right: 38px;
+      width: 49px;
+      height: 48px;
+    }
+    @media (width < 768px) {
+      top: 31%;
+      right: 45px;
+    }
+  }
+  &__title {
+    @include AchivoH3;
+    color: $white;
+    padding-bottom: 8px;
+    @media (width < 1210px) {
+      @include AchivoH5;
+    }
+    @media (width < 768px) {
+      width: 227px;
+    }
+  }
+  &__text {
+    @include Nunito18R;
+    color: $white;
+    width: 584px;
+    @media (width < 1210px) {
+      width: 260px;
+    }
+  }
+  &__box {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding-top: 15px;
+    width: 576px;
+    @media (width < 1210px) {
+      flex-direction: column;
+      padding-top: 0px;
+      width: 368px;
+    }
+    @media (width < 768px) {
+      padding-top: 8px;
+      width: fit-content;
+    }
+  }
+  &__box:first-child {
+    position: relative;
+    @media (width < 768px) {
+      padding-top: 80px;
+    }
+  }
+  &__box:last-child {
+    @media (width < 1210px) {
+      padding-top: 10px;
+    }
+  }
+  &__submitted {
+    position: relative;
+    height: 120px;
+    padding-top: 2px;
+    // background-color: rgb(0, 250, 117);
+    animation: text-focus-in 0.3s cubic-bezier(0.55, 0.085, 0.68, 0.53) both;
+    @media (width < 1210px) {
+      height: 146px;
+      padding-top: 11px;
+    }
+    @media (width < 768px) {
+      padding-top: 75px;
+      padding-bottom: 30px;
+    }
+  }
+
+  &__submitted-text {
+    @include Nunito18B;
+    padding: 10px 27px;
+    background-color: $white;
+    color: $turquoise-dark;
+    border-radius: 88px;
+    margin-top: 72px;
+    width: 524px;
+    @media (width < 1210px) {
+      width: 142px;
+      margin-top: 33px;
+      padding: 29px 114px 28px 24px;
+      border-radius: 24px;
+    }
+    @media (width < 768px) {
+      padding: 29px 90px 28px 24px;
+    }
+  }
+  &__submitted-img {
+    position: absolute;
+    right: 18%;
+    top: 13px;
+    @media (width < 1210px) {
+      right: 17%;
+      top: 11px;
+      width: 105px;
+    }
+
+    @media (width < 768px) {
+      right: -17px;
+      top: 76px;
+    }
+  }
+
+  &__agree + label {
+    display: inline-flex;
+    align-items: center;
+    user-select: none;
+  }
+  &__agree + label::before {
+    content: "";
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+    flex-grow: 0;
+    border: 2px solid $white;
+    background-color: transparent;
+    box-sizing: border-box;
+    border-radius: 4px;
+    margin-right: 16px;
+    margin-bottom: 16px;
+    @media (width < 1210px) {
+      margin-bottom: 10px;
+    }
+    @media (width < 768px) {
+      margin-bottom: 31px;
+    }
+  }
+  &__agree:checked + label::before {
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-image: url(/images/icons/v.svg);
+    background-color: $white;
+  }
+
+  &__agree:hover + label::before {
+    border-color: $white;
+    background-color: $whiteTR90;
+  }
+
+  &__agree:focus + label::before {
+    border-color: $black;
+  }
+  &__agree:disabled + label::before {
+    border-color: $whiteTR90;
+    background-color: $whiteTR90;
+    background-image: none;
+  }
+  &__chbox-text {
+    @include Nunito15R-SLS;
+    width: 536px;
+    color: $white;
+    @media (width <1210px) {
+      @include Nunito13R-SLS;
+      width: 320px;
+    }
+    @media (width < 768px) {
+      width: 220px;
+    }
+  }
+  &__chbox-text_underline {
+    text-decoration: underline;
+    @media (width <1210px) {
+      text-decoration: none;
+    }
+  }
+
+  &__email {
+    width: 280px;
+    @include Nunito18R;
+    color: $white;
+    border: 2px solid $white;
+    border-radius: 40px;
+    background-color: transparent;
+    padding: 9px 24px;
+    box-sizing: border-box;
+    @media (width < 768px) {
+      width: 256px;
+    }
+  }
+  &__email::placeholder {
+    color: $white;
+  }
+  &__email:hover {
+    border-color: #fff;
+  }
+  &__email_invalid {
+    border-color: $tangerine;
+  }
+  &__email_valid {
+    border-color: $grass;
+  }
+
+  &__email_invalid-img {
+    @include ValidationImg;
+    background-color: $tangerine;
+    background-image: url(/images/icons/form-invalid.svg);
+  }
+  &__email_valid-img {
+    @include ValidationImg;
+    background-color: $grass;
+    background-image: url(/images/icons/form-valid.svg);
+  }
+
+  &__email:focus {
+    outline: none;
+    border-color: $black;
+  }
+
+  &__button {
+    width: 280px;
+    box-sizing: border-box;
+    @include Nunito18B;
+    color: $white;
+    border: 2px solid transparent;
+    background-color: $coral-dark;
+    outline: none;
+    border-radius: 40px;
+    padding: 8px 113px;
+    transition: background-color border 0.3s;
+    @media (width <1210px) {
+      margin-top: 15px;
+      margin-bottom: 6px;
+    }
+    @media (width < 768px) {
+      width: 256px;
+      padding: 8px 100px;
+      margin-top: 8px;
+      margin-bottom: 0;
+    }
+  }
+  &__button:hover {
+    @media (width >= 768px) {
+      background-color: $black;
+    }
+  }
+  &__button:active {
+    @media (width < 768px) {
+      background-color: $black;
+    }
+  }
+  &__button:disabled {
+    opacity: 0.6;
+  }
+  &__button:focus {
+    border: 2px solid $black;
+  }
+}
+
+@keyframes text-focus-in {
+  0% {
+    -webkit-filter: blur(12px);
+    filter: blur(12px);
+    opacity: 0;
+  }
+  100% {
+    -webkit-filter: blur(0px);
+    filter: blur(0px);
+    opacity: 1;
+  }
+}

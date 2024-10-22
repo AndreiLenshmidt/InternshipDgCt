@@ -184,6 +184,10 @@ details summary::marker {
   font-size: 0%;
 }
 
+.none {
+  display: none;
+}
+
 .wrap {
   width: 1210px;
   margin: 0 auto;
@@ -2289,7 +2293,12 @@ details summary::marker {
 @media (width < 768px) {
   .form__box {
     padding-top: 8px;
+    width: -moz-fit-content;
+    width: fit-content;
   }
+}
+.form__box:first-child {
+  position: relative;
 }
 @media (width < 768px) {
   .form__box:first-child {
@@ -2301,9 +2310,65 @@ details summary::marker {
     padding-top: 10px;
   }
 }
+.form__submitted {
+  position: relative;
+  height: 120px;
+  padding-top: 2px;
+  animation: text-focus-in 0.3s cubic-bezier(0.55, 0.085, 0.68, 0.53) both;
+}
 @media (width < 1210px) {
-  .form__box:last-child {
-    padding-top: 10px;
+  .form__submitted {
+    height: 146px;
+    padding-top: 11px;
+  }
+}
+@media (width < 768px) {
+  .form__submitted {
+    padding-top: 75px;
+    padding-bottom: 30px;
+  }
+}
+.form__submitted-text {
+  font-family: "Nunito Bold";
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 160%;
+  padding: 10px 27px;
+  background-color: #fcfaf9;
+  color: #57acbc;
+  border-radius: 88px;
+  margin-top: 72px;
+  width: 524px;
+}
+@media (width < 1210px) {
+  .form__submitted-text {
+    width: 142px;
+    margin-top: 33px;
+    padding: 29px 114px 28px 24px;
+    border-radius: 24px;
+  }
+}
+@media (width < 768px) {
+  .form__submitted-text {
+    padding: 29px 90px 28px 24px;
+  }
+}
+.form__submitted-img {
+  position: absolute;
+  right: 18%;
+  top: 13px;
+}
+@media (width < 1210px) {
+  .form__submitted-img {
+    right: 17%;
+    top: 11px;
+    width: 105px;
+  }
+}
+@media (width < 768px) {
+  .form__submitted-img {
+    right: -17px;
+    top: 76px;
   }
 }
 .form__agree + label {
@@ -2409,6 +2474,61 @@ details summary::marker {
 .form__email::placeholder {
   color: #fcfaf9;
 }
+.form__email:hover {
+  border-color: #fff;
+}
+.form__email_invalid {
+  border-color: #ffad20;
+}
+.form__email_valid {
+  border-color: #bedb39;
+}
+.form__email_invalid-img {
+  position: absolute;
+  width: 25px;
+  height: 25px;
+  border-radius: 100%;
+  top: 27px;
+  left: 42%;
+  background-color: #ffad20;
+  background-image: url(/images/icons/form-invalid.svg);
+}
+@media (width < 1210px) {
+  .form__email_invalid-img {
+    top: 12px;
+    left: auto;
+    right: 102px;
+  }
+}
+@media (width < 768px) {
+  .form__email_invalid-img {
+    top: 93px;
+    right: 15px;
+  }
+}
+.form__email_valid-img {
+  position: absolute;
+  width: 25px;
+  height: 25px;
+  border-radius: 100%;
+  top: 27px;
+  left: 42%;
+  background-color: #bedb39;
+  background-image: url(/images/icons/form-valid.svg);
+}
+@media (width < 1210px) {
+  .form__email_valid-img {
+    top: 12px;
+    left: auto;
+    right: 102px;
+  }
+}
+@media (width < 768px) {
+  .form__email_valid-img {
+    top: 93px;
+    right: 15px;
+  }
+}
 .form__email:focus {
   outline: none;
   border-color: #1b1f21;
@@ -2442,8 +2562,15 @@ details summary::marker {
     margin-bottom: 0;
   }
 }
-.form__button:hover, .form__button:active {
-  background-color: #1b1f21;
+@media (width >= 768px) {
+  .form__button:hover {
+    background-color: #1b1f21;
+  }
+}
+@media (width < 768px) {
+  .form__button:active {
+    background-color: #1b1f21;
+  }
 }
 .form__button:disabled {
   opacity: 0.6;
@@ -2452,6 +2579,16 @@ details summary::marker {
   border: 2px solid #1b1f21;
 }
 
+@keyframes text-focus-in {
+  0% {
+    filter: blur(12px);
+    opacity: 0;
+  }
+  100% {
+    filter: blur(0px);
+    opacity: 1;
+  }
+}
 .footer__runnig-string {
   font-family: "ArchivoBlack";
   font-weight: 400;
@@ -2856,8 +2993,15 @@ details summary::marker {
     width: 100%;
   }
 }
-.footer__button:hover, .footer__button:active {
-  background-color: #da3369;
+@media (width >= 768px) {
+  .footer__button:hover {
+    background-color: #da3369;
+  }
+}
+@media (width < 768px) {
+  .footer__button:active {
+    background-color: #da3369;
+  }
 }
 .footer__button:disabled {
   opacity: 0.6;

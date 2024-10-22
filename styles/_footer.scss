@@ -1,0 +1,365 @@
+.footer {
+  &__runnig-string {
+    @include AchivoH1;
+    color: $black;
+    background-color: $pink-dark;
+    width: 3250px;
+    padding-top: 39px;
+    padding-bottom: 28px;
+    margin-top: 12px;
+    @media (width < 1210px) {
+      padding-top: 10px;
+      padding-bottom: 1px;
+      margin-top: 12px;
+      // margin-top: 25px;
+      // width: 2150px;
+      // margin-bottom: 194px;
+    }
+    @media (width < 768px) {
+      // margin-top: -10px;
+      // transform: rotate(-4deg);
+    }
+  }
+  &__container {
+    padding: 64px 0px 80px;
+    background-color: $black;
+    @media (width < 1210px) {
+      padding: 64px 0px 72px;
+    }
+    @media (width < 768px) {
+      padding: 34px 0px 82px;
+    }
+  }
+  &__box {
+    border-bottom: 1px solid $gray35;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    padding-bottom: 32px;
+    @media (width < 768px) {
+      border-bottom: none;
+      padding-bottom: 50px;
+    }
+  }
+  &__small-box:first-child {
+    width: 352px;
+    display: flex;
+    justify-content: space-between;
+    @media (width < 1210px) {
+      width: 285px;
+      order: 1;
+    }
+    @media (width < 768px) {
+      width: 304px;
+      padding-bottom: 38px;
+    }
+  }
+  &__small-box:nth-child(2) {
+    width: 480px;
+    display: flex;
+    justify-content: space-between;
+    column-gap: 64px;
+    flex-basis: 57%;
+    @media (width < 1210px) {
+      order: 4;
+      width: auto;
+      padding-top: 87px;
+      flex-basis: 100%;
+      width: 100%;
+    }
+    @media (width < 768px) {
+      order: 3;
+      padding-top: 65px;
+      flex-direction: column;
+    }
+  }
+  &__small-box:nth-child(3) {
+    margin-top: -76px;
+    flex-basis: 100%;
+    @media (width < 1210px) {
+      order: 2;
+      margin-top: -1px;
+      flex-basis: 37%;
+    }
+    @media (width < 768px) {
+      order: 5;
+      width: 100%;
+      flex-basis: auto;
+    }
+  }
+  &__small-box:nth-child(4) {
+    display: flex;
+    justify-content: space-between;
+    width: 570px;
+    padding-top: 96px;
+    @media (width < 1210px) {
+      order: 5;
+      padding-top: 80px;
+    }
+    @media (width < 768px) {
+      order: 4;
+      flex-direction: column;
+      padding-top: 44px;
+      row-gap: 24px;
+      padding-bottom: 64px;
+    }
+  }
+  &__small-box:nth-child(5) {
+    display: flex;
+    justify-content: space-between;
+    width: 200px;
+    order: 3;
+    padding-top: 108px;
+    @media (width < 1210px) {
+      order: 3;
+      padding-top: 0px;
+    }
+    @media (width < 768px) {
+      order: 2;
+      width: 304px;
+    }
+  }
+  &__menu {
+    width: 120px;
+    @include Nunito15M-SLS;
+    color: $white;
+    @media (width < 1210px) {
+      width: 125px;
+    }
+    @media (width < 768px) {
+      width: 100%;
+    }
+  }
+  &__menu[open] {
+    margin-bottom: 31px;
+  }
+
+  &__menu:nth-child(2) {
+    width: 104px;
+    @media (width < 1210px) {
+      width: 110px;
+      @media (width < 768px) {
+        width: 100%;
+      }
+    }
+  }
+  &__menu:nth-child(3) {
+    width: 153px;
+    @media (width < 1210px) {
+      width: 157px;
+      @media (width < 768px) {
+        width: 100%;
+      }
+    }
+  }
+  &__menu:nth-child(4) {
+    width: 122px;
+    @media (width < 768px) {
+      width: 100%;
+    }
+  }
+
+  &__menu-item {
+    @include Nunito18B;
+    color: $gray70;
+    @media (width < 768px) {
+      width: 100%;
+      position: relative;
+      padding-bottom: 12px;
+    }
+  }
+  &__menu[open] &__menu-item {
+    padding-bottom: 26px;
+    @media (width < 768px) {
+      padding-bottom: 18px;
+      width: 302px;
+    }
+  }
+  &__details-item {
+    margin-bottom: 10px;
+    position: relative;
+    width: fit-content;
+    @media (width < 768px) {
+      margin-bottom: 16px;
+    }
+  }
+  &__details-item:last-child {
+    @media (width < 768px) {
+      margin-bottom: 0px;
+    }
+  }
+  &__summery-arrow {
+    display: none;
+    @media (width < 768px) {
+      display: inline;
+      position: absolute;
+      top: 12px;
+      right: 5px;
+    }
+  }
+  &__menu[open] &__summery-arrow {
+    @media (width < 768px) {
+      display: inline;
+      position: absolute;
+      top: 12px;
+      right: 3px;
+      transform: rotate(180deg);
+    }
+  }
+
+  &__award {
+    width: 80px;
+    height: 80px;
+    @media (width < 1210px) {
+      width: 64px;
+      height: 64px;
+      // margin-left: -12px;
+    }
+  }
+  &__logo {
+    height: 82px;
+    width: 224px;
+    fill: $white;
+    transition: fill 0.3s;
+    @media (width < 1210px) {
+      height: 64px;
+      width: 197px;
+      margin-left: -12px;
+    }
+  }
+  &__logo:hover {
+    fill: $pink-dark;
+  }
+
+  &__box_bottom {
+    display: flex;
+    justify-content: space-between;
+    width: 661px;
+    padding-top: 32px;
+    // border-top: 1px solid $gray35;
+    @media (width < 1210px) {
+      padding-top: 15px;
+    }
+    @media (width < 768px) {
+      flex-direction: column;
+      row-gap: 16px;
+      width: fit-content;
+    }
+  }
+  &__item {
+    @include Nunito13M-UP;
+    color: $gray35;
+    position: relative;
+  }
+  &__item:not(:first-child)::before {
+    content: url(/images/icons/point.svg);
+    position: absolute;
+    top: calc(7% - 2.5px);
+    left: -14px;
+    @media (width < 768px) {
+      display: none;
+    }
+  }
+  &__contacts::before,
+  &__details-item::before {
+    content: "";
+    display: block;
+    height: 1.5px;
+    width: 0%;
+    background-color: $white;
+    position: absolute;
+    bottom: 0;
+    right: 0px;
+    transition: width 0.4s;
+  }
+  &__contacts:hover,
+  &__details-item:hover {
+    cursor: pointer;
+  }
+  &__contacts:hover::before,
+  &__details-item:hover::before {
+    width: 100%;
+    left: 0;
+  }
+  &__contacts:active::before,
+  &__details-item:active::before {
+    @media (width < 320px) {
+      width: 100%;
+      left: 0;
+    }
+  }
+  &__email {
+    width: 280px;
+    @include Nunito18R;
+    color: $white;
+    border: 2px solid $white;
+    border-radius: 40px;
+    background-color: transparent;
+    padding: 9px 24px;
+    box-sizing: border-box;
+    margin-bottom: 8px;
+    @media (width < 1210px) {
+      margin-bottom: 14px;
+    }
+    @media (width < 768px) {
+      width: 100%;
+      margin-bottom: 8px;
+    }
+  }
+  &__email::placeholder {
+    color: $white;
+  }
+  &__email:focus {
+    outline: none;
+    border-color: $black;
+  }
+  &__button {
+    width: 280px;
+    box-sizing: border-box;
+    @include Nunito18B;
+    color: $white;
+    border: 2px solid transparent;
+    background-color: $violet-dark;
+    outline: none;
+    border-radius: 40px;
+    padding: 8px 50px;
+    transition: background-color border 0.3s;
+    @media (width < 768px) {
+      width: 100%;
+    }
+  }
+  &__button:hover {
+    @media (width >= 768px) {
+      background-color: $pink-dark;
+    }
+  }
+  &__button:active {
+    @media (width < 768px) {
+      background-color: $pink-dark;
+    }
+  }
+  &__button:disabled {
+    opacity: 0.6;
+  }
+  &__button:focus {
+    border: 2px solid $white;
+  }
+
+  &__contacts {
+    padding-top: 6px;
+    @include Nunito18B;
+    color: $white;
+    position: relative;
+    @media (width < 768px) {
+      width: fit-content;
+    }
+  }
+  &__icon {
+    width: 32px;
+    height: 32px;
+    @media (width < 768px) {
+      width: 48px;
+      height: 48px;
+    }
+  }
+}
