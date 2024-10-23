@@ -300,33 +300,37 @@
     outline: none;
     padding: 8px 48px;
   }
+  &__runnig-string-box {
+    overflow: hidden;
+    height: 411px;
+    @media (width < 1210px) {
+      height: 300px;
+    }
+    @media (width < 768px) {
+      height: 266px;
+    }
+  }
   &__runnig-string {
     @include AchivoH1;
     color: $black;
     background-color: $turquoise;
     width: 3250px;
     transform: rotate(-4deg);
-    margin-bottom: 224px;
     padding-top: 10px;
-    padding-bottom: 5px;
+    margin-top: calc(7vw + 1vh - 49px);
+    margin-bottom: 0;
     margin-left: -10px;
-    margin-top: 62px;
-    @media (width > 1440px) {
-      margin-bottom: 212px;
-      padding-top: 10px;
-      padding-bottom: 2px;
-      margin-left: -10px;
-      margin-top: 78px;
-    }
     @media (width < 1210px) {
-      margin-top: 26px;
       transform: rotate(-3deg);
       width: 2150px;
-      margin-bottom: 194px;
+      margin-top: calc(8vw + 1vh - 44px);
+      padding-top: 9px;
+      padding-bottom: 5px;
     }
     @media (width < 768px) {
       margin-top: -10px;
       transform: rotate(-4deg);
+      margin-top: calc(5vw - 40px);
     }
   }
 }

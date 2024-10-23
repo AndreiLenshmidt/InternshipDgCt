@@ -239,19 +239,24 @@ details summary::marker {
 .runnig-string {
   overflow: hidden;
   &__text_artigos {
-    padding: 27px 48px 27px;
+    padding: 27px 48px 29px;
     @media (width < 1210px) {
       padding: 21px 48px 17px;
       width: 320px;
     }
   }
   &__text_webinars {
+    padding: 41px 38px 36px;
     @media (width < 1210px) {
-      padding: 20px 38px 16px;
+      padding: 18px 38px 18px;
       width: 156px;
+    }
+    @media (width < 1210px) {
+      padding: 17px 38px 16px;
     }
   }
   &__text_subscribe {
+    padding: 41px 50px 36px;
     @media (width < 1210px) {
       padding: 20px 50px 16px;
       width: 180px;
@@ -263,7 +268,7 @@ details summary::marker {
       width: 690px;
     }
     @media (width < 768px) {
-      padding: 21px 50px 18px;
+      padding: 21px 50px 20px;
       width: 475px;
     }
   }
@@ -274,7 +279,14 @@ details summary::marker {
   }
 
   &_bottom {
-    margin-top: -20px;
+    margin-bottom: -20px;
+    @media (width < 1210px) {
+      height: 164px;
+      margin-bottom: 0;
+    }
+    @media (width < 768px) {
+      height: 102px;
+    }
   }
 }
 

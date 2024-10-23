@@ -10,21 +10,23 @@
   font-family: "Nunito Regular";
   font-style: normal;
   font-weight: normal;
-  src: local("Nunito"), url("../fonts/Nunito-Regular.ttf") format("truetype");
+  src: local("Nunito-Regular"),
+    url("../fonts/Nunito-Regular.ttf") format("truetype");
 }
 
 @font-face {
   font-family: "Nunito Medium";
   font-style: normal;
   font-weight: medium;
-  src: local("Nunito"), url("../fonts/Nunito-Medium.ttf") format("truetype");
+  src: local("Nunito-Medium"),
+    url("../fonts/Nunito-Medium.ttf") format("truetype");
 }
 
 @font-face {
   font-family: "Nunito Bold";
   font-style: normal;
   font-weight: bold;
-  src: local("Nunito"), url("../fonts/Nunito-Bold.ttf") format("truetype");
+  src: local("Nunito-Bold"), url("../fonts/Nunito-Bold.ttf") format("truetype");
 }
 
 $black: #1b1f21;
