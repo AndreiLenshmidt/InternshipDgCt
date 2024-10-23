@@ -1,17 +1,16 @@
 .main {
   padding-top: 80px;
-  position: relative;
-  overflow: hidden;
+  @include relative-hidden;
   background: url(/images/background/bg-main-1440.svg) calc(50% - 52px) 51px
     no-repeat;
   background-size: 1642px;
-  @media (width < 1210px) {
+  @media (width < $width-tablet) {
     padding-top: 64px;
     background: url(/images/background/bg-main-768.svg) calc(50% - -164px)
       108.5% no-repeat;
     background-size: 1763px;
   }
-  @media (width < 768px) {
+  @media (width < $width-smartpthone) {
     padding-top: 36px;
     background: url(/images/background/bg-main-320.svg) calc(50% + -40px) 30.5%
       no-repeat;
@@ -21,49 +20,41 @@
     display: flex;
     justify-content: flex-start;
     gap: 40px;
-    @media (width < 1210px) {
+    @media (width < $width-tablet) {
       flex-direction: column;
       align-items: center;
-      // padding-bottom: 53.5px;
       padding-bottom: 0;
       gap: 24px;
     }
-    @media (width < 768px) {
+    @media (width < $width-smartpthone) {
       gap: 18px;
     }
   }
   &__pic-box {
-    width: 480px;
-    height: 560px;
-    overflow: hidden;
-    position: relative;
-    @media (width < 1210px) {
-      height: 320px;
-      width: 720px;
+    @include width-heigth($w: 480px, $h: 560px);
+    @include relative-hidden;
+    @media (width < $width-tablet) {
+      @include width-heigth($w: 720px, $h: 320px);
     }
-    @media (width < 768px) {
-      height: 352px;
-      width: 304px;
+    @media (width < $width-smartpthone) {
+      @include width-heigth($w: 304px, $h: 352px);
     }
   }
   &__pic {
     margin-top: -133px;
-    width: 480px;
-    height: 690px;
+    @include width-heigth($w: 480px, $h: 690px);
     mask-image: url(/images/masks/pic1.svg);
     mask-position: bottom;
     mask-repeat: no-repeat;
-    @media (width < 1210px) {
+    @media (width < $width-tablet) {
       mask-image: url(/images/masks/pic1-v2.svg);
       margin-top: -380px;
-      width: 720px;
-      height: auto;
       mask-position: center;
+      @include width-heigth($w: 720px, $h: auto);
     }
-    @media (width < 768px) {
+    @media (width < $width-smartpthone) {
       mask-image: url(/images/masks/pic1-v3.svg);
-      width: 304px;
-      height: 431px;
+      @include width-heigth($w: 304px, $h: 431px);
       margin-top: -80px;
       mask-position: bottom;
     }
@@ -72,12 +63,12 @@
     position: absolute;
     right: 0;
     transition: transform 0.9s;
-    @media (width < 1210px) {
+    @media (width < $width-tablet) {
       right: 16px;
       top: 8px;
       width: 120px;
     }
-    @media (width < 768px) {
+    @media (width < $width-smartpthone) {
       right: 8px;
       top: 8px;
       width: 104px;
@@ -88,12 +79,12 @@
   }
   &__box {
     width: 688px;
-    @media (width < 1210px) {
+    @media (width < $width-tablet) {
       width: 704px;
       display: flex;
       flex-wrap: wrap;
     }
-    @media (width < 768px) {
+    @media (width < $width-smartpthone) {
       width: 304px;
       justify-content: space-between;
     }
@@ -103,14 +94,14 @@
     justify-content: flex-start;
     padding-top: 46px;
     padding-bottom: 17px;
-    @media (width < 1210px) {
+    @media (width < $width-tablet) {
       flex-basis: 34.5%;
       justify-content: flex-end;
       align-self: flex-start;
       flex-wrap: wrap;
       padding-top: 0;
     }
-    @media (width < 768px) {
+    @media (width < $width-smartpthone) {
       flex-basis: 100%;
       padding-bottom: 18px;
       width: 304px;
@@ -122,13 +113,13 @@
     padding: 8px 0px;
     color: $grass;
     @include Nunito15M-SLS;
-    @media (width < 1210px) {
+    @media (width < $width-tablet) {
       padding: 8px 0px;
     }
   }
   &__article-item:last-child {
     margin-right: 24px;
-    @media (width < 768px) {
+    @media (width < $width-smartpthone) {
       margin-right: 0px;
     }
   }
@@ -138,12 +129,12 @@
     padding: 8px 18px;
     background-color: $grass;
     color: $black;
-    @media (width < 1210px) {
+    @media (width < $width-tablet) {
       margin-left: 80px;
       margin-right: 24px;
       margin-bottom: 2px;
     }
-    @media (width < 768px) {
+    @media (width < $width-smartpthone) {
       margin-left: 0px;
       margin-right: 16px;
     }
@@ -155,7 +146,7 @@
     font-weight: 800;
     line-height: 119%;
     // width: 800px;
-    @media (width < 1210px) {
+    @media (width < $width-tablet) {
       width: 461px;
       font-size: 26px;
       margin-top: -2px;
@@ -166,7 +157,7 @@
       // padding-top: 24px;
       padding-bottom: 8px;
     }
-    @media (width < 768px) {
+    @media (width < $width-smartpthone) {
       padding-bottom: 16px;
       width: 308px;
       margin-top: -6px;
@@ -177,11 +168,11 @@
     color: $gray70;
     padding-bottom: 16px;
     width: 480px;
-    @media (width < 1210px) {
+    @media (width < $width-tablet) {
       width: 455px;
       padding-bottom: 54px;
     }
-    @media (width < 768px) {
+    @media (width < $width-smartpthone) {
       width: 304px;
       padding-bottom: 16px;
     }
@@ -191,7 +182,7 @@
     justify-content: flex-start;
     align-items: center;
     padding-bottom: 60px;
-    @media (width < 1210px) {
+    @media (width < $width-tablet) {
       flex-wrap: wrap;
       flex-basis: 34.5%;
       justify-content: flex-end;
@@ -199,7 +190,7 @@
       z-index: -1;
       align-content: center;
     }
-    @media (width < 768px) {
+    @media (width < $width-smartpthone) {
       flex-basis: 100%;
       width: 304px;
       justify-content: flex-start;
@@ -212,70 +203,69 @@
     color: $gray35;
     padding-left: 8px;
     margin-top: 2px;
-    @media (width < 1210px) {
+    @media (width < $width-tablet) {
       padding-right: 9px;
       order: 1;
       margin-top: 7px;
     }
-    @media (width < 768px) {
+    @media (width < $width-smartpthone) {
       margin-top: 2px;
       padding-left: 6px;
     }
   }
   &__span:not(:last-child) {
     padding-right: 24px;
-    @media (width < 1210px) {
+    @media (width < $width-tablet) {
       padding-right: 9px;
       padding-left: 60px;
       order: -1;
     }
-    @media (width < 768px) {
+    @media (width < $width-smartpthone) {
       padding-right: 23px;
       padding-left: 6px;
     }
   }
   &__icon {
-    width: 17px;
-    height: 17px;
+    @include width-heigth($w: 17px, $h: 17px);
     fill: $gray35;
     margin-left: 1px;
-    @media (width < 1210px) {
+    @media (width < $width-tablet) {
       order: 4;
       margin-right: 24px;
       margin-top: 6px;
     }
 
-    @media (width < 768px) {
+    @media (width < $width-smartpthone) {
       order: -1;
       margin-top: 2px;
       margin-right: 2px;
     }
   }
   &__icon:first-child {
-    @media (width < 1210px) {
+    @media (width < $width-tablet) {
       order: 1;
     }
-    @media (width < 768px) {
+    @media (width < $width-smartpthone) {
       order: -1;
     }
   }
   &__btn {
-    border: 2px solid #1b1f21;
-    box-shadow: 0 0 0 5px #bedb39;
-    border-radius: 30px;
-    padding: 8px 49px;
+    @include button-styles(
+      $bd-color: $black,
+      $bd-rad: 30px,
+      $pad: 8px 49px,
+      $bg-color: $grass
+    );
+    margin-left: 6px;
     @include Nunito18M;
     color: #1b1f21;
-    margin-left: 6px;
-    background-color: #bedb39;
-    transition: all 0.3s;
-    box-sizing: border-box;
-    @media (width < 1210px) {
+    box-shadow: 0 0 0 5px $grass;
+    @media (width < $width-tablet) {
       margin-left: 4px;
       padding: 8px 48px;
       font-weight: 600;
     }
-    @media (width < 768px) {
+    @media (width < $width-smartpthone) {
       width: 96%;
       margin-left: 6px;
     }
@@ -303,10 +293,10 @@
   &__runnig-string-box {
     overflow: hidden;
     height: 411px;
-    @media (width < 1210px) {
+    @media (width < $width-tablet) {
       height: 300px;
     }
-    @media (width < 768px) {
+    @media (width < $width-smartpthone) {
       height: 266px;
     }
   }
@@ -320,14 +310,14 @@
     margin-top: calc(7vw + 1vh - 49px);
     margin-bottom: 0;
     margin-left: -10px;
-    @media (width < 1210px) {
+    @media (width < $width-tablet) {
       transform: rotate(-3deg);
       width: 2150px;
       margin-top: calc(8vw + 1vh - 44px);
       padding-top: 9px;
       padding-bottom: 5px;
     }
-    @media (width < 768px) {
+    @media (width < $width-smartpthone) {
       margin-top: -10px;
       transform: rotate(-4deg);
       margin-top: calc(5vw - 40px);

@@ -25,6 +25,7 @@ button {
   /* отображаем курсор в виде руки при наведении; некоторые
   считают, что необходимо оставлять стрелочный вид для кнопок */
   cursor: pointer;
+  outline: none;
 }
 
 details summary::marker {
@@ -37,10 +38,10 @@ details summary::marker {
 
 .wrapper {
   padding-top: 74px;
-  @media (width < 1210px) {
+  @media (width < $width-tablet) {
     padding-top: 118px;
   }
-  @media (width < 768px) {
+  @media (width < $width-smartpthone) {
     padding-top: 114px;
   }
   min-height: 100vh;
@@ -49,14 +50,14 @@ details summary::marker {
   flex-direction: column;
 }
 .wrap {
-  width: 1210px;
+  width: $width-tablet;
   margin: 0 auto;
 
-  @media (width < 1210px) {
+  @media (width < $width-tablet) {
     padding: 0 32px;
     width: calc(768px - 64px);
   }
-  @media (width < 768px) {
+  @media (width < $width-smartpthone) {
     width: calc(320px - 16px);
     padding: 0 8px;
   }
@@ -138,34 +139,34 @@ details summary::marker {
   overflow: hidden;
   &__text_artigos {
     padding: 27px 48px 29px;
-    @media (width < 1210px) {
+    @media (width < $width-tablet) {
       padding: 21px 48px 17px;
       width: 320px;
     }
   }
   &__text_webinars {
     padding: 41px 38px 36px;
-    @media (width < 1210px) {
+    @media (width < $width-tablet) {
       padding: 18px 38px 18px;
       width: 156px;
     }
-    @media (width < 1210px) {
+    @media (width < $width-smartpthone) {
       padding: 17px 38px 16px;
     }
   }
   &__text_subscribe {
     padding: 41px 50px 36px;
-    @media (width < 1210px) {
+    @media (width < $width-tablet) {
       padding: 20px 50px 16px;
       width: 180px;
     }
   }
   &__text_descuento {
-    @media (width < 1210px) {
+    @media (width < $width-tablet) {
       padding: 17px 50px 13px;
       width: 690px;
     }
-    @media (width < 768px) {
+    @media (width < $width-smartpthone) {
       padding: 21px 50px 20px;
       width: 475px;
     }
@@ -178,11 +179,11 @@ details summary::marker {
 
   &_bottom {
     margin-bottom: -20px;
-    @media (width < 1210px) {
+    @media (width < $width-tablet) {
       height: 164px;
       margin-bottom: 0;
     }
-    @media (width < 768px) {
+    @media (width < $width-smartpthone) {
       height: 102px;
     }
   }
@@ -198,15 +199,6 @@ details summary::marker {
   }
 }
 
-// @keyframes bottom-grass-line {
-//   0% {
-//     width: 0%;
-//   }
-
-//   100% {
-//     width: 30px;
-//   }
-// }
 @import "header";
 @import "main";
 @import "articles";

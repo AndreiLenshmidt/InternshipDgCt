@@ -7,7 +7,7 @@
     padding-top: 39px;
     padding-bottom: 28px;
     margin-top: 12px;
-    @media (width < 1210px) {
+    @media (width < $width-tablet) {
       padding-top: 10px;
       padding-bottom: 1px;
       margin-top: 12px;
@@ -15,7 +15,7 @@
       // width: 2150px;
       // margin-bottom: 194px;
     }
-    @media (width < 768px) {
+    @media (width < $width-smartpthone) {
       // margin-top: -10px;
       // transform: rotate(-4deg);
     }
@@ -23,10 +23,10 @@
   &__container {
     padding: 64px 0px 80px;
     background-color: $black;
-    @media (width < 1210px) {
+    @media (width < $width-tablet) {
       padding: 64px 0px 72px;
     }
-    @media (width < 768px) {
+    @media (width < $width-smartpthone) {
       padding: 34px 0px 82px;
     }
   }
@@ -36,7 +36,7 @@
     justify-content: space-between;
     flex-wrap: wrap;
     padding-bottom: 32px;
-    @media (width < 768px) {
+    @media (width < $width-smartpthone) {
       border-bottom: none;
       padding-bottom: 50px;
     }
@@ -45,11 +45,11 @@
     width: 352px;
     display: flex;
     justify-content: space-between;
-    @media (width < 1210px) {
+    @media (width < $width-tablet) {
       width: 285px;
       order: 1;
     }
-    @media (width < 768px) {
+    @media (width < $width-smartpthone) {
       width: 304px;
       padding-bottom: 38px;
     }
@@ -60,14 +60,14 @@
     justify-content: space-between;
     column-gap: 64px;
     flex-basis: 57%;
-    @media (width < 1210px) {
+    @media (width < $width-tablet) {
       order: 4;
       width: auto;
       padding-top: 87px;
       flex-basis: 100%;
       width: 100%;
     }
-    @media (width < 768px) {
+    @media (width < $width-smartpthone) {
       order: 3;
       padding-top: 65px;
       flex-direction: column;
@@ -76,12 +76,12 @@
   &__small-box:nth-child(3) {
     margin-top: -76px;
     flex-basis: 100%;
-    @media (width < 1210px) {
+    @media (width < $width-tablet) {
       order: 2;
       margin-top: -1px;
       flex-basis: 37%;
     }
-    @media (width < 768px) {
+    @media (width < $width-smartpthone) {
       order: 5;
       width: 100%;
       flex-basis: auto;
@@ -92,11 +92,11 @@
     justify-content: space-between;
     width: 570px;
     padding-top: 96px;
-    @media (width < 1210px) {
+    @media (width < $width-tablet) {
       order: 5;
       padding-top: 80px;
     }
-    @media (width < 768px) {
+    @media (width < $width-smartpthone) {
       order: 4;
       flex-direction: column;
       padding-top: 44px;
@@ -110,11 +110,11 @@
     width: 200px;
     order: 3;
     padding-top: 108px;
-    @media (width < 1210px) {
+    @media (width < $width-tablet) {
       order: 3;
       padding-top: 0px;
     }
-    @media (width < 768px) {
+    @media (width < $width-smartpthone) {
       order: 2;
       width: 304px;
     }
@@ -123,10 +123,10 @@
     width: 120px;
     @include Nunito15M-SLS;
     color: $white;
-    @media (width < 1210px) {
+    @media (width < $width-tablet) {
       width: 125px;
     }
-    @media (width < 768px) {
+    @media (width < $width-smartpthone) {
       width: 100%;
     }
   }
@@ -136,25 +136,25 @@
 
   &__menu:nth-child(2) {
     width: 104px;
-    @media (width < 1210px) {
+    @media (width < $width-tablet) {
       width: 110px;
-      @media (width < 768px) {
+      @media (width < $width-smartpthone) {
         width: 100%;
       }
     }
   }
   &__menu:nth-child(3) {
     width: 153px;
-    @media (width < 1210px) {
+    @media (width < $width-tablet) {
       width: 157px;
-      @media (width < 768px) {
+      @media (width < $width-smartpthone) {
         width: 100%;
       }
     }
   }
   &__menu:nth-child(4) {
     width: 122px;
-    @media (width < 768px) {
+    @media (width < $width-smartpthone) {
       width: 100%;
     }
   }
@@ -162,7 +162,7 @@
   &__menu-item {
     @include Nunito18B;
     color: $gray70;
-    @media (width < 768px) {
+    @media (width < $width-smartpthone) {
       width: 100%;
       position: relative;
       padding-bottom: 12px;
@@ -170,7 +170,7 @@
   }
   &__menu[open] &__menu-item {
     padding-bottom: 26px;
-    @media (width < 768px) {
+    @media (width < $width-smartpthone) {
       padding-bottom: 18px;
       width: 302px;
     }
@@ -179,18 +179,18 @@
     margin-bottom: 10px;
     position: relative;
     width: fit-content;
-    @media (width < 768px) {
+    @media (width < $width-smartpthone) {
       margin-bottom: 16px;
     }
   }
   &__details-item:last-child {
-    @media (width < 768px) {
+    @media (width < $width-smartpthone) {
       margin-bottom: 0px;
     }
   }
   &__summery-arrow {
     display: none;
-    @media (width < 768px) {
+    @media (width < $width-smartpthone) {
       display: inline;
       position: absolute;
       top: 12px;
@@ -198,7 +198,7 @@
     }
   }
   &__menu[open] &__summery-arrow {
-    @media (width < 768px) {
+    @media (width < $width-smartpthone) {
       display: inline;
       position: absolute;
       top: 12px;
@@ -210,7 +210,7 @@
   &__award {
     width: 80px;
     height: 80px;
-    @media (width < 1210px) {
+    @media (width < $width-tablet) {
       width: 64px;
       height: 64px;
       // margin-left: -12px;
@@ -221,7 +221,7 @@
     width: 224px;
     fill: $white;
     transition: fill 0.3s;
-    @media (width < 1210px) {
+    @media (width < $width-tablet) {
       height: 64px;
       width: 197px;
       margin-left: -12px;
@@ -237,10 +237,10 @@
     width: 661px;
     padding-top: 32px;
     // border-top: 1px solid $gray35;
-    @media (width < 1210px) {
+    @media (width < $width-tablet) {
       padding-top: 15px;
     }
-    @media (width < 768px) {
+    @media (width < $width-smartpthone) {
       flex-direction: column;
       row-gap: 16px;
       width: fit-content;
@@ -256,7 +256,7 @@
     position: absolute;
     top: calc(7% - 2.5px);
     left: -14px;
-    @media (width < 768px) {
+    @media (width < $width-smartpthone) {
       display: none;
     }
   }
@@ -298,10 +298,10 @@
     padding: 9px 24px;
     box-sizing: border-box;
     margin-bottom: 8px;
-    @media (width < 1210px) {
+    @media (width < $width-tablet) {
       margin-bottom: 14px;
     }
-    @media (width < 768px) {
+    @media (width < $width-smartpthone) {
       width: 100%;
       margin-bottom: 8px;
     }
@@ -314,27 +314,26 @@
     border-color: $black;
   }
   &__button {
+    @include button-styles(
+      $bd-color: transparent,
+      $bd-rad: 40px,
+      $pad: 8px 50px,
+      $bg-color: $violet-dark
+    );
     width: 280px;
-    box-sizing: border-box;
     @include Nunito18B;
     color: $white;
-    border: 2px solid transparent;
-    background-color: $violet-dark;
-    outline: none;
-    border-radius: 40px;
-    padding: 8px 50px;
-    transition: background-color border 0.3s;
-    @media (width < 768px) {
+    @media (width < $width-smartpthone) {
       width: 100%;
     }
   }
   &__button:hover {
-    @media (width >= 768px) {
+    @media (width >= $width-smartpthone) {
       background-color: $pink-dark;
     }
   }
   &__button:active {
-    @media (width < 768px) {
+    @media (width < $width-smartpthone) {
       background-color: $pink-dark;
     }
   }
@@ -350,14 +349,14 @@
     @include Nunito18B;
     color: $white;
     position: relative;
-    @media (width < 768px) {
+    @media (width < $width-smartpthone) {
       width: fit-content;
     }
   }
   &__icon {
     width: 32px;
     height: 32px;
-    @media (width < 768px) {
+    @media (width < $width-smartpthone) {
       width: 48px;
       height: 48px;
     }

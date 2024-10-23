@@ -13,11 +13,11 @@
     padding-top: 16px;
     padding-bottom: 15.2px;
     flex-wrap: wrap;
-    @media (width < 1210px) {
+    @media (width < $width-tablet) {
       display: flex;
       padding-bottom: 0px;
     }
-    @media (width < 768px) {
+    @media (width < $width-smartpthone) {
       display: flex;
       padding-bottom: 0px;
       padding-top: 12px;
@@ -28,7 +28,7 @@
     width: 108.9px;
     fill: $black;
     transition: fill 0.3s;
-    @media (width < 768px) {
+    @media (width < $width-smartpthone) {
       width: 140px;
       height: 48px;
       margin-left: -5px;
@@ -40,7 +40,7 @@
   &__nav {
     width: 698px;
     margin-top: -1px;
-    @media (width < 1210px) {
+    @media (width < $width-tablet) {
       width: auto;
       display: flex;
       overflow-y: auto;
@@ -48,7 +48,7 @@
       order: 4;
       margin-top: 0;
     }
-    @media (width < 768px) {
+    @media (width < $width-smartpthone) {
       padding-top: 13px;
     }
   }
@@ -58,7 +58,7 @@
   }
   &__link:not(:last-child) {
     margin-right: 10px;
-    @media (width < 768px) {
+    @media (width < $width-smartpthone) {
       margin-right: 7px;
     }
   }
@@ -69,7 +69,7 @@
     @include Nunito15M-SLS;
     color: $black;
     user-select: none;
-    @media (width < 1210px) {
+    @media (width < $width-tablet) {
       // font-family: "Nunito";
       // font-weight: 500;
       // font-size: 15px;
@@ -79,13 +79,13 @@
   &__search {
     display: flex;
     justify-content: end;
-    @media (width < 1210px) {
+    @media (width < $width-tablet) {
       margin-top: -4px;
     }
   }
   &__search-img {
     padding-right: 27px;
-    @media (width < 768px) {
+    @media (width < $width-smartpthone) {
       padding-right: 22px;
     }
   }
@@ -120,10 +120,10 @@
 .header.hide {
   transform: translateY(-74px);
 
-  @media (width < 1210px) {
+  @media (width < $width-tablet) {
     transform: translateY(-118px);
   }
-  @media (width < 768px) {
+  @media (width < $width-smartpthone) {
     transform: translateY(-114px);
   }
 }

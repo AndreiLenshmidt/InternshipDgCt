@@ -1,15 +1,17 @@
 .webinars {
   &__bkg {
-    position: relative;
-    overflow: hidden;
+    @include relative-hidden;
     background: url(/images/background/webinars-bg-1440.svg) 50% 135px no-repeat;
-    background-size: 1440px;
-    @media (width < 1210px) {
+    background-size: $width-laptop;
+    @media (width > 1600px) {
+      background-position: 50% 190px;
+    }
+    @media (width < $width-tablet) {
       background: url(/images/background/webinars-bg-768.svg) calc(50% - -107px)
         106px no-repeat;
       background-size: 1568px;
     }
-    @media (width < 768px) {
+    @media (width < $width-smartpthone) {
       background-image: none;
     }
   }
@@ -22,22 +24,25 @@
     width: 150vw;
     height: 860px;
     transform: perspective(160px) rotateY(-1deg);
-    @media (width < 1210px) {
-      height: 1060px;
+    @media (width > $width-laptop) {
+      margin-top: -120px;
     }
-    @media (width < 768px) {
-      height: 1550px;
+    @media (width < $width-tablet) {
+      height: 1060px;
       margin-top: -110px;
       margin-left: -150px;
+    }
+    @media (width < $width-smartpthone) {
+      height: 1550px;
     }
   }
   &__runnig-string-box {
     overflow: hidden;
     height: 372px;
-    @media (width < 1210px) {
+    @media (width < $width-tablet) {
       height: 358px;
     }
-    @media (width < 768px) {
+    @media (width < $width-smartpthone) {
       height: 228px;
     }
   }
@@ -48,21 +53,17 @@
     // margin-bottom: 148px;
     margin-top: calc(9vw + 1vh - 36px);
     margin-left: -10px;
-    // @media (width > 1440px) {
-    //   margin-bottom: 136px;
-    //   padding-top: 41px;
-    //   padding-bottom: 35px;
-    //   margin-left: -5px;
-    //   margin-top: 117px;
-    // }
-    @media (width < 1210px) {
+    @media (width > $width-laptop) {
+      margin-top: calc(7vw + 1vh - 36px);
+    }
+    @media (width < $width-tablet) {
       padding-top: 12px;
       padding-bottom: 10px;
       margin-top: calc(17vw + 1vh - 2px);
       transform: rotate(-3deg);
       width: 2150px;
     }
-    @media (width < 768px) {
+    @media (width < $width-smartpthone) {
       margin-top: calc(9vw + 1vh - 46px);
       transform: rotate(-4deg);
     }
@@ -72,17 +73,17 @@
     margin-top: 64px;
     margin-bottom: 100px;
     background-color: $coral-dark;
-    @media (width > 1440px) {
+    @media (width > $width-laptop) {
       margin-top: 58px;
       margin-bottom: 106px;
     }
-    @media (width < 1210px) {
+    @media (width < $width-tablet) {
       transform: rotate(3deg);
       width: 2150px;
       margin-top: 45px;
       margin-bottom: 107px;
     }
-    @media (width < 768px) {
+    @media (width < $width-smartpthone) {
       transform: rotate(4deg);
       margin-top: 68px;
       margin-bottom: 32px;
@@ -93,13 +94,13 @@
     padding-bottom: 94px;
     display: flex;
     justify-content: space-between;
-    @media (width < 1210px) {
+    @media (width < $width-tablet) {
       margin-top: -30px;
       padding-bottom: 96px;
       flex-wrap: wrap;
       row-gap: 24px;
     }
-    @media (width < 768px) {
+    @media (width < $width-smartpthone) {
       margin-top: -30px;
       padding-bottom: 70px;
       position: relative;
@@ -107,7 +108,7 @@
     }
   }
   &__container:last-child {
-    @media (width < 768px) {
+    @media (width < $width-smartpthone) {
       padding-bottom: 212px;
     }
   }
@@ -116,34 +117,33 @@
     @include AchivoH2;
     margin-top: 4px;
     color: $white;
-    @media (width < 1210px) {
+    @media (width < $width-tablet) {
       @include AchivoH5;
       font-size: 28px;
       width: 340px;
       margin-top: 24px;
     }
-    @media (width < 768px) {
+    @media (width < $width-smartpthone) {
       width: 308px;
       line-height: 120%;
       margin-top: 7px;
     }
   }
   &__btn {
-    border: 2px solid $violet-dark;
-    // box-shadow: 0 0 0 5px $violet-dark;
-    border-radius: 30px;
-    padding: 15px 60px;
+    @include button-styles(
+      $bd-color: $violet-dark,
+      $bd-rad: 30px,
+      $pad: 15px 60px,
+      $bg-color: $violet-dark
+    );
     @include Nunito18B;
     color: $white;
     margin-left: 4px;
-    background-color: $violet-dark;
-    transition: all 0.3s;
-    box-sizing: border-box;
-    @media (width < 1210px) {
+    @media (width < $width-tablet) {
       margin-left: 4px;
       margin-top: 9px;
     }
-    @media (width < 768px) {
+    @media (width < $width-smartpthone) {
       position: absolute;
       width: 99.5%;
       top: 1279px;
@@ -181,13 +181,13 @@
     justify-content: space-between;
     flex-direction: column;
     box-sizing: border-box;
-    @media (width < 1210px) {
+    @media (width < $width-tablet) {
       width: 340px;
       justify-content: flex-start;
       height: 400px;
       padding: 24px;
     }
-    @media (width < 768px) {
+    @media (width < $width-smartpthone) {
       justify-content: space-between;
       width: 304px;
       height: fit-content;
@@ -196,42 +196,42 @@
   &__card:nth-child(1) {
     background: $turquoise-dark url(/images/background/card1-bg-376.svg) 101%
       101% no-repeat;
-    @media (width < 1210px) {
+    @media (width < $width-tablet) {
       background-position: 79px 82px;
     }
-    @media (width < 768px) {
+    @media (width < $width-smartpthone) {
       background-position: 61px 30px;
     }
   }
   &__card:nth-child(1) > p {
-    @media (width < 1210px) {
+    @media (width < $width-tablet) {
       width: 200px;
       min-height: 199px;
     }
-    @media (width < 768px) {
+    @media (width < $width-smartpthone) {
       min-height: auto;
     }
   }
   &__card:nth-child(2) {
     background: $coral-dark url(/images/background/card2-bg-376.svg) 100% 100%
       no-repeat;
-    @media (width < 1210px) {
+    @media (width < $width-tablet) {
       background-image: url(/images/background/card2-bg-340.svg);
     }
-    @media (width < 768px) {
+    @media (width < $width-smartpthone) {
       background-position: 62px -6px;
     }
   }
   &__card:nth-child(3) {
     background: $tangerine-dark url(/images/background/card3-bg-376.svg) 0% 8px
       no-repeat;
-    @media (width < 1210px) {
+    @media (width < $width-tablet) {
       background-image: url(/images/background/card3-bg-704.svg);
       background-position: 24% 1px;
       flex-basis: 100%;
       height: 272px;
     }
-    @media (width < 768px) {
+    @media (width < $width-smartpthone) {
       background-image: url(/images/background/card1-bg-376.svg);
       background-position: 61px 50px;
       height: 370px;
@@ -242,10 +242,10 @@
     display: flex;
     justify-content: flex-start;
     gap: 20px;
-    @media (width < 1210px) {
+    @media (width < $width-tablet) {
       min-height: 74px;
     }
-    @media (width < 768px) {
+    @media (width < $width-smartpthone) {
       min-height: 79px;
     }
   }
@@ -260,21 +260,21 @@
     mask-position: top;
     background-color: $white;
     margin-top: -10px;
-    @media (width < 1210px) {
+    @media (width < $width-tablet) {
       margin-top: -12px;
     }
   }
   &__user {
     width: 200px;
-    @media (width < 768px) {
+    @media (width < $width-smartpthone) {
       width: 170px;
     }
   }
   &__user_big {
-    @media (width < 1210px) {
+    @media (width < $width-tablet) {
       width: 550px;
     }
-    @media (width < 768px) {
+    @media (width < $width-smartpthone) {
       width: 170px;
     }
   }
@@ -283,10 +283,10 @@
     color: $white;
     padding-top: 7px;
     padding-bottom: 4px;
-    @media (width < 1210px) {
+    @media (width < $width-tablet) {
       padding-top: 4px;
     }
-    @media (width < 768px) {
+    @media (width < $width-smartpthone) {
       font-size: 22px;
       padding-top: 6px;
     }
@@ -301,12 +301,12 @@
     color: $white;
     min-height: 160px;
     margin-top: -18px;
-    @media (width < 1210px) {
+    @media (width < $width-tablet) {
       @include AchivoH5;
       font-size: 24px;
       margin-top: 6px;
     }
-    @media (width < 768px) {
+    @media (width < $width-smartpthone) {
       min-height: auto;
       margin-top: 0;
     }
@@ -314,10 +314,10 @@
   &__content_big {
     min-height: 90px;
     margin-top: -12px;
-    @media (width < 1210px) {
+    @media (width < $width-tablet) {
       margin-top: 6px;
     }
-    @media (width < 768px) {
+    @media (width < $width-smartpthone) {
       min-height: 107px;
     }
   }
@@ -332,11 +332,11 @@
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    @media (width < 1210px) {
+    @media (width < $width-tablet) {
       flex-basis: 24%;
     }
 
-    @media (width < 768px) {
+    @media (width < $width-smartpthone) {
       height: auto;
       padding-top: 32px;
       flex-basis: auto;
@@ -349,9 +349,9 @@
     align-items: flex-start;
     padding-top: 12px;
 
-    @media (width < 1210px) {
+    @media (width < $width-tablet) {
     }
-    @media (width < 768px) {
+    @media (width < $width-smartpthone) {
       width: 304px;
       justify-content: flex-start;
       margin-top: 0;
@@ -360,7 +360,7 @@
   &__date-box_big {
     justify-content: space-between;
     padding-top: 13px;
-    @media (width < 768px) {
+    @media (width < $width-smartpthone) {
       width: 256px;
     }
   }
@@ -374,10 +374,10 @@
     padding-left: 8px;
   }
   &__span_big {
-    @media (width < 1210px) {
+    @media (width < $width-tablet) {
       padding-left: 9px;
     }
-    @media (width < 768px) {
+    @media (width < $width-smartpthone) {
       display: inline-block;
       max-width: 139px;
     }
@@ -385,11 +385,11 @@
   &__span:not(:last-child) {
     width: 200px;
     padding-right: 22px;
-    @media (width < 1210px) {
+    @media (width < $width-tablet) {
       width: 150px;
       padding-right: 52px;
     }
-    @media (width < 768px) {
+    @media (width < $width-smartpthone) {
       padding-right: 15px;
       width: 151px;
     }
@@ -399,15 +399,15 @@
     width: 17px;
     height: 17px;
     fill: $white;
-    @media (width < 768px) {
+    @media (width < $width-smartpthone) {
       margin-top: 2px;
     }
   }
   &__icon:first-child {
-    @media (width < 1210px) {
+    @media (width < $width-tablet) {
       order: -1;
     }
-    @media (width < 768px) {
+    @media (width < $width-smartpthone) {
       order: 0;
     }
   }

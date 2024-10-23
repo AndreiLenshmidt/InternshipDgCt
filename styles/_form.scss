@@ -9,7 +9,7 @@
   mask-repeat: no-repeat;
   margin-bottom: 125px;
   overflow: hidden;
-  @media (width < 1210px) {
+  @media (width < $width-tablet) {
     background: $turquoise-dark url(/images/background/form-bg-768.svg)
       calc(50% - -2px) 2px no-repeat;
     background-size: 704px;
@@ -17,7 +17,7 @@
     height: auto;
     margin-bottom: 96px;
   }
-  @media (width < 768px) {
+  @media (width < $width-smartpthone) {
     mask-image: url(/images/masks/form-bkg3.svg);
     background: $turquoise-dark url(/images/background/form-bg-320.svg) 50% -18%
       no-repeat;
@@ -30,7 +30,7 @@
   &__container {
     display: flex;
     justify-content: space-between;
-    @media (width < 768px) {
+    @media (width < $width-smartpthone) {
       flex-wrap: wrap;
     }
   }
@@ -41,12 +41,12 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    @media (width < 1210px) {
+    @media (width < $width-tablet) {
       padding: 40px 24px;
       width: 368px;
       flex-basis: 59%;
     }
-    @media (width < 768px) {
+    @media (width < $width-smartpthone) {
       width: 304px;
       padding: 64px 24px 80px;
     }
@@ -59,14 +59,14 @@
     mask-image: url(/images/masks/form-bkg1.svg);
     background-repeat: no-repeat;
     position: relative;
-    @media (width < 1210px) {
+    @media (width < $width-tablet) {
       height: 498px;
       background-image: url(/images/background/form-bg-letter-768.svg);
       mask-image: url(/images/masks/form-bkg2.svg);
       flex-basis: 41%;
       width: 400px;
     }
-    @media (width < 768px) {
+    @media (width < $width-smartpthone) {
       background-image: url(/images/background/form-bg-letter-320.svg);
       mask-image: none;
       flex-basis: 100%;
@@ -76,13 +76,13 @@
     position: absolute;
     top: 39%;
     left: 66px;
-    @media (width < 1210px) {
+    @media (width < $width-tablet) {
       top: 49%;
       left: 38px;
       height: 162px;
       width: 209px;
     }
-    @media (width < 768px) {
+    @media (width < $width-smartpthone) {
       top: 34%;
       left: 46px;
     }
@@ -97,14 +97,14 @@
     right: 53px;
     width: 69px;
     height: 70px;
-    @media (width < 1210px) {
+    @media (width < $width-tablet) {
       background-size: 100% 100%;
       top: 46%;
       right: 38px;
       width: 49px;
       height: 48px;
     }
-    @media (width < 768px) {
+    @media (width < $width-smartpthone) {
       top: 31%;
       right: 45px;
     }
@@ -113,10 +113,10 @@
     @include AchivoH3;
     color: $white;
     padding-bottom: 8px;
-    @media (width < 1210px) {
+    @media (width < $width-tablet) {
       @include AchivoH5;
     }
-    @media (width < 768px) {
+    @media (width < $width-smartpthone) {
       width: 227px;
     }
   }
@@ -124,10 +124,10 @@
     @include Nunito18R;
     color: $white;
     width: 584px;
-    @media (width < 1210px) {
+    @media (width < $width-tablet) {
       width: 360px;
     }
-    @media (width < 768px) {
+    @media (width < $width-smartpthone) {
       width: 260px;
     }
   }
@@ -137,24 +137,24 @@
     align-items: flex-start;
     padding-top: 15px;
     width: 576px;
-    @media (width < 1210px) {
+    @media (width < $width-tablet) {
       flex-direction: column;
       padding-top: 10px;
       width: 368px;
     }
-    @media (width < 768px) {
+    @media (width < $width-smartpthone) {
       padding-top: 8px;
       width: fit-content;
     }
   }
   &__box:first-child {
     position: relative;
-    @media (width < 768px) {
+    @media (width < $width-smartpthone) {
       padding-top: 80px;
     }
   }
   &__box:last-child {
-    @media (width < 1210px) {
+    @media (width < $width-tablet) {
       padding-top: 10px;
     }
   }
@@ -164,11 +164,11 @@
     padding-top: 2px;
     // background-color: rgb(0, 250, 117);
     animation: text-focus-in 0.3s cubic-bezier(0.55, 0.085, 0.68, 0.53) both;
-    @media (width < 1210px) {
+    @media (width < $width-tablet) {
       height: 146px;
       padding-top: 11px;
     }
-    @media (width < 768px) {
+    @media (width < $width-smartpthone) {
       padding-top: 75px;
       padding-bottom: 30px;
     }
@@ -182,13 +182,13 @@
     border-radius: 88px;
     margin-top: 72px;
     width: 527px;
-    @media (width < 1210px) {
+    @media (width < $width-tablet) {
       width: 160px;
       margin-top: 33px;
       padding: 27px 96px 28px 24px;
       border-radius: 24px;
     }
-    @media (width < 768px) {
+    @media (width < $width-smartpthone) {
       padding: 30px 81px 28px 16px;
     }
   }
@@ -196,13 +196,13 @@
     position: absolute;
     right: 18%;
     top: 13px;
-    @media (width < 1210px) {
+    @media (width < $width-tablet) {
       right: 63px;
       top: 11px;
       width: 105px;
     }
 
-    @media (width < 768px) {
+    @media (width < $width-smartpthone) {
       right: -17px;
       top: 76px;
     }
@@ -226,10 +226,10 @@
     border-radius: 4px;
     margin-right: 16px;
     margin-bottom: 16px;
-    @media (width < 1210px) {
+    @media (width < $width-tablet) {
       margin-bottom: 10px;
     }
-    @media (width < 768px) {
+    @media (width < $width-smartpthone) {
       margin-bottom: 31px;
     }
   }
@@ -257,17 +257,17 @@
     @include Nunito15R-SLS;
     width: 536px;
     color: $white;
-    @media (width <1210px) {
+    @media (width <$width-tablet) {
       @include Nunito13R-SLS;
       width: 320px;
     }
-    @media (width < 768px) {
+    @media (width < $width-smartpthone) {
       width: 220px;
     }
   }
   &__chbox-text_underline {
     text-decoration: underline;
-    @media (width <1210px) {
+    @media (width <$width-tablet) {
       text-decoration: none;
     }
   }
@@ -281,7 +281,7 @@
     background-color: transparent;
     padding: 9px 24px;
     box-sizing: border-box;
-    @media (width < 768px) {
+    @media (width < $width-smartpthone) {
       width: 256px;
     }
   }
@@ -315,21 +315,20 @@
   }
 
   &__button {
-    width: 280px;
-    box-sizing: border-box;
+    @include button-styles(
+      $bd-color: transparent,
+      $bd-rad: 40px,
+      $pad: 8px 113px,
+      $bg-color: $coral-dark
+    );
     @include Nunito18B;
     color: $white;
-    border: 2px solid transparent;
-    background-color: $coral-dark;
-    outline: none;
-    border-radius: 40px;
-    padding: 8px 113px;
-    transition: background-color border 0.3s;
-    @media (width <1210px) {
+    width: 280px;
+    @media (width <$width-tablet) {
       margin-top: 15px;
       margin-bottom: 6px;
     }
-    @media (width < 768px) {
+    @media (width < $width-smartpthone) {
       width: 256px;
       padding: 8px 100px;
       margin-top: 8px;
@@ -337,12 +336,12 @@
     }
   }
   &__button:hover {
-    @media (width >= 768px) {
+    @media (width >= $width-smartpthone) {
       background-color: $black;
     }
   }
   &__button:active {
-    @media (width < 768px) {
+    @media (width < $width-smartpthone) {
       background-color: $black;
     }
   }

@@ -2,7 +2,7 @@
   font-family: "ArchivoBlack";
   font-style: normal;
   font-weight: normal;
-  src: local("ArchivoBlack-Regular"), local("ArchivoBlack-Regular"),
+  src: local("ArchivoBlack-Regular"),
     url("/fonts/ArchivoBlack-Regular.ttf") format("truetype");
 }
 
@@ -62,6 +62,9 @@ $nunito: "Nunito Medium";
 $nunito-bold: "Nunito Bold";
 $nunito-regular: "Nunito Regular";
 $nunito-medium: "Nunito Medium";
+$width-laptop: 1440px;
+$width-tablet: 1210px;
+$width-smartpthone: 768px;
 
 @mixin AchivoH1 {
   font-family: "ArchivoBlack";
@@ -172,7 +175,7 @@ $nunito-medium: "Nunito Medium";
   top: 27px;
   left: 42%;
   @media (width < 1210px) {
-    top: 12px;
+    top: 22px;
     left: auto;
     right: 102px;
   }
@@ -180,4 +183,23 @@ $nunito-medium: "Nunito Medium";
     top: 93px;
     right: 15px;
   }
+}
+
+@mixin relative-hidden {
+  position: relative;
+  overflow: hidden;
+}
+
+@mixin button-styles($bd-color, $bd-rad, $pad, $bg-color) {
+  border: 2px solid $bd-color;
+  border-radius: $bd-rad;
+  padding: $pad;
+  background-color: $bg-color;
+  box-sizing: border-box;
+  transition: all 0.3s;
+}
+
+@mixin width-heigth($w, $h) {
+  width: $w;
+  height: $h;
 }

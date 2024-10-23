@@ -3,7 +3,7 @@
   font-family: "ArchivoBlack";
   font-style: normal;
   font-weight: normal;
-  src: local("ArchivoBlack-Regular"), local("ArchivoBlack-Regular"), url("/fonts/ArchivoBlack-Regular.ttf") format("truetype");
+  src: local("ArchivoBlack-Regular"), url("/fonts/ArchivoBlack-Regular.ttf") format("truetype");
 }
 @font-face {
   font-family: "Nunito Regular";
@@ -178,6 +178,7 @@ button {
   /* отображаем курсор в виде руки при наведении; некоторые
   считают, что необходимо оставлять стрелочный вид для кнопок */
   cursor: pointer;
+  outline: none;
 }
 
 details summary::marker {
@@ -300,7 +301,7 @@ details summary::marker {
     width: 156px;
   }
 }
-@media (width < 1210px) {
+@media (width < 768px) {
   .runnig-string__text_webinars {
     padding: 17px 38px 16px;
   }
@@ -547,19 +548,19 @@ details summary::marker {
 .main__pic-box {
   width: 480px;
   height: 560px;
-  overflow: hidden;
   position: relative;
+  overflow: hidden;
 }
 @media (width < 1210px) {
   .main__pic-box {
-    height: 320px;
     width: 720px;
+    height: 320px;
   }
 }
 @media (width < 768px) {
   .main__pic-box {
-    height: 352px;
     width: 304px;
+    height: 352px;
   }
 }
 .main__pic {
@@ -578,10 +579,10 @@ details summary::marker {
     -webkit-mask-image: url(/images/masks/pic1-v2.svg);
             mask-image: url(/images/masks/pic1-v2.svg);
     margin-top: -380px;
-    width: 720px;
-    height: auto;
     -webkit-mask-position: center;
             mask-position: center;
+    width: 720px;
+    height: auto;
   }
 }
 @media (width < 768px) {
@@ -843,18 +844,18 @@ details summary::marker {
 }
 .main__btn {
   border: 2px solid #1b1f21;
-  box-shadow: 0 0 0 5px #bedb39;
   border-radius: 30px;
   padding: 8px 49px;
+  background-color: #bedb39;
+  box-sizing: border-box;
+  transition: all 0.3s;
+  margin-left: 6px;
   font-family: "Nunito Medium";
   font-weight: 500;
   font-size: 18px;
   line-height: 160%;
   color: #1b1f21;
-  margin-left: 6px;
-  background-color: #bedb39;
-  transition: all 0.3s;
-  box-sizing: border-box;
+  box-shadow: 0 0 0 5px #bedb39;
 }
 @media (width < 1210px) {
   .main__btn {
@@ -1003,7 +1004,7 @@ details summary::marker {
 @media (width < 1210px) {
   .articles__img-box {
     width: 340px;
-    height: 249px;
+    height: 240px;
   }
 }
 @media (width < 768px) {
@@ -1019,8 +1020,8 @@ details summary::marker {
 }
 @media (width < 1210px) {
   .articles__img-box_big {
-    height: 320px;
     width: 704px;
+    height: 320px;
   }
 }
 @media (width < 768px) {
@@ -1158,8 +1159,8 @@ details summary::marker {
             mask-image: url(/images//masks/pic4-v3.svg);
     margin-top: -27px;
     margin-left: -139px;
-    height: 450px;
     width: 581px;
+    height: 450px;
   }
 }
 .articles__img_mask4 {
@@ -1665,6 +1666,11 @@ details summary::marker {
   background: url(/images/background/webinars-bg-1440.svg) 50% 135px no-repeat;
   background-size: 1440px;
 }
+@media (width > 1600px) {
+  .webinars__bkg {
+    background-position: 50% 190px;
+  }
+}
 @media (width < 1210px) {
   .webinars__bkg {
     background: url(/images/background/webinars-bg-768.svg) calc(50% + 107px) 106px no-repeat;
@@ -1686,16 +1692,21 @@ details summary::marker {
   height: 860px;
   transform: perspective(160px) rotateY(-1deg);
 }
+@media (width > 1440px) {
+  .webinars__bkg-black {
+    margin-top: -120px;
+  }
+}
 @media (width < 1210px) {
   .webinars__bkg-black {
     height: 1060px;
+    margin-top: -110px;
+    margin-left: -150px;
   }
 }
 @media (width < 768px) {
   .webinars__bkg-black {
     height: 1550px;
-    margin-top: -110px;
-    margin-left: -150px;
   }
 }
 .webinars__runnig-string-box {
@@ -1718,6 +1729,11 @@ details summary::marker {
   transform: rotate(-3deg);
   margin-top: calc(9vw + 1vh - 36px);
   margin-left: -10px;
+}
+@media (width > 1440px) {
+  .webinars__runnig-string {
+    margin-top: calc(7vw + 1vh - 36px);
+  }
 }
 @media (width < 1210px) {
   .webinars__runnig-string {
@@ -1818,15 +1834,15 @@ details summary::marker {
   border: 2px solid #9853f4;
   border-radius: 30px;
   padding: 15px 60px;
+  background-color: #9853f4;
+  box-sizing: border-box;
+  transition: all 0.3s;
   font-family: "Nunito Bold";
   font-weight: 700;
   font-size: 18px;
   line-height: 160%;
   color: #fcfaf9;
   margin-left: 4px;
-  background-color: #9853f4;
-  transition: all 0.3s;
-  box-sizing: border-box;
 }
 @media (width < 1210px) {
   .webinars__btn {
@@ -2564,7 +2580,7 @@ details summary::marker {
 }
 @media (width < 1210px) {
   .form__email_invalid-img {
-    top: 12px;
+    top: 22px;
     left: auto;
     right: 102px;
   }
@@ -2587,7 +2603,7 @@ details summary::marker {
 }
 @media (width < 1210px) {
   .form__email_valid-img {
-    top: 12px;
+    top: 22px;
     left: auto;
     right: 102px;
   }
@@ -2603,19 +2619,18 @@ details summary::marker {
   border-color: #1b1f21;
 }
 .form__button {
-  width: 280px;
+  border: 2px solid transparent;
+  border-radius: 40px;
+  padding: 8px 113px;
+  background-color: #fe6d44;
   box-sizing: border-box;
+  transition: all 0.3s;
   font-family: "Nunito Bold";
   font-weight: 700;
   font-size: 18px;
   line-height: 160%;
   color: #fcfaf9;
-  border: 2px solid transparent;
-  background-color: #fe6d44;
-  outline: none;
-  border-radius: 40px;
-  padding: 8px 113px;
-  transition: background-color border 0.3s;
+  width: 280px;
 }
 @media (width < 1210px) {
   .form__button {
@@ -3043,19 +3058,18 @@ details summary::marker {
   border-color: #1b1f21;
 }
 .footer__button {
-  width: 280px;
+  border: 2px solid transparent;
+  border-radius: 40px;
+  padding: 8px 50px;
+  background-color: #9853f4;
   box-sizing: border-box;
+  transition: all 0.3s;
+  width: 280px;
   font-family: "Nunito Bold";
   font-weight: 700;
   font-size: 18px;
   line-height: 160%;
   color: #fcfaf9;
-  border: 2px solid transparent;
-  background-color: #9853f4;
-  outline: none;
-  border-radius: 40px;
-  padding: 8px 50px;
-  transition: background-color border 0.3s;
 }
 @media (width < 768px) {
   .footer__button {
