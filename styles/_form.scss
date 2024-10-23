@@ -1,22 +1,30 @@
 .form {
   width: 100%;
   height: 518px;
-  background: $turquoise-dark url(/images/Line-bg-form1.png) 45% 23% no-repeat;
+  background: $turquoise-dark url(/images/background/form-bg-1440.svg)
+    calc(50% - 22px) -41px no-repeat;
+  background-size: 988px;
   mask-image: url(/images/masks/form-bkg1.svg);
   mask-position: center;
   mask-repeat: no-repeat;
   margin-bottom: 125px;
   overflow: hidden;
   @media (width < 1210px) {
-    background: $turquoise-dark url(/images/Line-bg-form2.png) 50% 23% no-repeat;
+    background: $turquoise-dark url(/images/background/form-bg-768.svg)
+      calc(50% - -2px) 2px no-repeat;
+    background-size: 704px;
     mask-image: url(/images/masks/form-bkg1-2.svg);
     height: auto;
-    margin-bottom: 57px;
+    margin-bottom: 96px;
   }
   @media (width < 768px) {
     mask-image: url(/images/masks/form-bkg3.svg);
+    background: $turquoise-dark url(/images/background/form-bg-320.svg) 50% -18%
+      no-repeat;
+    background-size: 304px;
     height: 1132px;
     mask-position: center -30px;
+    margin-bottom: 57px;
   }
 
   &__container {
@@ -47,19 +55,19 @@
     flex-basis: 37%;
     width: 418px;
     height: 518px;
-    background-image: url(/images/letter-bkg.svg);
+    background-image: url(/images/background/form-bg-letter-1440.svg);
     mask-image: url(/images/masks/form-bkg1.svg);
     background-repeat: no-repeat;
     position: relative;
     @media (width < 1210px) {
       height: 498px;
-      background-image: url(/images/form-bkg2-2.svg);
+      background-image: url(/images/background/form-bg-letter-768.svg);
       mask-image: url(/images/masks/form-bkg2.svg);
       flex-basis: 41%;
       width: 400px;
     }
     @media (width < 768px) {
-      background-image: url(/images/form-bkg2-3.svg);
+      background-image: url(/images/background/form-bg-letter-320.svg);
       mask-image: none;
       flex-basis: 100%;
     }
@@ -117,6 +125,9 @@
     color: $white;
     width: 584px;
     @media (width < 1210px) {
+      width: 360px;
+    }
+    @media (width < 768px) {
       width: 260px;
     }
   }
@@ -128,7 +139,7 @@
     width: 576px;
     @media (width < 1210px) {
       flex-direction: column;
-      padding-top: 0px;
+      padding-top: 10px;
       width: 368px;
     }
     @media (width < 768px) {
@@ -165,20 +176,20 @@
 
   &__submitted-text {
     @include Nunito18B;
-    padding: 10px 27px;
-    background-color: $white;
-    color: $turquoise-dark;
+    padding: 10px 25px;
+    background-color: #fcfaf9;
+    color: #57acbc;
     border-radius: 88px;
     margin-top: 72px;
-    width: 524px;
+    width: 527px;
     @media (width < 1210px) {
-      width: 142px;
+      width: 160px;
       margin-top: 33px;
-      padding: 29px 114px 28px 24px;
+      padding: 27px 96px 28px 24px;
       border-radius: 24px;
     }
     @media (width < 768px) {
-      padding: 29px 90px 28px 24px;
+      padding: 30px 81px 28px 16px;
     }
   }
   &__submitted-img {
@@ -186,7 +197,7 @@
     right: 18%;
     top: 13px;
     @media (width < 1210px) {
-      right: 17%;
+      right: 63px;
       top: 11px;
       width: 105px;
     }

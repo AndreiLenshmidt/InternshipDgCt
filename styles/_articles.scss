@@ -1,19 +1,18 @@
 .articles {
-  &__bkg {
-    position: relative;
-    overflow: hidden;
+  position: relative;
+  overflow: hidden;
+  background: url(/images/background/articles-bg-1440.svg) calc(50% - -119px) -121px
+    no-repeat;
+  background-size: 3016px;
+  @media (width < 1210px) {
+    background: url(/images/background/articles-bg-768.svg) calc(50% + -297px)
+      161px no-repeat;
+    background-size: 2543px;
   }
-  &__bkg-img {
-    position: absolute;
-    top: -117px;
-    left: calc(50% - 1390px);
-    z-index: -10;
-    @media (width < 1210px) {
-      top: -117px;
-      left: calc(50% - 1390px);
-      width: 2537px;
-      height: 1538px;
-    }
+  @media (width < 768px) {
+    background: url(/images/background/articles-bg-320.svg) calc(50% + 78px) -199px
+      repeat-y;
+    background-size: 1175px;
   }
   &__container {
     display: flex;

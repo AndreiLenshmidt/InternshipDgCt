@@ -85,12 +85,14 @@ details summary::marker {
   }
   &__nav {
     width: 698px;
+    margin-top: -1px;
     @media (width < 1210px) {
       width: auto;
       display: flex;
       overflow-y: auto;
       padding-top: 21px;
       order: 4;
+      margin-top: 0;
     }
     @media (width < 768px) {
       padding-top: 13px;
@@ -102,6 +104,9 @@ details summary::marker {
   }
   &__link:not(:last-child) {
     margin-right: 10px;
+    @media (width < 768px) {
+      margin-right: 7px;
+    }
   }
   &__link {
     padding: 8px 18px;

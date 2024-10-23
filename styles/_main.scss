@@ -1,33 +1,21 @@
 .main {
-  &__bkg {
-    padding-top: 80px;
-    position: relative;
-    overflow: hidden;
-    @media (width < 1210px) {
-      padding-top: 64px;
-    }
-    @media (width < 768px) {
-      padding-top: 36px;
-    }
+  padding-top: 80px;
+  position: relative;
+  overflow: hidden;
+  background: url(/images/background/bg-main-1440.svg) calc(50% - 52px) 51px
+    no-repeat;
+  background-size: 1642px;
+  @media (width < 1210px) {
+    padding-top: 64px;
+    background: url(/images/background/bg-main-768.svg) calc(50% - -164px)
+      108.5% no-repeat;
+    background-size: 1763px;
   }
-  &__bkg-img {
-    position: absolute;
-    top: -80px;
-    left: calc(50% - 900px);
-    z-index: -10;
-    @media (width < 1210px) {
-      width: 1752px;
-      height: 1072px;
-      transform: rotate(-10.5deg);
-      top: -210px;
-      left: calc(50% - 735px);
-    }
-    @media (width < 768px) {
-      height: 900px;
-      transform: rotate(137deg);
-      top: 230px;
-      left: calc(50% - 890px);
-    }
+  @media (width < 768px) {
+    padding-top: 36px;
+    background: url(/images/background/bg-main-320.svg) calc(50% + -40px) 30.5%
+      no-repeat;
+    background-size: 1283px;
   }
   &__container {
     display: flex;
