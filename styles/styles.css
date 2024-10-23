@@ -188,6 +188,24 @@ details summary::marker {
   display: none;
 }
 
+.wrapper {
+  padding-top: 74px;
+  min-height: 100vh;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+}
+@media (width < 1210px) {
+  .wrapper {
+    padding-top: 118px;
+  }
+}
+@media (width < 768px) {
+  .wrapper {
+    padding-top: 114px;
+  }
+}
+
 .wrap {
   width: 1210px;
   margin: 0 auto;
@@ -202,135 +220,6 @@ details summary::marker {
   .wrap {
     width: 304px;
     padding: 0 8px;
-  }
-}
-
-.header__box {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-top: 16px;
-  padding-bottom: 15.2px;
-  flex-wrap: wrap;
-}
-@media (width < 1210px) {
-  .header__box {
-    display: flex;
-    padding-bottom: 0px;
-  }
-}
-@media (width < 768px) {
-  .header__box {
-    display: flex;
-    padding-bottom: 0px;
-    padding-top: 12px;
-  }
-}
-.header__logo {
-  height: 40px;
-  width: 108.9px;
-  fill: #1b1f21;
-  transition: fill 0.3s;
-}
-@media (width < 768px) {
-  .header__logo {
-    width: 140px;
-    height: 48px;
-    margin-left: -5px;
-  }
-}
-.header__logo:hover {
-  fill: #da3369;
-}
-.header__nav {
-  width: 698px;
-  margin-top: -1px;
-}
-@media (width < 1210px) {
-  .header__nav {
-    width: auto;
-    display: flex;
-    overflow-y: auto;
-    padding-top: 21px;
-    order: 4;
-    margin-top: 0;
-  }
-}
-@media (width < 768px) {
-  .header__nav {
-    padding-top: 13px;
-  }
-}
-.header__nav::-webkit-scrollbar {
-  width: 0;
-  height: 0;
-}
-.header__link:not(:last-child) {
-  margin-right: 10px;
-}
-@media (width < 768px) {
-  .header__link:not(:last-child) {
-    margin-right: 7px;
-  }
-}
-.header__link {
-  padding: 8px 18px;
-  border: 1.2px solid #e8e8e8;
-  border-radius: 20px;
-  font-family: "Nunito Medium";
-  font-weight: 500;
-  font-size: 15px;
-  line-height: 140%;
-  color: #1b1f21;
-  -webkit-user-select: none;
-     -moz-user-select: none;
-          user-select: none;
-}
-.header__search {
-  display: flex;
-  justify-content: end;
-}
-@media (width < 1210px) {
-  .header__search {
-    margin-top: -4px;
-  }
-}
-.header__search-img {
-  padding-right: 27px;
-}
-@media (width < 768px) {
-  .header__search-img {
-    padding-right: 22px;
-  }
-}
-.header__search-span {
-  padding-right: 11px;
-  text-transform: uppercase;
-  font-family: "Nunito Medium";
-  font-weight: 500;
-  font-size: 15px;
-  line-height: 140%;
-  position: relative;
-}
-.header__search-span::before {
-  content: "";
-  display: block;
-  height: 1.5px;
-  width: 0%;
-  background-color: #bedb39;
-  position: absolute;
-  bottom: 0;
-  right: -17px;
-  transition: width 0.4s;
-}
-.header__search-span:hover::before {
-  width: 67px;
-  left: 0;
-}
-@media (width < 320px) {
-  .header__search-span:hover::before {
-    width: 67px;
-    left: 0;
   }
 }
 
@@ -464,6 +353,158 @@ details summary::marker {
     transform: translate(-150%, 0);
   }
 }
+.header {
+  z-index: 3;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  transition: transform 0.1s linear;
+  background-color: #fcfaf9;
+}
+.header__box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 16px;
+  padding-bottom: 15.2px;
+  flex-wrap: wrap;
+}
+@media (width < 1210px) {
+  .header__box {
+    display: flex;
+    padding-bottom: 0px;
+  }
+}
+@media (width < 768px) {
+  .header__box {
+    display: flex;
+    padding-bottom: 0px;
+    padding-top: 12px;
+  }
+}
+.header__logo {
+  height: 40px;
+  width: 108.9px;
+  fill: #1b1f21;
+  transition: fill 0.3s;
+}
+@media (width < 768px) {
+  .header__logo {
+    width: 140px;
+    height: 48px;
+    margin-left: -5px;
+  }
+}
+.header__logo:hover {
+  fill: #da3369;
+}
+.header__nav {
+  width: 698px;
+  margin-top: -1px;
+}
+@media (width < 1210px) {
+  .header__nav {
+    width: auto;
+    display: flex;
+    overflow-y: auto;
+    padding-top: 21px;
+    order: 4;
+    margin-top: 0;
+  }
+}
+@media (width < 768px) {
+  .header__nav {
+    padding-top: 13px;
+  }
+}
+.header__nav::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+.header__link:not(:last-child) {
+  margin-right: 10px;
+}
+@media (width < 768px) {
+  .header__link:not(:last-child) {
+    margin-right: 7px;
+  }
+}
+.header__link {
+  padding: 8px 18px;
+  border: 1.2px solid #e8e8e8;
+  border-radius: 20px;
+  font-family: "Nunito Medium";
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 140%;
+  color: #1b1f21;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+}
+.header__search {
+  display: flex;
+  justify-content: end;
+}
+@media (width < 1210px) {
+  .header__search {
+    margin-top: -4px;
+  }
+}
+.header__search-img {
+  padding-right: 27px;
+}
+@media (width < 768px) {
+  .header__search-img {
+    padding-right: 22px;
+  }
+}
+.header__search-span {
+  padding-right: 11px;
+  text-transform: uppercase;
+  font-family: "Nunito Medium";
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 140%;
+  position: relative;
+}
+.header__search-span::before {
+  content: "";
+  display: block;
+  height: 1.5px;
+  width: 0%;
+  background-color: #bedb39;
+  position: absolute;
+  bottom: 0;
+  right: -17px;
+  transition: width 0.4s;
+}
+.header__search-span:hover::before {
+  width: 67px;
+  left: 0;
+}
+@media (width < 320px) {
+  .header__search-span:hover::before {
+    width: 67px;
+    left: 0;
+  }
+}
+
+.header.hide {
+  transform: translateY(-74px);
+}
+@media (width < 1210px) {
+  .header.hide {
+    transform: translateY(-118px);
+  }
+}
+@media (width < 768px) {
+  .header.hide {
+    transform: translateY(-114px);
+  }
+}
+
 .main {
   padding-top: 80px;
   position: relative;

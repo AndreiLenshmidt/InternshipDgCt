@@ -1,6 +1,5 @@
 .webinars {
   &__bkg {
-    // padding-bottom: 136px;
     position: relative;
     overflow: hidden;
     background: url(/images/background/webinars-bg-1440.svg) 50% 135px no-repeat;
@@ -32,18 +31,6 @@
       margin-left: -150px;
     }
   }
-  // &__bkg-img {
-  //   position: absolute;
-  //   top: 178px;
-  //   left: calc(3% - 84px);
-  //   z-index: -9;
-  //   @media (width < 1210px) {
-  //     top: -117px;
-  //     left: calc(50% - 1390px);
-  //     //   width: 2537px;
-  //     //   height: 1538px;
-  //   }
-  // }
   &__runnig-string-box {
     overflow: hidden;
     height: 372px;
@@ -80,7 +67,6 @@
       transform: rotate(-4deg);
     }
   }
-
   &__runnig-string_bottom {
     transform: rotate(2deg);
     margin-top: 64px;
@@ -392,7 +378,6 @@
       padding-left: 9px;
     }
     @media (width < 768px) {
-      // padding-left: 9px;
       display: inline-block;
       max-width: 139px;
     }
