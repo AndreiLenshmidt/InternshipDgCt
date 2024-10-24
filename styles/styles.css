@@ -485,12 +485,12 @@ details summary::marker {
   right: -17px;
   transition: width 0.4s;
 }
-.header__search-span:hover::before {
+.header__search:hover .header__search-span::before {
   width: 67px;
   left: 0;
 }
 @media (width < 320px) {
-  .header__search-span:hover::before {
+  .header__search:active .header__search-span::before {
     width: 67px;
     left: 0;
   }

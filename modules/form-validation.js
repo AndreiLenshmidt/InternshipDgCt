@@ -28,5 +28,5 @@ export function formValidation(event) {
       box.remove();
     }
     formSubmitted.classList.remove("none");
-  }, 3500);
+  }, 2500);
 }

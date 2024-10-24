@@ -90,12 +90,12 @@
     @include position($b: 0, $r: -17px);
     transition: width 0.4s;
   }
-  &__search-span:hover::before {
+  &__search:hover &__search-span::before {
     width: 67px;
     left: 0;
   }
-  &__search-span:hover::before {
-    @media (width <320px) {
+  &__search:active &__search-span::before {
+    @media (width < 320px) {
       width: 67px;
       left: 0;
     }
