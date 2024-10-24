@@ -63,103 +63,119 @@ $nunito-bold: "Nunito Bold";
 $nunito-regular: "Nunito Regular";
 $nunito-medium: "Nunito Medium";
 $width-laptop: 1440px;
-$width-tablet: 1210px;
+$width-tablet: 1280px;
 $width-smartpthone: 768px;
 
-@mixin AchivoH1 {
+@mixin AchivoH1($color: $black) {
+  color: $color;
   font-family: "ArchivoBlack";
   font-weight: 400;
   font-size: 58px;
   line-height: 120%;
   letter-spacing: 0.01em;
 }
-@mixin AchivoH2 {
+@mixin AchivoH2($color: $black) {
+  color: $color;
   font-family: "ArchivoBlack";
   font-weight: 400;
   font-size: 46px;
   line-height: 120%;
 }
-@mixin AchivoH3 {
+@mixin AchivoH3($color: $black) {
+  color: $color;
   font-family: "ArchivoBlack";
   font-weight: 400;
   font-size: 36px;
   line-height: 120%;
 }
-@mixin AchivoH4 {
+@mixin AchivoH4($color: $black) {
+  color: $color;
   font-family: "ArchivoBlack";
   font-weight: 400;
   font-size: 30px;
   line-height: 120%;
 }
-@mixin AchivoH5 {
+@mixin AchivoH5($color: $black) {
+  color: $color;
   font-family: "ArchivoBlack";
   font-weight: 400;
   font-size: 26px;
   line-height: 120%;
 }
-@mixin Nunito21B {
+@mixin Nunito21B($color: $black) {
+  color: $color;
   font-family: $nunito-bold;
   font-weight: 700;
   font-size: 21px;
   line-height: 160%;
 }
-@mixin Nunito18R {
+@mixin Nunito18R($color: $black) {
+  color: $color;
   font-family: $nunito-regular;
   font-weight: 400;
   font-size: 18px;
   line-height: 160%;
 }
-@mixin Nunito18M {
+@mixin Nunito18M($color: $black) {
+  color: $color;
   font-family: $nunito-medium;
   font-weight: 500;
   font-size: 18px;
   line-height: 160%;
 }
-@mixin Nunito18B {
+@mixin Nunito18B($color: $black) {
+  color: $color;
   font-family: $nunito-bold;
   font-weight: 700;
   font-size: 18px;
   line-height: 160%;
 }
-@mixin Nunito15R-SLS {
+@mixin Nunito15R-SLS($color: $black) {
+  color: $color;
   font-family: $nunito-regular;
   font-weight: 400;
   font-size: 15px;
   line-height: 140%;
 }
-@mixin Nunito15M-SLS {
+@mixin Nunito15M-SLS($color: $black) {
+  color: $color;
   font-family: $nunito-medium;
   font-weight: 500;
   font-size: 15px;
   line-height: 140%;
 }
-@mixin Nunito15B-SLS {
+@mixin Nunito15B-SLS($color: $black) {
+  color: $color;
   font-family: $nunito-bold;
   font-weight: 700;
   font-size: 15px;
   line-height: 140%;
 }
-@mixin Nunito13M-UP {
+@mixin Nunito13M-UP($color: $black) {
+  color: $color;
   font-family: $nunito-medium;
   font-weight: 500;
   font-size: 13px;
   line-height: 160%;
   text-transform: uppercase;
 }
-@mixin Nunito13B-UP {
+@mixin Nunito13B-UP($color: $black) {
+  color: $color;
   font-family: $nunito-bold;
   font-weight: 700;
   font-size: 13px;
   line-height: 160%;
   text-transform: uppercase;
 }
-@mixin Nunito13R-SLS {
+@mixin Nunito13R-SLS($color: $black) {
+  color: $color;
   font-family: $nunito-regular;
   font-weight: 400;
   font-size: 13px;
   line-height: 140%;
 }
-@mixin Nunito13M-SLS {
+@mixin Nunito13M-SLS($color: $black) {
+  color: $color;
   font-family: $nunito-medium;
   font-weight: 500;
   font-size: 13px;
@@ -202,4 +218,18 @@ $width-smartpthone: 768px;
 @mixin width-heigth($w, $h) {
   width: $w;
   height: $h;
+}
+
+@mixin position($t: auto, $b: auto, $l: auto, $r: auto, $pos: absolute) {
+  position: $pos;
+  top: $t;
+  bottom: $b;
+  left: $l;
+  right: $r;
+}
+
+@mixin mask($url, $pos: center, $repeat: no-repeat) {
+  mask-image: $url;
+  mask-position: $pos;
+  mask-repeat: $repeat;
 }

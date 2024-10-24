@@ -42,35 +42,28 @@
   }
   &__pic {
     margin-top: -133px;
+    @include mask($url: url(/images/masks/pic1.svg), $pos: bottom);
     @include width-heigth($w: 480px, $h: 690px);
-    mask-image: url(/images/masks/pic1.svg);
-    mask-position: bottom;
-    mask-repeat: no-repeat;
     @media (width < $width-tablet) {
-      mask-image: url(/images/masks/pic1-v2.svg);
       margin-top: -380px;
-      mask-position: center;
+      @include mask(url(/images/masks/pic1-v2.svg), $pos: center);
       @include width-heigth($w: 720px, $h: auto);
     }
     @media (width < $width-smartpthone) {
-      mask-image: url(/images/masks/pic1-v3.svg);
-      @include width-heigth($w: 304px, $h: 431px);
       margin-top: -80px;
-      mask-position: bottom;
+      @include width-heigth($w: 304px, $h: 431px);
+      @include mask(url(/images/masks/pic1-v3.svg), $pos: bottom);
     }
   }
   &__stiker {
-    position: absolute;
-    right: 0;
+    @include position($r: 0);
     transition: transform 0.9s;
     @media (width < $width-tablet) {
-      right: 16px;
-      top: 8px;
+      @include position($t: 8px, $r: 16px);
       width: 120px;
     }
     @media (width < $width-smartpthone) {
-      right: 8px;
-      top: 8px;
+      @include position($t: 8px, $r: 8px);
       width: 104px;
     }
   }
@@ -92,8 +85,7 @@
   &__article-switchers {
     display: flex;
     justify-content: flex-start;
-    padding-top: 46px;
-    padding-bottom: 17px;
+    padding: 44px 0 18px;
     @media (width < $width-tablet) {
       flex-basis: 34.5%;
       justify-content: flex-end;
@@ -111,8 +103,7 @@
   &__article-item {
     margin-right: 10px;
     padding: 8px 0px;
-    color: $grass;
-    @include Nunito15M-SLS;
+    @include Nunito15M-SLS($grass);
     @media (width < $width-tablet) {
       padding: 8px 0px;
     }
@@ -130,31 +121,21 @@
     background-color: $grass;
     color: $black;
     @media (width < $width-tablet) {
-      margin-left: 80px;
-      margin-right: 24px;
-      margin-bottom: 2px;
+      margin: 0 24px 2px 80px;
     }
     @media (width < $width-smartpthone) {
-      margin-left: 0px;
-      margin-right: 16px;
+      margin: 0 16px 2px 0;
     }
   }
   &__title {
-    @include AchivoH3;
-    color: $black;
+    @include AchivoH3($black);
     padding-bottom: 16px;
     font-weight: 800;
     line-height: 119%;
-    // width: 800px;
     @media (width < $width-tablet) {
       width: 461px;
-      font-size: 26px;
+      @include AchivoH5($black);
       margin-top: -2px;
-      color: $black;
-      padding-bottom: 16px;
-      font-weight: 500;
-      line-height: 120%;
-      // padding-top: 24px;
       padding-bottom: 8px;
     }
     @media (width < $width-smartpthone) {
@@ -164,8 +145,7 @@
     }
   }
   &__text {
-    @include Nunito18R;
-    color: $gray70;
+    @include Nunito18R($gray70);
     padding-bottom: 16px;
     width: 480px;
     @media (width < $width-tablet) {
@@ -187,7 +167,6 @@
       flex-basis: 34.5%;
       justify-content: flex-end;
       margin-top: -298px;
-      z-index: -1;
       align-content: center;
     }
     @media (width < $width-smartpthone) {
@@ -199,8 +178,7 @@
     }
   }
   &__span {
-    @include Nunito15R-SLS;
-    color: $gray35;
+    @include Nunito15R-SLS($gray35);
     padding-left: 8px;
     margin-top: 2px;
     @media (width < $width-tablet) {
@@ -216,13 +194,11 @@
   &__span:not(:last-child) {
     padding-right: 24px;
     @media (width < $width-tablet) {
-      padding-right: 9px;
-      padding-left: 60px;
+      padding: 0 9px 0 60px;
       order: -1;
     }
     @media (width < $width-smartpthone) {
-      padding-right: 23px;
-      padding-left: 6px;
+      padding: 0 23px 0 6px;
     }
   }
   &__icon {
@@ -231,14 +207,11 @@
     margin-left: 1px;
     @media (width < $width-tablet) {
       order: 4;
-      margin-right: 24px;
-      margin-top: 6px;
+      margin: 0 24px 0 6px;
     }
-
     @media (width < $width-smartpthone) {
       order: -1;
-      margin-top: 2px;
-      margin-right: 2px;
+      margin: 0 3px 0 0;
     }
   }
   &__icon:first-child {
@@ -256,16 +229,15 @@
       $pad: 8px 49px,
       $bg-color: $grass
     );
-    margin-left: 6px;
-    @include Nunito18M;
-    color: #1b1f21;
+    margin-left: 4px;
+    @include Nunito18M($black);
     box-shadow: 0 0 0 5px $grass;
     @media (width < $width-tablet) {
-      margin-left: 4px;
-      padding: 8px 48px;
+      padding: 8px 49px;
       font-weight: 600;
     }
     @media (width < $width-smartpthone) {
+      padding: 8px 48px;
       width: 96%;
       margin-left: 6px;
     }
@@ -292,30 +264,26 @@
   }
   &__runnig-string-box {
     overflow: hidden;
-    height: 411px;
+    height: 394px;
     @media (width < $width-tablet) {
-      height: 300px;
+      height: 285px;
     }
     @media (width < $width-smartpthone) {
-      height: 266px;
+      height: 250px;
     }
   }
   &__runnig-string {
-    @include AchivoH1;
-    color: $black;
+    @include AchivoH1($black);
     background-color: $turquoise;
     width: 3250px;
     transform: rotate(-4deg);
     padding-top: 10px;
-    margin-top: calc(7vw + 1vh - 49px);
-    margin-bottom: 0;
-    margin-left: -10px;
+    margin: calc(7vw + 1vh - 49px) 0 0 -10px;
     @media (width < $width-tablet) {
       transform: rotate(-3deg);
       width: 2150px;
       margin-top: calc(8vw + 1vh - 44px);
-      padding-top: 9px;
-      padding-bottom: 5px;
+      padding: 9px 0 5px;
     }
     @media (width < $width-smartpthone) {
       margin-top: -10px;

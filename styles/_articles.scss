@@ -1,4 +1,5 @@
 .articles {
+  padding-top: 15px;
   @include relative-hidden;
   background: url(/images/background/articles-bg-1440.svg) calc(50% - -119px) -121px
     no-repeat;
@@ -25,16 +26,12 @@
       padding-bottom: 22px;
     }
   }
-  //   &__card {
-  //     position: relative;
-  //   }
   &__card {
     flex-basis: 45%;
     @media (width < $width-tablet) {
       min-height: 599px;
     }
   }
-
   &__card:nth-child(3) {
     flex-basis: 100%;
     display: flex;
@@ -77,8 +74,7 @@
     margin-right: 19px;
     @media (width < $width-tablet) {
       flex-basis: 34.6%;
-      margin-right: 0px;
-      margin-top: -11px;
+      margin: -11px 0 0 0;
     }
     @media (width < $width-smartpthone) {
       flex-basis: 100%;
@@ -108,8 +104,7 @@
     width: 1208px;
     margin-top: -143px;
     @media (width < $width-tablet) {
-      width: 704px;
-      height: 470px;
+      @include width-heigth($w: 704px, $h: 470px);
       margin-top: -72px;
     }
   }
@@ -120,9 +115,7 @@
     overflow: hidden;
   }
   &__img_mask1 {
-    mask-image: url(/images//masks/pic2.svg);
-    mask-repeat: no-repeat;
-    mask-position: center;
+    @include mask($url: url(/images//masks/pic2.svg));
     @media (width < $width-tablet) {
       mask-image: url(/images//masks/pic2-v2.svg);
       margin-top: 25px;
@@ -130,44 +123,38 @@
     @media (width < $width-smartpthone) {
       mask-image: url(/images//masks/pic2-v3.svg);
       @include width-heigth($w: 542px, $h: 360px);
-      margin-left: -120px;
-      margin-top: 16px;
+      margin: 16px 0 0 -120px;
     }
   }
   &__img_mask2 {
-    mask-image: url(/images//masks/pic3.svg);
-    mask-repeat: no-repeat;
-    mask-position: center;
+    @include mask($url: url(/images//masks/pic3.svg));
     @media (width < $width-tablet) {
       mask-image: url(/images//masks/pic3-v2.svg);
       margin-top: 25px;
     }
     @media (width < $width-smartpthone) {
-      mask-image: url(/images//masks/pic3-v3.svg);
+      @include mask(
+        $url: url(/images//masks/pic3-v3.svg),
+        $pos: 78% center,
+        $repeat: no-repeat
+      );
       @include width-heigth($w: 532px, $h: 360px);
-      mask-position: 78% center;
-      margin-left: -50px;
-      margin-top: 18px;
+      margin: 18px 0 0 -50px;
     }
   }
   &__img_mask3 {
-    mask-image: url(/images/masks/pic4.svg);
-    mask-repeat: no-repeat;
-    mask-position: center;
+    @include mask($url: url(/images/masks/pic4.svg));
     @media (width < $width-tablet) {
       mask-image: url(/images//masks/pic4-v2.svg);
     }
     @media (width < $width-smartpthone) {
       mask-image: url(/images//masks/pic4-v3.svg);
-      margin-top: -27px;
-      margin-left: -139px;
+      margin: -27px 0 0 -139px;
       @include width-heigth($w: 581px, $h: 450px);
     }
   }
   &__img_mask4 {
-    mask-image: url(/images//masks/pic5.svg);
-    mask-repeat: no-repeat;
-    mask-position: center;
+    @include mask($url: url(/images//masks/pic5.svg));
     @media (width < $width-tablet) {
       mask-image: url(/images//masks/pic5-v2.svg);
       margin-top: 25px;
@@ -175,24 +162,19 @@
     @media (width < $width-smartpthone) {
       mask-image: url(/images//masks/pic5-v3.svg);
       @include width-heigth($w: 542px, $h: 360px);
-      margin-left: -120px;
-      margin-top: 16px;
+      margin: 16px 0 0 -120px;
     }
   }
   &__img_mask5 {
-    mask-image: url(/images//masks/pic6.svg);
-    mask-repeat: no-repeat;
-    mask-position: center;
+    @include mask($url: url(/images//masks/pic6.svg));
     @media (width < $width-tablet) {
       mask-image: url(/images//masks/pic6-v2.svg);
       margin-top: 25px;
     }
     @media (width < $width-smartpthone) {
-      mask-image: url(/images//masks/pic6-v3.svg);
+      @include mask($url: url(/images//masks/pic6-v3.svg), $pos: 8%);
       @include width-heigth($w: 542px, $h: 360px);
-      margin-left: -19px;
-      margin-top: 16px;
-      mask-position: 8%;
+      margin: 16px 0 0 -19px;
     }
   }
   &__stiker {
@@ -202,103 +184,71 @@
     transform: rotate(180deg);
   }
   &__stiker_rt {
-    position: absolute;
-    top: -8px;
-    right: -40px;
+    @include position($t: -11px, $r: -40px);
     @media (width < $width-tablet) {
+      @include position($t: 32px, $r: 8px);
       width: 104px;
-      right: 8px;
-      top: 32px;
     }
     @media (width < $width-smartpthone) {
+      @include position($t: 30px, $r: 8px);
       width: 120px;
-      left: auto;
-      right: 8px;
-      top: 30px;
     }
   }
   &__stiker_rb {
-    position: absolute;
-    top: -8px;
-    right: -40px;
+    @include position($t: -11px, $r: -40px);
     @media (width < $width-tablet) {
+      @include position($t: 32px, $r: 8px);
       width: 104px;
-      right: 8px;
-      top: 32px;
     }
     @media (width < $width-smartpthone) {
+      @include position($t: 30px, $l: 8px);
       width: 120px;
-      left: 8px;
-      right: auto;
-      top: 30px;
     }
   }
   &__stiker_md {
-    position: absolute;
-    top: -48px;
-    right: -40px;
+    @include position($t: -48px, $r: -40px);
     @media (width < $width-tablet) {
+      @include position($t: 14px, $r: 8px);
       width: 120px;
-      right: 8px;
-      top: 14px;
     }
     @media (width < $width-smartpthone) {
-      right: auto;
-      left: 8px;
-      top: 30px;
+      @include position($t: 8px, $l: 8px);
     }
   }
   &__stiker_lb {
-    position: absolute;
-    top: -37px;
-    left: -55px;
+    @include position($t: -39px, $l: -55px);
     @media (width < $width-tablet) {
       transform: rotate(15deg);
       width: 164px;
-      left: auto;
-      right: -2px;
-      top: 16px;
+      @include position($t: 16px, $r: -2px);
     }
     @media (width < $width-smartpthone) {
       width: 182px;
-      right: -3px;
-      top: 8px;
+      @include position($t: 8px, $r: -3px);
     }
   }
-
   &__stiker_lt {
-    position: absolute;
-    top: -8px;
-    left: -40px;
+    @include position($t: -11px, $l: -40px);
     @media (width < $width-tablet) {
+      @include position($t: 32px, $r: 8px);
       width: 104px;
-      left: auto;
-      right: 8px;
-      top: 32px;
     }
     @media (width < $width-smartpthone) {
+      @include position($t: 28px, $l: 8px);
       width: 120px;
-      left: 8px;
-      right: auto;
-      top: 28px;
     }
   }
-
   &__article-switchers {
     display: flex;
     justify-content: flex-start;
-    padding-top: 68px;
-    padding-bottom: 18px;
+    padding: 68px 0 18px 0;
     @media (width < $width-tablet) {
-      padding-top: 24px;
-      padding-bottom: 20px;
+      padding: 33px 0 20px 0;
     }
     @media (width < $width-smartpthone) {
-      padding-top: 18px;
-      padding-bottom: 18px;
+      padding: 18px 0 18px 0;
     }
   }
-
   &__article-switchers_big {
     padding-top: 66px;
     justify-content: flex-end;
@@ -308,15 +258,13 @@
     }
     @media (width < $width-smartpthone) {
       justify-content: flex-start;
-      padding-top: 28px;
-      padding-bottom: 15px;
+      padding: 28px 0 15px 0;
     }
   }
   &__article-item {
     margin-right: 10px;
     padding: 8px 0px;
-    color: $grass;
-    @include Nunito15M-SLS;
+    @include Nunito15M-SLS($grass);
     @media (width < $width-tablet) {
       padding: 8px 0px;
     }
@@ -353,25 +301,21 @@
     }
   }
   &__article-item_active_big {
-    margin-right: 0px;
-    margin-left: 240px;
     border-radius: 20px;
+    margin: 0 0 0 240px;
     padding: 8px 18px;
     background-color: $pink;
     color: $black;
     @media (width < $width-tablet) {
-      margin-left: 102px;
-      margin-right: 27px;
+      margin: 0 27px 0 102px;
       align-self: flex-start;
     }
     @media (width < $width-smartpthone) {
-      margin-right: 16px;
-      margin-left: 0px;
+      margin: 0 16px 0 0;
     }
   }
   &__title {
-    @include AchivoH4;
-    color: $black;
+    @include AchivoH4($black);
     @media (width < $width-tablet) {
       width: 340px;
       font-size: 24px;
@@ -402,8 +346,7 @@
     }
   }
   &__text {
-    @include Nunito18R;
-    color: $black;
+    @include Nunito18R($black);
     padding-top: 15px;
     width: 500px;
     @media (width < $width-tablet) {
@@ -420,8 +363,7 @@
     padding-top: 9px;
     @media (width < $width-tablet) {
       width: 460px;
-      padding-top: 8px;
-      padding-bottom: 40px;
+      padding: 8px 0 40px;
     }
     @media (width < $width-smartpthone) {
       width: 308px;
@@ -448,9 +390,6 @@
     padding-top: 0;
     margin-top: -9px;
     row-gap: 8px;
-    // @media (width < $width-tablet) {
-    //   top: 405px;
-    // }
     @media (width < $width-smartpthone) {
       position: absolute;
       justify-content: flex-start;
@@ -472,10 +411,8 @@
     }
   }
   &__span_big {
-    @include Nunito15R-SLS;
-    color: $gray35;
-    padding-left: 8px;
-    padding-right: 9px;
+    @include Nunito15R-SLS($gray35);
+    padding: 0 9px 0 8px;
     order: 1;
     @media (width < $width-smartpthone) {
       padding-right: 25px;
@@ -491,7 +428,6 @@
       margin-left: 0px;
     }
   }
-
   &__icon:first-child {
     @media (width < $width-tablet) {
       order: -1;

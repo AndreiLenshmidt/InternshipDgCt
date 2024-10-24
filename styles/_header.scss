@@ -1,8 +1,6 @@
 .header {
   z-index: 3;
-  position: fixed;
-  left: 0;
-  top: 0;
+  @include position($t: 0, $l: 0, $pos: fixed);
   width: 100%;
   transition: transform 0.1s linear;
   background-color: $white;
@@ -10,8 +8,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-top: 16px;
-    padding-bottom: 15.2px;
+    padding: 16px 0 15.2px;
     flex-wrap: wrap;
     @media (width < $width-tablet) {
       display: flex;
@@ -19,18 +16,15 @@
     }
     @media (width < $width-smartpthone) {
       display: flex;
-      padding-bottom: 0px;
-      padding-top: 12px;
+      padding: 12px 0 0;
     }
   }
   &__logo {
-    height: 40px;
-    width: 108.9px;
+    @include width-heigth($w: 108.9, $h: 40px);
     fill: $black;
     transition: fill 0.3s;
     @media (width < $width-smartpthone) {
-      width: 140px;
-      height: 48px;
+      @include width-heigth($w: 140px, $h: 48px);
       margin-left: -5px;
     }
   }
@@ -53,8 +47,7 @@
     }
   }
   &__nav::-webkit-scrollbar {
-    width: 0;
-    height: 0;
+    @include width-heigth($w: 0, $h: 0);
   }
   &__link:not(:last-child) {
     margin-right: 10px;
@@ -66,14 +59,8 @@
     padding: 8px 18px;
     border: 1.2px solid $pale;
     border-radius: 20px;
-    @include Nunito15M-SLS;
-    color: $black;
+    @include Nunito15M-SLS($black);
     user-select: none;
-    @media (width < $width-tablet) {
-      // font-family: "Nunito";
-      // font-weight: 500;
-      // font-size: 15px;
-    }
   }
 
   &__search {
@@ -92,18 +79,15 @@
   &__search-span {
     padding-right: 11px;
     text-transform: uppercase;
-    @include Nunito15M-SLS;
+    @include Nunito15M-SLS($black);
     position: relative;
   }
   &__search-span::before {
     content: "";
     display: block;
-    height: 1.5px;
-    width: 0%;
     background-color: $grass;
-    position: absolute;
-    bottom: 0;
-    right: -17px;
+    @include width-heigth($w: 0, $h: 1.5px);
+    @include position($b: 0, $r: -17px);
     transition: width 0.4s;
   }
   &__search-span:hover::before {

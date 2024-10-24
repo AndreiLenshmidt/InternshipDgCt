@@ -1,12 +1,9 @@
 .form {
-  width: 100%;
-  height: 518px;
+  @include width-heigth($w: 100%, $h: 518px);
   background: $turquoise-dark url(/images/background/form-bg-1440.svg)
     calc(50% - 22px) -41px no-repeat;
   background-size: 988px;
-  mask-image: url(/images/masks/form-bkg1.svg);
-  mask-position: center;
-  mask-repeat: no-repeat;
+  @include mask($url: url(/images/masks/form-bkg1.svg));
   margin-bottom: 125px;
   overflow: hidden;
   @media (width < $width-tablet) {
@@ -18,15 +15,13 @@
     margin-bottom: 96px;
   }
   @media (width < $width-smartpthone) {
-    mask-image: url(/images/masks/form-bkg3.svg);
     background: $turquoise-dark url(/images/background/form-bg-320.svg) 50% -18%
       no-repeat;
     background-size: 304px;
     height: 1132px;
-    mask-position: center -30px;
+    @include mask($url: url(/images/masks/form-bkg3.svg), $pos: center -30px);
     margin-bottom: 57px;
   }
-
   &__container {
     display: flex;
     justify-content: space-between;
@@ -53,18 +48,15 @@
   }
   &__letter {
     flex-basis: 37%;
-    width: 418px;
-    height: 518px;
-    background-image: url(/images/background/form-bg-letter-1440.svg);
+    @include width-heigth($w: 418px, $h: 518px);
+    background: url(/images/background/form-bg-letter-1440.svg) no-repeat;
     mask-image: url(/images/masks/form-bkg1.svg);
-    background-repeat: no-repeat;
     position: relative;
     @media (width < $width-tablet) {
-      height: 498px;
+      @include width-heigth($w: 400px, $h: 498px);
       background-image: url(/images/background/form-bg-letter-768.svg);
       mask-image: url(/images/masks/form-bkg2.svg);
       flex-basis: 41%;
-      width: 400px;
     }
     @media (width < $width-smartpthone) {
       background-image: url(/images/background/form-bg-letter-320.svg);
@@ -73,56 +65,42 @@
     }
   }
   &__letter-img {
-    position: absolute;
-    top: 39%;
-    left: 66px;
+    @include position($t: 39%, $l: 66px);
     @media (width < $width-tablet) {
-      top: 49%;
-      left: 38px;
-      height: 162px;
-      width: 209px;
+      @include position($t: 49%, $l: 38px);
+      @include width-heigth($w: 209px, $h: 162px);
     }
     @media (width < $width-smartpthone) {
-      top: 34%;
-      left: 46px;
+      @include position($t: 34%, $l: 46px);
     }
   }
   &__letter::after {
     content: "";
-    background-image: url(/images/icons/letter-after.svg);
-    background-position: 50% 50%;
+    background: url(/images/icons/letter-after.svg) 50% 50% no-repeat;
     border-radius: 100%;
-    position: absolute;
-    top: 35%;
-    right: 53px;
-    width: 69px;
-    height: 70px;
+    @include position($t: 35%, $r: 53px);
+    @include width-heigth($w: 69px, $h: 70px);
     @media (width < $width-tablet) {
       background-size: 100% 100%;
-      top: 46%;
-      right: 38px;
-      width: 49px;
-      height: 48px;
+      @include position($t: 46%, $r: 38px);
+      @include width-heigth($w: 49px, $h: 48px);
     }
     @media (width < $width-smartpthone) {
-      top: 31%;
-      right: 45px;
+      @include position($t: 31%, $r: 45px);
     }
   }
   &__title {
-    @include AchivoH3;
-    color: $white;
+    @include AchivoH3($white);
     padding-bottom: 8px;
     @media (width < $width-tablet) {
-      @include AchivoH5;
+      @include AchivoH5($white);
     }
     @media (width < $width-smartpthone) {
       width: 227px;
     }
   }
   &__text {
-    @include Nunito18R;
-    color: $white;
+    @include Nunito18R($white);
     width: 584px;
     @media (width < $width-tablet) {
       width: 360px;
@@ -162,23 +140,19 @@
     position: relative;
     height: 120px;
     padding-top: 2px;
-    // background-color: rgb(0, 250, 117);
     animation: text-focus-in 0.3s cubic-bezier(0.55, 0.085, 0.68, 0.53) both;
     @media (width < $width-tablet) {
       height: 146px;
       padding-top: 11px;
     }
     @media (width < $width-smartpthone) {
-      padding-top: 75px;
-      padding-bottom: 30px;
+      padding: 75px 0 30px;
     }
   }
-
   &__submitted-text {
-    @include Nunito18B;
+    @include Nunito18B($turquoise-dark);
     padding: 10px 25px;
     background-color: #fcfaf9;
-    color: #57acbc;
     border-radius: 88px;
     margin-top: 72px;
     width: 527px;
@@ -193,21 +167,15 @@
     }
   }
   &__submitted-img {
-    position: absolute;
-    right: 18%;
-    top: 13px;
+    @include position($t: 13px, $r: 18%);
     @media (width < $width-tablet) {
-      right: 63px;
-      top: 11px;
+      @include position($t: 11px, $r: 63px);
       width: 105px;
     }
-
     @media (width < $width-smartpthone) {
-      right: -17px;
-      top: 76px;
+      @include position($t: 76px, $r: -17px);
     }
   }
-
   &__agree + label {
     display: inline-flex;
     align-items: center;
@@ -216,16 +184,14 @@
   &__agree + label::before {
     content: "";
     display: inline-block;
-    width: 24px;
-    height: 24px;
+    @include width-heigth($w: 24px, $h: 24px);
     flex-shrink: 0;
     flex-grow: 0;
     border: 2px solid $white;
     background-color: transparent;
     box-sizing: border-box;
     border-radius: 4px;
-    margin-right: 16px;
-    margin-bottom: 16px;
+    margin: 0 16px 16px 0;
     @media (width < $width-tablet) {
       margin-bottom: 10px;
     }
@@ -234,10 +200,7 @@
     }
   }
   &__agree:checked + label::before {
-    background-repeat: no-repeat;
-    background-position: center center;
-    background-image: url(/images/icons/v.svg);
-    background-color: $white;
+    background: $white url(/images/icons/v.svg) center center no-repeat;
   }
 
   &__agree:hover + label::before {
@@ -254,11 +217,10 @@
     background-image: none;
   }
   &__chbox-text {
-    @include Nunito15R-SLS;
+    @include Nunito15R-SLS($white);
     width: 536px;
-    color: $white;
     @media (width <$width-tablet) {
-      @include Nunito13R-SLS;
+      @include Nunito13R-SLS($white);
       width: 320px;
     }
     @media (width < $width-smartpthone) {
@@ -271,16 +233,15 @@
       text-decoration: none;
     }
   }
-
   &__email {
     width: 280px;
+    @include button-styles(
+      $bd-color: $white,
+      $bd-rad: 40px,
+      $pad: 9px 24px,
+      $bg-color: transparent
+    );
     @include Nunito18R;
-    color: $white;
-    border: 2px solid $white;
-    border-radius: 40px;
-    background-color: transparent;
-    padding: 9px 24px;
-    box-sizing: border-box;
     @media (width < $width-smartpthone) {
       width: 256px;
     }
@@ -297,23 +258,19 @@
   &__email_valid {
     border-color: $grass;
   }
-
   &__email_invalid-img {
     @include ValidationImg;
-    background-color: $tangerine;
-    background-image: url(/images/icons/form-invalid.svg);
+    background: $tangerine url(/images/icons/form-invalid.svg);
   }
   &__email_valid-img {
     @include ValidationImg;
-    background-color: $grass;
-    background-image: url(/images/icons/form-valid.svg);
+    background: $grass url(/images/icons/form-valid.svg);
   }
 
   &__email:focus {
     outline: none;
     border-color: $black;
   }
-
   &__button {
     @include button-styles(
       $bd-color: transparent,
@@ -321,18 +278,15 @@
       $pad: 8px 113px,
       $bg-color: $coral-dark
     );
-    @include Nunito18B;
-    color: $white;
+    @include Nunito18B($white);
     width: 280px;
     @media (width <$width-tablet) {
-      margin-top: 15px;
-      margin-bottom: 6px;
+      margin: 15px 0 6px;
     }
     @media (width < $width-smartpthone) {
       width: 256px;
       padding: 8px 100px;
-      margin-top: 8px;
-      margin-bottom: 0;
+      margin: 8px 0 0px;
     }
   }
   &__button:hover {

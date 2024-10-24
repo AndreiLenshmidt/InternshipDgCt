@@ -18,19 +18,16 @@
   &__bkg-black {
     position: absolute;
     background-color: #1b1f21;
-    margin-top: -145px;
-    margin-left: -380px;
+    margin: -145px 0 0 -380px;
     z-index: -10;
-    width: 150vw;
-    height: 860px;
+    @include width-heigth($w: 150vw, $h: 860px);
     transform: perspective(160px) rotateY(-1deg);
     @media (width > $width-laptop) {
       margin-top: -120px;
     }
     @media (width < $width-tablet) {
       height: 1060px;
-      margin-top: -110px;
-      margin-left: -150px;
+      margin: -110px 0 0 -150px;
     }
     @media (width < $width-smartpthone) {
       height: 1550px;
@@ -50,15 +47,12 @@
     background-color: #ffad20;
     width: 3250px;
     transform: rotate(-3deg);
-    // margin-bottom: 148px;
-    margin-top: calc(9vw + 1vh - 36px);
-    margin-left: -10px;
+    margin: calc(9vw + 1vh - 32px) 0 0 -10px;
     @media (width > $width-laptop) {
       margin-top: calc(7vw + 1vh - 36px);
     }
     @media (width < $width-tablet) {
-      padding-top: 12px;
-      padding-bottom: 10px;
+      padding: 12px 0 10px;
       margin-top: calc(17vw + 1vh - 2px);
       transform: rotate(-3deg);
       width: 2150px;
@@ -70,23 +64,19 @@
   }
   &__runnig-string_bottom {
     transform: rotate(2deg);
-    margin-top: 64px;
-    margin-bottom: 100px;
+    margin: 46px 0 119px;
     background-color: $coral-dark;
     @media (width > $width-laptop) {
-      margin-top: 58px;
-      margin-bottom: 106px;
+      margin: 58px 0 106px;
     }
     @media (width < $width-tablet) {
       transform: rotate(3deg);
       width: 2150px;
-      margin-top: 45px;
-      margin-bottom: 107px;
+      margin: 45px 0 107px;
     }
     @media (width < $width-smartpthone) {
       transform: rotate(4deg);
-      margin-top: 68px;
-      margin-bottom: 32px;
+      margin: 70px 0 auto;
     }
   }
   &__container {
@@ -133,11 +123,10 @@
     @include button-styles(
       $bd-color: $violet-dark,
       $bd-rad: 30px,
-      $pad: 15px 60px,
+      $pad: 15px 61px,
       $bg-color: $violet-dark
     );
-    @include Nunito18B;
-    color: $white;
+    @include Nunito18B($white);
     margin-left: 4px;
     @media (width < $width-tablet) {
       margin-left: 4px;
@@ -173,24 +162,20 @@
   &__card {
     border-radius: 32px;
     padding: 32px;
-    width: 376px;
-    height: 432px;
-    @include Nunito15M-SLS;
-    color: $white;
+    @include width-heigth($w: 376px, $h: 432px);
+    @include Nunito15M-SLS($white);
     display: flex;
     justify-content: space-between;
     flex-direction: column;
     box-sizing: border-box;
     @media (width < $width-tablet) {
-      width: 340px;
       justify-content: flex-start;
-      height: 400px;
       padding: 24px;
+      @include width-heigth($w: 340px, $h: 400px);
     }
     @media (width < $width-smartpthone) {
       justify-content: space-between;
-      width: 304px;
-      height: fit-content;
+      @include width-heigth($w: 304px, $h: fit-content);
     }
   }
   &__card:nth-child(1) {
@@ -238,7 +223,7 @@
     }
   }
   &__card-header {
-    min-height: 100px;
+    min-height: 104px;
     display: flex;
     justify-content: flex-start;
     gap: 20px;
@@ -255,9 +240,7 @@
   }
   &__avatar {
     width: 64px;
-    mask-image: url(/images/masks/avatar.svg);
-    mask-repeat: no-repeat;
-    mask-position: top;
+    @include mask($url: url(/images/masks/avatar.svg), $pos: top);
     background-color: $white;
     margin-top: -10px;
     @media (width < $width-tablet) {
@@ -279,10 +262,8 @@
     }
   }
   &__user-name {
-    @include AchivoH5;
-    color: $white;
-    padding-top: 7px;
-    padding-bottom: 4px;
+    @include AchivoH5($white);
+    padding: 7px 0 4px;
     @media (width < $width-tablet) {
       padding-top: 4px;
     }
@@ -297,12 +278,11 @@
     text-overflow: ellipsis;
   }
   &__content {
-    @include AchivoH4;
-    color: $white;
+    @include AchivoH4($white);
     min-height: 160px;
     margin-top: -18px;
     @media (width < $width-tablet) {
-      @include AchivoH5;
+      @include AchivoH5($white);
       font-size: 24px;
       margin-top: 6px;
     }
@@ -312,13 +292,13 @@
     }
   }
   &__content_big {
-    min-height: 90px;
-    margin-top: -12px;
+    min-height: 160px;
     @media (width < $width-tablet) {
+      min-height: 90px;
       margin-top: 6px;
     }
     @media (width < $width-smartpthone) {
-      min-height: 107px;
+      min-height: 118px;
     }
   }
   &__card-span {
@@ -348,9 +328,6 @@
     flex-wrap: wrap;
     align-items: flex-start;
     padding-top: 12px;
-
-    @media (width < $width-tablet) {
-    }
     @media (width < $width-smartpthone) {
       width: 304px;
       justify-content: flex-start;
@@ -359,7 +336,7 @@
   }
   &__date-box_big {
     justify-content: space-between;
-    padding-top: 13px;
+    padding-top: 10px;
     @media (width < $width-smartpthone) {
       width: 256px;
     }
@@ -396,9 +373,9 @@
   }
 
   &__icon {
-    width: 17px;
-    height: 17px;
+    @include width-heigth($w: 17px, $h: 17px);
     fill: $white;
+    margin-top: 4px;
     @media (width < $width-smartpthone) {
       margin-top: 2px;
     }
