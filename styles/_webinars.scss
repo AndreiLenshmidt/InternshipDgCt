@@ -64,19 +64,19 @@
   }
   &__runnig-string_bottom {
     transform: rotate(2deg);
-    margin: 46px 0 119px;
+    margin: 46px 0 119px -10px;
     background-color: $coral-dark;
     @media (width > $width-laptop) {
-      margin: 58px 0 106px;
+      margin: 58px 0 106px -10px;
     }
     @media (width < $width-tablet) {
       transform: rotate(3deg);
       width: 2150px;
-      margin: 45px 0 107px;
+      margin: 45px 0 107px -10px;
     }
     @media (width < $width-smartpthone) {
       transform: rotate(4deg);
-      margin: 70px 0 auto;
+      margin: 70px 0 auto -10px;
     }
   }
   &__container {

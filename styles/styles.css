@@ -1778,25 +1778,25 @@ details summary::marker {
 }
 .webinars__runnig-string_bottom {
   transform: rotate(2deg);
-  margin: 46px 0 119px;
+  margin: 46px 0 119px -10px;
   background-color: #fe6d44;
 }
 @media (width > 1440px) {
   .webinars__runnig-string_bottom {
-    margin: 58px 0 106px;
+    margin: 58px 0 106px -10px;
   }
 }
 @media (width < 1280px) {
   .webinars__runnig-string_bottom {
     transform: rotate(3deg);
     width: 2150px;
-    margin: 45px 0 107px;
+    margin: 45px 0 107px -10px;
   }
 }
 @media (width < 768px) {
   .webinars__runnig-string_bottom {
     transform: rotate(4deg);
-    margin: 70px 0 auto;
+    margin: 70px 0 auto -10px;
   }
 }
 .webinars__container {
