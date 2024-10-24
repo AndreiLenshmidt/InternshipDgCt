@@ -10,9 +10,9 @@
     background-size: 2543px;
   }
   @media (width < $width-smartpthone) {
-    background: url(/images/background/articles-bg-320.svg) calc(50% + 78px) -199px
-      repeat-y;
-    background-size: 1175px;
+    background: url(/images/background/articles-bg-320.svg) calc(50% + 15px) -183px
+      no-repeat;
+    background-size: 965px;
   }
   &__container {
     display: flex;

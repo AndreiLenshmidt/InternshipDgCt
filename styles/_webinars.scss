@@ -3,8 +3,9 @@
     @include relative-hidden;
     background: url(/images/background/webinars-bg-1440.svg) 50% 135px no-repeat;
     background-size: $width-laptop;
-    @media (width > 1600px) {
-      background-position: 50% 190px;
+    @media (width > 1440px) {
+      background: url(/images/background/webinars-bg-4k.svg) 0% 147px no-repeat;
+      background-size: 3840px;
     }
     @media (width < $width-tablet) {
       background: url(/images/background/webinars-bg-768.svg) calc(50% - -107px)
@@ -23,7 +24,7 @@
     @include width-heigth($w: 150vw, $h: 860px);
     transform: perspective(160px) rotateY(-1deg);
     @media (width > $width-laptop) {
-      margin-top: -120px;
+      margin-top: -150px;
     }
     @media (width < $width-tablet) {
       height: 1060px;
@@ -36,6 +37,9 @@
   &__runnig-string-box {
     overflow: hidden;
     height: 372px;
+    @media (width > $width-laptop) {
+      height: 425px;
+    }
     @media (width < $width-tablet) {
       height: 358px;
     }
@@ -49,7 +53,7 @@
     transform: rotate(-3deg);
     margin: calc(9vw + 1vh - 32px) 0 0 -10px;
     @media (width > $width-laptop) {
-      margin-top: calc(7vw + 1vh - 36px);
+      margin: calc(9vw + 1vh - 30px) 0 0 -10px;
     }
     @media (width < $width-tablet) {
       padding: 12px 0 10px;
@@ -67,7 +71,7 @@
     margin: 46px 0 119px -10px;
     background-color: $coral-dark;
     @media (width > $width-laptop) {
-      margin: 58px 0 106px -10px;
+      margin: 4px 0 106px -10px;
     }
     @media (width < $width-tablet) {
       transform: rotate(3deg);
