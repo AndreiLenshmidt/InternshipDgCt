@@ -1,19 +1,19 @@
 .main {
   padding-top: 80px;
   @include relative-hidden;
-  background: url(/images/background/bg-main-1440.svg) calc(50% - 52px) 51px
+  background: url(../images/background/bg-main-1440.svg) calc(50% - 52px) 51px
     no-repeat;
   background-size: 1642px;
   @media (width < $width-tablet) {
     padding-top: 64px;
-    background: url(/images/background/bg-main-768.svg) calc(50% - -164px)
+    background: url(../images/background/bg-main-768.svg) calc(50% - -164px)
       108.5% no-repeat;
     background-size: 1763px;
   }
   @media (width < $width-smartpthone) {
     padding-top: 36px;
-    background: url(/images/background/bg-main-320.svg) calc(50% + -40px) 30.5%
-      no-repeat;
+    background: url(../images/background/bg-main-320.svg) calc(50% + -40px)
+      30.5% no-repeat;
     background-size: 1283px;
   }
   &__container {
@@ -41,18 +41,19 @@
     }
   }
   &__pic {
-    margin-top: -133px;
-    @include mask($url: url(/images/masks/pic1.svg), $pos: bottom);
-    @include width-heigth($w: 480px, $h: 690px);
+    margin-top: -269px;
+    @include mask($url: $main-mask-laptop, $pos: bottom);
+    @include width-heigth($w: 480px, $h: 675px);
+
     @media (width < $width-tablet) {
-      margin-top: -380px;
-      @include mask(url(/images/masks/pic1-v2.svg), $pos: center);
-      @include width-heigth($w: 720px, $h: auto);
+      @include mask($url: $main-mask-tablet);
+      margin: -153px 0 0 8px;
+      @include width-heigth($w: 704px, $h: 320px);
     }
     @media (width < $width-smartpthone) {
-      margin-top: -80px;
+      margin: -232px 0 0 0;
       @include width-heigth($w: 304px, $h: 431px);
-      @include mask(url(/images/masks/pic1-v3.svg), $pos: bottom);
+      @include mask($url: $main-mask-smartphone, $pos: bottom);
     }
   }
   &__stiker {
@@ -207,7 +208,7 @@
     margin-left: 1px;
     @media (width < $width-tablet) {
       order: 4;
-      margin: 0 24px 0 6px;
+      margin: 8px 24px 0 0px;
     }
     @media (width < $width-smartpthone) {
       order: -1;

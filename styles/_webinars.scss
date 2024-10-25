@@ -1,15 +1,17 @@
 .webinars {
   &__bkg {
     @include relative-hidden;
-    background: url(/images/background/webinars-bg-1440.svg) 50% 135px no-repeat;
+    background: url(../images/background/webinars-bg-1440.svg) 50% 135px
+      no-repeat;
     background-size: $width-laptop;
     @media (width > 1440px) {
-      background: url(/images/background/webinars-bg-4k.svg) 0% 147px no-repeat;
+      background: url(../images/background/webinars-bg-4k.svg) 0% 147px
+        no-repeat;
       background-size: 3840px;
     }
     @media (width < $width-tablet) {
-      background: url(/images/background/webinars-bg-768.svg) calc(50% - -107px)
-        106px no-repeat;
+      background: url(../images/background/webinars-bg-768.svg)
+        calc(50% - -107px) 106px no-repeat;
       background-size: 1568px;
     }
     @media (width < $width-smartpthone) {
@@ -108,11 +110,10 @@
   }
 
   &__title {
-    @include AchivoH2;
+    @include AchivoH2($white);
     margin-top: 4px;
-    color: $white;
     @media (width < $width-tablet) {
-      @include AchivoH5;
+      @include AchivoH5($white);
       font-size: 28px;
       width: 340px;
       margin-top: 24px;
@@ -183,7 +184,7 @@
     }
   }
   &__card:nth-child(1) {
-    background: $turquoise-dark url(/images/background/card1-bg-376.svg) 101%
+    background: $turquoise-dark url(../images/background/card1-bg-376.svg) 101%
       101% no-repeat;
     @media (width < $width-tablet) {
       background-position: 79px 82px;
@@ -202,26 +203,26 @@
     }
   }
   &__card:nth-child(2) {
-    background: $coral-dark url(/images/background/card2-bg-376.svg) 100% 100%
+    background: $coral-dark url(../images/background/card2-bg-376.svg) 100% 100%
       no-repeat;
     @media (width < $width-tablet) {
-      background-image: url(/images/background/card2-bg-340.svg);
+      background-image: url(../images/background/card2-bg-340.svg);
     }
     @media (width < $width-smartpthone) {
       background-position: 62px -6px;
     }
   }
   &__card:nth-child(3) {
-    background: $tangerine-dark url(/images/background/card3-bg-376.svg) 0% 8px
-      no-repeat;
+    background: $tangerine-dark url(../images/background/card3-bg-376.svg) 0%
+      8px no-repeat;
     @media (width < $width-tablet) {
-      background-image: url(/images/background/card3-bg-704.svg);
+      background-image: url(../images/background/card3-bg-704.svg);
       background-position: 24% 1px;
       flex-basis: 100%;
       height: 272px;
     }
     @media (width < $width-smartpthone) {
-      background-image: url(/images/background/card1-bg-376.svg);
+      background-image: url(../images/background/card1-bg-376.svg);
       background-position: 61px 50px;
       height: 370px;
     }
@@ -244,7 +245,7 @@
   }
   &__avatar {
     width: 64px;
-    @include mask($url: url(/images/masks/avatar.svg), $pos: top);
+    @include mask($url: $webinars-mask, $pos: top);
     background-color: $white;
     margin-top: -10px;
     @media (width < $width-tablet) {

@@ -2,7 +2,7 @@
   z-index: 3;
   @include position($t: 0, $l: 0, $pos: fixed);
   width: 100%;
-  transition: transform 0.1s linear;
+  transition: transform 0.2s linear;
   background-color: $white;
   &__box {
     display: flex;
@@ -60,7 +60,15 @@
     border: 1.2px solid $pale;
     border-radius: 20px;
     @include Nunito15M-SLS($black);
+    font-size: 14.78px;
     user-select: none;
+    @media (width < $width-tablet) {
+      padding: 8px 18.2px;
+      font-size: 15px;
+    }
+    @media (width < $width-smartpthone) {
+      padding: 8px 17.7px;
+    }
   }
 
   &__search {

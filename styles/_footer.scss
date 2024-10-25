@@ -235,7 +235,7 @@
     position: relative;
   }
   &__item:not(:first-child)::before {
-    content: url(/images/icons/point.svg);
+    content: url(../images/icons/point.svg);
     @include position($t: calc(7% - 2.5px), $l: -14px);
     @media (width < $width-smartpthone) {
       display: none;

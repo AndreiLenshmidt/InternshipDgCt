@@ -1,16 +1,16 @@
 .articles {
   padding-top: 15px;
   @include relative-hidden;
-  background: url(/images/background/articles-bg-1440.svg) calc(50% - -119px) -121px
+  background: url(../images/background/articles-bg-1440.svg) calc(50% - -119px) -121px
     no-repeat;
   background-size: 3016px;
   @media (width < $width-tablet) {
-    background: url(/images/background/articles-bg-768.svg) calc(50% + -297px)
+    background: url(../images/background/articles-bg-768.svg) calc(50% + -297px)
       161px no-repeat;
     background-size: 2543px;
   }
   @media (width < $width-smartpthone) {
-    background: url(/images/background/articles-bg-320.svg) calc(50% + 15px) -183px
+    background: url(../images/background/articles-bg-320.svg) calc(50% + 15px) -183px
       no-repeat;
     background-size: 965px;
   }
@@ -115,26 +115,26 @@
     overflow: hidden;
   }
   &__img_mask1 {
-    @include mask($url: url(/images//masks/pic2.svg));
+    @include mask($url: $article-mask1-laptop);
     @media (width < $width-tablet) {
-      mask-image: url(/images//masks/pic2-v2.svg);
+      mask-image: $article-mask1-tablet;
       margin-top: 25px;
     }
     @media (width < $width-smartpthone) {
-      mask-image: url(/images//masks/pic2-v3.svg);
+      mask-image: $article-mask2-smartphone;
       @include width-heigth($w: 542px, $h: 360px);
       margin: 16px 0 0 -120px;
     }
   }
   &__img_mask2 {
-    @include mask($url: url(/images//masks/pic3.svg));
+    @include mask($url: $article-mask2-laptop);
     @media (width < $width-tablet) {
-      mask-image: url(/images//masks/pic3-v2.svg);
+      mask-image: $article-mask2-tablet;
       margin-top: 25px;
     }
     @media (width < $width-smartpthone) {
       @include mask(
-        $url: url(/images//masks/pic3-v3.svg),
+        $url: $article-mask3-smartphone,
         $pos: 78% center,
         $repeat: no-repeat
       );
@@ -143,36 +143,36 @@
     }
   }
   &__img_mask3 {
-    @include mask($url: url(/images/masks/pic4.svg));
+    @include mask($url: $article-mask4-laptop);
     @media (width < $width-tablet) {
-      mask-image: url(/images//masks/pic4-v2.svg);
+      mask-image: $article-mask4-tablet;
     }
     @media (width < $width-smartpthone) {
-      mask-image: url(/images//masks/pic4-v3.svg);
+      mask-image: $article-mask4-smartphone;
       margin: -27px 0 0 -139px;
       @include width-heigth($w: 581px, $h: 450px);
     }
   }
   &__img_mask4 {
-    @include mask($url: url(/images//masks/pic5.svg));
+    @include mask($url: $article-mask5-laptop);
     @media (width < $width-tablet) {
-      mask-image: url(/images//masks/pic5-v2.svg);
+      mask-image: $article-mask5-tablet;
       margin-top: 25px;
     }
     @media (width < $width-smartpthone) {
-      mask-image: url(/images//masks/pic5-v3.svg);
+      mask-image: $article-mask5-smartphone;
       @include width-heigth($w: 542px, $h: 360px);
       margin: 16px 0 0 -120px;
     }
   }
   &__img_mask5 {
-    @include mask($url: url(/images//masks/pic6.svg));
+    @include mask($url: $article-mask6-laptop);
     @media (width < $width-tablet) {
-      mask-image: url(/images//masks/pic6-v2.svg);
+      mask-image: $article-mask6-tablet;
       margin-top: 25px;
     }
     @media (width < $width-smartpthone) {
-      @include mask($url: url(/images//masks/pic6-v3.svg), $pos: 8%);
+      @include mask($url: $article-mask6-smartphone, $pos: 8%);
       @include width-heigth($w: 542px, $h: 360px);
       margin: 16px 0 0 -19px;
     }
