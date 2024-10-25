@@ -41,17 +41,17 @@
     }
   }
   &__pic {
-    margin-top: -269px;
+    margin-top: -114px;
     @include mask($url: $main-mask-laptop, $pos: bottom);
     @include width-heigth($w: 480px, $h: 675px);
 
     @media (width < $width-tablet) {
       @include mask($url: $main-mask-tablet);
-      margin: -153px 0 0 8px;
+      margin: 0px 0 0 8px;
       @include width-heigth($w: 704px, $h: 320px);
     }
     @media (width < $width-smartpthone) {
-      margin: -232px 0 0 0;
+      margin: -80px 0 0 0;
       @include width-heigth($w: 304px, $h: 431px);
       @include mask($url: $main-mask-smartphone, $pos: bottom);
     }
