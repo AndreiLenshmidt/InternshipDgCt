@@ -1,0 +1,479 @@
+.articles {
+  padding-top: 15px;
+  @include relative-hidden;
+  background: url(../images/background/articles-bg-1440.svg) calc(50% - -119px) -121px
+    no-repeat;
+  background-size: 3016px;
+  @media (width < $width-tablet) {
+    background: url(../images/background/articles-bg-768.svg) calc(50% + -297px)
+      161px no-repeat;
+    background-size: 2543px;
+  }
+  @media (width < $width-smartpthone) {
+    background: url(../images/background/articles-bg-320.svg) calc(50% + 15px) -183px
+      no-repeat;
+    background-size: 965px;
+  }
+  &__container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    row-gap: 136px;
+    @media (width < $width-tablet) {
+      row-gap: 82px;
+    }
+    @media (width < $width-smartpthone) {
+      padding-bottom: 22px;
+    }
+  }
+  &__card {
+    flex-basis: 45%;
+    @media (width < $width-tablet) {
+      min-height: 599px;
+    }
+  }
+  &__card:nth-child(3) {
+    flex-basis: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    // min-width: 570px;
+  }
+  &__card:nth-child(4),
+  &__card:nth-child(5) {
+    margin-top: -37px;
+    @media (width < $width-tablet) {
+      margin-top: -42px;
+    }
+    @media (width < $width-smartpthone) {
+      margin-top: 0px;
+      padding-bottom: 0px;
+    }
+  }
+  &__img-box {
+    @include width-heigth($w: 584px, $h: 328px);
+    position: relative;
+    @media (width < $width-tablet) {
+      @include width-heigth($w: 340px, $h: 240px);
+    }
+    @media (width < $width-smartpthone) {
+      @include width-heigth($w: 304px, $h: 373px);
+    }
+  }
+  &__img-box_big {
+    @include width-heigth($w: 1208px, $h: 520px);
+    flex-basis: 100%;
+    @media (width < $width-tablet) {
+      @include width-heigth($w: 704px, $h: 320px);
+    }
+    @media (width < $width-smartpthone) {
+      @include width-heigth($w: 308px, $h: 376px);
+    }
+  }
+  &__card_big-left {
+    flex-basis: 31.15%;
+    margin-right: 19px;
+    @media (width < $width-tablet) {
+      flex-basis: 34.6%;
+      margin: -11px 0 0 0;
+    }
+    @media (width < $width-smartpthone) {
+      flex-basis: 100%;
+      height: 90px;
+      position: relative;
+    }
+  }
+  &__card_big-right {
+    @media (width < $width-tablet) {
+      width: 455px;
+      margin-top: 28px;
+    }
+    @media (width < $width-smartpthone) {
+      width: 308px;
+      margin-top: -10px;
+    }
+  }
+  &__img {
+    width: 584px;
+    margin-top: 6px;
+    @media (width < $width-tablet) {
+      width: 340px;
+      height: 224px;
+    }
+  }
+  &__img_big {
+    width: 1208px;
+    margin-top: -143px;
+    @media (width < $width-tablet) {
+      @include width-heigth($w: 704px, $h: 470px);
+      margin-top: -72px;
+    }
+  }
+  &__img_inverted {
+    transform: scale(-1, 1);
+  }
+  &__picture {
+    overflow: hidden;
+  }
+  &__img_mask1 {
+    @include mask($url: $article-mask1-laptop);
+    @media (width < $width-tablet) {
+      mask-image: $article-mask1-tablet;
+      margin-top: 25px;
+    }
+    @media (width < $width-smartpthone) {
+      mask-image: $article-mask2-smartphone;
+      @include width-heigth($w: 542px, $h: 360px);
+      margin: 16px 0 0 -120px;
+    }
+  }
+  &__img_mask2 {
+    @include mask($url: $article-mask2-laptop);
+    @media (width < $width-tablet) {
+      mask-image: $article-mask2-tablet;
+      margin-top: 25px;
+    }
+    @media (width < $width-smartpthone) {
+      @include mask(
+        $url: $article-mask3-smartphone,
+        $pos: 78% center,
+        $repeat: no-repeat
+      );
+      @include width-heigth($w: 532px, $h: 360px);
+      margin: 18px 0 0 -50px;
+    }
+  }
+  &__img_mask3 {
+    @include mask($url: $article-mask4-laptop);
+    @media (width < $width-tablet) {
+      mask-image: $article-mask4-tablet;
+    }
+    @media (width < $width-smartpthone) {
+      mask-image: $article-mask4-smartphone;
+      margin: -27px 0 0 -139px;
+      @include width-heigth($w: 581px, $h: 450px);
+    }
+  }
+  &__img_mask4 {
+    @include mask($url: $article-mask5-laptop);
+    @media (width < $width-tablet) {
+      mask-image: $article-mask5-tablet;
+      margin-top: 25px;
+    }
+    @media (width < $width-smartpthone) {
+      mask-image: $article-mask5-smartphone;
+      @include width-heigth($w: 542px, $h: 360px);
+      margin: 16px 0 0 -120px;
+    }
+  }
+  &__img_mask5 {
+    @include mask($url: $article-mask6-laptop);
+    @media (width < $width-tablet) {
+      mask-image: $article-mask6-tablet;
+      margin-top: 25px;
+    }
+    @media (width < $width-smartpthone) {
+      @include mask($url: $article-mask6-smartphone, $pos: 8%);
+      @include width-heigth($w: 542px, $h: 360px);
+      margin: 16px 0 0 -19px;
+    }
+  }
+  &__stiker {
+    transition: transform 0.9s;
+  }
+  &__card:hover &__stiker {
+    transform: rotate(180deg);
+  }
+  &__stiker_rt {
+    @include position($t: -11px, $r: -40px);
+    @media (width < $width-tablet) {
+      @include position($t: 32px, $r: 8px);
+      width: 104px;
+    }
+    @media (width < $width-smartpthone) {
+      @include position($t: 30px, $r: 8px);
+      width: 120px;
+    }
+  }
+  &__stiker_rb {
+    @include position($t: -11px, $r: -40px);
+    @media (width < $width-tablet) {
+      @include position($t: 32px, $r: 8px);
+      width: 104px;
+    }
+    @media (width < $width-smartpthone) {
+      @include position($t: 30px, $l: 8px);
+      width: 120px;
+    }
+  }
+  &__stiker_md {
+    @include position($t: -48px, $r: -40px);
+    @media (width < $width-tablet) {
+      @include position($t: 14px, $r: 8px);
+      width: 120px;
+    }
+    @media (width < $width-smartpthone) {
+      @include position($t: 8px, $l: 8px);
+    }
+  }
+  &__stiker_lb {
+    @include position($t: -39px, $l: -55px);
+    @media (width < $width-tablet) {
+      transform: rotate(15deg);
+      width: 164px;
+      @include position($t: 16px, $r: -2px);
+    }
+    @media (width < $width-smartpthone) {
+      width: 182px;
+      @include position($t: 8px, $r: -3px);
+    }
+  }
+  &__stiker_lt {
+    @include position($t: -11px, $l: -40px);
+    @media (width < $width-tablet) {
+      @include position($t: 32px, $r: 8px);
+      width: 104px;
+    }
+    @media (width < $width-smartpthone) {
+      @include position($t: 28px, $l: 8px);
+      width: 120px;
+    }
+  }
+  &__article-switchers {
+    display: flex;
+    justify-content: flex-start;
+    padding: 68px 0 18px 0;
+    @media (width < $width-tablet) {
+      padding: 33px 0 20px 0;
+    }
+    @media (width < $width-smartpthone) {
+      padding: 18px 0 18px 0;
+    }
+  }
+  &__article-switchers_big {
+    padding-top: 66px;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    @media (width < $width-tablet) {
+      padding-top: 39px;
+    }
+    @media (width < $width-smartpthone) {
+      justify-content: flex-start;
+      padding: 28px 0 15px 0;
+    }
+  }
+  &__article-item {
+    margin-right: 10px;
+    padding: 8px 0px;
+    @include Nunito15M-SLS($grass);
+    @media (width < $width-tablet) {
+      padding: 8px 0px;
+    }
+  }
+  &__article-item_big {
+    padding: 12px 0px;
+    color: $pink;
+
+    @media (width < $width-smartpthone) {
+      margin-right: 10px;
+      padding: 8px 0px;
+    }
+  }
+  &__article-item_big:last-child {
+    margin-right: 0;
+    @media (width < $width-tablet) {
+      margin-right: 25px;
+    }
+    @media (width < $width-smartpthone) {
+      margin-right: 10px;
+    }
+  }
+  &__article-item_active {
+    margin-right: 16px;
+    border-radius: 20px;
+    padding: 8px 18px;
+    background-color: $grass;
+    color: $black;
+    @media (width < $width-tablet) {
+      margin-left: 0px;
+    }
+    @media (width < $width-smartpthone) {
+      margin-left: 0px;
+    }
+  }
+  &__article-item_active_big {
+    border-radius: 20px;
+    margin: 0 0 0 240px;
+    padding: 8px 18px;
+    background-color: $pink;
+    color: $black;
+    @media (width < $width-tablet) {
+      margin: 0 27px 0 102px;
+      align-self: flex-start;
+    }
+    @media (width < $width-smartpthone) {
+      margin: 0 16px 0 0;
+    }
+  }
+  &__title {
+    @include AchivoH4($black);
+    @media (width < $width-tablet) {
+      width: 340px;
+      font-size: 24px;
+      font-weight: 500;
+      margin-top: -4px;
+    }
+    @media (width < $width-smartpthone) {
+      width: 308px;
+      line-height: 120%;
+      margin-top: -2px;
+    }
+  }
+  &__title_big {
+    font-size: 36px;
+    width: 792px;
+    padding-top: 47px;
+    @media (width < $width-tablet) {
+      width: 460px;
+      font-weight: 800;
+      font-size: 26px;
+      padding-top: 0;
+      margin-top: -2px;
+    }
+    @media (width < $width-smartpthone) {
+      width: 290px;
+      font-size: 24px;
+      margin-top: 2px;
+    }
+  }
+  &__text {
+    @include Nunito18R($black);
+    padding-top: 15px;
+    width: 500px;
+    @media (width < $width-tablet) {
+      width: 340px;
+      padding-top: 15px;
+    }
+    @media (width < $width-smartpthone) {
+      width: 308px;
+      padding-top: 16px;
+    }
+  }
+  &__text_big {
+    width: 678px;
+    padding-top: 9px;
+    @media (width < $width-tablet) {
+      width: 460px;
+      padding: 8px 0 40px;
+    }
+    @media (width < $width-smartpthone) {
+      width: 308px;
+      padding-top: 16px;
+    }
+  }
+  &__date-box {
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    align-items: center;
+    padding-top: 19px;
+    @media (width < $width-tablet) {
+      padding-top: 17px;
+    }
+    @media (width < $width-smartpthone) {
+      width: 304px;
+      justify-content: flex-start;
+      margin-top: 0;
+    }
+  }
+  &__date-box_big {
+    justify-content: flex-end;
+    padding-top: 0;
+    margin-top: -9px;
+    row-gap: 8px;
+    @media (width < $width-smartpthone) {
+      position: absolute;
+      justify-content: flex-start;
+      top: 412px;
+    }
+  }
+  &__span {
+    @include Nunito15R-SLS;
+    color: $gray35;
+    padding-left: 8px;
+    @media (width < $width-tablet) {
+      padding-right: 9px;
+    }
+  }
+  &__span:not(:last-child) {
+    padding-right: 26px;
+    @media (width < $width-smartpthone) {
+      padding-right: 24px;
+    }
+  }
+  &__span_big {
+    @include Nunito15R-SLS($gray35);
+    padding: 0 9px 0 8px;
+    order: 1;
+    @media (width < $width-smartpthone) {
+      padding-right: 25px;
+    }
+  }
+  &__span_big:not(:last-child) {
+    margin-left: 180px;
+    order: -1;
+    @media (width < $width-tablet) {
+      margin-left: 25px;
+    }
+    @media (width < $width-smartpthone) {
+      margin-left: 0px;
+    }
+  }
+  &__icon:first-child {
+    @media (width < $width-tablet) {
+      order: -1;
+    }
+    @media (width < $width-smartpthone) {
+      order: 0;
+    }
+  }
+  &__icon_big {
+    order: 2;
+    @media (width < $width-tablet) {
+      margin-right: 25px;
+    }
+    @media (width < $width-smartpthone) {
+      order: 0;
+      margin-right: 0px;
+    }
+  }
+  &__icon_big:first-child {
+    order: 0;
+    @media (width < $width-smartpthone) {
+      order: -1;
+    }
+  }
+}
+.marine-bkg {
+  background-color: $marine;
+}
+.marine-color {
+  color: $marine;
+}
+.pink-bkg {
+  background-color: $pink;
+}
+.pink-color {
+  color: $pink;
+}
+.tangerine-bkg {
+  background-color: $tangerine;
+}
+.tangerine-color {
+  color: $tangerine;
+}
+.turquoise-bkg {
+  background-color: $turquoise;
+}
+.turquoise-color {
+  color: $turquoise;
+}
