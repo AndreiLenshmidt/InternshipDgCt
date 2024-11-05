@@ -1,0 +1,208 @@
+@import "vars-fonts-mixins";
+@import "reset";
+
+body {
+  font-family: "ArchivoBlack", sans-serif;
+  // font-family: "Archivo Black", sans-serif;
+}
+a {
+  text-decoration: none;
+  color: $black;
+  outline: none;
+}
+
+input[type="checkbox"] {
+  position: absolute;
+  z-index: -1;
+  opacity: 0;
+}
+button {
+  padding: 0;
+  border: none;
+  font: inherit;
+  color: inherit;
+  background-color: transparent;
+  /* отображаем курсор в виде руки при наведении; некоторые
+  считают, что необходимо оставлять стрелочный вид для кнопок */
+  cursor: pointer;
+  outline: none;
+}
+
+details summary::marker {
+  font-size: 0%;
+}
+
+.none {
+  display: none;
+}
+
+.wrapper {
+  padding-top: 74px;
+  @media (width < $width-tablet) {
+    padding-top: 118px;
+  }
+  @media (width < $width-smartpthone) {
+    padding-top: 114px;
+  }
+  min-height: 100vh;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+}
+.wrap {
+  width: calc($width-tablet - 72px);
+  padding: 0 36px;
+  margin: 0 auto;
+
+  @media (width < $width-tablet) {
+    padding: 0 32px;
+    width: calc(768px - 64px);
+  }
+  @media (width < $width-smartpthone) {
+    width: calc(320px - 16px);
+    padding: 0 8px;
+  }
+}
+
+.button {
+  &__carrera,
+  &__gaming,
+  &__marketing,
+  &__software,
+  &__diseno,
+  &__programacion,
+  &__audiovisual,
+  &__negocios {
+    background-color: $white;
+    transition: background-color 0.3s;
+  }
+  &__carrera:disabled,
+  &__gaming:disabled,
+  &__marketing:disabled,
+  &__software:disabled,
+  &__diseno:disabled,
+  &__programacion:disabled,
+  &__audiovisual:disabled,
+  &__negocios:disabled {
+    opacity: 0.6;
+  }
+  &__carrera:hover {
+    background-color: $mint;
+  }
+  &__gaming:hover {
+    background-color: $grass;
+  }
+  &__marketing:hover {
+    background-color: $tangerine;
+  }
+  &__software:hover {
+    background-color: $turquoise;
+  }
+  &__diseno:hover {
+    background-color: $pink;
+  }
+  &__programacion:hover {
+    background-color: $sky;
+  }
+  &__audiovisual:hover {
+    background-color: $violet;
+  }
+  &__negocios:hover {
+    background-color: $coral;
+  }
+  &__carrera:active {
+    background-color: $mint-dark;
+  }
+  &__gaming:active {
+    background-color: $grass-dark;
+  }
+  &__marketing:active {
+    background-color: $tangerine-dark;
+  }
+  &__software:active {
+    background-color: $turquoise-dark;
+  }
+  &__diseno:active {
+    background-color: $pink-dark;
+  }
+  &__programacion:active {
+    background-color: $sky-dark;
+  }
+  &__audiovisual:active {
+    background-color: $violet-dark;
+  }
+  &__negocios:active {
+    background-color: $coral-dark;
+  }
+}
+
+.runnig-string {
+  overflow: hidden;
+  &__text_artigos {
+    padding: 27px 48px 29px;
+    @media (width < $width-tablet) {
+      padding: 21px 48px 17px;
+      width: 320px;
+    }
+  }
+  &__text_webinars {
+    padding: 41px 38px 36px;
+    @media (width < $width-tablet) {
+      padding: 18px 38px 18px;
+      width: 156px;
+    }
+    @media (width < $width-smartpthone) {
+      padding: 17px 38px 16px;
+    }
+  }
+  &__text_subscribe {
+    padding: 41px 50px 36px;
+    @media (width < $width-tablet) {
+      padding: 20px 50px 16px;
+      width: 180px;
+    }
+  }
+  &__text_descuento {
+    @media (width < $width-tablet) {
+      padding: 17px 50px 13px;
+      width: 690px;
+    }
+    @media (width < $width-smartpthone) {
+      padding: 21px 50px 20px;
+      width: 475px;
+    }
+  }
+
+  &__box {
+    display: flex;
+    animation: running-string 40s infinite linear;
+  }
+
+  &_bottom {
+    margin-bottom: -20px;
+    @media (width < $width-tablet) {
+      height: 164px;
+      margin-bottom: -2px;
+    }
+    @media (width < $width-smartpthone) {
+      height: 100px;
+    }
+  }
+}
+
+@keyframes running-string {
+  0% {
+    transform: translate(0%, 0);
+  }
+
+  100% {
+    transform: translate(-150%, 0);
+  }
+}
+
+@import "header";
+@import "main";
+@import "articles";
+@import "webinars";
+@import "form";
+@import "footer";
