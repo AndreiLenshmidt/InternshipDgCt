@@ -7,7 +7,24 @@ import icon2 from "../assets/images/icons/icon2.svg";
 import icon3 from "../assets/images/icons/icon3.svg";
 import icon4 from "../assets/images/icons/icon4.svg";
 
-export default function TheFooter() {
+type contacts = {
+  email: String;
+  facebook: String;
+  instagram: String;
+  linkedin: String;
+  links: Array<{}>;
+  phone: String;
+  subscription: {};
+  whatsapp: String;
+  youtube: String;
+};
+
+type footer = Array<{
+  label: String;
+  itmes: Array<{ label: String; url: String }>;
+}>;
+
+export default function TheFooter(props: { contacts: contacts; menu: footer }) {
   return (
     <footer className="footer">
       <div className="runnig-string">

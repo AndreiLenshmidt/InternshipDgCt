@@ -1,16 +1,4 @@
-// import { useState } from "react";
-import arrow from "../assets/images/icons/arrow.svg";
-import search from "../assets/images/icons/search.svg";
-
-type header = Array<{ label: String; url: "#" }>;
-
-export default function TheHeader(prop: { header: header; logo: String }) {
-  return (
-    <header className="header">
-      <div className="wrap header__box">
-        <a href="#">
-          <svg
-            className="header__logo"
+<svg
             viewBox="0 0 109 40"
             xmlns="http://www.w3.org/2000/svg"
           >
@@ -62,28 +50,7 @@ export default function TheHeader(prop: { header: header; logo: String }) {
             </g>
             <defs>
               <clipPath id="clip0_525_459">
-                <rect width="108.076" height={40} />
+                <rect width="108.076" height='40' />
               </clipPath>
-            </defs>
-          </svg>
-        </a>
-        <nav className="header__nav">
-          {prop.header?.map((item, index) => (
-            <a
-              href={item.url}
-              key={index}
-              className={`header__link button__${index}`}
-            >
-              {item.label}
-            </a>
-          ))}
-        </nav>
-        <div className="header__search">
-          <img src={search} alt="search" className="header__search-img" />
-          <p className="header__search-span">EBAC</p>
-          <img src={arrow} />
-        </div>
-      </div>
-    </header>
-  );
-}
+    </defs>
+</svg>

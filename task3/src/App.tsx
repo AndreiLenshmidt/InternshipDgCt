@@ -1,5 +1,4 @@
-// import { useState } from "react";
-// import "./App.css";
+import { useEffect, useState } from "react";
 import "./assets/styles/styles.scss";
 import ArticlesComp from "./components/ArticlesComp";
 import FormComp from "./components/FormComp";
@@ -9,27 +8,41 @@ import TheHeader from "./components/TheHeader";
 import WebinarsComp from "./components/WebinarsComp";
 import DbLoader from "./containers/dbloader";
 
-function App() {
-  // const main: React.ReactNode = <MainComp />;
-  // const articles: React.ReactNode = <ArticlesComp />;
-  // const webinars: React.ReactNode = <WebinarsComp />;
-  // const form: React.ReactNode = <FormComp />;
+type header = Array<{ label: String; url: "#" }> | [];
+type logo = String;
+type menu = {
+  logo: logo;
+  header: header;
+  footer: Array<{}>;
+};
 
-  const components: Array<React.ReactNode> = [
-    <MainComp />,
-    <ArticlesComp />,
-    <WebinarsComp />,
-    <FormComp />,
-  ];
+function App() {
+  const [menu, setMenu] = useState<menu>({ logo: "", header: [], footer: [] });
+
+  useEffect(() => {
+    fetch("http://localhost:8000/menu")
+      .then((res) => res.json())
+      .then(
+        (result) => {
+          setMenu(result);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+  }, []);
+
+  console.log(menu);
+
   return (
     <div className="wrapped">
-      <TheHeader />
-      {/* <MainComp />
+      <TheHeader header={menu.header} logo={menu.logo} />
+      <MainComp />
       <ArticlesComp />
       <WebinarsComp />
-      <FormComp /> */}
-      <DbLoader url="http://localhost:8000/contacts" components={components} />
-      <TheFooter />
+      <FormComp />
+      {/* <TheFooter /> */}
+      <DbLoader url="http://localhost:8000/menu" />
     </div>
   );
 }

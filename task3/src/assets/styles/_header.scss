@@ -20,7 +20,7 @@
     }
   }
   &__logo {
-    @include width-heigth($w: 108.9, $h: 40px);
+    @include width-heigth($w: 108.9px, $h: 40px);
     fill: $black;
     transition: fill 0.3s;
     @media (width < $width-smartpthone) {
@@ -59,6 +59,9 @@
     padding: 8px 18px;
     border: 1.2px solid $pale;
     border-radius: 20px;
+    background-color: $white;
+    white-space: nowrap;
+    transition: background-color 0.3s;
     @include Nunito15M-SLS($black);
     font-size: 14.78px;
     user-select: none;

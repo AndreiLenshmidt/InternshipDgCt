@@ -65,74 +65,55 @@ details summary::marker {
 }
 
 .button {
-  &__carrera,
-  &__gaming,
-  &__marketing,
-  &__software,
-  &__diseno,
-  &__programacion,
-  &__audiovisual,
-  &__negocios {
-    background-color: $white;
-    transition: background-color 0.3s;
-  }
-  &__carrera:disabled,
-  &__gaming:disabled,
-  &__marketing:disabled,
-  &__software:disabled,
-  &__diseno:disabled,
-  &__programacion:disabled,
-  &__audiovisual:disabled,
-  &__negocios:disabled {
+  &__0:disabled,
+  &__1:disabled,
+  &__2:disabled,
+  &__3:disabled,
+  &__4:disabled,
+  &__5:disabled {
     opacity: 0.6;
   }
-  &__carrera:hover {
-    background-color: $mint;
-  }
-  &__gaming:hover {
-    background-color: $grass;
-  }
-  &__marketing:hover {
-    background-color: $tangerine;
-  }
-  &__software:hover {
-    background-color: $turquoise;
-  }
-  &__diseno:hover {
+  &__0:hover {
     background-color: $pink;
+    color: $black;
   }
-  &__programacion:hover {
+  &__1:hover {
     background-color: $sky;
+    color: $black;
   }
-  &__audiovisual:hover {
-    background-color: $violet;
+  &__2:hover {
+    background-color: $grass;
+    color: $black;
   }
-  &__negocios:hover {
-    background-color: $coral;
+  &__3:hover {
+    background-color: $tangerine;
+    color: $black;
   }
-  &__carrera:active {
-    background-color: $mint-dark;
+  &__4:hover {
+    background-color: $turquoise;
+    color: $black;
   }
-  &__gaming:active {
-    background-color: $grass-dark;
+  &__5:hover {
+    background-color: $mint;
+    color: $black;
   }
-  &__marketing:active {
-    background-color: $tangerine-dark;
-  }
-  &__software:active {
-    background-color: $turquoise-dark;
-  }
-  &__diseno:active {
+  &__0:active {
     background-color: $pink-dark;
   }
-  &__programacion:active {
+  &__1:active {
     background-color: $sky-dark;
   }
-  &__audiovisual:active {
-    background-color: $violet-dark;
+  &__2:active {
+    background-color: $grass-dark;
   }
-  &__negocios:active {
-    background-color: $coral-dark;
+  &__3:active {
+    background-color: $tangerine-dark;
+  }
+  &__4:active {
+    background-color: $turquoise-dark;
+  }
+  &__5:active {
+    background-color: $mint-dark;
   }
 }
 
