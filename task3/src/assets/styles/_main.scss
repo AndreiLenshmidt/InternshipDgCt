@@ -1,5 +1,6 @@
 .main {
   padding-top: 80px;
+  @include WidthCenter;
   @include relative-hidden;
   background: url(../images/background/bg-main-1440.svg) calc(50% - 52px) 51px
     no-repeat;

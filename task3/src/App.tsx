@@ -1,53 +1,36 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
-import "./App.css";
+// import { useState } from "react";
+// import "./App.css";
+import "./assets/styles/styles.scss";
+import ArticlesComp from "./components/ArticlesComp";
+import FormComp from "./components/FormComp";
+import MainComp from "./components/MainComp";
+import TheFooter from "./components/TheFooter";
+import TheHeader from "./components/TheHeader";
+import WebinarsComp from "./components/WebinarsComp";
+import DbLoader from "./containers/dbloader";
 
 function App() {
-  const [count, setCount] = useState(0);
+  // const main: React.ReactNode = <MainComp />;
+  // const articles: React.ReactNode = <ArticlesComp />;
+  // const webinars: React.ReactNode = <WebinarsComp />;
+  // const form: React.ReactNode = <FormComp />;
 
-  const dbjson = async (): Promise<void> => {
-    try {
-      const response = await fetch("http://localhost:8000/menu");
-      const data: JSON = await response.json();
-      console.log(data);
-    } catch (error) {
-      if (error instanceof Error) {
-        console.log(error.message);
-        // {
-        //   "compilerOptions": {
-        //                "strict": true,
-        //                "useUnknownInCatchVariables": "false"
-        //         },
-        // }
-      }
-    }
-  };
-  // dbjson();
-
+  const components: Array<React.ReactNode> = [
+    <MainComp />,
+    <ArticlesComp />,
+    <WebinarsComp />,
+    <FormComp />,
+  ];
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <div className="wrapped">
+      <TheHeader />
+      {/* <MainComp />
+      <ArticlesComp />
+      <WebinarsComp />
+      <FormComp /> */}
+      <DbLoader url="http://localhost:8000/contacts" components={components} />
+      <TheFooter />
+    </div>
   );
 }
 

@@ -208,6 +208,11 @@ $form-letter-mask: url("data:image/svg+xml,%3Csvg width='288' height='498' viewB
   text-transform: uppercase;
 }
 
+@mixin WidthCenter {
+  width: 100vw;
+  margin: 0 auto;
+}
+
 @mixin ValidationImg {
   position: absolute;
   width: 25px;

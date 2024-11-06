@@ -1,4 +1,5 @@
 .webinars {
+  @include WidthCenter;
   &__bkg {
     @include relative-hidden;
     background: url(../images/background/webinars-bg-1440.svg) 50% 135px

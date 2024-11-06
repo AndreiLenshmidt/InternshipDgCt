@@ -38,16 +38,16 @@ details summary::marker {
 
 .wrapper {
   padding-top: 74px;
+  min-height: 100vh;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
   @media (width < $width-tablet) {
     padding-top: 118px;
   }
   @media (width < $width-smartpthone) {
     padding-top: 114px;
   }
-  min-height: 100vh;
-  display: flex;
-  justify-content: space-between;
-  flex-direction: column;
 }
 .wrap {
   width: calc($width-tablet - 72px);
