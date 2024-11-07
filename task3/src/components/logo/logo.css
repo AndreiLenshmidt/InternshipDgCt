@@ -1,0 +1,58 @@
+@font-face {
+  font-family: "ArchivoBlack";
+  font-style: normal;
+  font-weight: normal;
+  src: local("ArchivoBlack-Regular"), url("../fonts/ArchivoBlack-Regular.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Nunito Regular";
+  font-style: normal;
+  font-weight: normal;
+  src: local("Nunito-Regular"), url("../fonts/Nunito-Regular.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Nunito Medium";
+  font-style: normal;
+  font-weight: medium;
+  src: local("Nunito-Medium"), url("../fonts/Nunito-Medium.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Nunito Bold";
+  font-style: normal;
+  font-weight: bold;
+  src: local("Nunito-Bold"), url("../fonts/Nunito-Bold.ttf") format("truetype");
+}
+.header__logo {
+  width: 108.9px;
+  height: 40px;
+  fill: #1b1f21;
+  transition: fill 0.3s;
+}
+@media (width < 768px) {
+  .header__logo {
+    width: 140px;
+    height: 48px;
+    margin-left: -5px;
+  }
+}
+.header__logo:hover {
+  fill: #da3369;
+}
+
+.footer__logo {
+  width: 228px;
+  height: 83px;
+  margin-top: -2px;
+  fill: #fcfaf9;
+  transition: fill 0.3s;
+}
+@media (width < 1280px) {
+  .footer__logo {
+    width: 197px;
+    height: 64px;
+    margin: 0 0 0 -12px;
+  }
+}
+.footer__logo:hover {
+  fill: #da3369;
+}/*# sourceMappingURL=logo.css.map */

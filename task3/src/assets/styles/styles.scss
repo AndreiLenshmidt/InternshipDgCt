@@ -64,59 +64,6 @@ details summary::marker {
   }
 }
 
-.button {
-  &__0:disabled,
-  &__1:disabled,
-  &__2:disabled,
-  &__3:disabled,
-  &__4:disabled,
-  &__5:disabled {
-    opacity: 0.6;
-  }
-  &__0:hover {
-    background-color: $pink;
-    color: $black;
-  }
-  &__1:hover {
-    background-color: $sky;
-    color: $black;
-  }
-  &__2:hover {
-    background-color: $grass;
-    color: $black;
-  }
-  &__3:hover {
-    background-color: $tangerine;
-    color: $black;
-  }
-  &__4:hover {
-    background-color: $turquoise;
-    color: $black;
-  }
-  &__5:hover {
-    background-color: $mint;
-    color: $black;
-  }
-  &__0:active {
-    background-color: $pink-dark;
-  }
-  &__1:active {
-    background-color: $sky-dark;
-  }
-  &__2:active {
-    background-color: $grass-dark;
-  }
-  &__3:active {
-    background-color: $tangerine-dark;
-  }
-  &__4:active {
-    background-color: $turquoise-dark;
-  }
-  &__5:active {
-    background-color: $mint-dark;
-  }
-}
-
 .runnig-string {
   overflow: hidden;
   &__text_artigos {
@@ -181,9 +128,9 @@ details summary::marker {
   }
 }
 
-@import "header";
+// @import "header";
 @import "main";
 @import "articles";
 @import "webinars";
 @import "form";
-@import "footer";
+// @import "footer";
