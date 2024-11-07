@@ -4,9 +4,9 @@ import search from "../../assets/images/icons/search.svg";
 import LogoComp from "../logo/logo";
 import "./header.scss";
 
-type header = Array<{ label: String; url: "#" }>;
+type header = Array<{ label: string; url: "#" }>;
 
-export default function TheHeader(prop: { header: header; logo: String }) {
+export default function TheHeader(prop: { header: header; logo: string }) {
   return (
     <header className="header">
       <div className="wrap header__box">

@@ -111,9 +111,9 @@
   &__img_inverted {
     transform: scale(-1, 1);
   }
-  &__picture {
-    overflow: hidden;
-  }
+  // &__picture {
+  //   overflow: hidden;
+  // }
   &__img_mask1 {
     @include mask($url: $article-mask1-laptop);
     @media (width < $width-tablet) {

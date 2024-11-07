@@ -7,15 +7,15 @@
 }
 
 @font-face {
-  font-family: "Nunito Regular";
+  font-family: "Nunito-Regular";
   font-style: normal;
   font-weight: normal;
   src: local("Nunito-Regular"),
-    url("../fonts/Nunito-Regular.ttf") format("truetype");
+    url("../fonts/Nunito-VariableFont_wght.ttf") format("truetype");
 }
 
 @font-face {
-  font-family: "Nunito Medium";
+  font-family: "Nunito-Medium";
   font-style: normal;
   font-weight: medium;
   src: local("Nunito-Medium"),
@@ -23,7 +23,7 @@
 }
 
 @font-face {
-  font-family: "Nunito Bold";
+  font-family: "Nunito-Bold";
   font-style: normal;
   font-weight: bold;
   src: local("Nunito-Bold"), url("../fonts/Nunito-Bold.ttf") format("truetype");

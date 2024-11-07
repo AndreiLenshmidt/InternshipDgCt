@@ -1,20 +1,17 @@
 import { useLayoutEffect, useState } from "react";
 import "./assets/styles/styles.scss";
-import ArticlesComp from "./components/ArticlesComp";
-import FormComp from "./components/FormComp";
-import MainComp from "./components/MainComp";
 import TheFooter from "./components/footer/TheFooter";
 import TheHeader from "./components/header/TheHeader";
-import WebinarsComp from "./components/WebinarsComp";
+import MainPage from "./containers/MainPage";
 
-type logo = String;
-type header = Array<{ label: String; url: "#" }>;
+type logo = string;
+type header = Array<{ label: string; url: "#" }>;
 type items = Array<{
-  label: String;
-  url: String;
+  label: string;
+  url: string;
 }>;
 export type footer = Array<{
-  label: String;
+  label: string;
   items: items;
 }>;
 type UrlDB =
@@ -27,28 +24,15 @@ type menu = {
   footer: footer;
 };
 export type contacts = {
-  email: String;
-  facebook: String;
-  instagram: String;
-  linkedin: String;
-  links: Array<{ label: String; url: String }>;
-  phone: String;
+  email: string;
+  facebook: string;
+  instagram: string;
+  linkedin: string;
+  links: Array<{ label: string; url: string }>;
+  phone: string;
   subscription: {};
-  whatsapp: String;
-  youtube: String;
-};
-
-const getDataFromDB = async (url: UrlDB, func: CallableFunction) => {
-  fetch(url)
-    .then((res) => res.json())
-    .then(
-      (result) => {
-        func(result);
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
+  whatsapp: string;
+  youtube: string;
 };
 
 function App() {
@@ -65,21 +49,31 @@ function App() {
     youtube: "",
   });
 
+  const getDataFromDB = async (url: UrlDB, func: CallableFunction) => {
+    fetch(url)
+      .then((res) => res.json())
+      .then(
+        (result) => {
+          func(result);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+  };
+
   useLayoutEffect(() => {
     getDataFromDB("http://localhost:8000/menu", setMenu);
     getDataFromDB("http://localhost:8000/contacts", setContacts);
   }, []);
 
-  console.log(menu);
-  console.log(contacts);
-
   return (
     <div className="wrapped">
       <TheHeader header={menu.header} logo={menu.logo} />
-      <MainComp />
-      <ArticlesComp />
-      <WebinarsComp />
-      <FormComp />
+      <MainPage
+        url="http://localhost:8000/sections"
+        getDataFromDB={getDataFromDB}
+      />
       <TheFooter footer={menu.footer} contacts={contacts} />
     </div>
   );

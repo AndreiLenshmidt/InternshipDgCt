@@ -4,12 +4,13 @@ import imgCard3 from "../assets/images/picture/avatar3.webp";
 import star from "../assets/images/icons/star.svg";
 import webinars from "../assets/images/running-string/Webinars.svg";
 import subscribe from "../assets/images/running-string/Subscribe.svg";
+import RunningString from "./runningString/RunningString";
 
 export default function () {
   return (
     <section className="webinars">
       <div className="webinars__bkg">
-        <div className="webinars__runnig-string-box">
+        {/* <div className="webinars__runnig-string-box">
           <div className="webinars__runnig-string">
             <div className="runnig-string__box">
               <img src={star} alt="star" />
@@ -129,7 +130,13 @@ export default function () {
               <img src={star} alt="star" />
             </div>
           </div>
-        </div>
+        </div> */}
+        <RunningString
+          nameSection="webinars__runnig-string-box"
+          className="webinars__runnig-string"
+          imgClassName="runnig-string__text_webinars"
+          nameImg="webinars"
+        />
         <div className="webinars__bkg-black" />
         <div className="wrap">
           <div className="webinars__container">
@@ -339,7 +346,7 @@ export default function () {
             </article>
           </div>
         </div>
-        <div className="runnig-string_bottom">
+        {/* <div className="runnig-string_bottom">
           <div className="webinars__runnig-string webinars__runnig-string_bottom">
             <div className="runnig-string__box">
               <img src={star} alt="star" />
@@ -440,7 +447,13 @@ export default function () {
               />
             </div>
           </div>
-        </div>
+        </div> */}
+        <RunningString
+          nameSection="runnig-string_bottom"
+          className="webinars__runnig-string webinars__runnig-string_bottom"
+          imgClassName="runnig-string__text runnig-string__text_subscribe"
+          nameImg="subscribe"
+        />
       </div>
     </section>
   );

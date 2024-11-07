@@ -9,6 +9,7 @@ import icon4 from "../../assets/images/icons/icon4.svg";
 import { footer, contacts } from "../../App";
 import LogoComp from "../logo/logo";
 import "./footer.scss";
+import { Fragment } from "react/jsx-runtime";
 
 export default function TheFooter(prop: {
   contacts: contacts;
@@ -21,14 +22,14 @@ export default function TheFooter(prop: {
         <img className="footer__summery-arrow" src={summaryArrow} />
       </summary>
       {details.items.map((item, i) => (
-        <a href={`${item.url}`} className="footer__details-item" key={i}>
+        <a href={item.url} className="footer__details-item" key={i}>
           {item.label}
         </a>
       ))}
     </details>
   ));
   const footerLinks = prop.contacts.links?.map((link, index) => (
-    <a href={`${link.url}`} key={index}>
+    <a href={link.url} key={index}>
       <li className="footer__item">{link.label}</li>
     </a>
   ));
@@ -47,17 +48,9 @@ export default function TheFooter(prop: {
       <div className="runnig-string">
         <div className="footer__runnig-string">
           <div className="runnig-string__box">
-            {runningBlock}
-            {runningBlock}
-            {runningBlock}
-            {runningBlock}
-            {runningBlock}
-            {runningBlock}
-            {runningBlock}
-            {runningBlock}
-            {runningBlock}
-            {runningBlock}
-            {runningBlock}
+            {"123456789012345678".split("").map((_, index) => (
+              <Fragment key={index}>{runningBlock}</Fragment>
+            ))}
           </div>
         </div>
       </div>

@@ -3,97 +3,38 @@ import artigos from "../../assets/images/running-string/Artigos-populares.svg";
 import webinars from "../../assets/images/running-string/Webinars.svg";
 import subscribe from "../../assets/images/running-string/Subscribe.svg";
 import descuento from "../../assets/images/running-string/Descuento.svg";
+import { Fragment } from "react/jsx-runtime";
 
 export default function RunningString(prop: {
   nameSection: string;
+  className: string;
   imgClassName: string;
+  color: string;
+  nameImg: string;
 }) {
-  const boxClassName: string = prop.nameSection + "__runnig-string-box";
-  const className: string = prop.nameSection + "__runnig-string";
-  const imgClassName = "runnig-string__text_" + prop.imgClassName;
-  const textImg = [artigos, webinars, subscribe, descuento];
+  const textImg = new Map<string, string>();
+  textImg
+    .set("artigos", artigos)
+    .set("webinars", webinars)
+    .set("subscribe", subscribe)
+    .set("descuento", descuento);
   const runningText = (
     <>
       <img src={star} alt="star" />
-      <img src={artigos} alt="Artigos populares" className={imgClassName} />
+      <img
+        src={textImg.get(prop.nameImg)}
+        alt={prop.nameImg}
+        className={prop.imgClassName}
+      />
     </>
   );
   return (
-    <div className={boxClassName}>
-      <div className={className}>
+    <div className={prop.nameSection}>
+      <div className={prop.className} style={{ backgroundColor: prop.color }}>
         <div className="runnig-string__box">
-          {runningText}
-          {runningText}
-          {runningText}
-          {runningText}
-          {runningText}
-          {runningText}
-          {runningText}
-          {runningText}
-          {runningText}
-          {runningText}
-          {runningText}
-          {/* <img src={star} alt="star" />
-          <img
-            src={artigos}
-            alt="Artigos populares"
-            className="runnig-string__text_artigos"
-          />
-          <img src={star} alt="star" />
-          <img
-            src={artigos}
-            alt="Artigos populares"
-            className="runnig-string__text_artigos"
-          />
-          <img src={star} alt="star" />
-          <img
-            src={artigos}
-            alt="Artigos populares"
-            className="runnig-string__text_artigos"
-          />
-          <img src={star} alt="star" />
-          <img
-            src={artigos}
-            alt="Artigos populares"
-            className="runnig-string__text_artigos"
-          />
-          <img src={star} alt="star" />
-          <img
-            src={artigos}
-            alt="Artigos populares"
-            className="runnig-string__text_artigos"
-          />
-          <img src={star} alt="star" />
-          <img
-            src={artigos}
-            alt="Artigos populares"
-            className="runnig-string__text_artigos"
-          />
-          <img src={star} alt="star" />
-          <img
-            src={artigos}
-            alt="Artigos populares"
-            className="runnig-string__text_artigos"
-          />
-          <img src={star} alt="star" />
-          <img
-            src={artigos}
-            alt="Artigos populares"
-            className="runnig-string__text_artigos"
-          />
-          <img src={star} alt="star" />
-          <img
-            src={artigos}
-            alt="Artigos populares"
-            className="runnig-string__text_artigos"
-          />
-          <img src={star} alt="star" />
-          <img
-            src={artigos}
-            alt="Artigos populares"
-            className="runnig-string__text_artigos"
-          />
-          <img src={star} alt="star" /> */}
+          {"123456789012345678".split("").map((_, index) => (
+            <Fragment key={index}>{runningText}</Fragment>
+          ))}
         </div>
       </div>
     </div>

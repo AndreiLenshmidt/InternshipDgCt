@@ -1,14 +1,14 @@
-import pic2 from "../assets/images/picture/pic2.webp";
-import sticker2 from "../assets/images/picture/sticker2.svg";
-import pic3 from "../assets/images/picture/pic3.webp";
-import sticker3 from "../assets/images/picture/sticker3.svg";
-import pic4 from "../assets/images/picture/pic4.webp";
-import sticker4 from "../assets/images/picture/sticker4.svg";
-import pic5 from "../assets/images/picture/pic5.webp";
-import sticker5 from "../assets/images/picture/sticker5.svg";
-import pic6 from "../assets/images/picture/pic6.webp";
-import clock from "../assets/images/icons/clock.svg";
-import calendar from "../assets/images/icons/calendar.svg";
+import pic2 from "../../assets/images/picture/pic2.webp";
+import sticker2 from "../../assets/images/picture/sticker2.svg";
+import pic3 from "../../assets/images/picture/pic3.webp";
+import sticker3 from "../../assets/images/picture/sticker3.svg";
+import pic4 from "../../assets/images/picture/pic4.webp";
+import sticker4 from "../../assets/images/picture/sticker4.svg";
+import pic5 from "../../assets/images/picture/pic5.webp";
+import sticker5 from "../../assets/images/picture/sticker5.svg";
+import pic6 from "../../assets/images/picture/pic6.webp";
+import clock from "../../assets/images/icons/clock.svg";
+import calendar from "../../assets/images/icons/calendar.svg";
 
 export default function ArticlesComp() {
   return (
@@ -143,13 +143,13 @@ export default function ArticlesComp() {
           </article>
           <article className="articles__card">
             <figure className="articles__img-box">
-              <picture className="articles__picture">
-                <img
-                  className="articles__img articles__img_mask4"
-                  src={pic5}
-                  alt="articles img"
-                />
-              </picture>
+              {/* <picture className="articles__picture"> */}
+              <img
+                className="articles__img articles__img_mask4"
+                src={pic5}
+                alt="articles img"
+              />
+              {/* </picture> */}
               <img
                 src={sticker4}
                 alt="stiker"
