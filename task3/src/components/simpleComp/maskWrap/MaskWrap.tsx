@@ -1,4 +1,4 @@
-import "./mask.scss";
+import "./mask.css";
 
 export default function MaskWrap(prop: {
   imgBoxClassName: string;
@@ -7,14 +7,10 @@ export default function MaskWrap(prop: {
   imgUrl: { shape?: string; url?: string; img?: string };
   stikerUrl?: { position: string; type: string; word: string };
 }) {
-  let src = prop.imgUrl?.url ? prop.imgUrl.url : prop.imgUrl?.img;
-  src = src || "";
-  const imgUrl = new URL(src, import.meta.url).href;
-  const stikerUrl = new URL(prop.stikerUrl?.type || "", import.meta.url).href;
   const stiker = prop.stikerUrl?.type ? (
     <img
       className={prop.stikerClassName}
-      src={stikerUrl}
+      src={prop.stikerUrl?.type}
       alt={prop.stikerUrl?.word}
     />
   ) : (
@@ -25,7 +21,7 @@ export default function MaskWrap(prop: {
     <figure className={prop.imgBoxClassName}>
       <img
         className={prop.imgClassName}
-        src={imgUrl}
+        src={prop.imgUrl?.url || prop.imgUrl?.img}
         alt={prop.imgUrl?.shape}
       />
       {stiker}

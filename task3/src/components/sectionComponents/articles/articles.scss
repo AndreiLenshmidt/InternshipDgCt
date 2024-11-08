@@ -1,19 +1,19 @@
-@import "../../../assets/styles/_vars-fonts-mixins.scss";
+@import "../../../../public/styles/vars-mixins";
 
 .articles {
   padding-top: 15px;
   @include relative-hidden;
-  background: url(../../../assets/images/background/articles-bg-1440.svg)
-    calc(50% - -119px) -121px no-repeat;
+  background: url(/images/background/articles-bg-1440.svg) calc(50% - -119px) -105px
+    no-repeat;
   background-size: 3016px;
   @media (width < $width-tablet) {
-    background: url(../../../assets/images/background/articles-bg-768.svg)
-      calc(50% + -297px) 161px no-repeat;
+    background: url(/images/background/articles-bg-768.svg) calc(50% + -297px)
+      161px no-repeat;
     background-size: 2543px;
   }
   @media (width < $width-smartpthone) {
-    background: url(../../../assets/images/background/articles-bg-320.svg)
-      calc(50% + 15px) -183px no-repeat;
+    background: url(/images/background/articles-bg-320.svg) calc(50% + 15px) -183px
+      no-repeat;
     background-size: 965px;
   }
   &__container {

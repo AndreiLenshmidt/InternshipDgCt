@@ -1,47 +1,23 @@
-@font-face {
-  font-family: "ArchivoBlack";
-  font-style: normal;
-  font-weight: normal;
-  src: local("ArchivoBlack-Regular"), url("../fonts/ArchivoBlack-Regular.ttf") format("truetype");
-}
-@font-face {
-  font-family: "Nunito-Regular";
-  font-style: normal;
-  font-weight: normal;
-  src: local("Nunito-Regular"), url("../fonts/Nunito-VariableFont_wght.ttf") format("truetype");
-}
-@font-face {
-  font-family: "Nunito-Medium";
-  font-style: normal;
-  font-weight: medium;
-  src: local("Nunito-Medium"), url("../fonts/Nunito-Medium.ttf") format("truetype");
-}
-@font-face {
-  font-family: "Nunito-Bold";
-  font-style: normal;
-  font-weight: bold;
-  src: local("Nunito-Bold"), url("../fonts/Nunito-Bold.ttf") format("truetype");
-}
 .main {
-  padding-top: 80px;
+  padding-top: 153px;
   width: 100vw;
   margin: 0 auto;
   position: relative;
   overflow: hidden;
-  background: url(../../../assets/images/background/bg-main-1440.svg) calc(50% - 52px) 51px no-repeat;
+  background: url(/images/background/bg-main-1440.svg) calc(50% - 52px) 128px no-repeat;
   background-size: 1642px;
 }
 @media (width < 1280px) {
   .main {
     padding-top: 64px;
-    background: url(../../../assets/images/background/bg-main-768.svg) calc(50% + 164px) 108.5% no-repeat;
+    background: url(/images/background/bg-main-768.svg) calc(50% + 164px) 108.5% no-repeat;
     background-size: 1763px;
   }
 }
 @media (width < 768px) {
   .main {
     padding-top: 36px;
-    background: url(../../../assets/images/background/bg-main-320.svg) calc(50% - 40px) 30.5% no-repeat;
+    background: url(/images/background/bg-main-320.svg) calc(50% - 40px) 30.5% no-repeat;
     background-size: 1283px;
   }
 }
@@ -85,7 +61,7 @@
   font-weight: 400;
   font-size: 36px;
   line-height: 120%;
-  padding-bottom: 16px;
+  padding-bottom: 18px;
   font-weight: 800;
   line-height: 119%;
 }
@@ -110,7 +86,7 @@
 }
 .main__text {
   color: #757778;
-  font-family: "Nunito Regular";
+  font-family: "Nunito-Regular";
   font-weight: 400;
   font-size: 18px;
   line-height: 160%;
@@ -138,7 +114,7 @@
   transition: all 0.3s;
   margin-left: 4px;
   color: #1b1f21;
-  font-family: "Nunito Medium";
+  font-family: "Nunito-Medium";
   font-weight: 500;
   font-size: 18px;
   line-height: 160%;

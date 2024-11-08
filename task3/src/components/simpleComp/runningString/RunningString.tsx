@@ -1,11 +1,11 @@
-import star from "../../../assets/images/icons/star.svg";
-import whiteStar from "../../../assets/images/icons/white-star.svg";
-import artigos from "../../../assets/images/running-string/Artigos-populares.svg";
-import webinars from "../../../assets/images/running-string/Webinars.svg";
-import subscribe from "../../../assets/images/running-string/Subscribe.svg";
-import descuento from "../../../assets/images/running-string/Descuento.svg";
+import star from "/images/icons/star.svg?url";
+import whiteStar from "/images/icons/white-star.svg?url";
+import artigos from "/images/running-string/Artigos-populares.svg?url";
+import webinars from "/images/running-string/Webinars.svg?url";
+import subscribe from "/images/running-string/Subscribe.svg?url";
+import descuento from "/images/running-string/Descuento.svg?url";
 import { Fragment } from "react/jsx-runtime";
-import "./running.scss";
+import "./running.css";
 
 export default function RunningString(prop: {
   nameSection: string;

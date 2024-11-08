@@ -1,23 +1,29 @@
-import mark from "../../../assets/images/icons/mark.webp";
-import summaryArrow from "../../../assets/images/icons/summary-arrow.svg";
-import icon1 from "../../../assets/images/icons/icon1.svg";
-import icon2 from "../../../assets/images/icons/icon2.svg";
-import icon3 from "../../../assets/images/icons/icon3.svg";
-import icon4 from "../../../assets/images/icons/icon4.svg";
 import { footer, contacts } from "../../../App";
 import LogoComp from "../../simpleComp/logo/logo";
-import "./footer.scss";
 import RunningString from "../../simpleComp/runningString/RunningString";
+import "./footer.css";
+import { useEffect } from "react";
 
 export default function TheFooter(prop: {
   contacts: contacts;
   footer: footer;
 }) {
+  useEffect(() => {
+    const elems = document.querySelectorAll(".footer__menu:not(:first-child)");
+    if (window.innerWidth < 768) {
+      for (const elem of elems) {
+        elem.removeAttribute("open");
+      }
+    }
+  });
   const details = prop.footer?.map((details, index) => (
-    <details className="footer__menu" open key={index}>
+    <details className="footer__menu" key={index} open>
       <summary className="footer__menu-item">
         {details.label}
-        <img className="footer__summery-arrow" src={summaryArrow} />
+        <img
+          className="footer__summery-arrow"
+          src="/images/icons/summary-arrow.svg"
+        />
       </summary>
       {details.items.map((item, i) => (
         <a href={item.url} className="footer__details-item" key={i}>
@@ -45,7 +51,11 @@ export default function TheFooter(prop: {
           <div className="footer__box">
             <div className="footer__small-box">
               <LogoComp href="#" className="footer__logo" />
-              <img className="footer__award" src={mark} alt="award" />
+              <img
+                className="footer__award"
+                src="/images/icons/mark.webp"
+                alt="award"
+              />
             </div>
             <div className="footer__small-box">{details}</div>
             <form className="footer__small-box">
@@ -79,11 +89,11 @@ export default function TheFooter(prop: {
               </div>
             </div>
             <div className="footer__small-box">
-              {[icon1, icon2, icon3, icon4].map((item, index) => (
+              {"1234".split("").map((item, index) => (
                 <img
                   className="footer__icon"
-                  src={item}
-                  alt={item}
+                  src={`/images/icons/icon${item}.svg`}
+                  alt="icon"
                   key={index}
                 />
               ))}

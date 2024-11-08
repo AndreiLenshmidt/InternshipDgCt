@@ -1,4 +1,4 @@
-import "./databox.scss";
+import "./databox.css";
 
 export default function DataBox(prop: {
   boxClassName: string;

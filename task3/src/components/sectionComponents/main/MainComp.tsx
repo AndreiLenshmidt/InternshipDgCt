@@ -3,7 +3,7 @@ import TagsComp from "../../simpleComp/tags/TagsComp";
 import DataBox from "../../simpleComp/dataBox/DataBox";
 import MaskWrap from "../../simpleComp/maskWrap/MaskWrap";
 import { content } from "../../../containers/MainPage";
-import "./main.scss";
+import "./main.css";
 
 export default function MainComp(prop: { main: content }) {
   return (

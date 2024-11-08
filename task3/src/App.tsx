@@ -1,8 +1,9 @@
 import { useLayoutEffect, useState } from "react";
-import "./assets/styles/styles.scss";
 import MainPage from "./containers/MainPage";
 import TheHeader from "./components/sectionComponents/header/TheHeader";
 import TheFooter from "./components/sectionComponents/footer/TheFooter";
+import { hideHeader } from "./modules/hide-header";
+import "../public/styles/styles.css";
 
 type logo = string;
 export type header = Array<{ label: string; url: string }>;
@@ -65,6 +66,7 @@ function App() {
   useLayoutEffect(() => {
     getDataFromDB("http://localhost:8000/menu", setMenu);
     getDataFromDB("http://localhost:8000/contacts", setContacts);
+    window.addEventListener("scroll", hideHeader);
   }, []);
 
   return (

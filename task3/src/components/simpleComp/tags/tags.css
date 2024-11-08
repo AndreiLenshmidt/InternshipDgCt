@@ -1,27 +1,3 @@
-@font-face {
-  font-family: "ArchivoBlack";
-  font-style: normal;
-  font-weight: normal;
-  src: local("ArchivoBlack-Regular"), url("../fonts/ArchivoBlack-Regular.ttf") format("truetype");
-}
-@font-face {
-  font-family: "Nunito-Regular";
-  font-style: normal;
-  font-weight: normal;
-  src: local("Nunito-Regular"), url("../fonts/Nunito-VariableFont_wght.ttf") format("truetype");
-}
-@font-face {
-  font-family: "Nunito-Medium";
-  font-style: normal;
-  font-weight: medium;
-  src: local("Nunito-Medium"), url("../fonts/Nunito-Medium.ttf") format("truetype");
-}
-@font-face {
-  font-family: "Nunito-Bold";
-  font-style: normal;
-  font-weight: bold;
-  src: local("Nunito-Bold"), url("../fonts/Nunito-Bold.ttf") format("truetype");
-}
 .main__tags-switchers {
   display: flex;
   justify-content: flex-start;
@@ -48,7 +24,7 @@
   margin-right: 10px;
   padding: 8px 0px;
   color: #bedb39;
-  font-family: "Nunito Medium";
+  font-family: "Nunito-Medium";
   font-weight: 500;
   font-size: 15px;
   line-height: 140%;
@@ -87,7 +63,7 @@
 .articles__tags-switchers {
   display: flex;
   justify-content: flex-start;
-  padding: 68px 0 18px 0;
+  padding: 69px 0 18px 0;
 }
 @media (width < 1280px) {
   .articles__tags-switchers {
@@ -119,7 +95,7 @@
   margin-right: 10px;
   padding: 8px 0px;
   color: #bedb39;
-  font-family: "Nunito Medium";
+  font-family: "Nunito-Medium";
   font-weight: 500;
   font-size: 15px;
   line-height: 140%;
@@ -133,7 +109,7 @@
   padding: 12px 0px;
   margin-right: 10px;
   color: #bedb39;
-  font-family: "Nunito Medium";
+  font-family: "Nunito-Medium";
   font-weight: 500;
   font-size: 15px;
   line-height: 140%;

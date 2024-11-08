@@ -1,13 +1,10 @@
-// import { useState } from "react";
-import arrow from "../../../assets/images/icons/arrow.svg";
-import search from "../../../assets/images/icons/search.svg";
 import LogoComp from "../../simpleComp/logo/logo";
-import "./header.scss";
+import "./header.css";
 import { header } from "../../../App";
 
 export default function TheHeader(prop: { header: header; logo: string }) {
   return (
-    <header className="header">
+    <header className="header" id="header">
       <div className="wrap header__box">
         <LogoComp href="#" className="header__logo" />
         <nav className="header__nav">
@@ -22,9 +19,13 @@ export default function TheHeader(prop: { header: header; logo: string }) {
           ))}
         </nav>
         <div className="header__search">
-          <img src={search} alt="search" className="header__search-img" />
+          <img
+            src="/images/icons/search.svg"
+            alt="search"
+            className="header__search-img"
+          />
           <p className="header__search-span">EBAC</p>
-          <img src={arrow} />
+          <img src="/images/icons/arrow.svg" />
         </div>
       </div>
     </header>

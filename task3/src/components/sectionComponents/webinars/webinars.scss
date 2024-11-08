@@ -1,20 +1,18 @@
-@import "../../../assets/styles/_vars-fonts-mixins.scss";
+@import "../../../../public/styles/vars-mixins";
 
 .webinars {
   @include WidthCenter;
   &__bkg {
     @include relative-hidden;
-    background: url(../../../assets/images/background/webinars-bg-1440.svg) 50%
-      135px no-repeat;
+    background: url(/images/background/webinars-bg-1440.svg) 50% 135px no-repeat;
     background-size: $width-laptop;
     @media (width > 1440px) {
-      background: url(../../../assets/images/background/webinars-bg-4k.svg) 0%
-        147px no-repeat;
+      background: url(/images/background/webinars-bg-4k.svg) 0% 147px no-repeat;
       background-size: 3840px;
     }
     @media (width < $width-tablet) {
-      background: url(../../../assets/images/background/webinars-bg-768.svg)
-        calc(50% - -107px) 106px no-repeat;
+      background: url(/images/background/webinars-bg-768.svg) calc(50% - -107px)
+        106px no-repeat;
       background-size: 1568px;
     }
     @media (width < $width-smartpthone) {
@@ -139,9 +137,8 @@
     }
   }
   &__card:nth-child(1) {
-    background: $turquoise-dark
-      url(../../../assets/images/background/card1-bg-376.svg) 101% 101%
-      no-repeat;
+    background: $turquoise-dark url(/images/background/card1-bg-376.svg) 101%
+      101% no-repeat;
     @media (width < $width-tablet) {
       background-position: 79px 82px;
     }
@@ -159,27 +156,26 @@
     }
   }
   &__card:nth-child(2) {
-    background: $coral-dark
-      url(../../../assets/images/background/card2-bg-376.svg) 100% 100%
+    background: $coral-dark url(/images/background/card2-bg-376.svg) 100% 100%
       no-repeat;
     @media (width < $width-tablet) {
-      background-image: url(../../../assets/images/background/card2-bg-340.svg);
+      background-image: url(/images/background/card2-bg-340.svg);
     }
     @media (width < $width-smartpthone) {
       background-position: 62px -6px;
     }
   }
   &__card:nth-child(3) {
-    background: $tangerine-dark
-      url(../../../assets/images/background/card3-bg-376.svg) 0% 8px no-repeat;
+    background: $tangerine-dark url(/images/background/card3-bg-376.svg) 0% 8px
+      no-repeat;
     @media (width < $width-tablet) {
-      background-image: url(../../../assets/images/background/card3-bg-704.svg);
+      background-image: url(/images/background/card3-bg-704.svg);
       background-position: 24% 1px;
       flex-basis: 100%;
       height: 272px;
     }
     @media (width < $width-smartpthone) {
-      background-image: url(../../../assets/images/background/card1-bg-376.svg);
+      background-image: url(/images/background/card1-bg-376.svg);
       background-position: 61px 50px;
       height: 370px;
     }

@@ -1,43 +1,19 @@
-@font-face {
-  font-family: "ArchivoBlack";
-  font-style: normal;
-  font-weight: normal;
-  src: local("ArchivoBlack-Regular"), url("../fonts/ArchivoBlack-Regular.ttf") format("truetype");
-}
-@font-face {
-  font-family: "Nunito-Regular";
-  font-style: normal;
-  font-weight: normal;
-  src: local("Nunito-Regular"), url("../fonts/Nunito-VariableFont_wght.ttf") format("truetype");
-}
-@font-face {
-  font-family: "Nunito-Medium";
-  font-style: normal;
-  font-weight: medium;
-  src: local("Nunito-Medium"), url("../fonts/Nunito-Medium.ttf") format("truetype");
-}
-@font-face {
-  font-family: "Nunito-Bold";
-  font-style: normal;
-  font-weight: bold;
-  src: local("Nunito-Bold"), url("../fonts/Nunito-Bold.ttf") format("truetype");
-}
 .articles {
   padding-top: 15px;
   position: relative;
   overflow: hidden;
-  background: url(../../../assets/images/background/articles-bg-1440.svg) calc(50% + 119px) -121px no-repeat;
+  background: url(/images/background/articles-bg-1440.svg) calc(50% + 119px) -105px no-repeat;
   background-size: 3016px;
 }
 @media (width < 1280px) {
   .articles {
-    background: url(../../../assets/images/background/articles-bg-768.svg) calc(50% - 297px) 161px no-repeat;
+    background: url(/images/background/articles-bg-768.svg) calc(50% - 297px) 161px no-repeat;
     background-size: 2543px;
   }
 }
 @media (width < 768px) {
   .articles {
-    background: url(../../../assets/images/background/articles-bg-320.svg) calc(50% + 15px) -183px no-repeat;
+    background: url(/images/background/articles-bg-320.svg) calc(50% + 15px) -183px no-repeat;
     background-size: 965px;
   }
 }
@@ -161,7 +137,7 @@
 }
 .articles__text {
   color: #1b1f21;
-  font-family: "Nunito Regular";
+  font-family: "Nunito-Regular";
   font-weight: 400;
   font-size: 18px;
   line-height: 160%;

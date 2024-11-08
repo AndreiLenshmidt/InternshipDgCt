@@ -1,4 +1,4 @@
-import "./tags.scss";
+import "./tags.css";
 
 export default function TagsComp(prop: {
   tags: Array<string>;

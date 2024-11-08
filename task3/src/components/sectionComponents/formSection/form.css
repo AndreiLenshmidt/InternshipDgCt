@@ -1,31 +1,7 @@
-@font-face {
-  font-family: "ArchivoBlack";
-  font-style: normal;
-  font-weight: normal;
-  src: local("ArchivoBlack-Regular"), url("../fonts/ArchivoBlack-Regular.ttf") format("truetype");
-}
-@font-face {
-  font-family: "Nunito-Regular";
-  font-style: normal;
-  font-weight: normal;
-  src: local("Nunito-Regular"), url("../fonts/Nunito-VariableFont_wght.ttf") format("truetype");
-}
-@font-face {
-  font-family: "Nunito-Medium";
-  font-style: normal;
-  font-weight: medium;
-  src: local("Nunito-Medium"), url("../fonts/Nunito-Medium.ttf") format("truetype");
-}
-@font-face {
-  font-family: "Nunito-Bold";
-  font-style: normal;
-  font-weight: bold;
-  src: local("Nunito-Bold"), url("../fonts/Nunito-Bold.ttf") format("truetype");
-}
 .form {
   width: 100%;
   height: 518px;
-  background: #57acbc url(../../../assets/images/background/form-bg-1440.svg) calc(50% - 22px) -41px no-repeat;
+  background: #57acbc url(/images/background/form-bg-1440.svg) calc(50% - 22px) -41px no-repeat;
   background-size: 988px;
   -webkit-mask-image: url("data:image/svg+xml,%3Csvg width='1208' height='518' viewBox='0 0 1208 518' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 97.9696C0 43.8625 39.2109 0 87.58 0H1120.42C1168.79 0 1208 43.8625 1208 97.9696C1208 131.328 1193.1 160.793 1170.33 178.485C1193.1 196.177 1208 225.641 1208 259C1208 292.359 1193.1 321.823 1170.33 339.515C1193.1 357.207 1208 386.672 1208 420.03C1208 474.138 1168.79 518 1120.42 518H87.58C39.2109 518 0 474.138 0 420.03C0 386.672 14.9043 357.207 37.6702 339.515C14.9043 321.823 0 292.359 0 259C0 225.641 14.9043 196.177 37.6702 178.485C14.9043 160.793 0 131.328 0 97.9696Z' fill='%2357ACBC'/%3E%3C/svg%3E%0A");
           mask-image: url("data:image/svg+xml,%3Csvg width='1208' height='518' viewBox='0 0 1208 518' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 97.9696C0 43.8625 39.2109 0 87.58 0H1120.42C1168.79 0 1208 43.8625 1208 97.9696C1208 131.328 1193.1 160.793 1170.33 178.485C1193.1 196.177 1208 225.641 1208 259C1208 292.359 1193.1 321.823 1170.33 339.515C1193.1 357.207 1208 386.672 1208 420.03C1208 474.138 1168.79 518 1120.42 518H87.58C39.2109 518 0 474.138 0 420.03C0 386.672 14.9043 357.207 37.6702 339.515C14.9043 321.823 0 292.359 0 259C0 225.641 14.9043 196.177 37.6702 178.485C14.9043 160.793 0 131.328 0 97.9696Z' fill='%2357ACBC'/%3E%3C/svg%3E%0A");
@@ -40,7 +16,7 @@
 }
 @media (width < 1280px) {
   .form {
-    background: #57acbc url(../../../assets/images/background/form-bg-768.svg) calc(50% + 2px) 2px no-repeat;
+    background: #57acbc url(/images/background/form-bg-768.svg) calc(50% + 2px) 2px no-repeat;
     background-size: 704px;
     -webkit-mask-image: url("data:image/svg+xml,%3Csvg width='704' height='498' viewBox='0 0 704 498' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cg clip-path='url(%23clip0_177_2521)'%3E%3Cpath d='M0 0H493C528.346 0 557 28.6538 557 64V434C557 469.346 528.346 498 493 498H0V0Z' fill='%2357ACBC'/%3E%3Cmask id='mask0_177_2521' style='mask-type:alpha' maskUnits='userSpaceOnUse' x='416' y='0' width='288' height='498'%3E%3Cpath d='M416 78.411C416 35.1058 451.106 0 494.411 0C537.716 0 572.822 35.1058 572.822 78.411V419.589C572.822 462.894 537.716 498 494.411 498C451.106 498 416 462.894 416 419.589V78.411Z' fill='%231B1F21'/%3E%3Cpath d='M547.178 78.411C547.178 35.1058 582.284 0 625.589 0C668.894 0 704 35.1058 704 78.411V419.589C704 462.894 668.894 498 625.589 498C582.284 498 547.178 462.894 547.178 419.589V78.411Z' fill='%231B1F21'/%3E%3C/mask%3E%3Cg mask='url(%23mask0_177_2521)'%3E%3Crect x='416' width='288' height='516' fill='%231B1F21'/%3E%3C/g%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_177_2521'%3E%3Cpath d='M0 32C0 14.3269 14.3269 0 32 0H704V498H32C14.3269 498 0 483.673 0 466V32Z' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E");
             mask-image: url("data:image/svg+xml,%3Csvg width='704' height='498' viewBox='0 0 704 498' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cg clip-path='url(%23clip0_177_2521)'%3E%3Cpath d='M0 0H493C528.346 0 557 28.6538 557 64V434C557 469.346 528.346 498 493 498H0V0Z' fill='%2357ACBC'/%3E%3Cmask id='mask0_177_2521' style='mask-type:alpha' maskUnits='userSpaceOnUse' x='416' y='0' width='288' height='498'%3E%3Cpath d='M416 78.411C416 35.1058 451.106 0 494.411 0C537.716 0 572.822 35.1058 572.822 78.411V419.589C572.822 462.894 537.716 498 494.411 498C451.106 498 416 462.894 416 419.589V78.411Z' fill='%231B1F21'/%3E%3Cpath d='M547.178 78.411C547.178 35.1058 582.284 0 625.589 0C668.894 0 704 35.1058 704 78.411V419.589C704 462.894 668.894 498 625.589 498C582.284 498 547.178 462.894 547.178 419.589V78.411Z' fill='%231B1F21'/%3E%3C/mask%3E%3Cg mask='url(%23mask0_177_2521)'%3E%3Crect x='416' width='288' height='516' fill='%231B1F21'/%3E%3C/g%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_177_2521'%3E%3Cpath d='M0 32C0 14.3269 14.3269 0 32 0H704V498H32C14.3269 498 0 483.673 0 466V32Z' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E");
@@ -50,7 +26,7 @@
 }
 @media (width < 768px) {
   .form {
-    background: #57acbc url(../../../assets/images/background/form-bg-320.svg) 50% -18% no-repeat;
+    background: #57acbc url(/images/background/form-bg-320.svg) 50% -18% no-repeat;
     background-size: 304px;
     height: 1106px;
     -webkit-mask-image: url("data:image/svg+xml,%3Csvg width='304' height='1132' viewBox='0 0 304 1132' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M100 31C44.7715 31 0 75.7715 0 131V1001C0 1056.23 44.7715 1101 100 1101C119.046 1101 136.849 1095.68 152 1086.43C167.151 1095.68 184.954 1101 204 1101C259.228 1101 304 1056.23 304 1001V131C304 75.7715 259.228 31 204 31C184.954 31 167.151 36.3246 152 45.5664C136.849 36.3246 119.046 31 100 31Z' fill='%2357ACBC'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M100 732C44.7715 732 0 776.772 0 832V1032C0 1087.23 44.7715 1132 100 1132C119.046 1132 136.849 1126.68 152 1117.43C167.151 1126.68 184.954 1132 204 1132C259.228 1132 304 1087.23 304 1032V832C304 776.772 259.228 732 204 732C184.954 732 167.151 737.325 152 746.566C136.849 737.325 119.046 732 100 732Z' fill='%231B1F21'/%3E%3C/svg%3E%0A");
@@ -98,7 +74,7 @@
   flex-basis: 37%;
   width: 418px;
   height: 518px;
-  background: url(../../../assets/images/background/form-bg-letter-1440.svg) no-repeat;
+  background: url(/images/background/form-bg-letter-1440.svg) no-repeat;
   -webkit-mask-image: url("data:image/svg+xml,%3Csvg width='1208' height='518' viewBox='0 0 1208 518' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 97.9696C0 43.8625 39.2109 0 87.58 0H1120.42C1168.79 0 1208 43.8625 1208 97.9696C1208 131.328 1193.1 160.793 1170.33 178.485C1193.1 196.177 1208 225.641 1208 259C1208 292.359 1193.1 321.823 1170.33 339.515C1193.1 357.207 1208 386.672 1208 420.03C1208 474.138 1168.79 518 1120.42 518H87.58C39.2109 518 0 474.138 0 420.03C0 386.672 14.9043 357.207 37.6702 339.515C14.9043 321.823 0 292.359 0 259C0 225.641 14.9043 196.177 37.6702 178.485C14.9043 160.793 0 131.328 0 97.9696Z' fill='%2357ACBC'/%3E%3C/svg%3E%0A");
           mask-image: url("data:image/svg+xml,%3Csvg width='1208' height='518' viewBox='0 0 1208 518' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 97.9696C0 43.8625 39.2109 0 87.58 0H1120.42C1168.79 0 1208 43.8625 1208 97.9696C1208 131.328 1193.1 160.793 1170.33 178.485C1193.1 196.177 1208 225.641 1208 259C1208 292.359 1193.1 321.823 1170.33 339.515C1193.1 357.207 1208 386.672 1208 420.03C1208 474.138 1168.79 518 1120.42 518H87.58C39.2109 518 0 474.138 0 420.03C0 386.672 14.9043 357.207 37.6702 339.515C14.9043 321.823 0 292.359 0 259C0 225.641 14.9043 196.177 37.6702 178.485C14.9043 160.793 0 131.328 0 97.9696Z' fill='%2357ACBC'/%3E%3C/svg%3E%0A");
   position: relative;
@@ -115,7 +91,7 @@
 }
 @media (width < 768px) {
   .form__letter {
-    background-image: url(../../../assets/images/background/form-bg-letter-320.svg);
+    background-image: url(/images/background/form-bg-letter-320.svg);
     -webkit-mask-image: none;
             mask-image: none;
     flex-basis: 100%;
@@ -150,7 +126,7 @@
 }
 .form__letter::after {
   content: "";
-  background: url(../../../assets/images/icons/letter-after.svg) 50% 50% no-repeat;
+  background: url(/images/icons/letter-after.svg) 50% 50% no-repeat;
   border-radius: 100%;
   position: absolute;
   top: 35%;
@@ -205,7 +181,7 @@
 }
 .form__text {
   color: #fcfaf9;
-  font-family: "Nunito Regular";
+  font-family: "Nunito-Regular";
   font-weight: 400;
   font-size: 18px;
   line-height: 160%;
@@ -274,7 +250,7 @@
 }
 .form__submitted-text {
   color: #57acbc;
-  font-family: "Nunito Bold";
+  font-family: "Nunito-Bold";
   font-weight: 700;
   font-size: 18px;
   line-height: 160%;
@@ -354,7 +330,7 @@
   }
 }
 .form__agree:checked + label::before {
-  background: #fcfaf9 url(../../../assets/images/icons/v.svg) center center no-repeat;
+  background: #fcfaf9 url(/images/icons/v.svg) center center no-repeat;
 }
 .form__agree:hover + label::before {
   border-color: #fcfaf9;
@@ -370,7 +346,7 @@
 }
 .form__chbox-text {
   color: #fcfaf9;
-  font-family: "Nunito Regular";
+  font-family: "Nunito-Regular";
   font-weight: 400;
   font-size: 15px;
   line-height: 140%;
@@ -379,7 +355,7 @@
 @media (width < 1280px) {
   .form__chbox-text {
     color: #fcfaf9;
-    font-family: "Nunito Regular";
+    font-family: "Nunito-Regular";
     font-weight: 400;
     font-size: 13px;
     line-height: 140%;
@@ -392,12 +368,17 @@
   }
 }
 .form__chbox-text_underline {
+  color: #fcfaf9;
   text-decoration: underline;
 }
 @media (width < 1280px) {
   .form__chbox-text_underline {
     text-decoration: none;
   }
+}
+.form__chbox-text_underline:hover {
+  cursor: pointer;
+  color: #fcfaf9;
 }
 .form__email {
   width: 280px;
@@ -408,7 +389,7 @@
   box-sizing: border-box;
   transition: all 0.3s;
   color: #1b1f21;
-  font-family: "Nunito Regular";
+  font-family: "Nunito-Regular";
   font-weight: 400;
   font-size: 18px;
   line-height: 160%;
@@ -440,7 +421,7 @@
   border-radius: 100%;
   top: 27px;
   left: 42%;
-  background: #ffad20 url(../../../assets/images/icons/form-invalid.svg);
+  background: #ffad20 url(/images/icons/form-invalid.svg);
 }
 @media (width < 1210px) {
   .form__email_invalid-img {
@@ -462,7 +443,7 @@
   border-radius: 100%;
   top: 27px;
   left: 42%;
-  background: #bedb39 url(../../../assets/images/icons/form-valid.svg);
+  background: #bedb39 url(/images/icons/form-valid.svg);
 }
 @media (width < 1210px) {
   .form__email_valid-img {
@@ -489,7 +470,7 @@
   box-sizing: border-box;
   transition: all 0.3s;
   color: #fcfaf9;
-  font-family: "Nunito Bold";
+  font-family: "Nunito-Bold";
   font-weight: 700;
   font-size: 18px;
   line-height: 160%;

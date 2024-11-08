@@ -1,9 +1,8 @@
-import letter from "../../../assets/images/picture/letter.svg";
-import formSticker from "../../../assets/images/picture/form-sticker.svg";
 import { subscription } from "../../../containers/MainPage";
-import "./form.scss";
+import "./form.css";
 
 export default function (prop: { subscription: subscription }) {
+  const chbox = prop.subscription.agreementtext.split("<>");
   return (
     <section className="form">
       <div className="wrap">
@@ -37,15 +36,10 @@ export default function (prop: { subscription: subscription }) {
                 />
                 <label htmlFor="agree">
                   <p className="form__chbox-text">
-                    Confirmo que he leído, acepto y entiendo los
-                    <span className="form__chbox-text_underline">
-                      términos y condiciones
-                    </span>
-                    , así como el
-                    <span className="form__chbox-text_underline">
-                      aviso de privacidad
-                    </span>
-                    {/* {prop.subscription.agreementtext} */}
+                    {chbox[0]}
+                    <a className="form__chbox-text_underline">{chbox[1]}</a>
+                    {chbox[2]}
+                    <a className="form__chbox-text_underline">{chbox[3]}</a>
                   </p>
                 </label>
               </div>
@@ -55,14 +49,18 @@ export default function (prop: { subscription: subscription }) {
                 </p>
                 <img
                   className="form__submitted-img"
-                  src={formSticker}
+                  src="/images/picture/form-sticker.svg"
                   alt="application accepted"
                 />
               </div>
             </div>
           </div>
           <div className="form__letter">
-            <img className="form__letter-img" src={letter} alt="letter" />
+            <img
+              className="form__letter-img"
+              src="/images/picture/letter.svg"
+              alt="letter"
+            />
           </div>
         </form>
       </div>

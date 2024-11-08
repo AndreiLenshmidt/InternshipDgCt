@@ -1,28 +1,5 @@
-@font-face {
-  font-family: "ArchivoBlack";
-  font-style: normal;
-  font-weight: normal;
-  src: local("ArchivoBlack-Regular"), url("../fonts/ArchivoBlack-Regular.ttf") format("truetype");
-}
-@font-face {
-  font-family: "Nunito-Regular";
-  font-style: normal;
-  font-weight: normal;
-  src: local("Nunito-Regular"), url("../fonts/Nunito-VariableFont_wght.ttf") format("truetype");
-}
-@font-face {
-  font-family: "Nunito-Medium";
-  font-style: normal;
-  font-weight: medium;
-  src: local("Nunito-Medium"), url("../fonts/Nunito-Medium.ttf") format("truetype");
-}
-@font-face {
-  font-family: "Nunito-Bold";
-  font-style: normal;
-  font-weight: bold;
-  src: local("Nunito-Bold"), url("../fonts/Nunito-Bold.ttf") format("truetype");
-}
 .header {
+  padding: 16px 0;
   z-index: 3;
   position: fixed;
   top: 0;
@@ -37,7 +14,6 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 16px 0 15.2px;
   flex-wrap: wrap;
 }
 @media (width < 1280px) {
@@ -107,7 +83,7 @@
   white-space: nowrap;
   transition: background-color 0.3s;
   color: #1b1f21;
-  font-family: "Nunito Medium";
+  font-family: "Nunito-Medium";
   font-weight: 500;
   font-size: 15px;
   line-height: 140%;
@@ -148,7 +124,7 @@
   padding-right: 11px;
   text-transform: uppercase;
   color: #1b1f21;
-  font-family: "Nunito Medium";
+  font-family: "Nunito-Medium";
   font-weight: 500;
   font-size: 15px;
   line-height: 140%;

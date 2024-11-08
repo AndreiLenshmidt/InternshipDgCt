@@ -1,4 +1,4 @@
-import "./logo.scss";
+import "./logo.css";
 
 export default function LogoComp(prop: { className: string; href: string }) {
   return (

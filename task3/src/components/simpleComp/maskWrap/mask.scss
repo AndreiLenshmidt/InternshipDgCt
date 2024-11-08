@@ -1,4 +1,4 @@
-@import "../../../assets/styles/_vars-fonts-mixins.scss";
+@import "../../../../public/styles/vars-mixins";
 
 .main {
   &__pic-box {
@@ -67,7 +67,7 @@
   }
   &__img {
     width: 584px;
-    margin-top: 6px;
+    margin-top: 8px;
     @media (width < $width-tablet) {
       width: 340px;
       height: 224px;

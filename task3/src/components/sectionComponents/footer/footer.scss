@@ -1,4 +1,4 @@
-@import "../../../assets/styles/_vars-fonts-mixins.scss";
+@import "../../../../public/styles/vars-mixins";
 
 .footer {
   @include WidthCenter;
@@ -56,7 +56,7 @@
     }
   }
   &__small-box:nth-child(3) {
-    margin-top: -108px;
+    margin-top: -91px;
     flex-basis: 80%;
     width: 281px;
     @media (width < $width-tablet) {
@@ -104,6 +104,7 @@
   }
   &__menu {
     width: 120px;
+    min-height: 250px;
     @include Nunito15M-SLS($white);
     @media (width < $width-tablet) {
       width: 125px;
@@ -112,10 +113,6 @@
       width: 100%;
     }
   }
-  &__menu[open] {
-    margin-bottom: 31px;
-  }
-
   &__menu:nth-child(2) {
     width: 104px;
     @media (width < $width-tablet) {
@@ -153,7 +150,7 @@
     }
   }
   &__menu[open] &__menu-item {
-    padding-bottom: 26px;
+    padding-bottom: 25px;
     @media (width < $width-smartpthone) {
       padding-bottom: 16px;
       width: 302px;
@@ -162,6 +159,7 @@
 
   &__details-item {
     @include Nunito15M-SLS($white);
+    display: block;
     margin-bottom: 10px;
     position: relative;
     width: fit-content;
@@ -229,7 +227,7 @@
     position: relative;
   }
   &__item:not(:first-child)::before {
-    content: url(../images/icons/point.svg);
+    content: url(/images/icons/point.svg);
     @include position($t: calc(7% - 2.5px), $l: -14px);
     @media (width < $width-smartpthone) {
       display: none;

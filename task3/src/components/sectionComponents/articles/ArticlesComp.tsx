@@ -2,7 +2,7 @@ import TagsComp from "../../simpleComp/tags/TagsComp";
 import MaskWrap from "../../simpleComp/maskWrap/MaskWrap";
 import DataBox from "../../simpleComp/dataBox/DataBox";
 import { content } from "../../../containers/MainPage";
-import "./articles.scss";
+import "./articles.css";
 
 export default function ArticlesComp(prop: { content: content }) {
   return (
