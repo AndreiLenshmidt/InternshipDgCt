@@ -109,17 +109,17 @@
           "text": "¡Es posible unir la pasión por los dos universos! ¿Habías escuchado este término antes? Si no te suena de nada, no te sientas mal, el concepto es nuevo. ¡Nosotros te lo explicamos!",
           "accent": "#bedb39",
           "date": "2 de junio de 2022",
-          "duration": 10,
+          "duration": "10 min",
           "browsetext": "Leer el artículo",
           "size": "full-size",
           "tags": ["Gaming", "Artículo", "Niños", "Proyecto"],
           "img": {
-            "url": "../../assets/images/picture/pic1.webp",
+            "url": "../../../assets/images/picture/pic1.webp",
             "shape": "arch"
           },
           "stamp": {
-            "word": "../../assets/images/picture/sticker1.svg",
-            "type": "circle",
+            "word": "Gaming",
+            "type": "../../../assets/images/picture/sticker1.svg",
             "position": "top-right"
           }
         }
@@ -132,17 +132,17 @@
           "title": "¿Cómo hacer el cambio de carrera a Diseño de Productos Digitales?",
           "text": "¿Quieres saber qué se estudia para ser paisajista y formar parte de uno de los gremios que están en auge a nivel laboral? Sigue leyendo.",
           "accent": "#90eecb",
-          "date": "02.06.2022",
-          "duration": 10,
+          "date": "2 de junio de 2022",
+          "duration": "10 min",
           "size": "compact",
           "tags": ["Fashion", "Artículo", "Niños", "Proyecto"],
           "img": {
-            "url": "/img/sections/content/1.jpg",
+            "url": "../../../assets/images/picture/pic2.webp",
             "shape": "semi-squared-rounded"
           },
           "stamp": {
             "word": "Fashion",
-            "type": "star",
+            "type": "../../../assets/images/picture/sticker2.svg",
             "position": "top-left"
           }
         },
@@ -150,17 +150,17 @@
           "title": "¿Qué hace un paisajista y cuánto gana?",
           "text": "¿Quieres saber qué se estudia para ser paisajista y formar parte de uno de los gremios que están en auge a nivel laboral? Sigue leyendo.",
           "accent": "#ec95b1",
-          "date": "02.06.2022",
-          "duration": 10,
+          "date": "2 de junio de 2022",
+          "duration": "10 min",
           "size": "compact",
           "tags": ["Diseño", "Artículo", "Niños", "Proyecto"],
           "img": {
-            "url": "/img/sections/content/2.jpg",
+            "url": "../../../assets/images/picture/pic3.webp",
             "shape": "semi-squared-cloud"
           },
           "stamp": {
             "word": "Diseño",
-            "type": "cookie",
+            "type": "../../../assets/images/picture/sticker3.svg",
             "position": "top-right"
           }
         },
@@ -168,17 +168,17 @@
           "title": "Todo lo que querías saber sobre Diseño UX / UI",
           "text": "Aunque los conceptos de experiencia de usuario y desarrollo de interfaces han estado presentes durante décadas en numerosas industrias, muchas personas aún tienen dudas sobre lo que realmente hace un profesional en este campo.",
           "accent": "#ec95b1",
-          "date": "02.06.2022",
-          "duration": 10,
+          "date": "2 de junio de 2022",
+          "duration": "10 min",
           "size": "full-image",
           "tags": ["Diseño", "Artículo", "Niños", "Proyecto"],
           "img": {
-            "url": "/img/content-3.jpg",
+            "url": "../../../assets/images/picture/pic4.webp",
             "shape": "cloud"
           },
           "stamp": {
             "word": "Diseño",
-            "type": "cookie",
+            "type": "../../../assets/images/picture/sticker3.svg",
             "position": "top-right"
           }
         },
@@ -186,17 +186,17 @@
           "title": "Por qué algunas marcas fallan en el rebranding",
           "text": "As falhas de grandes marcas como Gap e Coca Cola explicadas.",
           "accent": "#ffad20",
-          "date": "02.06.2022",
-          "duration": 10,
+          "date": "2 de junio de 2022",
+          "duration": "10 min",
           "size": "compact",
           "tags": ["Marketing", "Artículo", "Niños", "Proyecto"],
           "img": {
-            "url": "/img/sections/content/4.jpg",
+            "url": "../../../assets/images/picture/pic5.webp",
             "shape": "corner-squared-cloud"
           },
           "stamp": {
             "word": "Marketing",
-            "type": "signboard",
+            "type": "../../../assets/images/picture/sticker4.svg",
             "position": "top-left"
           }
         },
@@ -204,17 +204,17 @@
           "title": "¿Qué es AutoCAD y para qué sirve?",
           "text": "Unity te ofrece un gran abanico de posibilidades para desarrollar tu juego, darlo a conocer en todo el mundo, monetizar y triunfar por todo lo alto.",
           "accent": "#acd6de",
-          "date": "02.06.2022",
-          "duration": 10,
+          "date": "2 de junio de 2022",
+          "duration": "10 min",
           "size": "compact",
           "tags": ["Software", "Artículo", "Niños", "Proyecto"],
           "img": {
-            "url": "/img/sections/content/5.jpg",
+            "url": "../../../assets/images/picture/pic6.webp",
             "shape": "corner-squared-rounded"
           },
           "stamp": {
             "word": "Software",
-            "type": "donut",
+            "type": "../../../assets/images/picture/sticker5.svg",
             "position": "top-right"
           }
         }
@@ -223,45 +223,45 @@
     },
     "proposals": {
       "title": "Webinars gratuitos",
-      "browse-all-text": "Todos os webinars",
+      "browsealltext": "Todos os webinars",
       "items": [
         {
           "background": "#57acbc",
           "author": {
-            "img": "/img/proposals/authors/1.jpg",
+            "img": "../../../assets/images/picture/avatar-default.svg",
             "name": "Julia Alvarez",
             "position": "Programador, consultor"
           },
           "text": "Cómo iniciar el calendario de publicaciones de tu marca",
           "tags": ["Próximamente", "Webinar"],
-          "date_from": "31.05.2024",
-          "date_to": "02.06.2024",
+          "date_from": "31 de maio, 01 e",
+          "date_to": "02 de junho de 2022",
           "time": "19:00"
         },
         {
           "background": "#57acbc",
           "author": {
-            "img": "/img/proposals/authors/1.jpg",
+            "img": "../../../assets/images/picture/avatar2.webp",
             "name": "Julia Alvarez",
             "position": "Programador, consultor"
           },
           "text": "Cómo iniciar el calendario de publicaciones de tu marca",
           "tags": ["Próximamente", "Webinar"],
-          "date_from": "31.05.2024",
-          "date_to": "02.06.2024",
+          "date_from": "31 de maio, 01 e",
+          "date_to": "02 de junho de 2022",
           "time": "19:00"
         },
         {
           "background": "#ef9700",
           "author": {
-            "img": "/img/proposals/authors/2.jpg",
+            "img": "../../../assets/images/picture/avatar3.webp",
             "name": "Consuela Zacatelco",
             "position": "Empresario graduado de la Universidad de Harvard"
           },
           "text": "Ilustración Digital: 3 diferentes estilos de diseño",
           "tags": ["Próximamente", "Demonstração"],
-          "date_from": "01.06.2024",
-          "date_to": "02.06.2024",
+          "date_from": "01 e",
+          "date_to": "02 de junho de 2022",
           "time": "19:00"
         }
       ],
@@ -270,9 +270,9 @@
     "subscription": {
       "title": "Suscríbete a nuestra newsletter para no perderte nada nuevo",
       "text": "Tendencia en el mercado laboral: conozca esta profesión que transforma la experiencia del Usuario a través de elementos textuales.",
-      "email-placeholder": "Su correo electrónico",
-      "submit-text": "Enviar",
-      "agreement-text": "Confirmo que he leído, acepto y entiendo los términos y condiciones, así como el aviso de privacidad",
+      "emailplaceholder": "Su correo electrónico",
+      "submittext": "Enviar",
+      "agreementtext": "<>Confirmo que he leído, acepto y entiendo los <span className='form__chbox-text_underline'> términos y condiciones</span> así como el <span className='form__chbox-text_underline'> aviso de privacidad</span></>",
       "ticker": { "text": "Descuento para cursos 20%", "color:": "#da3369" }
     }
   },

@@ -1,0 +1,147 @@
+@import "../../../assets/styles/_vars-fonts-mixins.scss";
+
+.main {
+  padding-top: 80px;
+  @include WidthCenter;
+  @include relative-hidden;
+  background: url(../../../assets/images/background/bg-main-1440.svg)
+    calc(50% - 52px) 51px no-repeat;
+  background-size: 1642px;
+  @media (width < $width-tablet) {
+    padding-top: 64px;
+    background: url(../../../assets/images/background/bg-main-768.svg)
+      calc(50% - -164px) 108.5% no-repeat;
+    background-size: 1763px;
+  }
+  @media (width < $width-smartpthone) {
+    padding-top: 36px;
+    background: url(../../../assets/images/background/bg-main-320.svg)
+      calc(50% + -40px) 30.5% no-repeat;
+    background-size: 1283px;
+  }
+  &__container {
+    display: flex;
+    justify-content: flex-start;
+    gap: 40px;
+    @media (width < $width-tablet) {
+      flex-direction: column;
+      align-items: center;
+      padding-bottom: 0;
+      gap: 24px;
+    }
+    @media (width < $width-smartpthone) {
+      gap: 18px;
+    }
+  }
+  &__box {
+    width: 688px;
+    @media (width < $width-tablet) {
+      width: 704px;
+      display: flex;
+      flex-wrap: wrap;
+    }
+    @media (width < $width-smartpthone) {
+      width: 304px;
+      justify-content: space-between;
+    }
+  }
+  &__title {
+    @include AchivoH3($black);
+    padding-bottom: 16px;
+    font-weight: 800;
+    line-height: 119%;
+    @media (width < $width-tablet) {
+      width: 461px;
+      @include AchivoH5($black);
+      margin-top: -2px;
+      padding-bottom: 8px;
+    }
+    @media (width < $width-smartpthone) {
+      padding-bottom: 16px;
+      width: 308px;
+      margin-top: -6px;
+    }
+  }
+  &__text {
+    @include Nunito18R($gray70);
+    padding-bottom: 16px;
+    width: 480px;
+    @media (width < $width-tablet) {
+      width: 455px;
+      padding-bottom: 54px;
+    }
+    @media (width < $width-smartpthone) {
+      width: 304px;
+      padding-bottom: 16px;
+    }
+  }
+  &__btn {
+    @include button-styles(
+      $bd-color: $black,
+      $bd-rad: 30px,
+      $pad: 8px 49px,
+      $bg-color: $grass
+    );
+    margin-left: 4px;
+    @include Nunito18M($black);
+    box-shadow: 0 0 0 5px $grass;
+    @media (width < $width-tablet) {
+      padding: 8px 49px;
+      font-weight: 600;
+    }
+    @media (width < $width-smartpthone) {
+      padding: 8px 48px;
+      width: 96%;
+      margin-left: 6px;
+    }
+  }
+  &__btn:hover,
+  &__btn:active {
+    background-color: $black;
+    color: $white;
+    box-shadow: 0 0 0 5px $black;
+    outline: none;
+  }
+  &__btn:focus-visible {
+    outline: none;
+    border: 1.5px solid $black;
+  }
+  &__btn:disabled {
+    opacity: 0.6;
+  }
+  &__btn:focus {
+    border: 2px solid transparent;
+    box-shadow: 0 0 0 2px #1b1f21;
+    outline: none;
+    padding: 8px 48px;
+  }
+  // &__runnig-string-box {
+  //   overflow: hidden;
+  //   height: 394px;
+  //   @media (width < $width-tablet) {
+  //     height: 285px;
+  //   }
+  //   @media (width < $width-smartpthone) {
+  //     height: 250px;
+  //   }
+  // }
+  // &__runnig-string {
+  //   @include AchivoH1($black);
+  //   background-color: $turquoise;
+  //   width: 3250px;
+  //   transform: rotate(-4deg);
+  //   padding-top: 10px;
+  //   margin: calc(7vw + 1vh - 49px) 0 0 -10px;
+  //   @media (width < $width-tablet) {
+  //     transform: rotate(-3deg);
+  //     width: 2150px;
+  //     margin-top: calc(8vw + 1vh - 44px);
+  //     padding: 9px 0 5px;
+  //   }
+  //   @media (width < $width-smartpthone) {
+  //     margin-top: -10px;
+  //     transform: rotate(-4deg);
+  //     margin-top: calc(5vw - 40px);
+  //   }
+  // }
+}

@@ -1,17 +1,19 @@
+@import "../../../assets/styles/_vars-fonts-mixins.scss";
+
 .webinars {
   @include WidthCenter;
   &__bkg {
     @include relative-hidden;
-    background: url(../images/background/webinars-bg-1440.svg) 50% 135px
-      no-repeat;
+    background: url(../../../assets/images/background/webinars-bg-1440.svg) 50%
+      135px no-repeat;
     background-size: $width-laptop;
     @media (width > 1440px) {
-      background: url(../images/background/webinars-bg-4k.svg) 0% 147px
-        no-repeat;
+      background: url(../../../assets/images/background/webinars-bg-4k.svg) 0%
+        147px no-repeat;
       background-size: 3840px;
     }
     @media (width < $width-tablet) {
-      background: url(../images/background/webinars-bg-768.svg)
+      background: url(../../../assets/images/background/webinars-bg-768.svg)
         calc(50% - -107px) 106px no-repeat;
       background-size: 1568px;
     }
@@ -137,8 +139,9 @@
     }
   }
   &__card:nth-child(1) {
-    background: $turquoise-dark url(../images/background/card1-bg-376.svg) 101%
-      101% no-repeat;
+    background: $turquoise-dark
+      url(../../../assets/images/background/card1-bg-376.svg) 101% 101%
+      no-repeat;
     @media (width < $width-tablet) {
       background-position: 79px 82px;
     }
@@ -156,26 +159,27 @@
     }
   }
   &__card:nth-child(2) {
-    background: $coral-dark url(../images/background/card2-bg-376.svg) 100% 100%
+    background: $coral-dark
+      url(../../../assets/images/background/card2-bg-376.svg) 100% 100%
       no-repeat;
     @media (width < $width-tablet) {
-      background-image: url(../images/background/card2-bg-340.svg);
+      background-image: url(../../../assets/images/background/card2-bg-340.svg);
     }
     @media (width < $width-smartpthone) {
       background-position: 62px -6px;
     }
   }
   &__card:nth-child(3) {
-    background: $tangerine-dark url(../images/background/card3-bg-376.svg) 0%
-      8px no-repeat;
+    background: $tangerine-dark
+      url(../../../assets/images/background/card3-bg-376.svg) 0% 8px no-repeat;
     @media (width < $width-tablet) {
-      background-image: url(../images/background/card3-bg-704.svg);
+      background-image: url(../../../assets/images/background/card3-bg-704.svg);
       background-position: 24% 1px;
       flex-basis: 100%;
       height: 272px;
     }
     @media (width < $width-smartpthone) {
-      background-image: url(../images/background/card1-bg-376.svg);
+      background-image: url(../../../assets/images/background/card1-bg-376.svg);
       background-position: 61px 50px;
       height: 370px;
     }
@@ -278,72 +282,6 @@
       height: auto;
       padding-top: 32px;
       flex-basis: auto;
-    }
-  }
-  &__date-box {
-    display: flex;
-    justify-content: flex-start;
-    flex-wrap: wrap;
-    align-items: flex-start;
-    padding-top: 12px;
-    @media (width < $width-smartpthone) {
-      width: 304px;
-      justify-content: flex-start;
-      margin-top: 0;
-    }
-  }
-  &__date-box_big {
-    justify-content: space-between;
-    padding-top: 10px;
-    @media (width < $width-smartpthone) {
-      width: 256px;
-    }
-  }
-  &__date-box_big_flex {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-  }
-
-  &__span {
-    padding-left: 8px;
-  }
-  &__span_big {
-    @media (width < $width-tablet) {
-      padding-left: 9px;
-    }
-    @media (width < $width-smartpthone) {
-      display: inline-block;
-      max-width: 139px;
-    }
-  }
-  &__span:not(:last-child) {
-    width: 200px;
-    padding-right: 22px;
-    @media (width < $width-tablet) {
-      width: 150px;
-      padding-right: 52px;
-    }
-    @media (width < $width-smartpthone) {
-      padding-right: 15px;
-      width: 151px;
-    }
-  }
-
-  &__icon {
-    @include width-heigth($w: 17px, $h: 17px);
-    fill: $white;
-    margin-top: 4px;
-    @media (width < $width-smartpthone) {
-      margin-top: 2px;
-    }
-  }
-  &__icon:first-child {
-    @media (width < $width-tablet) {
-      order: -1;
-    }
-    @media (width < $width-smartpthone) {
-      order: 0;
     }
   }
 }

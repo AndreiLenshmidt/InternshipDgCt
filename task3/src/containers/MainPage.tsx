@@ -1,17 +1,17 @@
 import { useLayoutEffect, useState } from "react";
-import ArticlesComp from "../components/articles/ArticlesComp";
-import FormComp from "../components/FormComp";
-import MainComp from "../components/main/MainComp";
-import WebinarsComp from "../components/WebinarsComp";
+import ArticlesComp from "../components/sectionComponents/articles/ArticlesComp";
+import FormComp from "../components/sectionComponents/formSection/FormComp";
+import MainComp from "../components/sectionComponents/main/MainComp";
+import WebinarsComp from "../components/sectionComponents/webinars/WebinarsComp";
 
 type sections = {
-  content: {};
-  main: main;
-  proposals: {};
-  subscription: {};
+  content: content;
+  main: content;
+  proposals: proposals;
+  subscription: subscription;
 };
 
-export type main = {
+export type content = {
   items: Array<{
     title: string;
     text: string;
@@ -29,12 +29,46 @@ export type main = {
   };
 };
 
+export type proposals = {
+  title: string;
+  browsealltext: string;
+  items: Array<{
+    background: string;
+    author: {
+      img: string;
+      name: string;
+      position: string;
+    };
+    text: string;
+    tags: [string, string];
+    date_from: string;
+    date_to: string;
+    time: string;
+  }>;
+  ticker: { text: string; color: string };
+};
+
+export type subscription = {
+  agreementtext: string;
+  emailplaceholder: string;
+  submittext: string;
+  text: string;
+  ticker: { text: string; color: string };
+  title: string;
+};
+
 export default function MainPage(prop: {
   url: string;
   getDataFromDB: CallableFunction;
 }) {
   const [sections, setSections] = useState<sections>({
-    content: {},
+    content: {
+      items: [],
+      ticker: {
+        color: "",
+        text: "",
+      },
+    },
     main: {
       items: [],
       ticker: {
@@ -42,8 +76,34 @@ export default function MainPage(prop: {
         text: "",
       },
     },
-    proposals: {},
-    subscription: {},
+    proposals: {
+      title: "",
+      browsealltext: "",
+      items: [
+        {
+          background: "",
+          author: {
+            img: "",
+            name: "",
+            position: "",
+          },
+          text: "",
+          tags: ["", ""],
+          date_from: "",
+          date_to: "",
+          time: "",
+        },
+      ],
+      ticker: { text: "", color: "" },
+    },
+    subscription: {
+      agreementtext: "",
+      emailplaceholder: "",
+      submittext: "",
+      text: "",
+      ticker: { text: "", color: "" },
+      title: "string;",
+    },
   });
 
   useLayoutEffect(() => {
@@ -55,9 +115,9 @@ export default function MainPage(prop: {
   return (
     <>
       <MainComp main={sections.main} />
-      <ArticlesComp />
-      <WebinarsComp />
-      <FormComp />
+      <ArticlesComp content={sections.content} />
+      <WebinarsComp proposals={sections.proposals} />
+      <FormComp subscription={sections.subscription} />
     </>
   );
 }

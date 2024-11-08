@@ -1,0 +1,227 @@
+@import "../../../assets/styles/_vars-fonts-mixins.scss";
+
+.main {
+  &__date-box {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding-bottom: 60px;
+    @media (width < $width-tablet) {
+      flex-wrap: wrap;
+      flex-basis: 34.5%;
+      justify-content: flex-end;
+      margin-top: -298px;
+      align-content: center;
+    }
+    @media (width < $width-smartpthone) {
+      flex-basis: 100%;
+      width: 304px;
+      justify-content: flex-start;
+      margin-top: 0;
+      padding-bottom: 60px;
+    }
+  }
+  &__span {
+    @include Nunito15R-SLS($gray35);
+    padding-left: 8px;
+    margin-top: 2px;
+    @media (width < $width-tablet) {
+      padding-right: 9px;
+      order: 1;
+      margin-top: 7px;
+    }
+    @media (width < $width-smartpthone) {
+      margin-top: 2px;
+      padding-left: 6px;
+    }
+  }
+  &__span:not(:last-child) {
+    padding-right: 24px;
+    @media (width < $width-tablet) {
+      padding: 0 9px 0 60px;
+      order: -1;
+    }
+    @media (width < $width-smartpthone) {
+      padding: 0 23px 0 6px;
+    }
+  }
+  &__icon {
+    @include width-heigth($w: 17px, $h: 17px);
+    fill: $gray35;
+    margin-left: 1px;
+    @media (width < $width-tablet) {
+      order: 4;
+      margin: 8px 24px 0 0px;
+    }
+    @media (width < $width-smartpthone) {
+      order: -1;
+      margin: 0 3px 0 0;
+    }
+  }
+  &__icon:first-child {
+    @media (width < $width-tablet) {
+      order: 1;
+    }
+    @media (width < $width-smartpthone) {
+      order: -1;
+    }
+  }
+}
+.articles {
+  &__date-box {
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    align-items: center;
+    padding-top: 19px;
+    @media (width < $width-tablet) {
+      padding-top: 17px;
+    }
+    @media (width < $width-smartpthone) {
+      width: 304px;
+      justify-content: flex-start;
+      margin-top: 0;
+    }
+  }
+  &__date-box_big {
+    justify-content: flex-end;
+    padding-top: 0;
+    margin-top: -9px;
+    row-gap: 8px;
+    @media (width < $width-smartpthone) {
+      position: absolute;
+      justify-content: flex-start;
+      top: 412px;
+    }
+  }
+  &__span {
+    @include Nunito15R-SLS;
+    color: $gray35;
+    padding-left: 8px;
+    @media (width < $width-tablet) {
+      padding-right: 9px;
+    }
+  }
+  &__span:not(:last-child) {
+    padding-right: 26px;
+    @media (width < $width-smartpthone) {
+      padding-right: 24px;
+    }
+  }
+  &__span_big {
+    @include Nunito15R-SLS($gray35);
+    padding: 0 9px 0 8px;
+    order: 1;
+    @media (width < $width-smartpthone) {
+      padding-right: 25px;
+    }
+  }
+  &__span_big:not(:last-child) {
+    margin-left: 180px;
+    order: -1;
+    @media (width < $width-tablet) {
+      margin-left: 25px;
+    }
+    @media (width < $width-smartpthone) {
+      margin-left: 0px;
+    }
+  }
+  &__icon {
+    @include width-heigth($w: 17px, $h: 17px);
+    fill: $gray35;
+  }
+  &__icon:first-child {
+    @media (width < $width-tablet) {
+      order: -1;
+    }
+    @media (width < $width-smartpthone) {
+      order: 0;
+    }
+  }
+  &__icon_big {
+    @include width-heigth($w: 17px, $h: 17px);
+    fill: $gray35;
+    order: 2;
+    @media (width < $width-tablet) {
+      margin-right: 25px;
+    }
+    @media (width < $width-smartpthone) {
+      order: 0;
+      margin-right: 0px;
+    }
+  }
+  &__icon_big:first-child {
+    order: 0;
+    @media (width < $width-smartpthone) {
+      order: -1;
+    }
+  }
+}
+.webinars {
+  &__date-box {
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    padding-top: 12px;
+    @media (width < $width-smartpthone) {
+      width: 304px;
+      justify-content: flex-start;
+      margin-top: 0;
+    }
+  }
+  &__date-box_big {
+    justify-content: space-between;
+    padding-top: 10px;
+    @media (width < $width-smartpthone) {
+      width: 256px;
+    }
+  }
+  &__date-box_big_flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
+  &__span {
+    padding-left: 8px;
+  }
+  &__span_big {
+    @media (width < $width-tablet) {
+      padding-left: 9px;
+    }
+    @media (width < $width-smartpthone) {
+      display: inline-block;
+      max-width: 139px;
+    }
+  }
+  &__span:not(:last-child) {
+    width: 200px;
+    padding-right: 22px;
+    @media (width < $width-tablet) {
+      width: 150px;
+      padding-right: 52px;
+    }
+    @media (width < $width-smartpthone) {
+      padding-right: 15px;
+      width: 151px;
+    }
+  }
+
+  &__icon {
+    @include width-heigth($w: 17px, $h: 17px);
+    fill: $white;
+    margin-top: 4px;
+    @media (width < $width-smartpthone) {
+      margin-top: 2px;
+    }
+  }
+  &__icon:first-child {
+    @media (width < $width-tablet) {
+      order: -1;
+    }
+    @media (width < $width-smartpthone) {
+      order: 0;
+    }
+  }
+}

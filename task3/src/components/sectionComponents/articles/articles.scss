@@ -1,0 +1,135 @@
+@import "../../../assets/styles/_vars-fonts-mixins.scss";
+
+.articles {
+  padding-top: 15px;
+  @include relative-hidden;
+  background: url(../../../assets/images/background/articles-bg-1440.svg)
+    calc(50% - -119px) -121px no-repeat;
+  background-size: 3016px;
+  @media (width < $width-tablet) {
+    background: url(../../../assets/images/background/articles-bg-768.svg)
+      calc(50% + -297px) 161px no-repeat;
+    background-size: 2543px;
+  }
+  @media (width < $width-smartpthone) {
+    background: url(../../../assets/images/background/articles-bg-320.svg)
+      calc(50% + 15px) -183px no-repeat;
+    background-size: 965px;
+  }
+  &__container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    row-gap: 136px;
+    @media (width < $width-tablet) {
+      row-gap: 82px;
+    }
+    @media (width < $width-smartpthone) {
+      padding-bottom: 22px;
+    }
+  }
+  &__card {
+    flex-basis: 45%;
+    @media (width < $width-tablet) {
+      min-height: 599px;
+    }
+  }
+  &__card:nth-child(3) {
+    flex-basis: 100%;
+    display: flex;
+    flex-wrap: wrap;
+  }
+  &__card:nth-child(4),
+  &__card:nth-child(5) {
+    margin-top: -37px;
+    @media (width < $width-tablet) {
+      margin-top: -42px;
+    }
+    @media (width < $width-smartpthone) {
+      margin-top: 0px;
+      padding-bottom: 0px;
+    }
+  }
+  &__card_big-left {
+    flex-basis: 31.15%;
+    margin-right: 19px;
+    @media (width < $width-tablet) {
+      flex-basis: 34.6%;
+      margin: -11px 0 0 0;
+    }
+    @media (width < $width-smartpthone) {
+      flex-basis: 100%;
+      height: 90px;
+      position: relative;
+    }
+  }
+  &__card_big-right {
+    @media (width < $width-tablet) {
+      width: 455px;
+      margin-top: 28px;
+    }
+    @media (width < $width-smartpthone) {
+      width: 308px;
+      margin-top: -10px;
+    }
+  }
+  &__card:hover &__stiker {
+    transform: rotate(180deg);
+  }
+  &__title {
+    @include AchivoH4($black);
+    @media (width < $width-tablet) {
+      width: 340px;
+      font-size: 24px;
+      font-weight: 500;
+      margin-top: -4px;
+    }
+    @media (width < $width-smartpthone) {
+      width: 308px;
+      line-height: 120%;
+      margin-top: -2px;
+    }
+  }
+  &__title_big {
+    font-size: 36px;
+    width: 792px;
+    padding-top: 47px;
+    @media (width < $width-tablet) {
+      width: 460px;
+      font-weight: 800;
+      font-size: 26px;
+      padding-top: 0;
+      margin-top: -2px;
+    }
+    @media (width < $width-smartpthone) {
+      width: 290px;
+      font-size: 24px;
+      margin-top: 2px;
+    }
+  }
+  &__text {
+    @include Nunito18R($black);
+    padding-top: 15px;
+    width: 500px;
+    @media (width < $width-tablet) {
+      width: 340px;
+      padding-top: 15px;
+    }
+    @media (width < $width-smartpthone) {
+      width: 308px;
+      padding-top: 16px;
+    }
+  }
+  &__text_big {
+    width: 678px;
+    padding-top: 9px;
+    @media (width < $width-tablet) {
+      width: 460px;
+      padding: 8px 0 40px;
+    }
+    @media (width < $width-smartpthone) {
+      width: 308px;
+      padding-top: 16px;
+    }
+  }
+}

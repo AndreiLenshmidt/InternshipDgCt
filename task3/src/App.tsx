@@ -1,11 +1,11 @@
 import { useLayoutEffect, useState } from "react";
 import "./assets/styles/styles.scss";
-import TheFooter from "./components/footer/TheFooter";
-import TheHeader from "./components/header/TheHeader";
 import MainPage from "./containers/MainPage";
+import TheHeader from "./components/sectionComponents/header/TheHeader";
+import TheFooter from "./components/sectionComponents/footer/TheFooter";
 
 type logo = string;
-type header = Array<{ label: string; url: "#" }>;
+export type header = Array<{ label: string; url: string }>;
 type items = Array<{
   label: string;
   url: string;
