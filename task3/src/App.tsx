@@ -2,7 +2,7 @@ import { useLayoutEffect, useState } from "react";
 import MainPage from "./containers/MainPage";
 import TheHeader from "./components/sectionComponents/header/TheHeader";
 import TheFooter from "./components/sectionComponents/footer/TheFooter";
-import { hideHeader } from "./modules/hide-header";
+import { hideHeader } from "./helpers/hide-header";
 import "../public/styles/styles.css";
 
 type logo = string;
@@ -31,7 +31,7 @@ export type contacts = {
   linkedin: string;
   links: Array<{ label: string; url: string }>;
   phone: string;
-  subscription: {};
+  subscription: { emailplaceholder: string; submittext: string };
   whatsapp: string;
   youtube: string;
 };
@@ -45,7 +45,7 @@ function App() {
     linkedin: "",
     links: [],
     phone: "",
-    subscription: {},
+    subscription: { submittext: "", emailplaceholder: "" },
     whatsapp: "",
     youtube: "",
   });

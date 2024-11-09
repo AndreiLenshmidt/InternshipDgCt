@@ -1,116 +1,6 @@
 @import "../../../../public/styles/vars-mixins";
 
 .form {
-  @include width-heigth($w: 100%, $h: 518px);
-  background: $turquoise-dark url(/images/background/form-bg-1440.svg)
-    calc(50% - 22px) -41px no-repeat;
-  background-size: 988px;
-  @include mask($url: $form-mask-laptop);
-  margin-bottom: 125px;
-  overflow: hidden;
-  @media (width < $width-tablet) {
-    background: $turquoise-dark url(/images/background/form-bg-768.svg)
-      calc(50% - -2px) 2px no-repeat;
-    background-size: 704px;
-    mask-image: $form-mask-tablet;
-    height: auto;
-    margin-bottom: 96px;
-  }
-  @media (width < $width-smartpthone) {
-    background: $turquoise-dark url(/images/background/form-bg-320.svg) 50% -18%
-      no-repeat;
-    background-size: 304px;
-    height: 1106px;
-    @include mask($url: $form-mask-smartphone, $pos: center -27px);
-    margin-bottom: 86px;
-  }
-  &__container {
-    display: flex;
-    justify-content: space-between;
-    @media (width < $width-smartpthone) {
-      flex-wrap: wrap;
-    }
-  }
-  &__content {
-    flex-basis: 69.5%;
-    box-sizing: border-box;
-    padding: 64px 64px 64px 104px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    @media (width < $width-tablet) {
-      padding: 40px 24px;
-      width: 368px;
-      flex-basis: 59%;
-    }
-    @media (width < $width-smartpthone) {
-      width: 304px;
-      padding: 68px 24px 80px;
-    }
-  }
-  &__letter {
-    flex-basis: 37%;
-    @include width-heigth($w: 418px, $h: 518px);
-    background: url(/images/background/form-bg-letter-1440.svg) no-repeat;
-    mask-image: $form-mask-laptop;
-    position: relative;
-    @media (width < $width-tablet) {
-      @include width-heigth($w: 400px, $h: 498px);
-      background-image: url(../images/background/form-bg-letter-768.svg);
-      mask-image: $form-letter-mask;
-      flex-basis: 41%;
-    }
-    @media (width < $width-smartpthone) {
-      background-image: url(/images/background/form-bg-letter-320.svg);
-      mask-image: none;
-      flex-basis: 100%;
-    }
-  }
-  &__letter-img {
-    @include position($t: 39%, $l: 66px);
-    @media (width < $width-tablet) {
-      @include position($t: 49%, $l: 38px);
-      @include width-heigth($w: 209px, $h: 162px);
-    }
-    @media (width < $width-smartpthone) {
-      @include position($t: 34%, $l: 46px);
-    }
-  }
-  &__letter::after {
-    content: "";
-    background: url(/images/icons/letter-after.svg) 50% 50% no-repeat;
-    border-radius: 100%;
-    @include position($t: 35%, $r: 53px);
-    @include width-heigth($w: 69px, $h: 70px);
-    @media (width < $width-tablet) {
-      background-size: 100% 100%;
-      @include position($t: 46%, $r: 38px);
-      @include width-heigth($w: 49px, $h: 48px);
-    }
-    @media (width < $width-smartpthone) {
-      @include position($t: 31%, $r: 45px);
-    }
-  }
-  &__title {
-    @include AchivoH3($white);
-    padding-bottom: 8px;
-    @media (width < $width-tablet) {
-      @include AchivoH5($white);
-    }
-    @media (width < $width-smartpthone) {
-      width: 227px;
-    }
-  }
-  &__text {
-    @include Nunito18R($white);
-    width: 584px;
-    @media (width < $width-tablet) {
-      width: 360px;
-    }
-    @media (width < $width-smartpthone) {
-      width: 260px;
-    }
-  }
   &__box {
     display: flex;
     justify-content: space-between;
@@ -260,7 +150,18 @@
     border-color: #fff;
   }
   &__email_invalid {
+    position: relative;
     border-color: $tangerine;
+  }
+  &__email_invalid::after {
+    content: url(/images/icons/form-invalid.svg);
+    display: block;
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    top: 0;
+    right: 0;
+    z-index: 1;
   }
   &__email_valid {
     border-color: $grass;
@@ -313,16 +214,62 @@
     border: 2px solid $black;
   }
 }
-
-@keyframes text-focus-in {
-  0% {
-    -webkit-filter: blur(12px);
-    filter: blur(12px);
-    opacity: 0;
+.footer {
+  &__email {
+    width: 280px;
+    display: block;
+    @include Nunito18R($white);
+    @include button-styles(
+      $bd-color: $white,
+      $bd-rad: 40px,
+      $pad: 9px 24px,
+      $bg-color: transparent
+    );
+    margin-bottom: 8px;
+    @media (width < $width-tablet) {
+      margin-bottom: 17px;
+    }
+    @media (width < $width-smartpthone) {
+      width: 100%;
+      margin-bottom: 8px;
+    }
   }
-  100% {
-    -webkit-filter: blur(0px);
-    filter: blur(0px);
-    opacity: 1;
+  &__email::placeholder {
+    color: $white;
+  }
+  &__email:focus {
+    outline: none;
+    border-color: $black;
+  }
+  &__button {
+    display: block;
+    @include button-styles(
+      $bd-color: transparent,
+      $bd-rad: 40px,
+      $pad: 8px 49px,
+      $bg-color: $violet-dark
+    );
+    width: 281px;
+    @include Nunito18B($white);
+    @media (width < $width-smartpthone) {
+      width: 100%;
+    }
+  }
+  &__button:hover {
+    @media (width >= $width-smartpthone) {
+      background-color: $pink-dark;
+    }
+  }
+  &__button:active {
+    @media (width < $width-smartpthone) {
+      background-color: $pink-dark;
+    }
+  }
+  &__button:disabled {
+    opacity: 0.6;
+    background-color: $violet-dark;
+  }
+  &__button:focus {
+    border: 2px solid $white;
   }
 }

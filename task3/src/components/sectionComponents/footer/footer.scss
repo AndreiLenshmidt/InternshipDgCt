@@ -110,6 +110,7 @@
       width: 125px;
     }
     @media (width < $width-smartpthone) {
+      min-height: auto;
       width: 100%;
     }
   }
@@ -169,7 +170,7 @@
   }
   &__details-item:last-child {
     @media (width < $width-smartpthone) {
-      margin-bottom: 0px;
+      margin-bottom: 16px;
     }
   }
   &__summery-arrow {
@@ -258,61 +259,6 @@
       left: 0;
     }
   }
-  &__email {
-    width: 280px;
-    @include Nunito18R($white);
-    @include button-styles(
-      $bd-color: $white,
-      $bd-rad: 40px,
-      $pad: 9px 24px,
-      $bg-color: transparent
-    );
-    margin-bottom: 8px;
-    @media (width < $width-tablet) {
-      margin-bottom: 17px;
-    }
-    @media (width < $width-smartpthone) {
-      width: 100%;
-      margin-bottom: 8px;
-    }
-  }
-  &__email::placeholder {
-    color: $white;
-  }
-  &__email:focus {
-    outline: none;
-    border-color: $black;
-  }
-  &__button {
-    @include button-styles(
-      $bd-color: transparent,
-      $bd-rad: 40px,
-      $pad: 8px 49px,
-      $bg-color: $violet-dark
-    );
-    width: 281px;
-    @include Nunito18B($white);
-    @media (width < $width-smartpthone) {
-      width: 100%;
-    }
-  }
-  &__button:hover {
-    @media (width >= $width-smartpthone) {
-      background-color: $pink-dark;
-    }
-  }
-  &__button:active {
-    @media (width < $width-smartpthone) {
-      background-color: $pink-dark;
-    }
-  }
-  &__button:disabled {
-    opacity: 0.6;
-  }
-  &__button:focus {
-    border: 2px solid $white;
-  }
-
   &__contacts {
     padding-top: 6px;
     @include Nunito18B($white);

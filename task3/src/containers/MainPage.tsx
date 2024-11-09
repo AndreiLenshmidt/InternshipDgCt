@@ -1,8 +1,8 @@
 import { useLayoutEffect, useState } from "react";
 import ArticlesComp from "../components/sectionComponents/articles/ArticlesComp";
-import FormComp from "../components/sectionComponents/formSection/FormComp";
 import MainComp from "../components/sectionComponents/main/MainComp";
 import WebinarsComp from "../components/sectionComponents/webinars/WebinarsComp";
+import FormComp from "../components/sectionComponents/formSection/FormSection";
 
 type sections = {
   content: content;
@@ -109,8 +109,6 @@ export default function MainPage(prop: {
   useLayoutEffect(() => {
     prop.getDataFromDB(prop.url, setSections);
   }, []);
-
-  console.log(sections);
 
   return (
     <>

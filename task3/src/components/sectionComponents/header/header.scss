@@ -118,10 +118,10 @@
   transform: translateY(-74px);
 
   @media (width < $width-tablet) {
-    transform: translateY(-118px);
+    transform: translateY(-134px);
   }
   @media (width < $width-smartpthone) {
-    transform: translateY(-114px);
+    transform: translateY(-134px);
   }
 }
 .button {

@@ -145,6 +145,7 @@
 }
 @media (width < 768px) {
   .footer__menu {
+    min-height: auto;
     width: 100%;
   }
 }
@@ -229,7 +230,7 @@
 }
 @media (width < 768px) {
   .footer__details-item:last-child {
-    margin-bottom: 0px;
+    margin-bottom: 16px;
   }
 }
 .footer__summery-arrow {
@@ -349,77 +350,6 @@
     width: 100%;
     left: 0;
   }
-}
-.footer__email {
-  width: 280px;
-  color: #fcfaf9;
-  font-family: "Nunito-Regular";
-  font-weight: 400;
-  font-size: 18px;
-  line-height: 160%;
-  border: 2px solid #fcfaf9;
-  border-radius: 40px;
-  padding: 9px 24px;
-  background-color: transparent;
-  box-sizing: border-box;
-  transition: all 0.3s;
-  margin-bottom: 8px;
-}
-@media (width < 1280px) {
-  .footer__email {
-    margin-bottom: 17px;
-  }
-}
-@media (width < 768px) {
-  .footer__email {
-    width: 100%;
-    margin-bottom: 8px;
-  }
-}
-.footer__email::-moz-placeholder {
-  color: #fcfaf9;
-}
-.footer__email::placeholder {
-  color: #fcfaf9;
-}
-.footer__email:focus {
-  outline: none;
-  border-color: #1b1f21;
-}
-.footer__button {
-  border: 2px solid transparent;
-  border-radius: 40px;
-  padding: 8px 49px;
-  background-color: #9853f4;
-  box-sizing: border-box;
-  transition: all 0.3s;
-  width: 281px;
-  color: #fcfaf9;
-  font-family: "Nunito-Bold";
-  font-weight: 700;
-  font-size: 18px;
-  line-height: 160%;
-}
-@media (width < 768px) {
-  .footer__button {
-    width: 100%;
-  }
-}
-@media (width >= 768px) {
-  .footer__button:hover {
-    background-color: #da3369;
-  }
-}
-@media (width < 768px) {
-  .footer__button:active {
-    background-color: #da3369;
-  }
-}
-.footer__button:disabled {
-  opacity: 0.6;
-}
-.footer__button:focus {
-  border: 2px solid #fcfaf9;
 }
 .footer__contacts {
   padding-top: 6px;

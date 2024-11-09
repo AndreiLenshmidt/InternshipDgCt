@@ -290,8 +290,8 @@
       { "label": "Términos y condiciones", "url": "#" }
     ],
     "subscription": {
-      "email-placeholder": "Su correo electrónico",
-      "submit-text": "Suscribirse al boletín"
+      "emailplaceholder": "Su correo electrónico",
+      "submittext": "Suscribirse al boletín"
     }
   }
 }

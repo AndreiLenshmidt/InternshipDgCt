@@ -1,4 +1,5 @@
 import { footer, contacts } from "../../../App";
+import FormComp from "../../simpleComp/form/FormComp";
 import LogoComp from "../../simpleComp/logo/logo";
 import RunningString from "../../simpleComp/runningString/RunningString";
 import "./footer.css";
@@ -58,35 +59,44 @@ export default function TheFooter(prop: {
               />
             </div>
             <div className="footer__small-box">{details}</div>
-            <form className="footer__small-box">
-              <div>
-                <input
-                  type="text"
-                  name="email"
-                  id="email"
-                  className="footer__email"
-                  placeholder="Su correo electrónico"
-                />
-              </div>
-              <div>
-                <button className="footer__button">
-                  Suscribirse al boletín
-                </button>
-              </div>
-            </form>
             <div className="footer__small-box">
-              <div>
-                <p className="footer__item">WhatsApp</p>
-                <p className="footer__contacts">{prop.contacts.whatsapp}</p>
-              </div>
-              <div>
-                <p className="footer__item">Telefone</p>
-                <p className="footer__contacts">{prop.contacts.phone}</p>
-              </div>
-              <div>
-                <p className="footer__item">email</p>
-                <p className="footer__contacts">{prop.contacts.email}</p>
-              </div>
+              {/* <form action="#">
+                <div>
+                  <input
+                    onFocus={() => console.log("focus")}
+                    onBlur={() => console.log("blur")}
+                    type="text"
+                    name="email"
+                    id="email"
+                    className="footer__email"
+                    placeholder={prop.contacts.subscription.emailplaceholder}
+                  />
+                  <button className="footer__button">
+                    {prop.contacts.subscription.submittext}
+                  </button>
+                </div>
+              </form> */}
+              <FormComp
+                classNames={[
+                  "footer__email",
+                  "footer__button",
+                  "footer__email_invalid",
+                  "footer__email_valid",
+                ]}
+                content={{
+                  buttontext: prop.contacts.subscription.emailplaceholder,
+                  placeholder: prop.contacts.subscription.submittext,
+                }}
+                selectors={["", ""]}
+              />
+            </div>
+            <div className="footer__small-box">
+              {["WhatsApp", "Telefone", "email"].map((item, index) => (
+                <div key={index}>
+                  <p className="footer__item">{item}</p>
+                  <p className="footer__contacts">{prop.contacts.whatsapp}</p>
+                </div>
+              ))}
             </div>
             <div className="footer__small-box">
               {"1234".split("").map((item, index) => (

@@ -159,12 +159,12 @@
 }
 @media (width < 1280px) {
   .header.hide {
-    transform: translateY(-118px);
+    transform: translateY(-134px);
   }
 }
 @media (width < 768px) {
   .header.hide {
-    transform: translateY(-114px);
+    transform: translateY(-134px);
   }
 }
 
