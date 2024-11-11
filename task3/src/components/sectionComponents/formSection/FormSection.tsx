@@ -9,7 +9,7 @@ export default function FormSection(prop: { subscription: subscription }) {
       <div className="form__box" id="chbox">
         <input
           type="checkbox"
-          checked={true}
+          defaultChecked={true}
           name="agree"
           id="agree"
           className="form__agree"
@@ -17,9 +17,13 @@ export default function FormSection(prop: { subscription: subscription }) {
         <label htmlFor="agree">
           <p className="form__chbox-text">
             {chboxText?.[0]}
-            <a className="form__chbox-text_underline">{chboxText?.[1]}</a>
+            <a href="#" className="form__chbox-text_underline">
+              {chboxText?.[1]}
+            </a>
             {chboxText?.[2]}
-            <a className="form__chbox-text_underline">{chboxText?.[3]}</a>
+            <a href="#" className="form__chbox-text_underline">
+              {chboxText?.[3]}
+            </a>
           </p>
         </label>
       </div>

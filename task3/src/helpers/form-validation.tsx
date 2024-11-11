@@ -76,8 +76,8 @@ const handlerSubmit = (
     }
   }
   setTimeout(() => {
-    for (const elem of forms[0].children) {
-      elem.classList.add("none");
+    for (const elem of [...forms[0].children].slice(0, 2)) {
+      elem.setAttribute("style", "display: none");
     }
     forms[0].children[2].classList.remove("none");
   }, 1000);

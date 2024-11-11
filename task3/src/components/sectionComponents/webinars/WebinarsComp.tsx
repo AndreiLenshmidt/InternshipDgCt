@@ -24,59 +24,56 @@ export default function WebinarsComp(prop: { proposals: proposals }) {
             </button>
           </div>
           <div className="webinars__container">
-            {"012".split("").map((item) => (
-              <article key={item} className="webinars__card">
+            {"012".split("").map((_, index) => (
+              <article key={index} className="webinars__card">
                 <div className="webinars__card-header">
                   <MaskWrap
                     imgBoxClassName="webinars__avatar-box"
                     imgClassName="webinars__avatar"
                     stikerClassName=""
-                    imgUrl={prop.proposals.items[+item]?.author}
+                    imgUrl={prop.proposals.items[index]?.author}
                   />
                   <div
                     className={`webinars__user ${
-                      +item === 2 ? "webinars__user_big" : ""
+                      index === 2 ? "webinars__user_big" : ""
                     }`}
                   >
                     <p className="webinars__user-name">
-                      {prop.proposals.items[+item]?.author.name}
+                      {prop.proposals.items[index]?.author.name}
                     </p>
                     <p className="webinars__user-position">
-                      {prop.proposals.items[+item]?.author.position}
+                      {prop.proposals.items[index]?.author.position}
                     </p>
                   </div>
                 </div>
                 <p
                   className={`webinars__content ${
-                    +item === 2 ? "webinars__content_big" : ""
+                    index === 2 ? "webinars__content_big" : ""
                   }`}
                 >
-                  {prop.proposals.items[+item]?.text}
+                  {prop.proposals.items[index]?.text}
                 </p>
                 <div className="webinars__card-data">
                   <div>
                     <span className="webinars__card-span">
-                      {prop.proposals.items[+item]?.tags[0]}
+                      {prop.proposals.items[index]?.tags[0]}
                     </span>
                     <span className="webinars__card-span">
-                      {prop.proposals.items[+item]?.tags[1]}
+                      {prop.proposals.items[index]?.tags[1]}
                     </span>
                   </div>
                   <DataBox
                     boxClassName={`webinars__date-box ${
-                      +item === 2 ? "webinars__date-box_big" : ""
+                      index === 2 ? "webinars__date-box_big" : ""
                     }`}
                     iconClassName={`webinars__icon ${
-                      +item === 2 ? "webinars__icon_big" : ""
+                      index === 2 ? "webinars__icon_big" : ""
                     }`}
                     spanClassName={`webinars__span ${
-                      +item === 2 ? "webinars__span_big" : ""
+                      index === 2 ? "webinars__span_big" : ""
                     }`}
-                    date={
-                      prop.proposals.items[+item]?.date_from +
-                      prop.proposals.items[+item]?.date_to
-                    }
-                    duration={prop.proposals.items[+item]?.time}
+                    date={`${prop.proposals.items[index]?.date_from} ${prop.proposals.items[index]?.date_to}`}
+                    duration={prop.proposals.items[index]?.time}
                   />
                 </div>
               </article>
