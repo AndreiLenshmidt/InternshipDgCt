@@ -1,7 +1,7 @@
-const showImg = (img: HTMLElement) => {
+const showImg = (img: HTMLElement): void => {
   img.classList.remove("none");
 };
-const hideImg = (img: HTMLElement) => {
+const hideImg = (img: HTMLElement): void => {
   img.classList.add("none");
 };
 const formValidation = (
@@ -13,12 +13,12 @@ const formValidation = (
     /^(?!.*@.*@.*$)(?!.*@.*--.*\..*$)(?!.*@.*-\..*$)(?!.*@.*-$)((.*)?@.+(\..{1,11})?)$/;
   const isValid: boolean = pattern.test(input?.value || "");
   if (isValid && input?.value.length !== 0) {
-    validImg ? showImg(validImg) : "";
-    invalidImg ? hideImg(invalidImg) : "";
+    if (validImg) showImg(validImg);
+    if (invalidImg) hideImg(invalidImg);
     return true;
   } else {
-    validImg ? hideImg(validImg) : "";
-    invalidImg ? showImg(invalidImg) : "";
+    if (validImg) hideImg(validImg);
+    if (invalidImg) showImg(invalidImg);
     return false;
   }
 };
@@ -29,8 +29,8 @@ const handlerFocusEvent = (
   invalidImg: HTMLElement | null
 ) => {
   input?.classList.remove(invalidClassName);
-  validImg ? hideImg(validImg) : "";
-  invalidImg ? hideImg(invalidImg) : "";
+  if (validImg) hideImg(validImg);
+  if (invalidImg) hideImg(invalidImg);
 };
 const handleBlurEvent = (
   input: HTMLInputElement | null,

@@ -1,95 +1,106 @@
-@import "../../../../public/styles/vars-mixins";
-
 .main {
-  padding-top: 153px;
-  @include WidthCenter;
-  @include relative-hidden;
-  background: url(/images/background/bg-main-1440.svg) calc(50% - 52px) 128px
+  padding-top: 78px;
+  background: url(/images/background/bg-main-1440.svg) calc(50% - 52px) 51px
     no-repeat;
   background-size: 1642px;
-  @media (width < $width-tablet) {
+  @include vars-mixins.WidthCenter;
+  @include vars-mixins.relative-hidden;
+  @media screen and (prefers-color-scheme: dark) {
+    // background-color:  vars-mixins.$gray80;
+    background-image: vars-mixins.$main-bkg-dark-1440;
+  }
+  @media (width < vars-mixins.$width-tablet) {
     padding-top: 64px;
     background: url(/images/background/bg-main-768.svg) calc(50% - -164px)
-      108.5% no-repeat;
+      103.5% no-repeat;
     background-size: 1763px;
   }
-  @media (width < $width-smartpthone) {
+  @media (width < vars-mixins.$width-tablet) and (prefers-color-scheme: dark) {
+    background-image: vars-mixins.$main-bkg-dark-768;
+  }
+  @media (width < vars-mixins.$width-smartpthone) {
     padding-top: 36px;
     background: url(/images/background/bg-main-320.svg) calc(50% + -40px) 30.5%
       no-repeat;
     background-size: 1283px;
   }
+  @media (width < vars-mixins.$width-smartpthone) and (prefers-color-scheme: dark) {
+    background-image: vars-mixins.$main-bkg-dark-320;
+  }
   &__container {
     display: flex;
     justify-content: flex-start;
     gap: 40px;
-    @media (width < $width-tablet) {
+    @media (width < vars-mixins.$width-tablet) {
       flex-direction: column;
       align-items: center;
       padding-bottom: 0;
       gap: 24px;
     }
-    @media (width < $width-smartpthone) {
+    @media (width < vars-mixins.$width-smartpthone) {
       gap: 18px;
     }
   }
   &__box {
     width: 688px;
-    @media (width < $width-tablet) {
+    @media (width < vars-mixins.$width-tablet) {
       width: 704px;
       display: flex;
       flex-wrap: wrap;
     }
-    @media (width < $width-smartpthone) {
+    @media (width < vars-mixins.$width-smartpthone) {
       width: 304px;
       justify-content: space-between;
     }
   }
   &__title {
-    @include AchivoH3($black);
+    @include vars-mixins.AchivoH3(vars-mixins.$black);
     padding-bottom: 18px;
     font-weight: 800;
     line-height: 119%;
-    @media (width < $width-tablet) {
+    @media (width < vars-mixins.$width-tablet) {
       width: 461px;
-      @include AchivoH5($black);
+      @include vars-mixins.AchivoH5(vars-mixins.$black);
       margin-top: -2px;
       padding-bottom: 8px;
     }
-    @media (width < $width-smartpthone) {
+    @media (width < vars-mixins.$width-smartpthone) {
       padding-bottom: 16px;
       width: 308px;
       margin-top: -6px;
     }
   }
   &__text {
-    @include Nunito18R($gray70);
+    @include vars-mixins.Nunito18R(vars-mixins.$gray70);
     padding-bottom: 16px;
     width: 480px;
-    @media (width < $width-tablet) {
+    @media (width < vars-mixins.$width-tablet) {
       width: 455px;
       padding-bottom: 54px;
     }
-    @media (width < $width-smartpthone) {
+    @media (width < vars-mixins.$width-smartpthone) {
       width: 304px;
       padding-bottom: 16px;
     }
+    @media screen and (prefers-color-scheme: dark) {
+      color: vars-mixins.$gray35;
+    }
   }
   &__btn {
-    @include button-styles(
-      $bd-color: $black,
+    @include vars-mixins.button-styles(
+      $bd-color: vars-mixins.$black,
       $bd-rad: 30px,
       $pad: 8px 49px,
-      $bg-color: $grass
+      $bg-color: vars-mixins.$grass
     );
     margin-left: 4px;
-    @include Nunito18M($black);
-    box-shadow: 0 0 0 5px $grass;
-    @media (width < $width-tablet) {
+    @include vars-mixins.Nunito18M(vars-mixins.$black);
+    box-shadow: 0 0 0 5px vars-mixins.$grass;
+    @media (width < vars-mixins.$width-tablet) {
       padding: 8px 49px;
       font-weight: 600;
     }
-    @media (width < $width-smartpthone) {
+    @media (width < vars-mixins.$width-smartpthone) {
       padding: 8px 48px;
       width: 96%;
       margin-left: 6px;
@@ -97,14 +108,14 @@
   }
   &__btn:hover,
   &__btn:active {
-    background-color: $black;
-    color: $white;
-    box-shadow: 0 0 0 5px $black;
+    background-color: vars-mixins.$black;
+    color: vars-mixins.$white;
+    box-shadow: 0 0 0 5px vars-mixins.$black;
     outline: none;
   }
   &__btn:focus-visible {
     outline: none;
-    border: 1.5px solid $black;
+    border: 1.5px solid vars-mixins.$black;
   }
   &__btn:disabled {
     opacity: 0.6;
@@ -115,33 +126,4 @@
     outline: none;
     padding: 8px 48px;
   }
-  // &__runnig-string-box {
-  //   overflow: hidden;
-  //   height: 394px;
-  //   @media (width < $width-tablet) {
-  //     height: 285px;
-  //   }
-  //   @media (width < $width-smartpthone) {
-  //     height: 250px;
-  //   }
-  // }
-  // &__runnig-string {
-  //   @include AchivoH1($black);
-  //   background-color: $turquoise;
-  //   width: 3250px;
-  //   transform: rotate(-4deg);
-  //   padding-top: 10px;
-  //   margin: calc(7vw + 1vh - 49px) 0 0 -10px;
-  //   @media (width < $width-tablet) {
-  //     transform: rotate(-3deg);
-  //     width: 2150px;
-  //     margin-top: calc(8vw + 1vh - 44px);
-  //     padding: 9px 0 5px;
-  //   }
-  //   @media (width < $width-smartpthone) {
-  //     margin-top: -10px;
-  //     transform: rotate(-4deg);
-  //     margin-top: calc(5vw - 40px);
-  //   }
-  // }
 }

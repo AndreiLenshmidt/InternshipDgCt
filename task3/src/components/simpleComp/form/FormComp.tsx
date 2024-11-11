@@ -3,8 +3,8 @@ import {
   handleBlurEvent,
   handlerFocusEvent,
   handlerSubmit,
-} from "../../../helpers/form-validation";
-import "./form.css";
+} from "@/helpers/form-validation";
+import "./form.scss";
 
 export default function FormComp(prop: {
   classNames: Array<string>;

@@ -1,40 +1,9 @@
 import { useLayoutEffect, useState } from "react";
-import MainPage from "./containers/MainPage";
-import TheHeader from "./components/sectionComponents/header/TheHeader";
-import TheFooter from "./components/sectionComponents/footer/TheFooter";
-import { hideHeader } from "./helpers/hide-header";
-import "../public/styles/styles.css";
-
-type logo = string;
-export type header = Array<{ label: string; url: string }>;
-type items = Array<{
-  label: string;
-  url: string;
-}>;
-export type footer = Array<{
-  label: string;
-  items: items;
-}>;
-type UrlDB =
-  | "http://localhost:8000/menu"
-  | "http://localhost:8000/contacts"
-  | "http://localhost:8000/sections";
-type menu = {
-  logo: logo;
-  header: header;
-  footer: footer;
-};
-export type contacts = {
-  email: string;
-  facebook: string;
-  instagram: string;
-  linkedin: string;
-  links: Array<{ label: string; url: string }>;
-  phone: string;
-  subscription: { emailplaceholder: string; submittext: string };
-  whatsapp: string;
-  youtube: string;
-};
+import MainPage from "@/containers/MainPage";
+import TheHeader from "@sections/header/TheHeader";
+import TheFooter from "@sections/footer/TheFooter";
+import { hideHeader } from "@/helpers/hide-header";
+import { UrlDB, menu, contacts } from "@/types/types";
 
 function App() {
   const [menu, setMenu] = useState<menu>({ logo: "", header: [], footer: [] });
@@ -45,7 +14,7 @@ function App() {
     linkedin: "",
     links: [],
     phone: "",
-    subscription: { submittext: "", emailplaceholder: "" },
+    subscription: { ["submit-text"]: "", ["email-placeholder"]: "" },
     whatsapp: "",
     youtube: "",
   });

@@ -1,4 +1,4 @@
-import "./mask.css";
+import "./mask.scss";
 
 export default function MaskWrap(prop: {
   imgBoxClassName: string;

@@ -1,8 +1,8 @@
-import { footer, contacts } from "../../../App";
-import FormComp from "../../simpleComp/form/FormComp";
-import LogoComp from "../../simpleComp/logo/logo";
-import RunningString from "../../simpleComp/runningString/RunningString";
-import "./footer.css";
+import { footer, contacts } from "@/types/types";
+import FormComp from "@simpcomp/form/FormComp";
+import LogoComp from "@simpcomp/logo/logo";
+import RunningString from "@simpcomp/runningString/RunningString";
+import "./footer.scss";
 import { useEffect } from "react";
 
 export default function TheFooter(prop: {
@@ -38,6 +38,12 @@ export default function TheFooter(prop: {
       <li className="footer__item">{link.label}</li>
     </a>
   ));
+  const iconUrls = [
+    prop.contacts.instagram,
+    prop.contacts.facebook,
+    prop.contacts.youtube,
+    prop.contacts.linkedin,
+  ];
   return (
     <footer className="footer">
       <RunningString
@@ -60,22 +66,6 @@ export default function TheFooter(prop: {
             </div>
             <div className="footer__small-box">{details}</div>
             <div className="footer__small-box">
-              {/* <form action="#">
-                <div>
-                  <input
-                    onFocus={() => console.log("focus")}
-                    onBlur={() => console.log("blur")}
-                    type="text"
-                    name="email"
-                    id="email"
-                    className="footer__email"
-                    placeholder={prop.contacts.subscription.emailplaceholder}
-                  />
-                  <button className="footer__button">
-                    {prop.contacts.subscription.submittext}
-                  </button>
-                </div>
-              </form> */}
               <FormComp
                 classNames={[
                   "footer__email",
@@ -84,28 +74,41 @@ export default function TheFooter(prop: {
                   "footer__email_valid",
                 ]}
                 content={{
-                  buttontext: prop.contacts.subscription.emailplaceholder,
-                  placeholder: prop.contacts.subscription.submittext,
+                  placeholder: prop.contacts.subscription["email-placeholder"],
+                  buttontext: prop.contacts.subscription["submit-text"],
                 }}
                 selectors={["", ""]}
               />
             </div>
             <div className="footer__small-box">
-              {["WhatsApp", "Telefone", "email"].map((item, index) => (
-                <div key={index}>
-                  <p className="footer__item">{item}</p>
+              <div>
+                <p className="footer__item">WhatsApp</p>
+                <a href="#">
                   <p className="footer__contacts">{prop.contacts.whatsapp}</p>
-                </div>
-              ))}
+                </a>
+              </div>
+              <div>
+                <p className="footer__item">Telefone</p>
+                <a href="#">
+                  <p className="footer__contacts">{prop.contacts.phone}</p>
+                </a>
+              </div>
+              <div>
+                <p className="footer__item">email</p>
+                <a href="#">
+                  <p className="footer__contacts">{prop.contacts.email}</p>
+                </a>
+              </div>
             </div>
             <div className="footer__small-box">
-              {"1234".split("").map((item, index) => (
-                <img
-                  className="footer__icon"
-                  src={`/images/icons/icon${item}.svg`}
-                  alt="icon"
-                  key={index}
-                />
+              {iconUrls.map((item, index) => (
+                <a href={item} key={index}>
+                  <img
+                    className="footer__icon"
+                    src={`/images/icons/icon${index + 1}.svg`}
+                    alt="icon"
+                  />
+                </a>
               ))}
             </div>
           </div>

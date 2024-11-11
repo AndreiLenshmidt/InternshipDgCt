@@ -1,38 +1,36 @@
-@import "../../../../public/styles/vars-mixins";
-
 .runnig-string {
   overflow: hidden;
   &__text_artigos {
     padding: 27px 48px 29px;
-    @media (width < $width-tablet) {
+    @media (width < vars-mixins.$width-tablet) {
       padding: 21px 48px 17px;
       width: 320px;
     }
   }
   &__text_webinars {
     padding: 41px 38px 36px;
-    @media (width < $width-tablet) {
+    @media (width < vars-mixins.$width-tablet) {
       padding: 18px 38px 18px;
       width: 156px;
     }
-    @media (width < $width-smartpthone) {
+    @media (width < vars-mixins.$width-smartpthone) {
       padding: 17px 38px 16px;
     }
   }
   &__text_subscribe {
     padding: 41px 50px 36px;
-    @media (width < $width-tablet) {
+    @media (width < vars-mixins.$width-tablet) {
       padding: 20px 50px 16px;
       width: 180px;
     }
   }
   &__text_descuento {
     padding: 38px 50px 28px;
-    @media (width < $width-tablet) {
+    @media (width < vars-mixins.$width-tablet) {
       padding: 17px 50px 13px;
       width: 690px;
     }
-    @media (width < $width-smartpthone) {
+    @media (width < vars-mixins.$width-smartpthone) {
       padding: 21px 50px 20px;
       width: 475px;
     }
@@ -45,11 +43,11 @@
 
   &_bottom {
     margin-bottom: -20px;
-    @media (width < $width-tablet) {
+    @media (width < vars-mixins.$width-tablet) {
       height: 164px;
       margin-bottom: -2px;
     }
-    @media (width < $width-smartpthone) {
+    @media (width < vars-mixins.$width-smartpthone) {
       height: 100px;
     }
   }
@@ -69,27 +67,27 @@
   &__runnig-string-box {
     overflow: hidden;
     height: 394px;
-    @media (width < $width-tablet) {
+    @media (width < vars-mixins.$width-tablet) {
       height: 285px;
     }
-    @media (width < $width-smartpthone) {
+    @media (width < vars-mixins.$width-smartpthone) {
       height: 250px;
     }
   }
   &__runnig-string {
-    @include AchivoH1($black);
-    background-color: $turquoise;
+    @include vars-mixins.AchivoH1(vars-mixins.$black);
+    background-color: vars-mixins.$turquoise;
     width: 3250px;
     transform: rotate(-4deg);
     padding-top: 10px;
     margin: calc(7vw + 1vh - 47px) 0 0 -10px;
-    @media (width < $width-tablet) {
+    @media (width < vars-mixins.$width-tablet) {
       transform: rotate(-3deg);
       width: 2150px;
       margin-top: calc(8vw + 1vh - 44px);
       padding: 9px 0 5px;
     }
-    @media (width < $width-smartpthone) {
+    @media (width < vars-mixins.$width-smartpthone) {
       margin-top: -10px;
       transform: rotate(-4deg);
       margin-top: calc(5vw - 40px);
@@ -101,31 +99,31 @@
   &__runnig-string-box {
     overflow: hidden;
     height: 372px;
-    @media (width > $width-laptop) {
+    @media (width > vars-mixins.$width-laptop) {
       height: 425px;
     }
-    @media (width < $width-tablet) {
+    @media (width < vars-mixins.$width-tablet) {
       height: 358px;
     }
-    @media (width < $width-smartpthone) {
+    @media (width < vars-mixins.$width-smartpthone) {
       height: 228px;
     }
   }
   &__runnig-string {
-    background-color: #ffad20;
+    background-color: vars-mixins.$tangerine;
     width: 3250px;
     transform: rotate(-3deg);
     margin: calc(9vw + 1vh - 34px) 0 0 -10px;
-    @media (width > $width-laptop) {
+    @media (width > vars-mixins.$width-laptop) {
       margin: calc(9vw + 1vh - 30px) 0 0 -10px;
     }
-    @media (width < $width-tablet) {
+    @media (width < vars-mixins.$width-tablet) {
       padding: 12px 0 10px;
       margin-top: calc(17vw + 1vh - 2px);
       transform: rotate(-3deg);
       width: 2150px;
     }
-    @media (width < $width-smartpthone) {
+    @media (width < vars-mixins.$width-smartpthone) {
       margin-top: calc(9vw + 1vh - 46px);
       transform: rotate(-4deg);
     }
@@ -133,16 +131,16 @@
   &__runnig-string_bottom {
     transform: rotate(2deg);
     margin: 46px 0 119px -10px;
-    background-color: $coral-dark;
-    @media (width > $width-laptop) {
+    background-color: vars-mixins.$coral-dark;
+    @media (width > vars-mixins.$width-laptop) {
       margin: 4px 0 106px -10px;
     }
-    @media (width < $width-tablet) {
+    @media (width < vars-mixins.$width-tablet) {
       transform: rotate(3deg);
       width: 2150px;
       margin: 45px 0 107px -10px;
     }
-    @media (width < $width-smartpthone) {
+    @media (width < vars-mixins.$width-smartpthone) {
       transform: rotate(4deg);
       margin: 70px 0 auto -10px;
     }
@@ -151,11 +149,11 @@
 
 .footer {
   &__runnig-string {
-    @include AchivoH1($black);
-    background-color: $pink-dark;
+    @include vars-mixins.AchivoH1(vars-mixins.$black);
+    background-color: vars-mixins.$pink-dark;
     width: 3250px;
     margin-top: 12px;
-    @media (width < $width-tablet) {
+    @media (width < vars-mixins.$width-tablet) {
       padding: 10px 0 1px;
       margin-top: 9px;
     }

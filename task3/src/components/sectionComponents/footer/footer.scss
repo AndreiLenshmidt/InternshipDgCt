@@ -1,37 +1,38 @@
-@import "../../../../public/styles/vars-mixins";
-
 .footer {
-  @include WidthCenter;
+  @include vars-mixins.WidthCenter;
   &__container {
     padding: 64px 0px 80px;
-    background-color: $black;
-    @media (width < $width-tablet) {
+    background-color: vars-mixins.$black;
+    @media (width < vars-mixins.$width-tablet) {
       padding: 64px 0px 72px;
     }
-    @media (width < $width-smartpthone) {
+    @media (width < vars-mixins.$width-smartpthone) {
       padding: 34px 0px 82px;
     }
   }
   &__box {
-    border-bottom: 1px solid $gray35;
+    border-bottom: 1px solid vars-mixins.$gray35;
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
     padding-bottom: 32px;
-    @media (width < $width-smartpthone) {
+    @media (width < vars-mixins.$width-tablet) {
+      padding-bottom: 22px;
+    }
+    @media (width < vars-mixins.$width-smartpthone) {
       border-bottom: none;
-      padding-bottom: 50px;
+      padding-bottom: 38px;
     }
   }
   &__small-box:first-child {
     width: 352px;
     display: flex;
     justify-content: space-between;
-    @media (width < $width-tablet) {
+    @media (width < vars-mixins.$width-tablet) {
       width: 285px;
       order: 1;
     }
-    @media (width < $width-smartpthone) {
+    @media (width < vars-mixins.$width-smartpthone) {
       width: 304px;
       padding-bottom: 38px;
     }
@@ -42,14 +43,14 @@
     justify-content: space-between;
     column-gap: 64px;
     flex-basis: 57%;
-    @media (width < $width-tablet) {
+    @media (width < vars-mixins.$width-tablet) {
       order: 4;
       width: auto;
       padding-top: 87px;
       flex-basis: 100%;
       width: 100%;
     }
-    @media (width < $width-smartpthone) {
+    @media (width < vars-mixins.$width-smartpthone) {
       order: 3;
       padding-top: 65px;
       flex-direction: column;
@@ -59,12 +60,12 @@
     margin-top: -91px;
     flex-basis: 80%;
     width: 281px;
-    @media (width < $width-tablet) {
+    @media (width < vars-mixins.$width-tablet) {
       order: 2;
       margin-top: -1px;
       flex-basis: 37%;
     }
-    @media (width < $width-smartpthone) {
+    @media (width < vars-mixins.$width-smartpthone) {
       order: 5;
       width: 100%;
       flex-basis: auto;
@@ -75,11 +76,11 @@
     justify-content: space-between;
     width: 570px;
     padding-top: 96px;
-    @media (width < $width-tablet) {
+    @media (width < vars-mixins.$width-tablet) {
       order: 5;
       padding-top: 47px;
     }
-    @media (width < $width-smartpthone) {
+    @media (width < vars-mixins.$width-smartpthone) {
       order: 4;
       flex-direction: column;
       padding-top: 50px;
@@ -93,11 +94,11 @@
     width: 200px;
     order: 3;
     padding-top: 108px;
-    @media (width < $width-tablet) {
+    @media (width < vars-mixins.$width-tablet) {
       order: 3;
       padding-top: 0px;
     }
-    @media (width < $width-smartpthone) {
+    @media (width < vars-mixins.$width-smartpthone) {
       order: 2;
       width: 304px;
     }
@@ -105,107 +106,95 @@
   &__menu {
     width: 120px;
     min-height: 250px;
-    @include Nunito15M-SLS($white);
-    @media (width < $width-tablet) {
+    @include vars-mixins.Nunito15M-SLS(vars-mixins.$white);
+    @media (width < vars-mixins.$width-tablet) {
       width: 125px;
+      min-height: 267px;
     }
-    @media (width < $width-smartpthone) {
+    @media (width < vars-mixins.$width-smartpthone) {
       min-height: auto;
       width: 100%;
     }
   }
   &__menu:nth-child(2) {
     width: 104px;
-    @media (width < $width-tablet) {
+    @media (width < vars-mixins.$width-tablet) {
       width: 110px;
-      @media (width < $width-smartpthone) {
+      @media (width < vars-mixins.$width-smartpthone) {
         width: 100%;
       }
     }
   }
   &__menu:nth-child(3) {
     width: 153px;
-    @media (width < $width-tablet) {
+    @media (width < vars-mixins.$width-tablet) {
       width: 157px;
     }
-    @media (width < $width-smartpthone) {
+    @media (width < vars-mixins.$width-smartpthone) {
       width: 100%;
     }
   }
   &__menu:nth-child(4) {
     width: 122px;
-    @media (width < $width-tablet) {
+    @media (width < vars-mixins.$width-tablet) {
       width: 120px;
     }
-    @media (width < $width-smartpthone) {
+    @media (width < vars-mixins.$width-smartpthone) {
       width: 100%;
     }
   }
 
   &__menu-item {
-    @include Nunito18B($gray70);
-    @media (width < $width-smartpthone) {
+    @include vars-mixins.Nunito18B(vars-mixins.$gray70);
+    @media (width < vars-mixins.$width-smartpthone) {
       width: 100%;
       position: relative;
       padding-bottom: 10px;
     }
   }
   &__menu[open] &__menu-item {
-    padding-bottom: 25px;
-    @media (width < $width-smartpthone) {
-      padding-bottom: 16px;
+    padding-bottom: 26px;
+    @media (width < vars-mixins.$width-smartpthone) {
+      padding-bottom: 18px;
       width: 302px;
     }
   }
 
   &__details-item {
-    @include Nunito15M-SLS($white);
+    @include vars-mixins.Nunito15M-SLS(vars-mixins.$white);
     display: block;
     margin-bottom: 10px;
     position: relative;
     width: fit-content;
-    @media (width < $width-smartpthone) {
+    @media (width < vars-mixins.$width-smartpthone) {
       margin-bottom: 16px;
     }
   }
   &__details-item:last-child {
-    @media (width < $width-smartpthone) {
-      margin-bottom: 16px;
+    @media (width < vars-mixins.$width-smartpthone) {
+      margin-bottom: 32px;
     }
   }
   &__summery-arrow {
     display: none;
-    @media (width < $width-smartpthone) {
+    @media (width < vars-mixins.$width-smartpthone) {
       display: inline;
-      @include position($t: 12px, $r: 5px);
+      @include vars-mixins.position($t: 12px, $r: 5px);
     }
   }
   &__menu[open] &__summery-arrow {
-    @media (width < $width-smartpthone) {
+    @media (width < vars-mixins.$width-smartpthone) {
       display: inline;
-      @include position($t: 12px, $r: 3px);
+      @include vars-mixins.position($t: 12px, $r: 3px);
       transform: rotate(180deg);
     }
   }
 
   &__award {
-    @include width-heigth($w: 80px, $h: 80px);
-    @media (width < $width-tablet) {
-      @include width-heigth($w: 64px, $h: 64px);
+    @include vars-mixins.width-heigth($w: 80px, $h: 80px);
+    @media (width < vars-mixins.$width-tablet) {
+      @include vars-mixins.width-heigth($w: 64px, $h: 64px);
     }
-  }
-  &__logo {
-    @include width-heigth($w: 228px, $h: 83px);
-    margin-top: -2px;
-    fill: $white;
-    transition: fill 0.3s;
-    @media (width < $width-tablet) {
-      @include width-heigth($w: 197px, $h: 64px);
-      margin: 0 0 0 -12px;
-    }
-  }
-  &__logo:hover {
-    fill: $pink-dark;
   }
 
   &__box_bottom {
@@ -213,24 +202,23 @@
     justify-content: space-between;
     width: 661px;
     padding-top: 32px;
-    // border-top: 1px solid $gray35;
-    @media (width < $width-tablet) {
-      padding-top: 15px;
+    @media (width < vars-mixins.$width-tablet) {
+      padding-top: 26px;
     }
-    @media (width < $width-smartpthone) {
+    @media (width < vars-mixins.$width-smartpthone) {
       flex-direction: column;
       row-gap: 16px;
       width: fit-content;
     }
   }
   &__item {
-    @include Nunito13M-UP($gray35);
+    @include vars-mixins.Nunito13M-UP(vars-mixins.$gray35);
     position: relative;
   }
   &__item:not(:first-child)::before {
     content: url(/images/icons/point.svg);
-    @include position($t: calc(7% - 2.5px), $l: -14px);
-    @media (width < $width-smartpthone) {
+    @include vars-mixins.position($t: calc(7% - 2.5px), $l: -14px);
+    @media (width < vars-mixins.$width-smartpthone) {
       display: none;
     }
   }
@@ -238,14 +226,15 @@
   &__details-item::before {
     content: "";
     display: block;
-    @include width-heigth($w: 0%, $h: 1.5px);
-    background-color: $white;
-    @include position($b: 0, $r: 0px);
+    @include vars-mixins.width-heigth($w: 0%, $h: 1.5px);
+    background-color: vars-mixins.$white;
+    @include vars-mixins.position($b: 0, $r: 0px);
     transition: width 0.4s;
   }
   &__contacts:hover,
   &__details-item:hover {
     cursor: pointer;
+    color: vars-mixins.$white;
   }
   &__contacts:hover::before,
   &__details-item:hover::before {
@@ -261,16 +250,16 @@
   }
   &__contacts {
     padding-top: 6px;
-    @include Nunito18B($white);
+    @include vars-mixins.Nunito18B(vars-mixins.$white);
     position: relative;
-    @media (width < $width-smartpthone) {
+    @media (width < vars-mixins.$width-smartpthone) {
       width: fit-content;
     }
   }
   &__icon {
-    @include width-heigth($w: 32px, $h: 32px);
-    @media (width < $width-smartpthone) {
-      @include width-heigth($w: 48px, $h: 48px);
+    @include vars-mixins.width-heigth($w: 32px, $h: 32px);
+    @media (width < vars-mixins.$width-smartpthone) {
+      @include vars-mixins.width-heigth($w: 48px, $h: 48px);
     }
   }
 }

@@ -1,0 +1,101 @@
+@use "reset";
+
+@font-face {
+  font-family: "ArchivoBlack";
+  font-style: normal;
+  font-weight: normal;
+  src: local("ArchivoBlack-Regular"),
+    url("/fonts/ArchivoBlack-Regular.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Nunito-Regular";
+  font-style: normal;
+  font-weight: normal;
+  src: local("Nunito-Regular"),
+    url("/fonts/Nunito-Regular.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Nunito-Medium";
+  font-style: normal;
+  font-weight: medium;
+  src: local("Nunito-Medium"),
+    url("/fonts/Nunito-Medium.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Nunito-Bold";
+  font-style: normal;
+  font-weight: bold;
+  src: local("Nunito-Bold"), url("/fonts/Nunito-Bold.ttf") format("truetype");
+}
+
+:root {
+  color-scheme: light dark;
+  @media screen and (prefers-color-scheme: dark) {
+    background-color: vars-mixins.$gray80;
+  }
+}
+
+body {
+  font-family: "ArchivoBlack", sans-serif;
+  @media screen and (prefers-color-scheme: dark) {
+    background-color: vars-mixins.$gray80;
+  }
+}
+a {
+  text-decoration: none;
+  color: vars-mixins.$black;
+  outline: none;
+}
+
+input[type="checkbox"] {
+  position: absolute;
+  z-index: -1;
+  opacity: 0;
+}
+button {
+  padding: 0;
+  border: none;
+  font: inherit;
+  color: inherit;
+  background-color: transparent;
+  outline: none;
+}
+
+details summary::marker {
+  font-size: 0%;
+}
+
+.none {
+  display: none;
+}
+
+.wrapped {
+  padding-top: 74px;
+  min-height: 100vh;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  @media (width < vars-mixins.$width-tablet) {
+    padding-top: 118px;
+  }
+  @media (width < vars-mixins.$width-smartpthone) {
+    padding-top: 114px;
+  }
+}
+.wrap {
+  width: calc(vars-mixins.$width-tablet - 72px);
+  padding: 0 36px;
+  margin: 0 auto;
+
+  @media (width < vars-mixins.$width-tablet) {
+    padding: 0 32px;
+    width: calc(768px - 64px);
+  }
+  @media (width < vars-mixins.$width-smartpthone) {
+    width: calc(320px - 16px);
+    padding: 0 8px;
+  }
+}

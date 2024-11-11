@@ -1,6 +1,7 @@
-import LogoComp from "../../simpleComp/logo/logo";
-import "./header.css";
-import { header } from "../../../App";
+import LogoComp from "@simpcomp/logo/logo";
+import { BlockSearch } from "@simpcomp/search/BlockSearch";
+import "./header.scss";
+import { header } from "@/types/types";
 
 export default function TheHeader(prop: { header: header; logo: string }) {
   return (
@@ -18,15 +19,7 @@ export default function TheHeader(prop: { header: header; logo: string }) {
             </a>
           ))}
         </nav>
-        <div className="header__search">
-          <img
-            src="/images/icons/search.svg"
-            alt="search"
-            className="header__search-img"
-          />
-          <p className="header__search-span">EBAC</p>
-          <img src="/images/icons/arrow.svg" />
-        </div>
+        <BlockSearch />
       </div>
     </header>
   );

@@ -1,9 +1,9 @@
-import { subscription } from "../../../containers/MainPage";
-import FormComp from "../../simpleComp/form/FormComp";
-import "./formSection.css";
+import { subscription } from "@/types/types";
+import FormComp from "@simpcomp/form/FormComp";
+import "./formSection.scss";
 
-export default function (prop: { subscription: subscription }) {
-  const chboxText = prop.subscription?.agreementtext.split("<>");
+export default function FormSection(prop: { subscription: subscription }) {
+  const chboxText = prop.subscription?.["agreement-text"].split("<>");
   const chbox = (
     <>
       <div className="form__box" id="chbox">
@@ -63,52 +63,6 @@ export default function (prop: { subscription: subscription }) {
               <h3 className="form__title">{prop.subscription?.title}</h3>
               <p className="form__text">{prop.subscription?.text}</p>
             </div>
-            {/* <form action="#">
-              <div className="form__box">
-                <input
-                  type="text"
-                  name="email"
-                  id="email"
-                  className="form__email"
-                  placeholder={prop.subscription?.emailplaceholder}
-                />
-                <button className="form__button">
-                  {prop.subscription?.submittext}
-                </button>
-                <div id="validimg" className="none" />
-              </div>
-              <div className="form__box">
-                <input
-                  type="checkbox"
-                  checked={true}
-                  name="agree"
-                  id="agree"
-                  className="form__agree"
-                />
-                <label htmlFor="agree">
-                  <p className="form__chbox-text">
-                    {chboxText?.[0]}
-                    <a className="form__chbox-text_underline">
-                      {chboxText?.[1]}
-                    </a>
-                    {chboxText?.[2]}
-                    <a className="form__chbox-text_underline">
-                      {chboxText?.[3]}
-                    </a>
-                  </p>
-                </label>
-              </div>
-              <div className="form__submitted none">
-                <p className="form__submitted-text">
-                  Fantástico! Espera La primera carta
-                </p>
-                <img
-                  className="form__submitted-img"
-                  src="/images/picture/form-sticker.svg"
-                  alt="application accepted"
-                />
-              </div>
-            </form> */}
             <FormComp
               classNames={[
                 "form__email",
@@ -118,8 +72,8 @@ export default function (prop: { subscription: subscription }) {
                 "form__box",
               ]}
               content={{
-                buttontext: prop.subscription?.submittext,
-                placeholder: prop.subscription?.emailplaceholder,
+                buttontext: prop.subscription?.["submit-text"],
+                placeholder: prop.subscription?.["email-placeholder"],
               }}
               components={[chbox, hideBlock, validImg, invalidImg]}
               selectors={["validImg", "invalidImg"]}

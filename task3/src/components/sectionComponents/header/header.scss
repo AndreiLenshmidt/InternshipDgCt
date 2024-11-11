@@ -1,42 +1,35 @@
-@import "../../../../public/styles/vars-mixins";
-
 .header {
   padding: 16px 0;
   z-index: 3;
-  @include position($t: 0, $l: 0, $pos: fixed);
+  @include vars-mixins.position($t: 0, $l: 0, $pos: fixed);
   width: 100%;
   transition: transform 0.2s linear;
-  background-color: $white;
+  background-color: vars-mixins.$white;
+  @media screen and (prefers-color-scheme: dark) {
+    color: white;
+    background-color: vars-mixins.$black;
+  }
+  @media (width < vars-mixins.$width-smartpthone) {
+    padding: 13px 0;
+  }
   &__box {
     display: flex;
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
-    @media (width < $width-tablet) {
+    @media (width < vars-mixins.$width-tablet) {
       display: flex;
       padding-bottom: 0px;
     }
-    @media (width < $width-smartpthone) {
+    @media (width < vars-mixins.$width-smartpthone) {
       display: flex;
       padding: 12px 0 0;
     }
   }
-  &__logo {
-    @include width-heigth($w: 108.9px, $h: 40px);
-    fill: $black;
-    transition: fill 0.3s;
-    @media (width < $width-smartpthone) {
-      @include width-heigth($w: 140px, $h: 48px);
-      margin-left: -5px;
-    }
-  }
-  &__logo:hover {
-    fill: $pink-dark;
-  }
   &__nav {
     width: 698px;
     margin-top: -1px;
-    @media (width < $width-tablet) {
+    @media (width < vars-mixins.$width-tablet) {
       width: auto;
       display: flex;
       overflow-y: auto;
@@ -44,83 +37,50 @@
       order: 4;
       margin-top: 0;
     }
-    @media (width < $width-smartpthone) {
+    @media (width < vars-mixins.$width-smartpthone) {
       padding-top: 13px;
     }
   }
   &__nav::-webkit-scrollbar {
-    @include width-heigth($w: 0, $h: 0);
+    @include vars-mixins.width-heigth($w: 0, $h: 0);
   }
   &__link:not(:last-child) {
     margin-right: 10px;
-    @media (width < $width-smartpthone) {
+    @media (width < vars-mixins.$width-smartpthone) {
       margin-right: 7px;
     }
   }
   &__link {
     padding: 8px 18px;
-    border: 1.2px solid $pale;
+    border: 1.2px solid vars-mixins.$pale;
     border-radius: 20px;
-    background-color: $white;
+    background-color: vars-mixins.$white;
     white-space: nowrap;
     transition: background-color 0.3s;
-    @include Nunito15M-SLS($black);
+    @include vars-mixins.Nunito15M-SLS(vars-mixins.$black);
     font-size: 14.78px;
     user-select: none;
-    @media (width < $width-tablet) {
+    @media (width < vars-mixins.$width-tablet) {
       padding: 8px 18.2px;
       font-size: 15px;
     }
-    @media (width < $width-smartpthone) {
+    @media (width < vars-mixins.$width-smartpthone) {
       padding: 8px 17.7px;
     }
-  }
-
-  &__search {
-    display: flex;
-    justify-content: end;
-    @media (width < $width-tablet) {
-      margin-top: -4px;
-    }
-  }
-  &__search-img {
-    padding-right: 27px;
-    @media (width < $width-smartpthone) {
-      padding-right: 22px;
-    }
-  }
-  &__search-span {
-    padding-right: 11px;
-    text-transform: uppercase;
-    @include Nunito15M-SLS($black);
-    position: relative;
-  }
-  &__search-span::before {
-    content: "";
-    display: block;
-    background-color: $grass;
-    @include width-heigth($w: 0, $h: 1.5px);
-    @include position($b: 0, $r: -17px);
-    transition: width 0.4s;
-  }
-  &__search:hover &__search-span::before {
-    width: 67px;
-    left: 0;
-  }
-  &__search:active &__search-span::before {
-    @media (width < 320px) {
-      width: 67px;
-      left: 0;
+    @media screen and (prefers-color-scheme: dark) {
+      border: 1.2px solid vars-mixins.$pale;
+      background-color: vars-mixins.$gray80;
+      color: vars-mixins.$white;
     }
   }
 }
 .header.hide {
   transform: translateY(-74px);
 
-  @media (width < $width-tablet) {
+  @media (width < vars-mixins.$width-tablet) {
     transform: translateY(-134px);
   }
-  @media (width < $width-smartpthone) {
+  @media (width < vars-mixins.$width-smartpthone) {
     transform: translateY(-134px);
   }
 }
@@ -134,45 +94,45 @@
     opacity: 0.6;
   }
   &__0:hover {
-    background-color: $pink;
-    color: $black;
+    background-color: vars-mixins.$pink;
+    color: vars-mixins.$black;
   }
   &__1:hover {
-    background-color: $sky;
-    color: $black;
+    background-color: vars-mixins.$sky;
+    color: vars-mixins.$black;
   }
   &__2:hover {
-    background-color: $grass;
-    color: $black;
+    background-color: vars-mixins.$grass;
+    color: vars-mixins.$black;
   }
   &__3:hover {
-    background-color: $tangerine;
-    color: $black;
+    background-color: vars-mixins.$tangerine;
+    color: vars-mixins.$black;
   }
   &__4:hover {
-    background-color: $turquoise;
-    color: $black;
+    background-color: vars-mixins.$turquoise;
+    color: vars-mixins.$black;
   }
   &__5:hover {
-    background-color: $mint;
-    color: $black;
+    background-color: vars-mixins.$mint;
+    color: vars-mixins.$black;
   }
   &__0:active {
-    background-color: $pink-dark;
+    background-color: vars-mixins.$pink-dark;
   }
   &__1:active {
-    background-color: $sky-dark;
+    background-color: vars-mixins.$sky-dark;
   }
   &__2:active {
-    background-color: $grass-dark;
+    background-color: vars-mixins.$grass-dark;
   }
   &__3:active {
-    background-color: $tangerine-dark;
+    background-color: vars-mixins.$tangerine-dark;
   }
   &__4:active {
-    background-color: $turquoise-dark;
+    background-color: vars-mixins.$turquoise-dark;
   }
   &__5:active {
-    background-color: $mint-dark;
+    background-color: vars-mixins.$mint-dark;
   }
 }

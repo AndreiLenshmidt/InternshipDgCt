@@ -1,10 +1,10 @@
-import MaskWrap from "../../simpleComp/maskWrap/MaskWrap";
-import RunningString from "../../simpleComp/runningString/RunningString";
-import DataBox from "../../simpleComp/dataBox/DataBox";
-import { proposals } from "../../../containers/MainPage";
+import MaskWrap from "@simpcomp/maskWrap/MaskWrap";
+import RunningString from "@simpcomp/runningString/RunningString";
+import DataBox from "@simpcomp/dataBox/DataBox";
+import { proposals } from "@/types/types";
 import "./webinars.scss";
 
-export default function (prop: { proposals: proposals }) {
+export default function WebinarsComp(prop: { proposals: proposals }) {
   return (
     <section className="webinars">
       <div className="webinars__bkg">
@@ -20,7 +20,7 @@ export default function (prop: { proposals: proposals }) {
           <div className="webinars__container">
             <h2 className="webinars__title">{prop.proposals.title}</h2>
             <button className="webinars__btn">
-              {prop.proposals.browsealltext}
+              {prop.proposals["browse-all-text"]}
             </button>
           </div>
           <div className="webinars__container">
@@ -66,8 +66,12 @@ export default function (prop: { proposals: proposals }) {
                     boxClassName={`webinars__date-box ${
                       +item === 2 ? "webinars__date-box_big" : ""
                     }`}
-                    iconClassName="webinars__icon"
-                    spanClassName="webinars__span"
+                    iconClassName={`webinars__icon ${
+                      +item === 2 ? "webinars__icon_big" : ""
+                    }`}
+                    spanClassName={`webinars__span ${
+                      +item === 2 ? "webinars__span_big" : ""
+                    }`}
                     date={
                       prop.proposals.items[+item]?.date_from +
                       prop.proposals.items[+item]?.date_to

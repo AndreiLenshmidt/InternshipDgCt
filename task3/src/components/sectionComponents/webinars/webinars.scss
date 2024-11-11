@@ -1,21 +1,29 @@
-@import "../../../../public/styles/vars-mixins";
-
 .webinars {
-  @include WidthCenter;
+  @include vars-mixins.WidthCenter;
   &__bkg {
-    @include relative-hidden;
+    @include vars-mixins.relative-hidden;
     background: url(/images/background/webinars-bg-1440.svg) 50% 135px no-repeat;
-    background-size: $width-laptop;
+    background-size: vars-mixins.$width-laptop;
     @media (width > 1440px) {
-      background: url(/images/background/webinars-bg-4k.svg) 0% 147px no-repeat;
+      background: url(/images/background/webinars-bg-4k.svg) 60% 147px no-repeat;
       background-size: 3840px;
     }
-    @media (width < $width-tablet) {
+    @media screen and (prefers-color-scheme: dark) {
+      background-image: vars-mixins.$webinars-bkg-1440;
+      background-color: vars-mixins.$gray80;
+    }
+    @media (width > 1440px) and (prefers-color-scheme: dark) {
+      background-image: vars-mixins.$webinars-bkg-4k;
+    }
+    @media (width < vars-mixins.$width-tablet) {
       background: url(/images/background/webinars-bg-768.svg) calc(50% - -107px)
         106px no-repeat;
       background-size: 1568px;
     }
-    @media (width < $width-smartpthone) {
+    @media (width < vars-mixins.$width-tablet) and (prefers-color-scheme: dark) {
+      background-image: vars-mixins.$webinars-bkg-768;
+    }
+    @media (width < vars-mixins.$width-smartpthone) {
       background-image: none;
     }
   }
@@ -24,16 +32,16 @@
     background-color: #1b1f21;
     margin: -145px 0 0 -380px;
     z-index: -10;
-    @include width-heigth($w: 150vw, $h: 860px);
+    @include vars-mixins.width-heigth($w: 150vw, $h: 860px);
     transform: perspective(160px) rotateY(-1deg);
-    @media (width > $width-laptop) {
+    @media (width > vars-mixins.$width-laptop) {
       margin-top: -150px;
     }
-    @media (width < $width-tablet) {
+    @media (width < vars-mixins.$width-tablet) {
       height: 1060px;
       margin: -110px 0 0 -150px;
     }
-    @media (width < $width-smartpthone) {
+    @media (width < vars-mixins.$width-smartpthone) {
       height: 1550px;
     }
   }
@@ -43,13 +51,13 @@
     padding-bottom: 94px;
     display: flex;
     justify-content: space-between;
-    @media (width < $width-tablet) {
+    @media (width < vars-mixins.$width-tablet) {
       margin-top: -30px;
       padding-bottom: 96px;
       flex-wrap: wrap;
       row-gap: 24px;
     }
-    @media (width < $width-smartpthone) {
+    @media (width < vars-mixins.$width-smartpthone) {
       margin-top: -30px;
       padding-bottom: 70px;
       position: relative;
@@ -57,40 +65,40 @@
     }
   }
   &__container:last-child {
-    @media (width < $width-smartpthone) {
+    @media (width < vars-mixins.$width-smartpthone) {
       padding-bottom: 212px;
     }
   }
 
   &__title {
-    @include AchivoH2($white);
+    @include vars-mixins.AchivoH2(vars-mixins.$white);
     margin-top: 4px;
-    @media (width < $width-tablet) {
-      @include AchivoH5($white);
+    @media (width < vars-mixins.$width-tablet) {
+      @include vars-mixins.AchivoH5(vars-mixins.$white);
       font-size: 28px;
       width: 340px;
       margin-top: 24px;
     }
-    @media (width < $width-smartpthone) {
+    @media (width < vars-mixins.$width-smartpthone) {
       width: 308px;
       line-height: 120%;
       margin-top: 7px;
     }
   }
   &__btn {
-    @include button-styles(
-      $bd-color: $violet-dark,
+    @include vars-mixins.button-styles(
+      $bd-color: vars-mixins.$violet-dark,
       $bd-rad: 30px,
       $pad: 15px 61px,
-      $bg-color: $violet-dark
+      $bg-color: vars-mixins.$violet-dark
     );
-    @include Nunito18B($white);
+    @include vars-mixins.Nunito18B(vars-mixins.$white);
     margin-left: 4px;
-    @media (width < $width-tablet) {
+    @media (width < vars-mixins.$width-tablet) {
       margin-left: 4px;
       margin-top: 9px;
     }
-    @media (width < $width-smartpthone) {
+    @media (width < vars-mixins.$width-smartpthone) {
       position: absolute;
       width: 99.5%;
       top: 1279px;
@@ -100,81 +108,81 @@
   }
   &__btn:hover,
   &__btn:active {
-    background-color: $black;
-    border: 2px solid $black;
+    background-color: vars-mixins.$black;
+    border: 2px solid vars-mixins.$black;
     outline: none;
     cursor: pointer;
   }
   &__btn:focus-visible {
     outline: none;
-    border: 2px solid $black;
+    border: 2px solid vars-mixins.$black;
   }
   &__btn:disabled {
     opacity: 0.6;
   }
   &__btn:focus {
-    border: 2px solid $white;
+    border: 2px solid vars-mixins.$white;
     outline: none;
   }
 
   &__card {
     border-radius: 32px;
     padding: 32px;
-    @include width-heigth($w: 376px, $h: 432px);
-    @include Nunito15M-SLS($white);
+    @include vars-mixins.width-heigth($w: 376px, $h: 432px);
+    @include vars-mixins.Nunito15M-SLS(vars-mixins.$white);
     display: flex;
     justify-content: space-between;
     flex-direction: column;
     box-sizing: border-box;
-    @media (width < $width-tablet) {
+    @media (width < vars-mixins.$width-tablet) {
       justify-content: flex-start;
       padding: 24px;
-      @include width-heigth($w: 340px, $h: 400px);
+      @include vars-mixins.width-heigth($w: 340px, $h: 400px);
     }
-    @media (width < $width-smartpthone) {
+    @media (width < vars-mixins.$width-smartpthone) {
       justify-content: space-between;
-      @include width-heigth($w: 304px, $h: fit-content);
+      @include vars-mixins.width-heigth($w: 304px, $h: fit-content);
     }
   }
   &__card:nth-child(1) {
-    background: $turquoise-dark url(/images/background/card1-bg-376.svg) 101%
-      101% no-repeat;
-    @media (width < $width-tablet) {
+    background: vars-mixins.$turquoise-dark
+      url(/images/background/card1-bg-376.svg) 101% 101% no-repeat;
+    @media (width < vars-mixins.$width-tablet) {
       background-position: 79px 82px;
     }
-    @media (width < $width-smartpthone) {
+    @media (width < vars-mixins.$width-smartpthone) {
       background-position: 61px 30px;
     }
   }
   &__card:nth-child(1) > p {
-    @media (width < $width-tablet) {
+    @media (width < vars-mixins.$width-tablet) {
       width: 200px;
       min-height: 199px;
     }
-    @media (width < $width-smartpthone) {
+    @media (width < vars-mixins.$width-smartpthone) {
       min-height: auto;
     }
   }
   &__card:nth-child(2) {
-    background: $coral-dark url(/images/background/card2-bg-376.svg) 100% 100%
-      no-repeat;
-    @media (width < $width-tablet) {
+    background: vars-mixins.$coral-dark url(/images/background/card2-bg-376.svg)
+      100% 100% no-repeat;
+    @media (width < vars-mixins.$width-tablet) {
       background-image: url(/images/background/card2-bg-340.svg);
     }
-    @media (width < $width-smartpthone) {
+    @media (width < vars-mixins.$width-smartpthone) {
       background-position: 62px -6px;
     }
   }
   &__card:nth-child(3) {
-    background: $tangerine-dark url(/images/background/card3-bg-376.svg) 0% 8px
-      no-repeat;
-    @media (width < $width-tablet) {
+    background: vars-mixins.$tangerine-dark
+      url(/images/background/card3-bg-376.svg) 0% 8px no-repeat;
+    @media (width < vars-mixins.$width-tablet) {
       background-image: url(/images/background/card3-bg-704.svg);
       background-position: 24% 1px;
       flex-basis: 100%;
       height: 272px;
     }
-    @media (width < $width-smartpthone) {
+    @media (width < vars-mixins.$width-smartpthone) {
       background-image: url(/images/background/card1-bg-376.svg);
       background-position: 61px 50px;
       height: 370px;
@@ -185,10 +193,10 @@
     display: flex;
     justify-content: flex-start;
     gap: 20px;
-    @media (width < $width-tablet) {
+    @media (width < vars-mixins.$width-tablet) {
       min-height: 74px;
     }
-    @media (width < $width-smartpthone) {
+    @media (width < vars-mixins.$width-smartpthone) {
       min-height: 79px;
     }
   }
@@ -198,34 +206,34 @@
   }
   &__avatar {
     width: 64px;
-    @include mask($url: $webinars-mask, $pos: top);
-    background-color: $white;
+    @include vars-mixins.mask($url: vars-mixins.$webinars-mask, $pos: top);
+    background-color: vars-mixins.$white;
     margin-top: -10px;
-    @media (width < $width-tablet) {
+    @media (width < vars-mixins.$width-tablet) {
       margin-top: -12px;
     }
   }
   &__user {
     width: 200px;
-    @media (width < $width-smartpthone) {
+    @media (width < vars-mixins.$width-smartpthone) {
       width: 170px;
     }
   }
   &__user_big {
-    @media (width < $width-tablet) {
+    @media (width < vars-mixins.$width-tablet) {
       width: 550px;
     }
-    @media (width < $width-smartpthone) {
+    @media (width < vars-mixins.$width-smartpthone) {
       width: 170px;
     }
   }
   &__user-name {
-    @include AchivoH5($white);
+    @include vars-mixins.AchivoH5(vars-mixins.$white);
     padding: 7px 0 4px;
-    @media (width < $width-tablet) {
+    @media (width < vars-mixins.$width-tablet) {
       padding-top: 4px;
     }
-    @media (width < $width-smartpthone) {
+    @media (width < vars-mixins.$width-smartpthone) {
       font-size: 22px;
       padding-top: 6px;
     }
@@ -236,26 +244,26 @@
     text-overflow: ellipsis;
   }
   &__content {
-    @include AchivoH4($white);
+    @include vars-mixins.AchivoH4(vars-mixins.$white);
     min-height: 160px;
     margin-top: -18px;
-    @media (width < $width-tablet) {
-      @include AchivoH5($white);
+    @media (width < vars-mixins.$width-tablet) {
+      @include vars-mixins.AchivoH5(vars-mixins.$white);
       font-size: 24px;
       margin-top: 6px;
     }
-    @media (width < $width-smartpthone) {
+    @media (width < vars-mixins.$width-smartpthone) {
       min-height: auto;
       margin-top: 0;
     }
   }
   &__content_big {
     min-height: 160px;
-    @media (width < $width-tablet) {
+    @media (width < vars-mixins.$width-tablet) {
       min-height: 90px;
       margin-top: 6px;
     }
-    @media (width < $width-smartpthone) {
+    @media (width < vars-mixins.$width-smartpthone) {
       min-height: 118px;
     }
   }
@@ -270,11 +278,11 @@
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    @media (width < $width-tablet) {
+    @media (width < vars-mixins.$width-tablet) {
       flex-basis: 24%;
     }
 
-    @media (width < $width-smartpthone) {
+    @media (width < vars-mixins.$width-smartpthone) {
       height: auto;
       padding-top: 32px;
       flex-basis: auto;

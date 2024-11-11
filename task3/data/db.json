@@ -71,7 +71,7 @@
             "url": "#"
           },
           { "label": "Centro de carreras", "url": "#" },
-          { "label": "Vacantes" }
+          { "label": "Vacantes", "url": "#" }
         ]
       },
       {
@@ -110,7 +110,7 @@
           "accent": "#bedb39",
           "date": "2 de junio de 2022",
           "duration": "10 min",
-          "browsetext": "Leer el artículo",
+          "browse-text": "Leer el artículo",
           "size": "full-size",
           "tags": ["Gaming", "Artículo", "Niños", "Proyecto"],
           "img": {
@@ -223,7 +223,7 @@
     },
     "proposals": {
       "title": "Webinars gratuitos",
-      "browsealltext": "Todos os webinars",
+      "browse-all-text": "Todos os webinars",
       "items": [
         {
           "background": "#57acbc",
@@ -242,13 +242,13 @@
           "background": "#57acbc",
           "author": {
             "img": "/images/picture/avatar2.webp",
-            "name": "Julia Alvarez",
-            "position": "Programador, consultor"
+            "name": "Diego Xochihuila",
+            "position": "Diseñadora, editora"
           },
-          "text": "Cómo iniciar el calendario de publicaciones de tu marca",
-          "tags": ["Próximamente", "Webinar"],
-          "date_from": "31 de maio, 01 e ",
-          "date_to": "02 de junho de 2022",
+          "text": "Cloud Computing: Qué es y cuáles son sus ventajas en la industria",
+          "tags": ["Próximamente", "Workshop"],
+          "date_from": "30 e 31 de maio e 01, ",
+          "date_to": "02 e 03 de junho de 2022",
           "time": "19:00"
         },
         {
@@ -270,9 +270,9 @@
     "subscription": {
       "title": "Suscríbete a nuestra newsletter para no perderte nada nuevo",
       "text": "Tendencia en el mercado laboral: conozca esta profesión que transforma la experiencia del Usuario a través de elementos textuales.",
-      "emailplaceholder": "Su correo electrónico",
-      "submittext": "Enviar",
-      "agreementtext": "Confirmo que he leído, acepto y entiendo los <>términos y condiciones<> así como el <>aviso de privacidad",
+      "email-placeholder": "Su correo electrónico",
+      "submit-text": "Enviar",
+      "agreement-text": "Confirmo que he leído, acepto y entiendo los <>términos y condiciones<> así como el <>aviso de privacidad",
       "ticker": { "text": "Descuento para cursos 20%", "color:": "#da3369" }
     }
   },
@@ -290,8 +290,8 @@
       { "label": "Términos y condiciones", "url": "#" }
     ],
     "subscription": {
-      "emailplaceholder": "Su correo electrónico",
-      "submittext": "Suscribirse al boletín"
+      "email-placeholder": "Su correo electrónico",
+      "submit-text": "Suscribirse al boletín"
     }
   }
 }

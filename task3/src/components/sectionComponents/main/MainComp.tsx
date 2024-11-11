@@ -1,9 +1,9 @@
-import RunningString from "../../simpleComp/runningString/RunningString";
-import TagsComp from "../../simpleComp/tags/TagsComp";
-import DataBox from "../../simpleComp/dataBox/DataBox";
-import MaskWrap from "../../simpleComp/maskWrap/MaskWrap";
-import { content } from "../../../containers/MainPage";
-import "./main.css";
+import RunningString from "@simpcomp/runningString/RunningString";
+import TagsComp from "@simpcomp/tags/TagsComp";
+import DataBox from "@simpcomp/dataBox/DataBox";
+import MaskWrap from "@simpcomp/maskWrap/MaskWrap";
+import { content } from "@/types/types";
+import "./main.scss";
 
 export default function MainComp(prop: { main: content }) {
   return (
@@ -35,7 +35,7 @@ export default function MainComp(prop: { main: content }) {
               duration={prop.main.items[0]?.duration}
             />
             <button className="main__btn">
-              {prop.main.items[0]?.browsetext}
+              {prop.main.items[0]?.["browse-text"]}
             </button>
           </div>
         </div>

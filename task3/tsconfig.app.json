@@ -14,6 +14,12 @@
     "moduleDetection": "force",
     "noEmit": true,
     "jsx": "react-jsx",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"],
+      "@sections/*": ["src/components/sectionComponents/*"],
+      "@simpcomp/*": ["src/components/simpleComp/*"]
+    },
 
     /* Linting */
     "strict": true,

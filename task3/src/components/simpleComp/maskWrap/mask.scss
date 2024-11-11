@@ -1,41 +1,45 @@
-@import "../../../../public/styles/vars-mixins";
-
 .main {
   &__pic-box {
-    @include width-heigth($w: 480px, $h: 560px);
-    @include relative-hidden;
-    @media (width < $width-tablet) {
-      @include width-heigth($w: 720px, $h: 320px);
+    @include vars-mixins.width-heigth($w: 480px, $h: 560px);
+    @include vars-mixins.relative-hidden;
+    @media (width < vars-mixins.$width-tablet) {
+      @include vars-mixins.width-heigth($w: 720px, $h: 320px);
     }
-    @media (width < $width-smartpthone) {
-      @include width-heigth($w: 304px, $h: 352px);
+    @media (width < vars-mixins.$width-smartpthone) {
+      @include vars-mixins.width-heigth($w: 304px, $h: 352px);
     }
   }
   &__pic {
     margin-top: -114px;
-    @include mask($url: $main-mask-laptop, $pos: bottom);
-    @include width-heigth($w: 480px, $h: 675px);
+    @include vars-mixins.mask(
+      $url: vars-mixins.$main-mask-laptop,
+      $pos: bottom
+    );
+    @include vars-mixins.width-heigth($w: 480px, $h: 675px);
 
-    @media (width < $width-tablet) {
-      @include mask($url: $main-mask-tablet);
+    @media (width < vars-mixins.$width-tablet) {
+      @include vars-mixins.mask($url: vars-mixins.$main-mask-tablet);
       margin: 0px 0 0 8px;
-      @include width-heigth($w: 704px, $h: 320px);
+      @include vars-mixins.width-heigth($w: 704px, $h: 320px);
     }
-    @media (width < $width-smartpthone) {
+    @media (width < vars-mixins.$width-smartpthone) {
       margin: -80px 0 0 0;
-      @include width-heigth($w: 304px, $h: 431px);
-      @include mask($url: $main-mask-smartphone, $pos: bottom);
+      @include vars-mixins.width-heigth($w: 304px, $h: 431px);
+      @include vars-mixins.mask(
+        $url: vars-mixins.$main-mask-smartphone,
+        $pos: bottom
+      );
     }
   }
   &__stiker {
-    @include position($r: 0);
+    @include vars-mixins.position($r: 0);
     transition: transform 0.9s;
-    @media (width < $width-tablet) {
-      @include position($t: 8px, $r: 16px);
+    @media (width < vars-mixins.$width-tablet) {
+      @include vars-mixins.position($t: 8px, $r: 16px);
       width: 120px;
     }
-    @media (width < $width-smartpthone) {
-      @include position($t: 8px, $r: 8px);
+    @media (width < vars-mixins.$width-smartpthone) {
+      @include vars-mixins.position($t: 8px, $r: 8px);
       width: 104px;
     }
   }
@@ -46,29 +50,29 @@
 
 .articles {
   &__img-box {
-    @include width-heigth($w: 584px, $h: 328px);
+    @include vars-mixins.width-heigth($w: 584px, $h: 328px);
     position: relative;
-    @media (width < $width-tablet) {
-      @include width-heigth($w: 340px, $h: 240px);
+    @media (width < vars-mixins.$width-tablet) {
+      @include vars-mixins.width-heigth($w: 340px, $h: 240px);
     }
-    @media (width < $width-smartpthone) {
-      @include width-heigth($w: 304px, $h: 373px);
+    @media (width < vars-mixins.$width-smartpthone) {
+      @include vars-mixins.width-heigth($w: 304px, $h: 373px);
     }
   }
   &__img-box_big {
-    @include width-heigth($w: 1208px, $h: 520px);
+    @include vars-mixins.width-heigth($w: 1208px, $h: 520px);
     flex-basis: 100%;
-    @media (width < $width-tablet) {
-      @include width-heigth($w: 704px, $h: 320px);
+    @media (width < vars-mixins.$width-tablet) {
+      @include vars-mixins.width-heigth($w: 704px, $h: 320px);
     }
-    @media (width < $width-smartpthone) {
-      @include width-heigth($w: 308px, $h: 376px);
+    @media (width < vars-mixins.$width-smartpthone) {
+      @include vars-mixins.width-heigth($w: 308px, $h: 376px);
     }
   }
   &__img {
     width: 584px;
     margin-top: 8px;
-    @media (width < $width-tablet) {
+    @media (width < vars-mixins.$width-tablet) {
       width: 340px;
       height: 224px;
     }
@@ -76,8 +80,8 @@
   &__img_big {
     width: 1208px;
     margin-top: -143px;
-    @media (width < $width-tablet) {
-      @include width-heigth($w: 704px, $h: 470px);
+    @media (width < vars-mixins.$width-tablet) {
+      @include vars-mixins.width-heigth($w: 704px, $h: 470px);
       margin-top: -72px;
     }
   }
@@ -85,65 +89,68 @@
     transform: scale(-1, 1);
   }
   &__img_mask1 {
-    @include mask($url: $article-mask1-laptop);
-    @media (width < $width-tablet) {
-      mask-image: $article-mask1-tablet;
+    @include vars-mixins.mask($url: vars-mixins.$article-mask1-laptop);
+    @media (width < vars-mixins.$width-tablet) {
+      mask-image: vars-mixins.$article-mask1-tablet;
       margin-top: 25px;
     }
-    @media (width < $width-smartpthone) {
-      mask-image: $article-mask2-smartphone;
-      @include width-heigth($w: 542px, $h: 360px);
+    @media (width < vars-mixins.$width-smartpthone) {
+      mask-image: vars-mixins.$article-mask2-smartphone;
+      @include vars-mixins.width-heigth($w: 542px, $h: 360px);
       margin: 16px 0 0 -120px;
     }
   }
   &__img_mask2 {
-    @include mask($url: $article-mask2-laptop);
-    @media (width < $width-tablet) {
-      mask-image: $article-mask2-tablet;
+    @include vars-mixins.mask($url: vars-mixins.$article-mask2-laptop);
+    @media (width < vars-mixins.$width-tablet) {
+      mask-image: vars-mixins.$article-mask2-tablet;
       margin-top: 25px;
     }
-    @media (width < $width-smartpthone) {
-      @include mask(
-        $url: $article-mask3-smartphone,
+    @media (width < vars-mixins.$width-smartpthone) {
+      @include vars-mixins.mask(
+        $url: vars-mixins.$article-mask3-smartphone,
         $pos: 78% center,
         $repeat: no-repeat
       );
-      @include width-heigth($w: 532px, $h: 360px);
+      @include vars-mixins.width-heigth($w: 532px, $h: 360px);
       margin: 18px 0 0 -50px;
     }
   }
   &__img_mask3 {
-    @include mask($url: $article-mask4-laptop);
-    @media (width < $width-tablet) {
-      mask-image: $article-mask4-tablet;
+    @include vars-mixins.mask($url: vars-mixins.$article-mask4-laptop);
+    @media (width < vars-mixins.$width-tablet) {
+      mask-image: vars-mixins.$article-mask4-tablet;
     }
-    @media (width < $width-smartpthone) {
-      mask-image: $article-mask4-smartphone;
+    @media (width < vars-mixins.$width-smartpthone) {
+      mask-image: vars-mixins.$article-mask4-smartphone;
       margin: -27px 0 0 -139px;
-      @include width-heigth($w: 581px, $h: 450px);
+      @include vars-mixins.width-heigth($w: 581px, $h: 450px);
     }
   }
   &__img_mask4 {
-    @include mask($url: $article-mask5-laptop);
-    @media (width < $width-tablet) {
-      mask-image: $article-mask5-tablet;
+    @include vars-mixins.mask($url: vars-mixins.$article-mask5-laptop);
+    @media (width < vars-mixins.$width-tablet) {
+      mask-image: vars-mixins.$article-mask5-tablet;
       margin-top: 25px;
     }
-    @media (width < $width-smartpthone) {
-      mask-image: $article-mask5-smartphone;
-      @include width-heigth($w: 542px, $h: 360px);
+    @media (width < vars-mixins.$width-smartpthone) {
+      mask-image: vars-mixins.$article-mask5-smartphone;
+      @include vars-mixins.width-heigth($w: 542px, $h: 360px);
       margin: 16px 0 0 -120px;
     }
   }
   &__img_mask5 {
-    @include mask($url: $article-mask6-laptop);
-    @media (width < $width-tablet) {
-      mask-image: $article-mask6-tablet;
+    @include vars-mixins.mask($url: vars-mixins.$article-mask6-laptop);
+    @media (width < vars-mixins.$width-tablet) {
+      mask-image: vars-mixins.$article-mask6-tablet;
       margin-top: 25px;
     }
-    @media (width < $width-smartpthone) {
-      @include mask($url: $article-mask6-smartphone, $pos: 8%);
-      @include width-heigth($w: 542px, $h: 360px);
+    @media (width < vars-mixins.$width-smartpthone) {
+      @include vars-mixins.mask(
+        $url: vars-mixins.$article-mask6-smartphone,
+        $pos: 8%
+      );
+      @include vars-mixins.width-heigth($w: 542px, $h: 360px);
       margin: 16px 0 0 -19px;
     }
   }
@@ -152,57 +159,57 @@
   }
 
   &__stiker_rt {
-    @include position($t: -11px, $r: -40px);
-    @media (width < $width-tablet) {
-      @include position($t: 32px, $r: 8px);
+    @include vars-mixins.position($t: -11px, $r: -40px);
+    @media (width < vars-mixins.$width-tablet) {
+      @include vars-mixins.position($t: 32px, $r: 8px);
       width: 104px;
     }
-    @media (width < $width-smartpthone) {
-      @include position($t: 30px, $r: 8px);
+    @media (width < vars-mixins.$width-smartpthone) {
+      @include vars-mixins.position($t: 30px, $r: 8px);
       width: 120px;
     }
   }
   &__stiker_rb {
-    @include position($t: -11px, $r: -40px);
-    @media (width < $width-tablet) {
-      @include position($t: 32px, $r: 8px);
+    @include vars-mixins.position($t: -11px, $r: -40px);
+    @media (width < vars-mixins.$width-tablet) {
+      @include vars-mixins.position($t: 32px, $r: 8px);
       width: 104px;
     }
-    @media (width < $width-smartpthone) {
-      @include position($t: 30px, $l: 8px);
+    @media (width < vars-mixins.$width-smartpthone) {
+      @include vars-mixins.position($t: 30px, $l: 8px);
       width: 120px;
     }
   }
   &__stiker_md {
-    @include position($t: -48px, $r: -40px);
-    @media (width < $width-tablet) {
-      @include position($t: 14px, $r: 8px);
+    @include vars-mixins.position($t: -48px, $r: -40px);
+    @media (width < vars-mixins.$width-tablet) {
+      @include vars-mixins.position($t: 14px, $r: 8px);
       width: 120px;
     }
-    @media (width < $width-smartpthone) {
-      @include position($t: 8px, $l: 8px);
+    @media (width < vars-mixins.$width-smartpthone) {
+      @include vars-mixins.position($t: 32px, $l: 8px);
     }
   }
   &__stiker_lb {
-    @include position($t: -39px, $l: -55px);
-    @media (width < $width-tablet) {
+    @include vars-mixins.position($t: -39px, $l: -55px);
+    @media (width < vars-mixins.$width-tablet) {
       transform: rotate(15deg);
       width: 164px;
-      @include position($t: 16px, $r: -2px);
+      @include vars-mixins.position($t: 16px, $r: -2px);
     }
-    @media (width < $width-smartpthone) {
+    @media (width < vars-mixins.$width-smartpthone) {
       width: 182px;
-      @include position($t: 8px, $r: -3px);
+      @include vars-mixins.position($t: 8px, $r: -3px);
     }
   }
   &__stiker_lt {
-    @include position($t: -11px, $l: -40px);
-    @media (width < $width-tablet) {
-      @include position($t: 32px, $r: 8px);
+    @include vars-mixins.position($t: -11px, $l: -40px);
+    @media (width < vars-mixins.$width-tablet) {
+      @include vars-mixins.position($t: 32px, $r: 8px);
       width: 104px;
     }
-    @media (width < $width-smartpthone) {
-      @include position($t: 28px, $l: 8px);
+    @media (width < vars-mixins.$width-smartpthone) {
+      @include vars-mixins.position($t: 28px, $l: 8px);
       width: 120px;
     }
   }

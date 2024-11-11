@@ -1,8 +1,8 @@
-import TagsComp from "../../simpleComp/tags/TagsComp";
-import MaskWrap from "../../simpleComp/maskWrap/MaskWrap";
-import DataBox from "../../simpleComp/dataBox/DataBox";
-import { content } from "../../../containers/MainPage";
-import "./articles.css";
+import TagsComp from "@simpcomp/tags/TagsComp";
+import MaskWrap from "@simpcomp/maskWrap/MaskWrap";
+import DataBox from "@simpcomp/dataBox/DataBox";
+import { content } from "@/types/types";
+import "./articles.scss";
 
 export default function ArticlesComp(prop: { content: content }) {
   return (

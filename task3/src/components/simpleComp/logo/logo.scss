@@ -1,31 +1,35 @@
-@import "../../../../public/styles/vars-mixins";
-
 .header {
   &__logo {
-    @include width-heigth($w: 108.9px, $h: 40px);
-    fill: $black;
+    fill: vars-mixins.$black;
     transition: fill 0.3s;
-    @media (width < $width-smartpthone) {
-      @include width-heigth($w: 140px, $h: 48px);
+    @include vars-mixins.width-heigth($w: 108.9px, $h: 40px);
+    @media screen and (prefers-color-scheme: dark) {
+      fill: vars-mixins.$white;
+    }
+    @media (width < vars-mixins.$width-smartpthone) {
+      @include vars-mixins.width-heigth($w: 140px, $h: 48px);
       margin-left: -5px;
     }
   }
   &__logo:hover {
-    fill: $pink-dark;
+    fill: vars-mixins.$pink-dark;
+    @media screen and (prefers-color-scheme: dark) {
+      fill: vars-mixins.$pink;
+    }
   }
 }
 .footer {
   &__logo {
-    @include width-heigth($w: 228px, $h: 83px);
+    @include vars-mixins.width-heigth($w: 228px, $h: 83px);
     margin-top: -2px;
-    fill: $white;
+    fill: vars-mixins.$white;
     transition: fill 0.3s;
-    @media (width < $width-tablet) {
-      @include width-heigth($w: 197px, $h: 64px);
+    @media (width < vars-mixins.$width-tablet) {
+      @include vars-mixins.width-heigth($w: 197px, $h: 64px);
       margin: 0 0 0 -12px;
     }
   }
   &__logo:hover {
-    fill: $pink-dark;
+    fill: vars-mixins.$pink-dark;
   }
 }

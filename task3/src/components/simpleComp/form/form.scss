@@ -1,5 +1,3 @@
-@import "../../../../public/styles/vars-mixins";
-
 .form {
   &__box {
     display: flex;
@@ -7,24 +5,24 @@
     align-items: flex-start;
     padding-top: 15px;
     width: 576px;
-    @media (width < $width-tablet) {
+    @media (width < vars-mixins.$width-tablet) {
       flex-direction: column;
       padding-top: 10px;
       width: 368px;
     }
-    @media (width < $width-smartpthone) {
+    @media (width < vars-mixins.$width-smartpthone) {
       padding-top: 8px;
       width: fit-content;
     }
   }
   &__box:first-child {
     position: relative;
-    @media (width < $width-smartpthone) {
+    @media (width < vars-mixins.$width-smartpthone) {
       padding-top: 80px;
     }
   }
   &__box:last-child {
-    @media (width < $width-tablet) {
+    @media (width < vars-mixins.$width-tablet) {
       padding-top: 10px;
     }
   }
@@ -33,39 +31,39 @@
     height: 120px;
     padding-top: 2px;
     animation: text-focus-in 0.3s cubic-bezier(0.55, 0.085, 0.68, 0.53) both;
-    @media (width < $width-tablet) {
+    @media (width < vars-mixins.$width-tablet) {
       height: 146px;
       padding-top: 11px;
     }
-    @media (width < $width-smartpthone) {
+    @media (width < vars-mixins.$width-smartpthone) {
       padding: 75px 0 30px;
     }
   }
   &__submitted-text {
-    @include Nunito18B($turquoise-dark);
+    @include vars-mixins.Nunito18B(vars-mixins.$turquoise-dark);
     padding: 10px 25px;
     background-color: #fcfaf9;
     border-radius: 88px;
     margin-top: 72px;
     width: 527px;
-    @media (width < $width-tablet) {
+    @media (width < vars-mixins.$width-tablet) {
       width: 160px;
       margin-top: 33px;
       padding: 27px 96px 28px 24px;
       border-radius: 24px;
     }
-    @media (width < $width-smartpthone) {
+    @media (width < vars-mixins.$width-smartpthone) {
       padding: 30px 81px 28px 16px;
     }
   }
   &__submitted-img {
-    @include position($t: 13px, $r: 18%);
-    @media (width < $width-tablet) {
-      @include position($t: 11px, $r: 63px);
+    @include vars-mixins.position($t: 13px, $r: 18%);
+    @media (width < vars-mixins.$width-tablet) {
+      @include vars-mixins.position($t: 11px, $r: 63px);
       width: 105px;
     }
-    @media (width < $width-smartpthone) {
-      @include position($t: 76px, $r: -17px);
+    @media (width < vars-mixins.$width-smartpthone) {
+      @include vars-mixins.position($t: 76px, $r: -17px);
     }
   }
   &__agree + label {
@@ -76,82 +74,83 @@
   &__agree + label::before {
     content: "";
     display: inline-block;
-    @include width-heigth($w: 24px, $h: 24px);
+    @include vars-mixins.width-heigth($w: 24px, $h: 24px);
     flex-shrink: 0;
     flex-grow: 0;
-    border: 2px solid $white;
+    border: 2px solid vars-mixins.$white;
     background-color: transparent;
     box-sizing: border-box;
     border-radius: 4px;
     margin: 0 16px 16px 0;
-    @media (width < $width-tablet) {
+    @media (width < vars-mixins.$width-tablet) {
       margin-bottom: 10px;
     }
-    @media (width < $width-smartpthone) {
+    @media (width < vars-mixins.$width-smartpthone) {
       margin-bottom: 31px;
     }
   }
   &__agree:checked + label::before {
-    background: $white url(/images/icons/v.svg) center center no-repeat;
+    background: vars-mixins.$white url(/images/icons/v.svg) center center
+      no-repeat;
   }
 
   &__agree:hover + label::before {
-    border-color: $white;
-    background-color: $whiteTR90;
+    border-color: vars-mixins.$white;
+    background-color: vars-mixins.$whiteTR90;
   }
 
   &__agree:focus + label::before {
-    border-color: $black;
+    border-color: vars-mixins.$black;
   }
   &__agree:disabled + label::before {
-    border-color: $whiteTR90;
-    background-color: $whiteTR90;
+    border-color: vars-mixins.$whiteTR90;
+    background-color: vars-mixins.$whiteTR90;
     background-image: none;
   }
   &__chbox-text {
-    @include Nunito15R-SLS($white);
+    @include vars-mixins.Nunito15R-SLS(vars-mixins.$white);
     width: 536px;
-    @media (width <$width-tablet) {
-      @include Nunito13R-SLS($white);
+    @media (width <vars-mixins.$width-tablet) {
+      @include vars-mixins.Nunito13R-SLS(vars-mixins.$white);
       width: 320px;
     }
-    @media (width < $width-smartpthone) {
+    @media (width < vars-mixins.$width-smartpthone) {
       width: 220px;
     }
   }
   &__chbox-text_underline {
-    color: $white;
+    color: vars-mixins.$white;
     text-decoration: underline;
-    @media (width <$width-tablet) {
+    @media (width <vars-mixins.$width-tablet) {
       text-decoration: none;
     }
   }
   &__chbox-text_underline:hover {
     cursor: pointer;
-    color: $white;
+    color: vars-mixins.$white;
   }
   &__email {
     width: 280px;
-    @include button-styles(
-      $bd-color: $white,
+    @include vars-mixins.button-styles(
+      $bd-color: vars-mixins.$white,
       $bd-rad: 40px,
       $pad: 9px 24px,
       $bg-color: transparent
     );
-    @include Nunito18R;
-    @media (width < $width-smartpthone) {
+    @include vars-mixins.Nunito18R;
+    @media (width < vars-mixins.$width-smartpthone) {
       width: 256px;
     }
   }
   &__email::placeholder {
-    color: $white;
+    color: vars-mixins.$white;
   }
   &__email:hover {
     border-color: #fff;
   }
   &__email_invalid {
     position: relative;
-    border-color: $tangerine;
+    border-color: vars-mixins.$tangerine;
   }
   &__email_invalid::after {
     content: url(/images/icons/form-invalid.svg);
@@ -164,112 +163,112 @@
     z-index: 1;
   }
   &__email_valid {
-    border-color: $grass;
+    border-color: vars-mixins.$grass;
   }
   &__email_invalid-img {
-    @include ValidationImg;
-    background: $tangerine url(/images/icons/form-invalid.svg);
+    @include vars-mixins.ValidationImg;
+    background: vars-mixins.$tangerine url(/images/icons/form-invalid.svg);
   }
   &__email_valid-img {
-    @include ValidationImg;
-    background: $grass url(/images/icons/form-valid.svg);
+    @include vars-mixins.ValidationImg;
+    background: vars-mixins.$grass url(/images/icons/form-valid.svg);
   }
 
   &__email:focus {
     outline: none;
-    border-color: $black;
+    border-color: vars-mixins.$black;
   }
   &__button {
-    @include button-styles(
+    @include vars-mixins.button-styles(
       $bd-color: transparent,
       $bd-rad: 40px,
       $pad: 8px 113px,
-      $bg-color: $coral-dark
+      $bg-color: vars-mixins.$coral-dark
     );
-    @include Nunito18B($white);
+    @include vars-mixins.Nunito18B(vars-mixins.$white);
     width: 280px;
-    @media (width <$width-tablet) {
+    @media (width <vars-mixins.$width-tablet) {
       margin: 15px 0 6px;
     }
-    @media (width < $width-smartpthone) {
+    @media (width < vars-mixins.$width-smartpthone) {
       width: 256px;
       padding: 8px 100px;
       margin: 8px 0 0px;
     }
   }
   &__button:hover {
-    @media (width >= $width-smartpthone) {
-      background-color: $black;
+    @media (width >= vars-mixins.$width-smartpthone) {
+      background-color: vars-mixins.$black;
     }
   }
   &__button:active {
-    @media (width < $width-smartpthone) {
-      background-color: $black;
+    @media (width < vars-mixins.$width-smartpthone) {
+      background-color: vars-mixins.$black;
     }
   }
   &__button:disabled {
     opacity: 0.6;
   }
   &__button:focus {
-    border: 2px solid $black;
+    border: 2px solid vars-mixins.$black;
   }
 }
 .footer {
   &__email {
     width: 280px;
     display: block;
-    @include Nunito18R($white);
-    @include button-styles(
-      $bd-color: $white,
+    @include vars-mixins.Nunito18R(vars-mixins.$white);
+    @include vars-mixins.button-styles(
+      $bd-color: vars-mixins.$white,
       $bd-rad: 40px,
       $pad: 9px 24px,
       $bg-color: transparent
     );
     margin-bottom: 8px;
-    @media (width < $width-tablet) {
+    @media (width < vars-mixins.$width-tablet) {
       margin-bottom: 17px;
     }
-    @media (width < $width-smartpthone) {
+    @media (width < vars-mixins.$width-smartpthone) {
       width: 100%;
       margin-bottom: 8px;
     }
   }
   &__email::placeholder {
-    color: $white;
+    color: vars-mixins.$white;
   }
   &__email:focus {
     outline: none;
-    border-color: $black;
+    border-color: vars-mixins.$black;
   }
   &__button {
     display: block;
-    @include button-styles(
+    @include vars-mixins.button-styles(
       $bd-color: transparent,
       $bd-rad: 40px,
       $pad: 8px 49px,
-      $bg-color: $violet-dark
+      $bg-color: vars-mixins.$violet-dark
     );
     width: 281px;
-    @include Nunito18B($white);
-    @media (width < $width-smartpthone) {
+    @include vars-mixins.Nunito18B(vars-mixins.$white);
+    @media (width < vars-mixins.$width-smartpthone) {
       width: 100%;
     }
   }
   &__button:hover {
-    @media (width >= $width-smartpthone) {
-      background-color: $pink-dark;
+    @media (width >= vars-mixins.$width-smartpthone) {
+      background-color: vars-mixins.$pink-dark;
     }
   }
   &__button:active {
-    @media (width < $width-smartpthone) {
-      background-color: $pink-dark;
+    @media (width < vars-mixins.$width-smartpthone) {
+      background-color: vars-mixins.$pink-dark;
     }
   }
   &__button:disabled {
     opacity: 0.6;
-    background-color: $violet-dark;
+    background-color: vars-mixins.$violet-dark;
   }
   &__button:focus {
-    border: 2px solid $white;
+    border: 2px solid vars-mixins.$white;
   }
 }

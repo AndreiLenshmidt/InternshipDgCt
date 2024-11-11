@@ -5,7 +5,7 @@ import webinars from "/images/running-string/Webinars.svg?url";
 import subscribe from "/images/running-string/Subscribe.svg?url";
 import descuento from "/images/running-string/Descuento.svg?url";
 import { Fragment } from "react/jsx-runtime";
-import "./running.css";
+import "./running.scss";
 
 export default function RunningString(prop: {
   nameSection: string;
