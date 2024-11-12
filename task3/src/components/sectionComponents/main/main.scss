@@ -3,10 +3,8 @@
   background: url(/images/background/bg-main-1440.svg) calc(50% - 52px) 51px
     no-repeat;
   background-size: 1642px;
-  @include vars-mixins.WidthCenter;
   @include vars-mixins.relative-hidden;
   @media screen and (prefers-color-scheme: dark) {
-    // background-color:  vars-mixins.$gray80;
     background-image: vars-mixins.$main-bkg-dark-1440;
   }
   @media (width < vars-mixins.$width-tablet) {

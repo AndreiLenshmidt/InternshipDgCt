@@ -187,14 +187,6 @@ $webinars-bkg-4k: url("data:image/svg+xml,%3Csvg width='3840' height='1062' view
   text-transform: uppercase;
 }
 
-@mixin WidthCenter {
-  width: 100vw;
-  margin: 0 auto;
-  @media (width > 1440px) {
-    width: $width-str;
-  }
-}
-
 @mixin ValidationImg {
   position: absolute;
   width: 25px;
