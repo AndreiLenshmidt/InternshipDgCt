@@ -1,4 +1,5 @@
 .footer {
+  overflow: hidden;
   &__container {
     padding: 64px 0px 80px;
     background-color: vars-mixins.$black;
@@ -6,7 +7,7 @@
       padding: 64px 0px 72px;
     }
     @media (width < vars-mixins.$width-smartpthone) {
-      padding: 34px 0px 82px;
+      padding: 31px 0px 82px;
     }
   }
   &__box {
@@ -25,15 +26,17 @@
   }
   &__small-box:first-child {
     width: 352px;
+    padding-top: 2px;
     display: flex;
     justify-content: space-between;
     @media (width < vars-mixins.$width-tablet) {
+      padding-top: 0;
       width: 285px;
       order: 1;
     }
     @media (width < vars-mixins.$width-smartpthone) {
       width: 304px;
-      padding-bottom: 38px;
+      padding-bottom: 42px;
     }
   }
   &__small-box:nth-child(2) {
@@ -51,12 +54,12 @@
     }
     @media (width < vars-mixins.$width-smartpthone) {
       order: 3;
-      padding-top: 65px;
+      padding-top: 62px;
       flex-direction: column;
     }
   }
   &__small-box:nth-child(3) {
-    margin-top: -91px;
+    margin-top: -89px;
     flex-basis: 80%;
     width: 281px;
     @media (width < vars-mixins.$width-tablet) {
@@ -96,6 +99,7 @@
     @media (width < vars-mixins.$width-tablet) {
       order: 3;
       padding-top: 0px;
+      margin-top: -4px;
     }
     @media (width < vars-mixins.$width-smartpthone) {
       order: 2;

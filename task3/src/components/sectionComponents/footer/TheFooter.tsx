@@ -17,6 +17,16 @@ export default function TheFooter(prop: {
       }
     }
   });
+  const descuento = (
+    <>
+      <svg className="sprite__star_descuento">
+        <use xlinkHref="#white-star" />
+      </svg>
+      <svg className="sprite__text_descuento">
+        <use xlinkHref="#Descuento" />
+      </svg>
+    </>
+  );
   const details = prop.footer?.map((details, index) => (
     <details className="footer__menu" key={index} open>
       <summary className="footer__menu-item">
@@ -47,11 +57,8 @@ export default function TheFooter(prop: {
   return (
     <footer className="footer">
       <RunningString
-        nameSection="runnig-string"
         className="footer__runnig-string"
-        imgClassName="runnig-string__text_descuento"
-        nameImg="descuento"
-        color=""
+        runningText={descuento}
       />
       <div className="footer__container">
         <div className="wrap">

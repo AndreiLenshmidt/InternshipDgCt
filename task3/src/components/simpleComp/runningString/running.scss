@@ -38,6 +38,7 @@
 
   &__box {
     display: flex;
+    width: fit-content;
     animation: running-string 40s infinite linear;
   }
 
@@ -59,33 +60,20 @@
   }
 
   100% {
-    transform: translate(-150%, 0);
+    transform: translate(-80%, 0);
   }
 }
 
 .main {
-  &__runnig-string-box {
-    overflow: hidden;
-    height: 394px;
-    @media (width < vars-mixins.$width-tablet) {
-      height: 285px;
-    }
-    @media (width < vars-mixins.$width-smartpthone) {
-      height: 250px;
-    }
-  }
   &__runnig-string {
-    @include vars-mixins.AchivoH1(vars-mixins.$black);
     background-color: vars-mixins.$turquoise;
     width: 3250px;
     transform: rotate(-4deg);
-    padding-top: 10px;
-    margin: calc(7vw + 1vh - 47px) 0 0 -10px;
+    margin: calc(7vw + 1vh - 46px) 0 0 -10px;
     @media (width < vars-mixins.$width-tablet) {
       transform: rotate(-3deg);
       width: 2150px;
-      margin-top: calc(8vw + 1vh - 44px);
-      padding: 9px 0 5px;
+      margin-top: calc(8vw + 1vh - 41px);
     }
     @media (width < vars-mixins.$width-smartpthone) {
       margin-top: -10px;
@@ -96,30 +84,15 @@
 }
 
 .webinars {
-  &__runnig-string-box {
-    overflow: hidden;
-    height: 372px;
-    @media (width > vars-mixins.$width-laptop) {
-      height: 425px;
-    }
-    @media (width < vars-mixins.$width-tablet) {
-      height: 358px;
-    }
-    @media (width < vars-mixins.$width-smartpthone) {
-      height: 228px;
-    }
-  }
   &__runnig-string {
     background-color: vars-mixins.$tangerine;
     width: 3250px;
     transform: rotate(-3deg);
-    margin: calc(9vw + 1vh - 34px) 0 0 -10px;
+    margin-left: -10px;
     @media (width > vars-mixins.$width-laptop) {
       margin: calc(9vw + 1vh - 30px) 0 0 -10px;
     }
     @media (width < vars-mixins.$width-tablet) {
-      padding: 12px 0 10px;
-      margin-top: calc(17vw + 1vh - 2px);
       transform: rotate(-3deg);
       width: 2150px;
     }
@@ -130,7 +103,7 @@
   }
   &__runnig-string_bottom {
     transform: rotate(2deg);
-    margin: 46px 0 119px -10px;
+    margin: 46px 0 100px -10px;
     background-color: vars-mixins.$coral-dark;
     @media (width > vars-mixins.$width-laptop) {
       margin: 4px 0 106px -10px;
@@ -138,11 +111,11 @@
     @media (width < vars-mixins.$width-tablet) {
       transform: rotate(3deg);
       width: 2150px;
-      margin: 45px 0 107px -10px;
+      margin: 42px 0 85px -10px;
     }
     @media (width < vars-mixins.$width-smartpthone) {
       transform: rotate(4deg);
-      margin: 70px 0 auto -10px;
+      margin: 70px 0 16px -10px;
     }
   }
 }
@@ -152,10 +125,7 @@
     @include vars-mixins.AchivoH1(vars-mixins.$black);
     background-color: vars-mixins.$pink-dark;
     width: 3250px;
-    margin-top: 12px;
     @media (width < vars-mixins.$width-tablet) {
-      padding: 10px 0 1px;
-      margin-top: 9px;
     }
   }
 }

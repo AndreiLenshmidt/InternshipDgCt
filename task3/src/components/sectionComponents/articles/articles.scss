@@ -1,5 +1,6 @@
 .articles {
   padding-top: 15px;
+  padding-bottom: 107px;
   @include vars-mixins.relative-hidden;
   background: url(/images/background/articles-bg-1440.svg) calc(50% - -119px) -105px
     no-repeat;
@@ -11,6 +12,7 @@
     background: url(/images/background/articles-bg-768.svg) calc(50% + -297px)
       176px no-repeat;
     background-size: 2543px;
+    padding-bottom: 135px;
   }
   @media (width < vars-mixins.$width-tablet) and (prefers-color-scheme: dark) {
     background-image: vars-mixins.$articles-bkg-dark-768;
@@ -19,6 +21,7 @@
     background: url(/images/background/articles-bg-320.svg) calc(50% + 15px) -183px
       no-repeat;
     background-size: 965px;
+    padding-bottom: 0;
   }
   @media (width < vars-mixins.$width-smartpthone) and (prefers-color-scheme: dark) {
     background-image: vars-mixins.$articles-bkg-dark-320;

@@ -4,7 +4,7 @@
     url(/images/background/form-bg-1440.svg) calc(50% - 22px) -41px no-repeat;
   background-size: 988px;
   @include vars-mixins.mask($url: vars-mixins.$form-mask-laptop);
-  margin-bottom: 125px;
+  margin-bottom: 135px;
   overflow: hidden;
   @media (width < vars-mixins.$width-tablet) {
     background: vars-mixins.$turquoise-dark
@@ -12,7 +12,7 @@
     background-size: 704px;
     mask-image: vars-mixins.$form-mask-tablet;
     height: auto;
-    margin-bottom: 100px;
+    margin-bottom: 109px;
   }
   @media (width < vars-mixins.$width-smartpthone) {
     background: vars-mixins.$turquoise-dark
@@ -23,7 +23,7 @@
       $url: vars-mixins.$form-mask-smartphone,
       $pos: center -27px
     );
-    margin-bottom: 86px;
+    margin-bottom: 99px;
   }
   &__container {
     display: flex;

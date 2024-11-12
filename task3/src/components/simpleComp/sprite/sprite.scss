@@ -1,0 +1,86 @@
+.sprite {
+  overflow: hidden;
+  &__text_artigos {
+    width: 631px;
+    height: 55px;
+    padding: 37px 48px 29px;
+    background-color: #acd6de;
+    @media (width < vars-mixins.$width-tablet) {
+      padding: 16px 49px 8px;
+      width: 320px;
+    }
+  }
+  &__star_artigos {
+    padding: 40px 0 40px;
+    height: 41px;
+    width: 41px;
+    background-color: #acd6de;
+    @media (width < vars-mixins.$width-tablet) {
+      padding: 20px 0 18px;
+    }
+  }
+  &__text_webinars {
+    width: 296px;
+    height: 43px;
+    padding: 41px 38px 36px;
+    background-color: #ffad20;
+    @media (width < vars-mixins.$width-tablet) {
+      padding: 20px 45px 17px;
+      width: 150px;
+    }
+    @media (width < vars-mixins.$width-smartpthone) {
+      padding: 20px 38px 17px;
+    }
+  }
+  &__star_webinars {
+    padding: 39px 0 40px;
+    height: 41px;
+    width: 41px;
+    background-color: #ffad20;
+    @media (width < vars-mixins.$width-tablet) {
+      padding: 21px 0 18px;
+    }
+  }
+  &__text_subscribe {
+    width: 342px;
+    height: 44px;
+    padding: 41px 50px 26px;
+    background-color: #fe6d44;
+    @media (width < vars-mixins.$width-tablet) {
+      padding: 20px 50px 16px;
+      width: 180px;
+    }
+  }
+  &__star_subscribe {
+    padding: 40px 0 36px;
+    height: 41px;
+    width: 41px;
+    background-color: #fe6d44;
+    @media (width < vars-mixins.$width-tablet) {
+      padding: 22px 0 18px;
+    }
+  }
+  &__text_descuento {
+    width: 896px;
+    height: 53px;
+    padding: 38px 50px 28px;
+    background-color: #da3369;
+    @media (width < vars-mixins.$width-tablet) {
+      padding: 19px 50px 9px;
+      width: 680px;
+    }
+    @media (width < vars-mixins.$width-smartpthone) {
+      padding: 18px 50px 10px;
+      width: 466px;
+    }
+  }
+  &__star_descuento {
+    padding: 39px 0 40px;
+    height: 41px;
+    width: 41px;
+    background-color: #da3369;
+    @media (width < vars-mixins.$width-tablet) {
+      padding: 22px 0 18px;
+    }
+  }
+}

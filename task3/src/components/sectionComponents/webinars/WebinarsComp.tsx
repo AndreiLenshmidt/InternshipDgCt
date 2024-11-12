@@ -5,15 +5,34 @@ import { proposals } from "@/types/types";
 import "./webinars.scss";
 
 export default function WebinarsComp(prop: { proposals: proposals }) {
+  const webinars = (
+    <>
+      <svg className="sprite__star_webinars">
+        <use xlinkHref="#star" />
+      </svg>
+      <svg className="sprite__text_webinars">
+        <use xlinkHref="#Webinars" />
+      </svg>
+    </>
+  );
+
+  const subscribe = (
+    <>
+      <svg className="sprite__star_subscribe">
+        <use xlinkHref="#star" />
+      </svg>
+      <svg className="sprite__text_subscribe">
+        <use xlinkHref="#Subscribe" />
+      </svg>
+    </>
+  );
+
   return (
     <section className="webinars">
       <div className="webinars__bkg">
         <RunningString
-          nameSection="webinars__runnig-string-box"
           className="webinars__runnig-string"
-          imgClassName="runnig-string__text_webinars"
-          nameImg="webinars"
-          color={prop.proposals.ticker.color}
+          runningText={webinars}
         />
         <div className="webinars__bkg-black" />
         <div className="wrap">
@@ -81,11 +100,8 @@ export default function WebinarsComp(prop: { proposals: proposals }) {
           </div>
         </div>
         <RunningString
-          nameSection="runnig-string_bottom"
           className="webinars__runnig-string webinars__runnig-string_bottom"
-          imgClassName="runnig-string__text runnig-string__text_subscribe"
-          nameImg="subscribe"
-          color=""
+          runningText={subscribe}
         />
       </div>
     </section>

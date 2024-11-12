@@ -1,7 +1,7 @@
 .webinars {
   &__bkg {
     @include vars-mixins.relative-hidden;
-    background: url(/images/background/webinars-bg-1440.svg) 50% 135px no-repeat;
+    background: url(/images/background/webinars-bg-1440.svg) 50% 28px no-repeat;
     background-size: vars-mixins.$width-laptop;
     @media (width > 1440px) {
       background: url(/images/background/webinars-bg-4k.svg) 60% 147px no-repeat;
@@ -15,9 +15,9 @@
       background-image: vars-mixins.$webinars-bkg-4k;
     }
     @media (width < vars-mixins.$width-tablet) {
-      background: url(/images/background/webinars-bg-768.svg) calc(50% - -107px)
-        106px no-repeat;
-      background-size: 1568px;
+      background: url(/images/background/webinars-bg-768.svg) calc(50% + 115px) -30px
+        no-repeat;
+      background-size: 1607px;
     }
     @media (width < vars-mixins.$width-tablet) and (prefers-color-scheme: dark) {
       background-image: vars-mixins.$webinars-bkg-768;
@@ -46,8 +46,7 @@
   }
 
   &__container {
-    margin-top: -14px;
-    padding-bottom: 94px;
+    padding-bottom: 80px;
     display: flex;
     justify-content: space-between;
     @media (width < vars-mixins.$width-tablet) {
@@ -63,7 +62,20 @@
       row-gap: 16px;
     }
   }
+  &__container:first-child {
+    padding-top: 132px;
+    @media (width < vars-mixins.$width-tablet) {
+      padding-top: 143px;
+    }
+    @media (width < vars-mixins.$width-smartpthone) {
+      padding-top: 157px;
+    }
+  }
   &__container:last-child {
+    padding-bottom: 94px;
+    @media (width < vars-mixins.$width-tablet) {
+      padding-bottom: 96px;
+    }
     @media (width < vars-mixins.$width-smartpthone) {
       padding-bottom: 212px;
     }
@@ -100,7 +112,7 @@
     @media (width < vars-mixins.$width-smartpthone) {
       position: absolute;
       width: 99.5%;
-      top: 1279px;
+      top: 1438px;
       margin-left: 1px;
       z-index: 1;
     }

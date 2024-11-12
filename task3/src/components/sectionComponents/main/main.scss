@@ -1,5 +1,6 @@
 .main {
   padding-top: 78px;
+  padding-bottom: 209px;
   background: url(/images/background/bg-main-1440.svg) calc(50% - 52px) 51px
     no-repeat;
   background-size: 1642px;
@@ -9,6 +10,7 @@
   }
   @media (width < vars-mixins.$width-tablet) {
     padding-top: 64px;
+    padding-bottom: 178px;
     background: url(/images/background/bg-main-768.svg) calc(50% - -164px)
       103.5% no-repeat;
     background-size: 1763px;
@@ -21,6 +23,7 @@
     background: url(/images/background/bg-main-320.svg) calc(50% + -40px) 30.5%
       no-repeat;
     background-size: 1283px;
+    padding-bottom: 195px;
   }
   @media (width < vars-mixins.$width-smartpthone) and (prefers-color-scheme: dark) {
     background-image: vars-mixins.$main-bkg-dark-320;
