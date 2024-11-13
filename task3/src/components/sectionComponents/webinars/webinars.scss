@@ -2,7 +2,6 @@
   @include vars-mixins.relative-hidden;
   padding-bottom: 175px;
   margin-top: -176px;
-<<<<<<< HEAD
   @media (width < vars-mixins.$width-tablet) {
     padding-bottom: 145px;
   }
@@ -15,34 +14,17 @@
     background-size: vars-mixins.$width-laptop;
     @media (width > 1440px) {
       background: vars-mixins.$black vars-mixins.$webinars-bkg-4k 60% -125px no-repeat;
-=======
-  &__bkg {
-    padding-bottom: 90px;
-    background: vars-mixins.$black vars-mixins.$webinars-bkg-1440 50% 28px
-      no-repeat;
-    background-size: vars-mixins.$width-laptop;
-    @media (width > 1440px) {
-      background: vars-mixins.$webinars-bkg-4k 60% 147px no-repeat;
->>>>>>> bb3a47431af344a21f53bb84486ae2fb4bb4dfc1
       background-size: 3840px;
     }
     @media screen and (prefers-color-scheme: dark) {
       background-image: vars-mixins.$webinars-bkg-dark-1440;
-<<<<<<< HEAD
-=======
-      background-color: vars-mixins.$gray80;
->>>>>>> bb3a47431af344a21f53bb84486ae2fb4bb4dfc1
     }
     @media (width > 1440px) and (prefers-color-scheme: dark) {
       background-image: vars-mixins.$webinars-bkg-dark-4k;
     }
     @media (width < vars-mixins.$width-tablet) {
-<<<<<<< HEAD
       background: vars-mixins.$black vars-mixins.$webinars-bkg-768
         calc(50% + 113px) -80px no-repeat;
-=======
-      background: vars-mixins.$webinars-bkg-768 calc(50% + 115px) -30px no-repeat;
->>>>>>> bb3a47431af344a21f53bb84486ae2fb4bb4dfc1
       background-size: 1607px;
       padding-bottom: 80px;
     }

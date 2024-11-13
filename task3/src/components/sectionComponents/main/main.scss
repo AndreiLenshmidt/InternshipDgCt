@@ -9,11 +9,7 @@
   }
   @media (width < vars-mixins.$width-tablet) {
     padding-top: 64px;
-<<<<<<< HEAD
     padding-bottom: 176px;
-=======
-    padding-bottom: 178px;
->>>>>>> bb3a47431af344a21f53bb84486ae2fb4bb4dfc1
     background: vars-mixins.$main-bkg-768 calc(50% - -164px) 103.5% no-repeat;
     background-size: 1763px;
   }

@@ -1,13 +1,9 @@
 .articles {
-<<<<<<< HEAD
   padding-top: 17px;
-=======
-  padding-top: 15px;
->>>>>>> bb3a47431af344a21f53bb84486ae2fb4bb4dfc1
   padding-bottom: 400px;
-  @include vars-mixins.relative-hidden;
   background: vars-mixins.$articles-bkg-1440 calc(50% - -119px) -105px no-repeat;
   background-size: 3016px;
+  @include vars-mixins.relative-hidden;
   @media screen and (prefers-color-scheme: dark) {
     background-image: vars-mixins.$articles-bkg-dark-1440;
   }
