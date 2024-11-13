@@ -190,7 +190,11 @@
     @include vars-mixins.width-heigth($w: 180px, $h: 180px);
     @include vars-mixins.position($t: -48px, $r: -40px);
     @media (width < vars-mixins.$width-tablet) {
+<<<<<<< HEAD
       @include vars-mixins.position($t: 11px, $r: 8px);
+=======
+      @include vars-mixins.position($t: 14px, $r: 8px);
+>>>>>>> bb3a47431af344a21f53bb84486ae2fb4bb4dfc1
       @include vars-mixins.width-heigth($w: 120px, $h: 120px);
     }
     @media (width < vars-mixins.$width-smartpthone) {
@@ -198,15 +202,26 @@
     }
   }
   &__stiker_lb {
+<<<<<<< HEAD
     @include vars-mixins.width-heigth($w: 272px, $h: 208px);
+=======
+    @include vars-mixins.width-heigth($w: 240px, $h: 240px);
+>>>>>>> bb3a47431af344a21f53bb84486ae2fb4bb4dfc1
     @include vars-mixins.position($t: -39px, $l: -55px);
     @media (width < vars-mixins.$width-tablet) {
       transform: rotate(15deg);
       @include vars-mixins.width-heigth($w: 164px, $h: 164px);
+<<<<<<< HEAD
       @include vars-mixins.position($t: -4px, $r: -2px);
     }
     @media (width < vars-mixins.$width-smartpthone) {
       @include vars-mixins.width-heigth($w: 182px, $h: 140px);
+=======
+      @include vars-mixins.position($t: 16px, $r: -2px);
+    }
+    @media (width < vars-mixins.$width-smartpthone) {
+      @include vars-mixins.width-heigth($w: 182px, $h: 182px);
+>>>>>>> bb3a47431af344a21f53bb84486ae2fb4bb4dfc1
       @include vars-mixins.position($t: 8px, $r: -3px);
     }
   }
