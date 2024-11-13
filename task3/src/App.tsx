@@ -5,7 +5,6 @@ import TheFooter from "@sections/footer/TheFooter";
 import { hideHeader } from "@/helpers/hide-header";
 import { UrlDB, menu, contacts } from "@/types/types";
 import Sprite from "@simpcomp/sprite/sprite";
-import UseSprite from "@simpcomp/sprite/useSprite";
 
 function App() {
   const [menu, setMenu] = useState<menu>({ logo: "", header: [], footer: [] });
@@ -42,7 +41,6 @@ function App() {
 
   return (
     <div className="wrapped">
-      <UseSprite />
       <TheHeader header={menu.header} logo={menu.logo} />
       <MainPage
         url="http://localhost:8000/sections"

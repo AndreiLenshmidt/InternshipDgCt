@@ -7,16 +7,6 @@ export default function MaskWrap(prop: {
   imgUrl: { shape?: string; url?: string; img?: string };
   stikerUrl?: { position: string; type: string; word: string };
 }) {
-  const stiker = prop.stikerUrl?.type ? (
-    <img
-      className={prop.stikerClassName}
-      src={prop.stikerUrl?.type}
-      alt={prop.stikerUrl?.word}
-    />
-  ) : (
-    <></>
-  );
-
   return (
     <figure className={prop.imgBoxClassName}>
       <img
@@ -24,7 +14,9 @@ export default function MaskWrap(prop: {
         src={prop.imgUrl?.url || prop.imgUrl?.img}
         alt={prop.imgUrl?.shape}
       />
-      {stiker}
+      <svg className={prop.stikerClassName}>
+        <use xlinkHref={`#${prop.stikerUrl?.word}`} />
+      </svg>
     </figure>
   );
 }

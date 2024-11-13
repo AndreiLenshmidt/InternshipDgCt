@@ -1,7 +1,6 @@
 import { footer, contacts } from "@/types/types";
 import FormComp from "@simpcomp/form/FormComp";
 import LogoComp from "@simpcomp/logo/logo";
-import RunningString from "@simpcomp/runningString/RunningString";
 import "./footer.scss";
 import { useEffect } from "react";
 
@@ -17,24 +16,13 @@ export default function TheFooter(prop: {
       }
     }
   });
-  const descuento = (
-    <>
-      <svg className="sprite__star_descuento">
-        <use xlinkHref="#white-star" />
-      </svg>
-      <svg className="sprite__text_descuento">
-        <use xlinkHref="#Descuento" />
-      </svg>
-    </>
-  );
   const details = prop.footer?.map((details, index) => (
     <details className="footer__menu" key={index} open>
       <summary className="footer__menu-item">
         {details.label}
-        <img
-          className="footer__summery-arrow"
-          src="/images/icons/summary-arrow.svg"
-        />
+        <svg className="footer__summery-arrow" width={14} height={14}>
+          <use xlinkHref="#summary-arrow"></use>
+        </svg>
       </summary>
       {details.items.map((item, i) => (
         <a href={item.url} className="footer__details-item" key={i}>
@@ -44,8 +32,8 @@ export default function TheFooter(prop: {
     </details>
   ));
   const footerLinks = prop.contacts.links?.map((link, index) => (
-    <a href={link.url} key={index}>
-      <li className="footer__item">{link.label}</li>
+    <a href={link.url} key={index} className="footer__item_bottom">
+      <li>{link.label}</li>
     </a>
   ));
   const iconUrls = [
@@ -56,10 +44,6 @@ export default function TheFooter(prop: {
   ];
   return (
     <footer className="footer">
-      <RunningString
-        className="footer__runnig-string"
-        runningText={descuento}
-      />
       <div className="footer__container">
         <div className="wrap">
           <div className="footer__box">
@@ -67,7 +51,7 @@ export default function TheFooter(prop: {
               <LogoComp href="#" className="footer__logo" />
               <img
                 className="footer__award"
-                src="/images/icons/mark.webp"
+                src="/images/picture/mark.webp"
                 alt="award"
               />
             </div>
@@ -110,11 +94,9 @@ export default function TheFooter(prop: {
             <div className="footer__small-box">
               {iconUrls.map((item, index) => (
                 <a href={item} key={index}>
-                  <img
-                    className="footer__icon"
-                    src={`/images/icons/icon${index + 1}.svg`}
-                    alt="icon"
-                  />
+                  <svg className="footer__icon">
+                    <use xlinkHref={`#icon${index + 1}`}></use>
+                  </svg>
                 </a>
               ))}
             </div>

@@ -13,9 +13,6 @@
   }
   &__logo:hover {
     fill: vars-mixins.$pink-dark;
-    @media screen and (prefers-color-scheme: dark) {
-      fill: vars-mixins.$pink;
-    }
   }
 }
 .footer {

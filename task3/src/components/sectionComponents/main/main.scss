@@ -1,8 +1,7 @@
 .main {
   padding-top: 78px;
   padding-bottom: 209px;
-  background: url(/images/background/bg-main-1440.svg) calc(50% - 52px) 51px
-    no-repeat;
+  background: vars-mixins.$main-bkg-1440 calc(50% - 52px) 51px no-repeat;
   background-size: 1642px;
   @include vars-mixins.relative-hidden;
   @media screen and (prefers-color-scheme: dark) {
@@ -10,9 +9,8 @@
   }
   @media (width < vars-mixins.$width-tablet) {
     padding-top: 64px;
-    padding-bottom: 178px;
-    background: url(/images/background/bg-main-768.svg) calc(50% - -164px)
-      103.5% no-repeat;
+    padding-bottom: 176px;
+    background: vars-mixins.$main-bkg-768 calc(50% - -164px) 103.5% no-repeat;
     background-size: 1763px;
   }
   @media (width < vars-mixins.$width-tablet) and (prefers-color-scheme: dark) {
@@ -20,10 +18,9 @@
   }
   @media (width < vars-mixins.$width-smartpthone) {
     padding-top: 36px;
-    background: url(/images/background/bg-main-320.svg) calc(50% + -40px) 30.5%
-      no-repeat;
+    background: vars-mixins.$main-bkg-320 calc(50% + -40px) 30.5% no-repeat;
     background-size: 1283px;
-    padding-bottom: 195px;
+    padding-bottom: 193px;
   }
   @media (width < vars-mixins.$width-smartpthone) and (prefers-color-scheme: dark) {
     background-image: vars-mixins.$main-bkg-dark-320;
@@ -73,7 +70,7 @@
   }
   &__text {
     @include vars-mixins.Nunito18R(vars-mixins.$gray70);
-    padding-bottom: 16px;
+    padding-bottom: 14px;
     width: 480px;
     @media (width < vars-mixins.$width-tablet) {
       width: 455px;

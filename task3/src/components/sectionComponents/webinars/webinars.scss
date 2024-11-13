@@ -1,34 +1,44 @@
 .webinars {
+  @include vars-mixins.relative-hidden;
+  padding-bottom: 175px;
+  margin-top: -176px;
+  @media (width < vars-mixins.$width-tablet) {
+    padding-bottom: 145px;
+  }
+  @media (width < vars-mixins.$width-smartpthone) {
+    padding-bottom: 122px;
+  }
   &__bkg {
-    @include vars-mixins.relative-hidden;
-    background: url(/images/background/webinars-bg-1440.svg) 50% 28px no-repeat;
+    padding-bottom: 90px;
+    background: vars-mixins.$black vars-mixins.$webinars-bkg-1440 50% -90px no-repeat;
     background-size: vars-mixins.$width-laptop;
     @media (width > 1440px) {
-      background: url(/images/background/webinars-bg-4k.svg) 60% 147px no-repeat;
+      background: vars-mixins.$black vars-mixins.$webinars-bkg-4k 60% -125px no-repeat;
       background-size: 3840px;
     }
     @media screen and (prefers-color-scheme: dark) {
-      background-image: vars-mixins.$webinars-bkg-1440;
-      background-color: vars-mixins.$gray80;
+      background-image: vars-mixins.$webinars-bkg-dark-1440;
     }
     @media (width > 1440px) and (prefers-color-scheme: dark) {
-      background-image: vars-mixins.$webinars-bkg-4k;
+      background-image: vars-mixins.$webinars-bkg-dark-4k;
     }
     @media (width < vars-mixins.$width-tablet) {
-      background: url(/images/background/webinars-bg-768.svg) calc(50% + 115px) -30px
-        no-repeat;
+      background: vars-mixins.$black vars-mixins.$webinars-bkg-768
+        calc(50% + 113px) -80px no-repeat;
       background-size: 1607px;
+      padding-bottom: 80px;
     }
     @media (width < vars-mixins.$width-tablet) and (prefers-color-scheme: dark) {
-      background-image: vars-mixins.$webinars-bkg-768;
+      background-image: vars-mixins.$webinars-bkg-dark-768;
     }
     @media (width < vars-mixins.$width-smartpthone) {
       background-image: none;
+      padding-bottom: 45px;
     }
   }
   &__bkg-black {
     position: absolute;
-    background-color: #1b1f21;
+    // background-color: $black;
     margin: -145px 0 0 -380px;
     z-index: -10;
     @include vars-mixins.width-heigth($w: 150vw, $h: 860px);
@@ -63,7 +73,7 @@
     }
   }
   &__container:first-child {
-    padding-top: 132px;
+    padding-top: 136px;
     @media (width < vars-mixins.$width-tablet) {
       padding-top: 143px;
     }
@@ -74,7 +84,7 @@
   &__container:last-child {
     padding-bottom: 94px;
     @media (width < vars-mixins.$width-tablet) {
-      padding-bottom: 96px;
+      padding-bottom: 80px;
     }
     @media (width < vars-mixins.$width-smartpthone) {
       padding-bottom: 212px;
@@ -156,8 +166,8 @@
     }
   }
   &__card:nth-child(1) {
-    background: vars-mixins.$turquoise-dark
-      url(/images/background/card1-bg-376.svg) 101% 101% no-repeat;
+    background: vars-mixins.$turquoise-dark vars-mixins.$card1-bkg-376 101% 101%
+      no-repeat;
     @media (width < vars-mixins.$width-tablet) {
       background-position: 79px 82px;
     }
@@ -172,29 +182,38 @@
     }
     @media (width < vars-mixins.$width-smartpthone) {
       min-height: auto;
+      margin-top: 3px;
+    }
+  }
+  &__card:nth-child(2) > p {
+    @media (width < vars-mixins.$width-tablet) {
+      margin-top: 18px;
+    }
+    @media (width < vars-mixins.$width-smartpthone) {
+      margin-top: 15px;
     }
   }
   &__card:nth-child(2) {
-    background: vars-mixins.$coral-dark url(/images/background/card2-bg-376.svg)
-      100% 100% no-repeat;
+    background: vars-mixins.$coral-dark vars-mixins.$card2-bkg-376 100% 100%
+      no-repeat;
     @media (width < vars-mixins.$width-tablet) {
-      background-image: url(/images/background/card2-bg-340.svg);
+      background-image: vars-mixins.$card2-bkg-340;
     }
     @media (width < vars-mixins.$width-smartpthone) {
       background-position: 62px -6px;
     }
   }
   &__card:nth-child(3) {
-    background: vars-mixins.$tangerine-dark
-      url(/images/background/card3-bg-376.svg) 0% 8px no-repeat;
+    background: vars-mixins.$tangerine-dark vars-mixins.$card3-bkg-376 0% 8px
+      no-repeat;
     @media (width < vars-mixins.$width-tablet) {
-      background-image: url(/images/background/card3-bg-704.svg);
+      background-image: vars-mixins.$card3-bkg-704;
       background-position: 24% 1px;
       flex-basis: 100%;
       height: 272px;
     }
     @media (width < vars-mixins.$width-smartpthone) {
-      background-image: url(/images/background/card1-bg-376.svg);
+      background-image: vars-mixins.$card1-bkg-376;
       background-position: 61px 50px;
       height: 370px;
     }
@@ -209,19 +228,6 @@
     }
     @media (width < vars-mixins.$width-smartpthone) {
       min-height: 79px;
-    }
-  }
-  &__avatar-box {
-    padding-top: 12px;
-    overflow: hidden;
-  }
-  &__avatar {
-    width: 64px;
-    @include vars-mixins.mask($url: vars-mixins.$webinars-mask, $pos: top);
-    background-color: vars-mixins.$white;
-    margin-top: -10px;
-    @media (width < vars-mixins.$width-tablet) {
-      margin-top: -12px;
     }
   }
   &__user {
@@ -276,6 +282,7 @@
     }
     @media (width < vars-mixins.$width-smartpthone) {
       min-height: 118px;
+      margin-top: 16px;
     }
   }
   &__card-span {

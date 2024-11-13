@@ -138,7 +138,7 @@
     }
   }
   &__menu:nth-child(4) {
-    width: 122px;
+    width: 120px;
     @media (width < vars-mixins.$width-tablet) {
       width: 120px;
     }
@@ -182,13 +182,13 @@
     display: none;
     @media (width < vars-mixins.$width-smartpthone) {
       display: inline;
-      @include vars-mixins.position($t: 12px, $r: 5px);
+      @include vars-mixins.position($t: 10px, $r: 5px);
     }
   }
   &__menu[open] &__summery-arrow {
     @media (width < vars-mixins.$width-smartpthone) {
       display: inline;
-      @include vars-mixins.position($t: 12px, $r: 3px);
+      @include vars-mixins.position($t: 10px, $r: 3px);
       transform: rotate(180deg);
     }
   }
@@ -214,12 +214,13 @@
       width: fit-content;
     }
   }
-  &__item {
+  &__item,
+  &__item_bottom {
     @include vars-mixins.Nunito13M-UP(vars-mixins.$gray35);
     position: relative;
   }
-  &__item:not(:first-child)::before {
-    content: url(/images/icons/point.svg);
+  &__item_bottom:not(:first-child)::before {
+    content: vars-mixins.$point;
     @include vars-mixins.position($t: calc(7% - 2.5px), $l: -14px);
     @media (width < vars-mixins.$width-smartpthone) {
       display: none;
