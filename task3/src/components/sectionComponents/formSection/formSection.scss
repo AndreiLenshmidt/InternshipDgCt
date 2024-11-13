@@ -1,0 +1,129 @@
+.form {
+  @include vars-mixins.width-heigth($w: 100%, $h: 518px);
+  background: vars-mixins.$turquoise-dark vars-mixins.$form-bkg-1440
+    calc(50% - 22px) -41px no-repeat;
+  background-size: 988px;
+  @include vars-mixins.mask($url: vars-mixins.$form-mask-laptop);
+  margin-bottom: 135px;
+  overflow: hidden;
+  @media (width < vars-mixins.$width-tablet) {
+    background: vars-mixins.$turquoise-dark vars-mixins.$form-bkg-768
+      calc(50% - -2px) 2px no-repeat;
+    background-size: 704px;
+    mask-image: vars-mixins.$form-mask-tablet;
+    height: auto;
+    margin-bottom: 109px;
+  }
+  @media (width < vars-mixins.$width-smartpthone) {
+    background: vars-mixins.$turquoise-dark vars-mixins.$form-bkg-320 50% -18% no-repeat;
+    background-size: 304px;
+    height: 1106px;
+    @include vars-mixins.mask(
+      $url: vars-mixins.$form-mask-smartphone,
+      $pos: center -27px
+    );
+    margin-bottom: 99px;
+  }
+  &__container {
+    display: flex;
+    justify-content: space-between;
+    @media (width < vars-mixins.$width-smartpthone) {
+      flex-wrap: wrap;
+    }
+  }
+  &__content {
+    flex-basis: 69.5%;
+    box-sizing: border-box;
+    padding: 64px 64px 64px 104px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    @media (width < vars-mixins.$width-tablet) {
+      padding: 40px 24px;
+      width: 368px;
+      flex-basis: 59%;
+    }
+    @media (width < vars-mixins.$width-smartpthone) {
+      width: 304px;
+      padding: 68px 24px 80px;
+    }
+  }
+  &__letter {
+    flex-basis: 37%;
+    @include vars-mixins.width-heigth($w: 418px, $h: 518px);
+    background: vars-mixins.$form-letter-bkg-1440 no-repeat;
+    mask-image: vars-mixins.$form-mask-laptop;
+    position: relative;
+    @media (width < vars-mixins.$width-tablet) {
+      @include vars-mixins.width-heigth($w: 400px, $h: 498px);
+      background-image: vars-mixins.$form-letter-bkg-768;
+      mask-image: vars-mixins.$form-letter-mask;
+      flex-basis: 40.85%;
+    }
+    @media (width < vars-mixins.$width-smartpthone) {
+      background-image: vars-mixins.$form-letter-bkg-320;
+      mask-image: none;
+      flex-basis: 100%;
+    }
+  }
+  &__letter-img {
+    width: 292px;
+    height: 224px;
+    @include vars-mixins.position($t: 39%, $l: 66px);
+    @media (width < vars-mixins.$width-tablet) {
+      @include vars-mixins.position($t: 49%, $l: 38px);
+      @include vars-mixins.width-heigth($w: 209px, $h: 162px);
+    }
+    @media (width < vars-mixins.$width-smartpthone) {
+      @include vars-mixins.position($t: 34%, $l: 46px);
+    }
+  }
+  &__letter::after {
+    content: "";
+    background: vars-mixins.$letter-after 50% 50% no-repeat;
+    border-radius: 100%;
+    @include vars-mixins.position($t: 35%, $r: 53px);
+    @include vars-mixins.width-heigth($w: 69px, $h: 70px);
+    @media (width < vars-mixins.$width-tablet) {
+      background-size: 100% 100%;
+      @include vars-mixins.position($t: 46%, $r: 38px);
+      @include vars-mixins.width-heigth($w: 49px, $h: 48px);
+    }
+    @media (width < vars-mixins.$width-smartpthone) {
+      @include vars-mixins.position($t: 31%, $r: 45px);
+    }
+  }
+  &__title {
+    @include vars-mixins.AchivoH3(vars-mixins.$white);
+    padding-bottom: 8px;
+    @media (width < vars-mixins.$width-tablet) {
+      @include vars-mixins.AchivoH5(vars-mixins.$white);
+    }
+    @media (width < vars-mixins.$width-smartpthone) {
+      width: 227px;
+    }
+  }
+  &__text {
+    @include vars-mixins.Nunito18R(vars-mixins.$white);
+    width: 584px;
+    @media (width < vars-mixins.$width-tablet) {
+      width: 360px;
+    }
+    @media (width < vars-mixins.$width-smartpthone) {
+      width: 260px;
+    }
+  }
+}
+
+@keyframes text-focus-in {
+  0% {
+    -webkit-filter: blur(12px);
+    filter: blur(12px);
+    opacity: 0;
+  }
+  100% {
+    -webkit-filter: blur(0px);
+    filter: blur(0px);
+    opacity: 1;
+  }
+}

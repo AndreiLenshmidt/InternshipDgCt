@@ -1,0 +1,269 @@
+.footer {
+  overflow: hidden;
+  &__container {
+    padding: 64px 0px 80px;
+    background-color: vars-mixins.$black;
+    @media (width < vars-mixins.$width-tablet) {
+      padding: 64px 0px 72px;
+    }
+    @media (width < vars-mixins.$width-smartpthone) {
+      padding: 31px 0px 82px;
+    }
+  }
+  &__box {
+    border-bottom: 1px solid vars-mixins.$gray35;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    padding-bottom: 32px;
+    @media (width < vars-mixins.$width-tablet) {
+      padding-bottom: 22px;
+    }
+    @media (width < vars-mixins.$width-smartpthone) {
+      border-bottom: none;
+      padding-bottom: 38px;
+    }
+  }
+  &__small-box:first-child {
+    width: 352px;
+    padding-top: 2px;
+    display: flex;
+    justify-content: space-between;
+    @media (width < vars-mixins.$width-tablet) {
+      padding-top: 0;
+      width: 285px;
+      order: 1;
+    }
+    @media (width < vars-mixins.$width-smartpthone) {
+      width: 304px;
+      padding-bottom: 42px;
+    }
+  }
+  &__small-box:nth-child(2) {
+    width: 480px;
+    display: flex;
+    justify-content: space-between;
+    column-gap: 64px;
+    flex-basis: 57%;
+    @media (width < vars-mixins.$width-tablet) {
+      order: 4;
+      width: auto;
+      padding-top: 87px;
+      flex-basis: 100%;
+      width: 100%;
+    }
+    @media (width < vars-mixins.$width-smartpthone) {
+      order: 3;
+      padding-top: 62px;
+      flex-direction: column;
+    }
+  }
+  &__small-box:nth-child(3) {
+    margin-top: -89px;
+    flex-basis: 80%;
+    width: 281px;
+    @media (width < vars-mixins.$width-tablet) {
+      order: 2;
+      margin-top: -1px;
+      flex-basis: 37%;
+    }
+    @media (width < vars-mixins.$width-smartpthone) {
+      order: 5;
+      width: 100%;
+      flex-basis: auto;
+    }
+  }
+  &__small-box:nth-child(4) {
+    display: flex;
+    justify-content: space-between;
+    width: 570px;
+    padding-top: 96px;
+    @media (width < vars-mixins.$width-tablet) {
+      order: 5;
+      padding-top: 47px;
+    }
+    @media (width < vars-mixins.$width-smartpthone) {
+      order: 4;
+      flex-direction: column;
+      padding-top: 50px;
+      row-gap: 24px;
+      padding-bottom: 64px;
+    }
+  }
+  &__small-box:nth-child(5) {
+    display: flex;
+    justify-content: space-between;
+    width: 200px;
+    order: 3;
+    padding-top: 108px;
+    @media (width < vars-mixins.$width-tablet) {
+      order: 3;
+      padding-top: 0px;
+      margin-top: -4px;
+    }
+    @media (width < vars-mixins.$width-smartpthone) {
+      order: 2;
+      width: 304px;
+    }
+  }
+  &__menu {
+    width: 120px;
+    min-height: 250px;
+    @include vars-mixins.Nunito15M-SLS(vars-mixins.$white);
+    @media (width < vars-mixins.$width-tablet) {
+      width: 125px;
+      min-height: 267px;
+    }
+    @media (width < vars-mixins.$width-smartpthone) {
+      min-height: auto;
+      width: 100%;
+    }
+  }
+  &__menu:nth-child(2) {
+    width: 104px;
+    @media (width < vars-mixins.$width-tablet) {
+      width: 110px;
+      @media (width < vars-mixins.$width-smartpthone) {
+        width: 100%;
+      }
+    }
+  }
+  &__menu:nth-child(3) {
+    width: 153px;
+    @media (width < vars-mixins.$width-tablet) {
+      width: 157px;
+    }
+    @media (width < vars-mixins.$width-smartpthone) {
+      width: 100%;
+    }
+  }
+  &__menu:nth-child(4) {
+    width: 120px;
+    @media (width < vars-mixins.$width-tablet) {
+      width: 120px;
+    }
+    @media (width < vars-mixins.$width-smartpthone) {
+      width: 100%;
+    }
+  }
+
+  &__menu-item {
+    @include vars-mixins.Nunito18B(vars-mixins.$gray70);
+    @media (width < vars-mixins.$width-smartpthone) {
+      width: 100%;
+      position: relative;
+      padding-bottom: 10px;
+    }
+  }
+  &__menu[open] &__menu-item {
+    padding-bottom: 26px;
+    @media (width < vars-mixins.$width-smartpthone) {
+      padding-bottom: 18px;
+      width: 302px;
+    }
+  }
+
+  &__details-item {
+    @include vars-mixins.Nunito15M-SLS(vars-mixins.$white);
+    display: block;
+    margin-bottom: 10px;
+    position: relative;
+    width: fit-content;
+    @media (width < vars-mixins.$width-smartpthone) {
+      margin-bottom: 16px;
+    }
+  }
+  &__details-item:last-child {
+    @media (width < vars-mixins.$width-smartpthone) {
+      margin-bottom: 32px;
+    }
+  }
+  &__summery-arrow {
+    display: none;
+    @media (width < vars-mixins.$width-smartpthone) {
+      display: inline;
+      @include vars-mixins.position($t: 10px, $r: 5px);
+    }
+  }
+  &__menu[open] &__summery-arrow {
+    @media (width < vars-mixins.$width-smartpthone) {
+      display: inline;
+      @include vars-mixins.position($t: 10px, $r: 3px);
+      transform: rotate(180deg);
+    }
+  }
+
+  &__award {
+    @include vars-mixins.width-heigth($w: 80px, $h: 80px);
+    @media (width < vars-mixins.$width-tablet) {
+      @include vars-mixins.width-heigth($w: 64px, $h: 64px);
+    }
+  }
+
+  &__box_bottom {
+    display: flex;
+    justify-content: space-between;
+    width: 661px;
+    padding-top: 32px;
+    @media (width < vars-mixins.$width-tablet) {
+      padding-top: 26px;
+    }
+    @media (width < vars-mixins.$width-smartpthone) {
+      flex-direction: column;
+      row-gap: 16px;
+      width: fit-content;
+    }
+  }
+  &__item,
+  &__item_bottom {
+    @include vars-mixins.Nunito13M-UP(vars-mixins.$gray35);
+    position: relative;
+  }
+  &__item_bottom:not(:first-child)::before {
+    content: vars-mixins.$point;
+    @include vars-mixins.position($t: calc(7% - 2.5px), $l: -14px);
+    @media (width < vars-mixins.$width-smartpthone) {
+      display: none;
+    }
+  }
+  &__contacts::before,
+  &__details-item::before {
+    content: "";
+    display: block;
+    @include vars-mixins.width-heigth($w: 0%, $h: 1.5px);
+    background-color: vars-mixins.$white;
+    @include vars-mixins.position($b: 0, $r: 0px);
+    transition: width 0.4s;
+  }
+  &__contacts:hover,
+  &__details-item:hover {
+    cursor: pointer;
+    color: vars-mixins.$white;
+  }
+  &__contacts:hover::before,
+  &__details-item:hover::before {
+    width: 100%;
+    left: 0;
+  }
+  &__contacts:active::before,
+  &__details-item:active::before {
+    @media (width < 320px) {
+      width: 100%;
+      left: 0;
+    }
+  }
+  &__contacts {
+    padding-top: 6px;
+    @include vars-mixins.Nunito18B(vars-mixins.$white);
+    position: relative;
+    @media (width < vars-mixins.$width-smartpthone) {
+      width: fit-content;
+    }
+  }
+  &__icon {
+    @include vars-mixins.width-heigth($w: 32px, $h: 32px);
+    @media (width < vars-mixins.$width-smartpthone) {
+      @include vars-mixins.width-heigth($w: 48px, $h: 48px);
+    }
+  }
+}

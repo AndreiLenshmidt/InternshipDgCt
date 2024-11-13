@@ -1,0 +1,148 @@
+.articles {
+  padding-top: 17px;
+  padding-bottom: 400px;
+  background: vars-mixins.$articles-bkg-1440 calc(50% - -119px) -105px no-repeat;
+  background-size: 3016px;
+  @include vars-mixins.relative-hidden;
+  @media screen and (prefers-color-scheme: dark) {
+    background-image: vars-mixins.$articles-bkg-dark-1440;
+  }
+  @media (width < vars-mixins.$width-tablet) {
+    background: vars-mixins.$articles-bkg-768 calc(50% + -297px) 176px no-repeat;
+    background-size: 2543px;
+    padding-bottom: 390px;
+  }
+  @media (width < vars-mixins.$width-tablet) and (prefers-color-scheme: dark) {
+    background-image: vars-mixins.$articles-bkg-dark-768;
+  }
+  @media (width < vars-mixins.$width-smartpthone) {
+    background: vars-mixins.$articles-bkg-320 calc(50% + 15px) -183px no-repeat;
+    background-size: 965px;
+    padding-bottom: 247px;
+  }
+  @media (width < vars-mixins.$width-smartpthone) and (prefers-color-scheme: dark) {
+    background-image: vars-mixins.$articles-bkg-dark-320;
+  }
+  &__container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    row-gap: 136px;
+    @media (width < vars-mixins.$width-tablet) {
+      row-gap: 82px;
+    }
+    @media (width < vars-mixins.$width-smartpthone) {
+      padding-bottom: 22px;
+    }
+  }
+  &__card {
+    flex-basis: 45%;
+    @media (width < vars-mixins.$width-tablet) {
+      min-height: 599px;
+    }
+  }
+  &__card:nth-child(3) {
+    flex-basis: 100%;
+    display: flex;
+    flex-wrap: wrap;
+  }
+  &__card:nth-child(4),
+  &__card:nth-child(5) {
+    margin-top: -40px;
+    @media (width < vars-mixins.$width-tablet) {
+      margin-top: -42px;
+    }
+    @media (width < vars-mixins.$width-smartpthone) {
+      margin-top: 0px;
+      padding-bottom: 0px;
+    }
+  }
+  &__card_big-left {
+    flex-basis: 31.15%;
+    margin-right: 19px;
+    @media (width < vars-mixins.$width-tablet) {
+      flex-basis: 34.6%;
+      margin: -11px 0 0 0;
+    }
+    @media (width < vars-mixins.$width-smartpthone) {
+      flex-basis: 100%;
+      height: 90px;
+      position: relative;
+    }
+  }
+  &__card_big-right {
+    @media (width < vars-mixins.$width-tablet) {
+      width: 455px;
+      margin-top: 28px;
+    }
+    @media (width < vars-mixins.$width-smartpthone) {
+      width: 308px;
+      margin-top: -10px;
+    }
+  }
+  &__card:hover &__stiker {
+    transform: rotate(180deg);
+  }
+  &__title {
+    @include vars-mixins.AchivoH4(vars-mixins.$black);
+    @media (width < vars-mixins.$width-tablet) {
+      width: 340px;
+      font-size: 24px;
+      font-weight: 500;
+      margin-top: -4px;
+    }
+    @media (width < vars-mixins.$width-smartpthone) {
+      width: 308px;
+      line-height: 120%;
+      margin-top: -2px;
+    }
+  }
+  &__title_big {
+    font-size: 36px;
+    width: 792px;
+    padding-top: 47px;
+    @media (width < vars-mixins.$width-tablet) {
+      width: 460px;
+      font-weight: 800;
+      font-size: 26px;
+      padding-top: 0;
+      margin-top: -2px;
+    }
+    @media (width < vars-mixins.$width-smartpthone) {
+      width: 290px;
+      font-size: 24px;
+      margin-top: 2px;
+    }
+  }
+  &__text {
+    @include vars-mixins.Nunito18R(vars-mixins.$gray70);
+    padding-top: 15px;
+    width: 500px;
+    @media (width < vars-mixins.$width-tablet) {
+      width: 340px;
+      padding-top: 15px;
+    }
+    @media (width < vars-mixins.$width-smartpthone) {
+      width: 308px;
+      padding-top: 16px;
+    }
+    @media screen and (prefers-color-scheme: dark) {
+      color: vars-mixins.$gray35;
+    }
+  }
+  &__text_big {
+    width: 678px;
+    padding-top: 9px;
+    @media (width < vars-mixins.$width-tablet) {
+      width: 460px;
+      padding: 8px 0 40px;
+    }
+    @media (width < vars-mixins.$width-smartpthone) {
+      width: 308px;
+      padding-top: 16px;
+    }
+    @media screen and (prefers-color-scheme: dark) {
+      color: vars-mixins.$gray35;
+    }
+  }
+}

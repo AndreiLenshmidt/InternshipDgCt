@@ -1,0 +1,290 @@
+.webinars {
+  @include vars-mixins.relative-hidden;
+  padding-bottom: 175px;
+  margin-top: -176px;
+  @media (width < vars-mixins.$width-tablet) {
+    padding-bottom: 145px;
+  }
+  @media (width < vars-mixins.$width-smartpthone) {
+    padding-bottom: 122px;
+  }
+  &__bkg {
+    padding-bottom: 90px;
+    background: vars-mixins.$black vars-mixins.$webinars-bkg-1440 50% -90px no-repeat;
+    background-size: vars-mixins.$width-laptop;
+    @media (width > 1440px) {
+      background: vars-mixins.$black vars-mixins.$webinars-bkg-4k 60% -125px no-repeat;
+      background-size: 3840px;
+    }
+    @media screen and (prefers-color-scheme: dark) {
+      background-image: vars-mixins.$webinars-bkg-dark-1440;
+    }
+    @media (width > 1440px) and (prefers-color-scheme: dark) {
+      background-image: vars-mixins.$webinars-bkg-dark-4k;
+    }
+    @media (width < vars-mixins.$width-tablet) {
+      background: vars-mixins.$black vars-mixins.$webinars-bkg-768
+        calc(50% + 113px) -80px no-repeat;
+      background-size: 1607px;
+      padding-bottom: 80px;
+    }
+    @media (width < vars-mixins.$width-tablet) and (prefers-color-scheme: dark) {
+      background-image: vars-mixins.$webinars-bkg-dark-768;
+    }
+    @media (width < vars-mixins.$width-smartpthone) {
+      background-image: none;
+      padding-bottom: 45px;
+    }
+  }
+  &__container {
+    padding-bottom: 80px;
+    display: flex;
+    justify-content: space-between;
+    @media (width < vars-mixins.$width-tablet) {
+      margin-top: -30px;
+      padding-bottom: 96px;
+      flex-wrap: wrap;
+      row-gap: 24px;
+    }
+    @media (width < vars-mixins.$width-smartpthone) {
+      margin-top: -30px;
+      padding-bottom: 70px;
+      position: relative;
+      row-gap: 16px;
+    }
+  }
+  &__container:first-child {
+    padding-top: 137px;
+    @media (width < vars-mixins.$width-tablet) {
+      padding-top: 143px;
+    }
+    @media (width < vars-mixins.$width-smartpthone) {
+      padding-top: 157px;
+    }
+  }
+  &__container:last-child {
+    padding-bottom: 94px;
+    @media (width < vars-mixins.$width-tablet) {
+      padding-bottom: 80px;
+    }
+    @media (width < vars-mixins.$width-smartpthone) {
+      padding-bottom: 212px;
+    }
+  }
+
+  &__title {
+    @include vars-mixins.AchivoH2(vars-mixins.$white);
+    margin-top: 4px;
+    @media (width < vars-mixins.$width-tablet) {
+      @include vars-mixins.AchivoH5(vars-mixins.$white);
+      font-size: 28px;
+      width: 340px;
+      margin-top: 24px;
+    }
+    @media (width < vars-mixins.$width-smartpthone) {
+      width: 308px;
+      line-height: 120%;
+      margin-top: 7px;
+    }
+  }
+  &__btn {
+    @include vars-mixins.button-styles(
+      $bd-color: vars-mixins.$violet-dark,
+      $bd-rad: 30px,
+      $pad: 15px 61px,
+      $bg-color: vars-mixins.$violet-dark
+    );
+    @include vars-mixins.Nunito18B(vars-mixins.$white);
+    margin-left: 4px;
+    @media (width < vars-mixins.$width-tablet) {
+      margin-left: 4px;
+      margin-top: 9px;
+    }
+    @media (width < vars-mixins.$width-smartpthone) {
+      position: absolute;
+      width: 99.5%;
+      top: 1438px;
+      margin-left: 1px;
+      z-index: 1;
+    }
+  }
+  &__btn:hover,
+  &__btn:active {
+    background-color: vars-mixins.$black;
+    border: 2px solid vars-mixins.$black;
+    outline: none;
+    cursor: pointer;
+  }
+  &__btn:focus-visible {
+    outline: none;
+    border: 2px solid vars-mixins.$black;
+  }
+  &__btn:disabled {
+    opacity: 0.6;
+  }
+  &__btn:focus {
+    border: 2px solid vars-mixins.$white;
+    outline: none;
+  }
+
+  &__card {
+    border-radius: 32px;
+    padding: 32px;
+    @include vars-mixins.width-heigth($w: 376px, $h: 432px);
+    @include vars-mixins.Nunito15M-SLS(vars-mixins.$white);
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    box-sizing: border-box;
+    @media (width < vars-mixins.$width-tablet) {
+      justify-content: flex-start;
+      padding: 24px;
+      @include vars-mixins.width-heigth($w: 340px, $h: 400px);
+    }
+    @media (width < vars-mixins.$width-smartpthone) {
+      justify-content: space-between;
+      @include vars-mixins.width-heigth($w: 304px, $h: fit-content);
+    }
+  }
+  &__card:nth-child(1) {
+    background: vars-mixins.$turquoise-dark vars-mixins.$card1-bkg-376 101% 101%
+      no-repeat;
+    @media (width < vars-mixins.$width-tablet) {
+      background-position: 79px 82px;
+    }
+    @media (width < vars-mixins.$width-smartpthone) {
+      background-position: 61px 30px;
+    }
+  }
+  &__card:nth-child(1) > p {
+    @media (width < vars-mixins.$width-tablet) {
+      width: 200px;
+      min-height: 199px;
+    }
+    @media (width < vars-mixins.$width-smartpthone) {
+      min-height: auto;
+      margin-top: 3px;
+    }
+  }
+  &__card:nth-child(2) > p {
+    @media (width < vars-mixins.$width-tablet) {
+      margin-top: 18px;
+    }
+    @media (width < vars-mixins.$width-smartpthone) {
+      margin-top: 15px;
+    }
+  }
+  &__card:nth-child(2) {
+    background: vars-mixins.$coral-dark vars-mixins.$card2-bkg-376 100% 100%
+      no-repeat;
+    @media (width < vars-mixins.$width-tablet) {
+      background-image: vars-mixins.$card2-bkg-340;
+    }
+    @media (width < vars-mixins.$width-smartpthone) {
+      background-position: 62px -6px;
+    }
+  }
+  &__card:nth-child(3) {
+    background: vars-mixins.$tangerine-dark vars-mixins.$card3-bkg-376 0% 8px
+      no-repeat;
+    @media (width < vars-mixins.$width-tablet) {
+      background-image: vars-mixins.$card3-bkg-704;
+      background-position: 24% 1px;
+      flex-basis: 100%;
+      height: 272px;
+    }
+    @media (width < vars-mixins.$width-smartpthone) {
+      background-image: vars-mixins.$card1-bkg-376;
+      background-position: 61px 50px;
+      height: 370px;
+    }
+  }
+  &__card-header {
+    min-height: 104px;
+    display: flex;
+    justify-content: flex-start;
+    gap: 20px;
+    @media (width < vars-mixins.$width-tablet) {
+      min-height: 74px;
+    }
+    @media (width < vars-mixins.$width-smartpthone) {
+      min-height: 79px;
+    }
+  }
+  &__user {
+    width: 200px;
+    @media (width < vars-mixins.$width-smartpthone) {
+      width: 170px;
+    }
+  }
+  &__user_big {
+    @media (width < vars-mixins.$width-tablet) {
+      width: 550px;
+    }
+    @media (width < vars-mixins.$width-smartpthone) {
+      width: 170px;
+    }
+  }
+  &__user-name {
+    @include vars-mixins.AchivoH5(vars-mixins.$white);
+    padding: 7px 0 4px;
+    @media (width < vars-mixins.$width-tablet) {
+      padding-top: 4px;
+    }
+    @media (width < vars-mixins.$width-smartpthone) {
+      font-size: 22px;
+      padding-top: 6px;
+    }
+  }
+  &__user-position {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  &__content {
+    @include vars-mixins.AchivoH4(vars-mixins.$white);
+    min-height: 160px;
+    margin-top: -18px;
+    @media (width < vars-mixins.$width-tablet) {
+      @include vars-mixins.AchivoH5(vars-mixins.$white);
+      font-size: 24px;
+      margin-top: 6px;
+    }
+    @media (width < vars-mixins.$width-smartpthone) {
+      min-height: auto;
+      margin-top: 0;
+    }
+  }
+  &__content_big {
+    min-height: 160px;
+    @media (width < vars-mixins.$width-tablet) {
+      min-height: 90px;
+      margin-top: 6px;
+    }
+    @media (width < vars-mixins.$width-smartpthone) {
+      min-height: 118px;
+      margin-top: 16px;
+    }
+  }
+  &__card-span {
+    padding-bottom: 12px;
+  }
+  &__card-span:first-child {
+    padding-right: 27px;
+  }
+  &__card-data {
+    height: 75px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    @media (width < vars-mixins.$width-tablet) {
+      flex-basis: 24%;
+    }
+
+    @media (width < vars-mixins.$width-smartpthone) {
+      height: auto;
+      padding-top: 32px;
+      flex-basis: auto;
+    }
+  }
+}

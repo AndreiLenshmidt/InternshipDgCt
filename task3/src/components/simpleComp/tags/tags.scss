@@ -1,0 +1,151 @@
+.main {
+  &__tags-switchers {
+    display: flex;
+    justify-content: flex-start;
+    padding: 46px 0 18px;
+    @media (width < vars-mixins.$width-tablet) {
+      flex-basis: 34.5%;
+      justify-content: flex-end;
+      align-self: flex-start;
+      flex-wrap: wrap;
+      padding-top: 0;
+    }
+    @media (width < vars-mixins.$width-smartpthone) {
+      flex-basis: 100%;
+      padding-bottom: 17px;
+      width: 304px;
+      justify-content: flex-start;
+    }
+  }
+  &__tags-item {
+    margin-right: 10px;
+    padding: 8px 0px;
+    @include vars-mixins.Nunito15M-SLS(vars-mixins.$grass);
+    @media (width < vars-mixins.$width-tablet) {
+      padding: 8px 0px;
+    }
+  }
+  &__tags-item:last-child {
+    margin-right: 24px;
+    @media (width < vars-mixins.$width-smartpthone) {
+      margin-right: 0px;
+    }
+  }
+  &__tags-item_active {
+    margin-right: 16px;
+    border-radius: 20px;
+    padding: 8px 18px;
+    background-color: vars-mixins.$grass;
+    color: vars-mixins.$black;
+    @media (width < vars-mixins.$width-tablet) {
+      margin: 0 24px 2px 80px;
+    }
+    @media (width < vars-mixins.$width-smartpthone) {
+      margin: 0 16px 2px 0;
+    }
+  }
+}
+.articles {
+  &__tags-switchers {
+    display: flex;
+    justify-content: flex-start;
+    padding: 72px 0 16px 0;
+    @media (width < vars-mixins.$width-tablet) {
+      padding: 33px 0 20px 0;
+    }
+    @media (width < vars-mixins.$width-smartpthone) {
+      padding: 18px 0 18px 0;
+    }
+  }
+  &__tags-switchers_big {
+    padding-top: 66px;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    @media (width < vars-mixins.$width-tablet) {
+      padding-top: 38px;
+    }
+    @media (width < vars-mixins.$width-smartpthone) {
+      justify-content: flex-start;
+      padding: 28px 0 15px 0;
+    }
+  }
+  &__tags-item {
+    margin-right: 10px;
+    padding: 8px 0px;
+    @include vars-mixins.Nunito15M-SLS(vars-mixins.$grass);
+    @media (width < vars-mixins.$width-tablet) {
+      padding: 8px 0px;
+    }
+  }
+  &__tags-item_big {
+    padding: 12px 0px;
+    margin-right: 10px;
+    @include vars-mixins.Nunito15M-SLS(vars-mixins.$grass);
+    color: vars-mixins.$pink;
+
+    @media (width < vars-mixins.$width-smartpthone) {
+      margin-right: 10px;
+      padding: 8px 0px;
+    }
+  }
+  &__tags-item_big:last-child {
+    margin-right: 0;
+    @media (width < vars-mixins.$width-tablet) {
+      margin-right: 25px;
+    }
+    @media (width < vars-mixins.$width-smartpthone) {
+      margin-right: 10px;
+    }
+  }
+  &__tags-item_active {
+    margin-right: 16px;
+    border-radius: 20px;
+    padding: 8px 18px;
+    background-color: vars-mixins.$grass;
+    color: vars-mixins.$black;
+    @media (width < vars-mixins.$width-tablet) {
+      margin-left: 0px;
+    }
+    @media (width < vars-mixins.$width-smartpthone) {
+      margin-left: 0px;
+    }
+  }
+  &__tags-item_big_active {
+    border-radius: 20px;
+    margin: 0 0 0 240px;
+    padding: 8px 18px;
+    background-color: vars-mixins.$pink;
+    color: vars-mixins.$black;
+    @media (width < vars-mixins.$width-tablet) {
+      margin: 0 27px 0 102px;
+      align-self: flex-start;
+    }
+    @media (width < vars-mixins.$width-smartpthone) {
+      margin: 0 16px 0 0;
+    }
+  }
+}
+.marine-bkg {
+  background-color: vars-mixins.$marine;
+}
+.marine-color {
+  color: vars-mixins.$marine;
+}
+.pink-bkg {
+  background-color: vars-mixins.$pink;
+}
+.pink-color {
+  color: vars-mixins.$pink;
+}
+.tangerine-bkg {
+  background-color: vars-mixins.$tangerine;
+}
+.tangerine-color {
+  color: vars-mixins.$tangerine;
+}
+.turquoise-bkg {
+  background-color: vars-mixins.$turquoise;
+}
+.turquoise-color {
+  color: vars-mixins.$turquoise;
+}

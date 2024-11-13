@@ -1,0 +1,186 @@
+.header {
+  padding: 16px 0;
+  z-index: 3;
+  @include vars-mixins.position($t: 0, $l: 0, $pos: fixed);
+  width: 100%;
+  transition: transform 0.2s linear;
+  background-color: vars-mixins.$white;
+  @media screen and (prefers-color-scheme: dark) {
+    color: white;
+    background-color: vars-mixins.$black;
+  }
+  @media (width < vars-mixins.$width-smartpthone) {
+    padding: 13px 0;
+  }
+  &__box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    @media (width < vars-mixins.$width-tablet) {
+      display: flex;
+      padding-bottom: 0px;
+    }
+    @media (width < vars-mixins.$width-smartpthone) {
+      display: flex;
+    }
+  }
+  &__nav {
+    width: 698px;
+    margin-top: -1px;
+    @media (width < vars-mixins.$width-tablet) {
+      width: auto;
+      display: flex;
+      overflow-y: auto;
+      padding-top: 21px;
+      order: 4;
+      margin-top: 0;
+    }
+    @media (width < vars-mixins.$width-smartpthone) {
+      padding-top: 12px;
+    }
+  }
+  &__nav::-webkit-scrollbar {
+    @include vars-mixins.width-heigth($w: 0, $h: 0);
+  }
+  &__link:not(:last-child) {
+    margin-right: 10px;
+    @media (width < vars-mixins.$width-smartpthone) {
+      margin-right: 7px;
+    }
+  }
+  &__link {
+    padding: 8px 18px;
+    border: 1.2px solid vars-mixins.$pale;
+    border-radius: 20px;
+    background-color: vars-mixins.$white;
+    white-space: nowrap;
+    transition: background-color 0.3s;
+    @include vars-mixins.Nunito15M-SLS(vars-mixins.$black);
+    font-size: 14.78px;
+    user-select: none;
+    @media (width < vars-mixins.$width-tablet) {
+      padding: 8px 18.2px;
+      font-size: 15px;
+    }
+    @media (width < vars-mixins.$width-smartpthone) {
+      padding: 8px 17.7px;
+    }
+    @media screen and (prefers-color-scheme: dark) {
+      border: 1.2px solid vars-mixins.$pale;
+      background-color: vars-mixins.$gray80;
+      color: vars-mixins.$white;
+    }
+  }
+  &__search {
+    display: flex;
+    justify-content: end;
+    @media (width < vars-mixins.$width-tablet) {
+      margin-top: -4px;
+    }
+  }
+  &__search-img {
+    padding-right: 27px;
+    width: 20px;
+    height: 20px;
+    @media screen and (prefers-color-scheme: dark) {
+      fill: vars-mixins.$white;
+    }
+    @media (width < vars-mixins.$width-smartpthone) {
+      padding-right: 22px;
+    }
+  }
+  &__search-span {
+    @include vars-mixins.Nunito15M-SLS();
+    padding-right: 11px;
+    text-transform: uppercase;
+    position: relative;
+    @media screen and (prefers-color-scheme: dark) {
+      color: vars-mixins.$white;
+    }
+  }
+  &__search-span::before {
+    content: "";
+    display: block;
+    background-color: vars-mixins.$grass;
+    @include vars-mixins.width-heigth($w: 0, $h: 1.5px);
+    @include vars-mixins.position($b: 0, $r: -17px);
+    transition: width 0.4s;
+  }
+  &__search:hover &__search-span::before {
+    width: 67px;
+    left: 0;
+  }
+  &__search:active &__search-span::before {
+    @media (width < 320px) {
+      width: 67px;
+      left: 0;
+    }
+  }
+  &__search-arrow {
+    width: 16px;
+    height: 16px;
+  }
+}
+.header.hide {
+  transform: translateY(-74px);
+
+  @media (width < vars-mixins.$width-tablet) {
+    transform: translateY(-134px);
+  }
+  @media (width < vars-mixins.$width-smartpthone) {
+    transform: translateY(-134px);
+  }
+}
+.button {
+  &__0:disabled,
+  &__1:disabled,
+  &__2:disabled,
+  &__3:disabled,
+  &__4:disabled,
+  &__5:disabled {
+    opacity: 0.6;
+  }
+  &__0:hover {
+    background-color: vars-mixins.$pink;
+    color: vars-mixins.$black;
+  }
+  &__1:hover {
+    background-color: vars-mixins.$sky;
+    color: vars-mixins.$black;
+  }
+  &__2:hover {
+    background-color: vars-mixins.$grass;
+    color: vars-mixins.$black;
+  }
+  &__3:hover {
+    background-color: vars-mixins.$tangerine;
+    color: vars-mixins.$black;
+  }
+  &__4:hover {
+    background-color: vars-mixins.$turquoise;
+    color: vars-mixins.$black;
+  }
+  &__5:hover {
+    background-color: vars-mixins.$mint;
+    color: vars-mixins.$black;
+  }
+  &__0:active {
+    background-color: vars-mixins.$pink-dark;
+  }
+  &__1:active {
+    background-color: vars-mixins.$sky-dark;
+  }
+  &__2:active {
+    background-color: vars-mixins.$grass-dark;
+  }
+  &__3:active {
+    background-color: vars-mixins.$tangerine-dark;
+  }
+  &__4:active {
+    background-color: vars-mixins.$turquoise-dark;
+  }
+  &__5:active {
+    background-color: vars-mixins.$mint-dark;
+  }
+}

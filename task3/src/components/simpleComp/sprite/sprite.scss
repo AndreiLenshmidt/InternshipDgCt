@@ -1,0 +1,105 @@
+.sprite {
+  overflow: hidden;
+  &__text_artigos {
+    width: 631px;
+    height: 55px;
+    padding: 37px 48px 29px;
+    background-color: #acd6de;
+    @media (width < vars-mixins.$width-tablet) {
+      padding: 16px 49px 8px;
+      width: 320px;
+    }
+  }
+  &__star_artigos {
+    padding: 40px 0 40px;
+    height: 41px;
+    width: 41px;
+    background-color: #acd6de;
+    @media (width < vars-mixins.$width-tablet) {
+      padding: 20px 0 18px;
+    }
+  }
+  &__text_webinars {
+    width: 296px;
+    height: 43px;
+    padding: 41px 38px 36px;
+    background-color: #ffad20;
+    @media (width < vars-mixins.$width-tablet) {
+      padding: 20px 45px 17px;
+      width: 150px;
+    }
+    @media (width < vars-mixins.$width-smartpthone) {
+      padding: 20px 38px 17px;
+    }
+  }
+  &__star_webinars {
+    padding: 39px 0 40px;
+    height: 41px;
+    width: 41px;
+    background-color: #ffad20;
+    @media (width < vars-mixins.$width-tablet) {
+      padding: 21px 0 18px;
+    }
+  }
+  &__text_subscribe {
+    width: 342px;
+    height: 44px;
+    padding: 40px 50px 36px;
+    background-color: #fe6d44;
+    @media (width < vars-mixins.$width-tablet) {
+      padding: 20px 50px 16px;
+      width: 180px;
+    }
+  }
+  &__star_subscribe {
+    padding: 40px 0 36px;
+    height: 41px;
+    width: 41px;
+    background-color: #fe6d44;
+    @media (width < vars-mixins.$width-tablet) {
+      padding: 22px 0 18px;
+    }
+  }
+  &__text_descuento {
+    width: 896px;
+    height: 53px;
+    padding: 38px 50px 28px;
+    background-color: #da3369;
+    @media (width < vars-mixins.$width-tablet) {
+      padding: 19px 50px 9px;
+      width: 680px;
+    }
+    @media (width < vars-mixins.$width-smartpthone) {
+      padding: 18px 50px 10px;
+      width: 466px;
+    }
+  }
+  &__star_descuento {
+    padding: 39px 0 40px;
+    height: 41px;
+    width: 41px;
+    background-color: #da3369;
+    @media (width < vars-mixins.$width-tablet) {
+      padding: 22px 0 18px;
+    }
+  }
+}
+// .mask {
+//   width: 100%;
+//   height: 560px;
+//   background: url("data:image/svg+xml,%3Csvg width='480' height='560' viewBox='0 0 480 560' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 240C0 107.452 107.452 0 240 0C372.548 0 480 107.452 480 240V560H0V240Z' fill='black'/%3E%3Cpath d='M1284 358.857C1284 275.541 1352.05 208 1436 208C1519.95 208 1588 275.541 1588 358.857V560H1284V358.857Z' fill='black'/%3E%3Cpath d='M530 391.232C530 307.709 597.709 240 681.232 240C719.825 240 755.041 254.456 781.762 278.248C808.482 254.456 843.699 240 882.291 240C920.744 240 955.845 254.351 982.53 277.989C1009.21 254.351 1044.32 240 1082.77 240C1166.29 240 1234 307.709 1234 391.232V560H530V391.232Z' fill='black'/%3E%3C/svg%3E")
+//     no-repeat;
+
+//   @media (width < vars-mixins.$width-tablet) {
+//     width: 740px;
+//     height: 340px;
+//     background: url("data:image/svg+xml,%3Csvg width='740' height='320' viewBox='500 223 740 320' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 240C0 107.452 107.452 0 240 0C372.548 0 480 107.452 480 240V560H0V240Z' fill='black'/%3E%3Cpath d='M1284 358.857C1284 275.541 1352.05 208 1436 208C1519.95 208 1588 275.541 1588 358.857V560H1284V358.857Z' fill='black'/%3E%3Cpath d='M530 391.232C530 307.709 597.709 240 681.232 240C719.825 240 755.041 254.456 781.762 278.248C808.482 254.456 843.699 240 882.291 240C920.744 240 955.845 254.351 982.53 277.989C1009.21 254.351 1044.32 240 1082.77 240C1166.29 240 1234 307.709 1234 391.232V560H530V391.232Z' fill='black'/%3E%3C/svg%3E")
+//       no-repeat;
+//   }
+//   @media (width < vars-mixins.$width-smartpthone) {
+//     width: 390px;
+//     height: 390px;
+//     background: url("data:image/svg+xml,%3Csvg width='310' height='560' viewBox='1280 200 310 560' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 240C0 107.452 107.452 0 240 0C372.548 0 480 107.452 480 240V560H0V240Z' fill='black'/%3E%3Cpath d='M1284 358.857C1284 275.541 1352.05 208 1436 208C1519.95 208 1588 275.541 1588 358.857V560H1284V358.857Z' fill='black'/%3E%3Cpath d='M530 391.232C530 307.709 597.709 240 681.232 240C719.825 240 755.041 254.456 781.762 278.248C808.482 254.456 843.699 240 882.291 240C920.744 240 955.845 254.351 982.53 277.989C1009.21 254.351 1044.32 240 1082.77 240C1166.29 240 1234 307.709 1234 391.232V560H530V391.232Z' fill='black'/%3E%3C/svg%3E")
+//       no-repeat;
+//   }
+// }
