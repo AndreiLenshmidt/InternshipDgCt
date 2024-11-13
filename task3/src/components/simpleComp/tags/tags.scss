@@ -62,7 +62,7 @@
     justify-content: flex-end;
     flex-wrap: wrap;
     @media (width < vars-mixins.$width-tablet) {
-      padding-top: 39px;
+      padding-top: 38px;
     }
     @media (width < vars-mixins.$width-smartpthone) {
       justify-content: flex-start;

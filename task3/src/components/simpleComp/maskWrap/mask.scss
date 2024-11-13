@@ -190,8 +190,8 @@
     @include vars-mixins.width-heigth($w: 180px, $h: 180px);
     @include vars-mixins.position($t: -48px, $r: -40px);
     @media (width < vars-mixins.$width-tablet) {
-      // @include vars-mixins.position($t: 11px, $r: 8px);
-      // @include vars-mixins.width-heigth($w: 120px, $h: 120px);
+      @include vars-mixins.position($t: 11px, $r: 8px);
+      @include vars-mixins.width-heigth($w: 120px, $h: 120px);
     }
     @media (width < vars-mixins.$width-smartpthone) {
       @include vars-mixins.position($t: 32px, $l: 8px);
