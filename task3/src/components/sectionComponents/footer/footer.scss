@@ -214,12 +214,13 @@
       width: fit-content;
     }
   }
-  &__item {
+  &__item,
+  &__item_bottom {
     @include vars-mixins.Nunito13M-UP(vars-mixins.$gray35);
     position: relative;
   }
-  &__item:not(:first-child)::before {
-    content: url(/images/icons/point.svg);
+  &__item_bottom:not(:first-child)::before {
+    content: vars-mixins.$point;
     @include vars-mixins.position($t: calc(7% - 2.5px), $l: -14px);
     @media (width < vars-mixins.$width-smartpthone) {
       display: none;

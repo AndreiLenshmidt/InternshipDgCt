@@ -1,5 +1,4 @@
 import LogoComp from "@simpcomp/logo/logo";
-import { BlockSearch } from "@simpcomp/search/BlockSearch";
 import "./header.scss";
 import { header } from "@/types/types";
 
@@ -19,7 +18,15 @@ export default function TheHeader(prop: { header: header; logo: string }) {
             </a>
           ))}
         </nav>
-        <BlockSearch />
+        <div className="header__search">
+          <svg className="header__search-img">
+            <use xlinkHref="#search"></use>
+          </svg>
+          <p className="header__search-span">EBAC</p>
+          <svg className="header__search-arrow">
+            <use xlinkHref="#arrow"></use>
+          </svg>
+        </div>
       </div>
     </header>
   );

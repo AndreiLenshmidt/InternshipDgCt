@@ -34,13 +34,17 @@
   &__stiker {
     @include vars-mixins.position($r: 0);
     transition: transform 0.9s;
+    width: 180px;
+    height: 180px;
     @media (width < vars-mixins.$width-tablet) {
       @include vars-mixins.position($t: 8px, $r: 16px);
       width: 120px;
+      height: 120px;
     }
     @media (width < vars-mixins.$width-smartpthone) {
       @include vars-mixins.position($t: 8px, $r: 8px);
       width: 104px;
+      height: 104px;
     }
   }
   &__pic-box:hover &__stiker {
@@ -159,58 +163,80 @@
   }
 
   &__stiker_rt {
+    @include vars-mixins.width-heigth($w: 180px, $h: 180px);
     @include vars-mixins.position($t: -11px, $r: -40px);
     @media (width < vars-mixins.$width-tablet) {
       @include vars-mixins.position($t: 32px, $r: 8px);
-      width: 104px;
+      @include vars-mixins.width-heigth($w: 104px, $h: 104px);
     }
     @media (width < vars-mixins.$width-smartpthone) {
       @include vars-mixins.position($t: 30px, $r: 8px);
-      width: 120px;
+      @include vars-mixins.width-heigth($w: 120px, $h: 120px);
     }
   }
   &__stiker_rb {
+    @include vars-mixins.width-heigth($w: 180px, $h: 180px);
     @include vars-mixins.position($t: -11px, $r: -40px);
     @media (width < vars-mixins.$width-tablet) {
       @include vars-mixins.position($t: 32px, $r: 8px);
-      width: 104px;
+      @include vars-mixins.width-heigth($w: 104px, $h: 104px);
     }
     @media (width < vars-mixins.$width-smartpthone) {
       @include vars-mixins.position($t: 30px, $l: 8px);
-      width: 120px;
+      @include vars-mixins.width-heigth($w: 120px, $h: 120px);
     }
   }
   &__stiker_md {
+    @include vars-mixins.width-heigth($w: 180px, $h: 180px);
     @include vars-mixins.position($t: -48px, $r: -40px);
     @media (width < vars-mixins.$width-tablet) {
       @include vars-mixins.position($t: 14px, $r: 8px);
-      width: 120px;
+      @include vars-mixins.width-heigth($w: 120px, $h: 120px);
     }
     @media (width < vars-mixins.$width-smartpthone) {
       @include vars-mixins.position($t: 32px, $l: 8px);
     }
   }
   &__stiker_lb {
+    @include vars-mixins.width-heigth($w: 240px, $h: 240px);
     @include vars-mixins.position($t: -39px, $l: -55px);
     @media (width < vars-mixins.$width-tablet) {
       transform: rotate(15deg);
-      width: 164px;
+      @include vars-mixins.width-heigth($w: 164px, $h: 164px);
       @include vars-mixins.position($t: 16px, $r: -2px);
     }
     @media (width < vars-mixins.$width-smartpthone) {
-      width: 182px;
+      @include vars-mixins.width-heigth($w: 182px, $h: 182px);
       @include vars-mixins.position($t: 8px, $r: -3px);
     }
   }
   &__stiker_lt {
     @include vars-mixins.position($t: -11px, $l: -40px);
+    @include vars-mixins.width-heigth($w: 180px, $h: 180px);
     @media (width < vars-mixins.$width-tablet) {
       @include vars-mixins.position($t: 32px, $r: 8px);
-      width: 104px;
+      @include vars-mixins.width-heigth($w: 104px, $h: 104px);
     }
     @media (width < vars-mixins.$width-smartpthone) {
       @include vars-mixins.position($t: 28px, $l: 8px);
-      width: 120px;
+      @include vars-mixins.width-heigth($w: 120px, $h: 120px);
+    }
+  }
+}
+
+.webinars {
+  &__avatar-box {
+    padding-top: 12px;
+    overflow: hidden;
+    @include vars-mixins.width-heigth($w: 64px, $h: 64px);
+  }
+  &__avatar {
+    width: 64px;
+    @include vars-mixins.mask($url: vars-mixins.$webinars-mask, $pos: top);
+    background-color: vars-mixins.$white;
+    margin-top: -10px;
+    @media (width < vars-mixins.$width-tablet) {
+      margin-top: -12px;
     }
   }
 }

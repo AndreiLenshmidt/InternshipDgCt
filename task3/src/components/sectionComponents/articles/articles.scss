@@ -1,16 +1,14 @@
 .articles {
   padding-top: 15px;
-  padding-bottom: 107px;
+  padding-bottom: 400px;
   @include vars-mixins.relative-hidden;
-  background: url(/images/background/articles-bg-1440.svg) calc(50% - -119px) -105px
-    no-repeat;
+  background: vars-mixins.$articles-bkg-1440 calc(50% - -119px) -105px no-repeat;
   background-size: 3016px;
   @media screen and (prefers-color-scheme: dark) {
     background-image: vars-mixins.$articles-bkg-dark-1440;
   }
   @media (width < vars-mixins.$width-tablet) {
-    background: url(/images/background/articles-bg-768.svg) calc(50% + -297px)
-      176px no-repeat;
+    background: vars-mixins.$articles-bkg-768 calc(50% + -297px) 176px no-repeat;
     background-size: 2543px;
     padding-bottom: 135px;
   }
@@ -18,8 +16,7 @@
     background-image: vars-mixins.$articles-bkg-dark-768;
   }
   @media (width < vars-mixins.$width-smartpthone) {
-    background: url(/images/background/articles-bg-320.svg) calc(50% + 15px) -183px
-      no-repeat;
+    background: vars-mixins.$articles-bkg-320 calc(50% + 15px) -183px no-repeat;
     background-size: 965px;
     padding-bottom: 0;
   }

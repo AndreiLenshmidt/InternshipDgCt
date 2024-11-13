@@ -6,16 +6,6 @@ import { content } from "@/types/types";
 import "./main.scss";
 
 export default function MainComp(prop: { main: content }) {
-  const mainText = (
-    <>
-      <svg className="sprite__star_artigos">
-        <use xlinkHref="#star" />
-      </svg>
-      <svg className="sprite__text_artigos">
-        <use xlinkHref="#Artigos-populares" />
-      </svg>
-    </>
-  );
   return (
     <main className="main">
       <div className="wrap">
@@ -50,7 +40,10 @@ export default function MainComp(prop: { main: content }) {
           </div>
         </div>
       </div>
-      <RunningString className="main__runnig-string" runningText={mainText} />
+      <RunningString
+        text={prop.main.ticker.text}
+        color={prop.main.ticker.color}
+      />
     </main>
   );
 }

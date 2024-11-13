@@ -1,22 +1,21 @@
 .form {
   @include vars-mixins.width-heigth($w: 100%, $h: 518px);
-  background: vars-mixins.$turquoise-dark
-    url(/images/background/form-bg-1440.svg) calc(50% - 22px) -41px no-repeat;
+  background: vars-mixins.$turquoise-dark vars-mixins.$form-bkg-1440
+    calc(50% - 22px) -41px no-repeat;
   background-size: 988px;
   @include vars-mixins.mask($url: vars-mixins.$form-mask-laptop);
   margin-bottom: 135px;
   overflow: hidden;
   @media (width < vars-mixins.$width-tablet) {
-    background: vars-mixins.$turquoise-dark
-      url(/images/background/form-bg-768.svg) calc(50% - -2px) 2px no-repeat;
+    background: vars-mixins.$turquoise-dark vars-mixins.$form-bkg-768
+      calc(50% - -2px) 2px no-repeat;
     background-size: 704px;
     mask-image: vars-mixins.$form-mask-tablet;
     height: auto;
     margin-bottom: 109px;
   }
   @media (width < vars-mixins.$width-smartpthone) {
-    background: vars-mixins.$turquoise-dark
-      url(/images/background/form-bg-320.svg) 50% -18% no-repeat;
+    background: vars-mixins.$turquoise-dark vars-mixins.$form-bkg-320 50% -18% no-repeat;
     background-size: 304px;
     height: 1106px;
     @include vars-mixins.mask(
@@ -52,17 +51,17 @@
   &__letter {
     flex-basis: 37%;
     @include vars-mixins.width-heigth($w: 418px, $h: 518px);
-    background: url(/images/background/form-bg-letter-1440.svg) no-repeat;
+    background: vars-mixins.$form-letter-bkg-1440 no-repeat;
     mask-image: vars-mixins.$form-mask-laptop;
     position: relative;
     @media (width < vars-mixins.$width-tablet) {
       @include vars-mixins.width-heigth($w: 400px, $h: 498px);
-      background-image: url(../images/background/form-bg-letter-768.svg);
+      background-image: vars-mixins.$form-letter-bkg-768;
       mask-image: vars-mixins.$form-letter-mask;
       flex-basis: 40.85%;
     }
     @media (width < vars-mixins.$width-smartpthone) {
-      background-image: url(/images/background/form-bg-letter-320.svg);
+      background-image: vars-mixins.$form-letter-bkg-320;
       mask-image: none;
       flex-basis: 100%;
     }
@@ -79,7 +78,7 @@
   }
   &__letter::after {
     content: "";
-    background: url(/images/icons/letter-after.svg) 50% 50% no-repeat;
+    background: vars-mixins.$letter-after 50% 50% no-repeat;
     border-radius: 100%;
     @include vars-mixins.position($t: 35%, $r: 53px);
     @include vars-mixins.width-heigth($w: 69px, $h: 70px);

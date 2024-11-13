@@ -90,7 +90,7 @@
     }
   }
   &__agree:checked + label::before {
-    background: vars-mixins.$white url(/images/icons/v.svg) center center
+    background: vars-mixins.$white vars-mixins.$checked-img center center
       no-repeat;
   }
 

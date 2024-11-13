@@ -3,6 +3,7 @@ import MaskWrap from "@simpcomp/maskWrap/MaskWrap";
 import DataBox from "@simpcomp/dataBox/DataBox";
 import { content } from "@/types/types";
 import "./articles.scss";
+import RunningString from "@/components/simpleComp/runningString/RunningString";
 
 export default function ArticlesComp(prop: { content: content }) {
   return (
@@ -139,6 +140,10 @@ export default function ArticlesComp(prop: { content: content }) {
           </article>
         </div>
       </div>
+      <RunningString
+        text={prop.content.ticker.text}
+        color={prop.content.ticker.color}
+      />
     </section>
   );
 }
