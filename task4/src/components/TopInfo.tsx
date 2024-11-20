@@ -1,7 +1,8 @@
-import { useGame } from "../appContext/appContext";
+// import { useGame } from "../appContext/appContext";
+import TimeView from "./TimeView";
 
 export default function TopInfo() {
-  const game = useGame();
+  // const game = useGame();
 
   return (
     <div className="info">
@@ -11,7 +12,7 @@ export default function TopInfo() {
             Счет <span id="info__score">0</span>
           </p>
           <p className="info__item">
-            Время <span id="info__time">{game?.time}</span>
+            Время: <TimeView />
           </p>
         </div>
       </div>

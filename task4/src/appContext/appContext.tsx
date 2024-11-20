@@ -1,14 +1,7 @@
 import { createContext, useContext, useReducer } from "react";
 import { State, GameAction } from "../types/type";
 import { stateReducer } from "../appReducer/changeGameData";
-
-export const initialState: State = {
-  count: 0,
-  time: 60,
-  timerToggle: false,
-  looseLevel: false,
-  winLevel: false,
-};
+import { initialState } from "./initialState";
 
 export const GameContext = createContext<State>(initialState);
 export const GameDispatchContext =

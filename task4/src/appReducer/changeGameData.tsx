@@ -2,8 +2,10 @@ import { State, GameAction } from "../types/type";
 
 export function stateReducer(state: State, action: GameAction): State {
   switch (action.type) {
-    case "setCount":
-      return { ...state, count: action.value };
+    case "setCards":
+      return { ...state, cards: action.value };
+    // case "changeCardState":
+    //   return { ...state, cards: action.value };
     case "setTime":
       return { ...state, time: action.value };
     case "timerToggle":
