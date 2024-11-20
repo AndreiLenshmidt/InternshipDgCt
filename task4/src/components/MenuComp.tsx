@@ -1,11 +1,6 @@
-import { useState } from "react";
 import { Link } from "react-router-dom";
-
-type item = {
-  value: string;
-  id: string;
-  link: string;
-};
+import { useGame, useGameDispatch } from "../appContext/appContext";
+import { item } from "../types/type";
 
 const Item = ({ value, id, link }: item) => {
   if (window.innerWidth >= 768) {
@@ -34,26 +29,23 @@ const Avatar = () => {
 };
 
 const PlayPause = () => {
-  const [cond, setCond] = useState<boolean>(true);
-  // const handlePlayPause = () => {
-  //   console.log("click");
-  //   // cond ? setCond(false) : setCond(true);
-  // };
-  if (cond) {
+  const game = useGame();
+  const dispatch = useGameDispatch();
+
+  const timerToggle = () => {
+    if (dispatch !== null)
+      dispatch({ type: "timerToggle", value: game.timerToggle ? false : true });
+  };
+
+  if (game.timerToggle) {
     return (
-      <svg
-        className="menu__icon"
-        onClick={() => (cond ? setCond(false) : setCond(true))}
-      >
+      <svg className="menu__icon" onClick={timerToggle}>
         <use xlinkHref="#play"></use>
       </svg>
     );
   } else {
     return (
-      <svg
-        className="menu__icon"
-        onClick={() => (cond ? setCond(false) : setCond(true))}
-      >
+      <svg className="menu__icon" onClick={timerToggle}>
         <use xlinkHref="#pause"></use>
       </svg>
     );

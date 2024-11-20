@@ -4,21 +4,26 @@ import GamePage from "./pages/GamePage";
 import OptionsPage from "./pages/OptionsPage";
 import ScorsPage from "./pages/ScorsPage";
 import SpriteComp from "./components/SpriteComp";
+import { GameContextProvider } from "./appContext/appContext";
 
 function App() {
+  // // const addFive = () => dispatch({ type: "setCount", value: state.count + 5 });
+  // // console.log(dispatch);
   return (
-    <div className="wrapper">
-      <BrowserRouter>
-        <MenuComp />
-        <Routes>
-          <Route path="/" element={<GamePage />} />
-          <Route path="/options" element={<OptionsPage />} />
-          <Route path="/scors" element={<ScorsPage />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-      <SpriteComp />
-    </div>
+    <GameContextProvider>
+      <div className="wrapper">
+        <BrowserRouter>
+          <MenuComp />
+          <Routes>
+            <Route path="/" element={<GamePage />} />
+            <Route path="/options" element={<OptionsPage />} />
+            <Route path="/scors" element={<ScorsPage />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+        <SpriteComp />
+      </div>
+    </GameContextProvider>
   );
 }
 

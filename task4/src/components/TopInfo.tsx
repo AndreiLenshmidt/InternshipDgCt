@@ -1,4 +1,8 @@
+import { useGame } from "../appContext/appContext";
+
 export default function TopInfo() {
+  const game = useGame();
+
   return (
     <div className="info">
       <div className="wrap">
@@ -7,7 +11,7 @@ export default function TopInfo() {
             Счет <span id="info__score">0</span>
           </p>
           <p className="info__item">
-            Время <span id="info__time">0:00</span>
+            Время <span id="info__time">{game?.time}</span>
           </p>
         </div>
       </div>
