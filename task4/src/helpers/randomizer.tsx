@@ -15,6 +15,7 @@ export function randomizer(
     results.push({
       img: standartImg[+item],
       turned: false,
+      openCloseToggle: false,
       disabled: false,
       id: num,
     });

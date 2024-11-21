@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useGame, useGameDispatch } from "../appContext/appContext";
 import { item } from "../types/type";
+import { timerToggle } from "../appReducer/dispatchFunctions";
 
 const Item = ({ value, id, link }: item) => {
   if (window.innerWidth >= 768) {
@@ -32,20 +33,20 @@ const PlayPause = () => {
   const game = useGame();
   const dispatch = useGameDispatch();
 
-  const timerToggle = () => {
-    if (dispatch !== null)
-      dispatch({ type: "timerToggle", value: game.timerToggle ? false : true });
+  const playPauseHandler = () => {
+    if (game.time > 0 && !game.winLevel && !game.looseLevel)
+      return timerToggle(game.timerToggle, dispatch);
   };
 
   if (game.timerToggle) {
     return (
-      <svg className="menu__icon" onClick={timerToggle}>
+      <svg className="menu__icon" onClick={playPauseHandler}>
         <use xlinkHref="#play"></use>
       </svg>
     );
   } else {
     return (
-      <svg className="menu__icon" onClick={timerToggle}>
+      <svg className="menu__icon" onClick={playPauseHandler}>
         <use xlinkHref="#pause"></use>
       </svg>
     );

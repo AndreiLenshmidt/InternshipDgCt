@@ -1,6 +1,11 @@
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { card } from "../types/type";
 import { useGame, useGameDispatch } from "../appContext/appContext";
+import {
+  changeTurnedCard,
+  openCloseToggle,
+} from "../appReducer/dispatchFunctions";
+import { findIndex, checkTurnedCards } from "../helpers/cardCompHelper";
 
 const StandartSvg = (prop: { id: string; className: string }) => (
   <svg className={prop.className}>
@@ -8,45 +13,87 @@ const StandartSvg = (prop: { id: string; className: string }) => (
   </svg>
 );
 
-const findIndex = (cards: Array<card>, card: card) => {
-  return cards.findIndex((item) => item.id === card.id);
-};
-
 export default function CardComp(prop: { card: card }) {
-  const [cardRotateY, setcardRotateY] = useState("game__card");
-  const [frontAppear, setFront] = useState("game__card-front");
-  const [rearDisappear, setRearDisapear] = useState("game__card-rear");
-
+  const [cardRotateClass, setcardRotateY] = useState("game__card");
+  const [frontAppearClass, setFront] = useState("game__card-front");
+  const [rearDisappearClass, setRearDisapear] = useState("game__card-rear");
   const game = useGame();
   const dispatch = useGameDispatch();
-  const changeTurnedCard = (cards: Array<card>, index: number) => {
-    cards[index].turned = true;
-    if (dispatch) dispatch({ type: "setCards", value: cards });
+  const index = findIndex(game.cards, prop.card);
+  const cardRotateY = useMemo(
+    () =>
+      game.cards[index].turned
+        ? "game__card flip-vertical-right"
+        : cardRotateClass,
+    [game.cards[index].turned]
+  );
+  const cardFront = useMemo(
+    () =>
+      game.cards[index].turned
+        ? "game__card-front opacity-appear"
+        : frontAppearClass,
+    [game.cards[index].turned]
+  );
+  const cardRear = useMemo(
+    () =>
+      game.cards[index].turned
+        ? "game__card-rear opacity-disappeared"
+        : rearDisappearClass,
+    [game.cards[index].turned]
+  );
+  const openClose = useMemo(
+    () => game.cards[index].openCloseToggle,
+    [game.cards[index].openCloseToggle]
+  );
+  const disabled = useMemo(
+    () => game.cards[index].disabled,
+    [game.cards[index].disabled]
+  );
+  const opacity = useMemo(() => (disabled ? 0 : 1), [disabled]);
+
+  const openCard = () => {
+    changeTurnedCard(game.cards, index, true, dispatch);
+    checkTurnedCards(game, dispatch);
   };
+
+  const closeCard = () => {
+    setTimeout(() => {
+      changeTurnedCard(game.cards, index, false, dispatch);
+      checkTurnedCards(game, dispatch);
+    }, game.delayShowCards);
+  };
+
+  useEffect(() => {
+    setcardRotateY("game__card flip-vertical-left");
+    setFront("game__card-front opacity-disappeared");
+    setRearDisapear("game__card-rear opacity-appear");
+  }, []);
+
+  useEffect(() => {
+    if (openClose) {
+      openCloseToggle(game.cards, index, false, dispatch);
+      closeCard();
+    }
+  }, [openClose]);
 
   return (
     <div
+      style={{ opacity: opacity }}
       className={cardRotateY}
       onClick={() => {
-        if (prop.card.turned) return;
-        !prop.card.turned
-          ? setcardRotateY("game__card flip-vertical-right")
-          : setcardRotateY("game__card");
-        !prop.card.turned
-          ? setFront("game__card-front opacity-appear")
-          : setFront("game__card-front");
-        !prop.card.turned
-          ? setRearDisapear("game__card-rear opacity-disappeared")
-          : setRearDisapear("game__card-rear");
-        changeTurnedCard(game.cards, findIndex(game.cards, prop.card));
-        console.log(prop.card);
-        console.log(game.cards);
+        if (
+          !game.cards[index].turned &&
+          game.turnedCards.length <= 1 &&
+          !disabled &&
+          game.timerToggle
+        )
+          openCard();
       }}
     >
-      <svg className={rearDisappear}>
+      <svg className={cardRear}>
         <use xlinkHref="#rear"></use>
       </svg>
-      <StandartSvg id={prop.card.img} className={frontAppear} />
+      <StandartSvg id={prop.card.img} className={cardFront} />
     </div>
   );
 }

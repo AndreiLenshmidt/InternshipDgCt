@@ -1,6 +1,6 @@
 import { createContext, useContext, useReducer } from "react";
 import { State, GameAction } from "../types/type";
-import { stateReducer } from "../appReducer/changeGameData";
+import { stateReducer } from "../appReducer/changeReducerState";
 import { initialState } from "./initialState";
 
 export const GameContext = createContext<State>(initialState);
