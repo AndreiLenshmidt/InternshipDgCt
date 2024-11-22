@@ -17,6 +17,10 @@ a {
   color: vars.$black-color;
 }
 
+button {
+  font-size: 16px;
+}
+
 a:visited {
   color: vars.$black-color;
 }
@@ -55,7 +59,7 @@ input[type="checkbox"] {
 }
 
 .menu {
-  background-color: vars.$greeb-dark;
+  background-color: vars.$green-dark;
   position: fixed;
   top: 0;
   z-index: 1;
@@ -182,9 +186,6 @@ input[type="checkbox"] {
   z-index: 1;
   top: 74px;
   width: 100%;
-  @media (width < vars.$width-tablet) {
-    top: 84px;
-  }
   @media (width < vars.$width-smartpthone) {
     top: 59px;
   }
@@ -230,10 +231,11 @@ input[type="checkbox"] {
 
   &__btn {
     width: 120px;
-    padding: 6px 0;
-    border: 1px solid #000;
-    border-radius: 5px;
-    margin-bottom: 12px;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 10px;
+    line-height: 100%;
+    background-color: vars.$green-dark;
   }
   &__btn:hover {
     background-color: vars.$blue-dark-color;
@@ -241,7 +243,7 @@ input[type="checkbox"] {
   &__flex {
     display: flex;
     font-size: 16px;
-    width: 300px;
+    width: 270px;
     padding: 10px 0;
     justify-content: space-between;
   }
@@ -299,18 +301,17 @@ input[type="checkbox"] {
     height: fit-content;
     border: none;
     border-radius: 10px;
-    background-color: #24a3a3;
+    line-height: 100%;
+    background-color: vars.$green-dark;
     font-weight: inherit;
     font-family: inherit;
-    line-height: 100%;
     border: 1px solid transparent;
     transition: all 0.3s;
-    @media (width < 768px) {
-      width: 95px;
-      text-align: center;
-    }
   }
-
+  &__btn-upload:hover,
+  &__btn-save:hover {
+    background-color: vars.$blue-dark-color;
+  }
   &__agree + label {
     display: inline-flex;
     align-items: center;
@@ -386,6 +387,21 @@ input[type="checkbox"] {
   }
   &__range-span {
     padding: 5px 10px;
+  }
+
+  &__modal {
+    position: absolute;
+    background-color: vars.$blue-color;
+    top: 40%;
+    padding: 26px 10px 16px;
+    border-radius: 10px;
+    box-shadow: 0 0 3px 1px vars.$blue-modal;
+    width: 270px;
+    left: calc(50% - 145px);
+  }
+  &__modal-txt {
+    text-align: center;
+    padding-bottom: 10px;
   }
 }
 

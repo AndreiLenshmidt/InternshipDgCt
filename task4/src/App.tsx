@@ -6,7 +6,6 @@ import ScorsPage from "./pages/ScorsPage";
 import SpriteComp from "./components/SpriteComp";
 import { GameContextProvider } from "./appContext/appContext";
 import { PageWrapper } from "./pages/PageWrapper";
-import ModalWindow from "./components/ModalWindow";
 
 function App() {
   return (
@@ -15,7 +14,6 @@ function App() {
         <BrowserRouter>
           <MenuComp />
           <PageWrapper>
-            <ModalWindow />
             <Routes>
               <Route path="/" element={<GamePage />} />
               <Route path="/options" element={<OptionsPage />} />

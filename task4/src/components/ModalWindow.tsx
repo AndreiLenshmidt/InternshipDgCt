@@ -1,25 +1,34 @@
-import { useEffect, useMemo } from "react";
+import { useEffect, useState } from "react";
 import { useGame, useGameDispatch } from "../appContext/appContext";
 import { timerToggle } from "../appReducer/dispatchFunctions";
-// import { randomizer } from "../helpers/randomizer";
 import { useLocation } from "react-router-dom";
+// import { randomizer } from "../helpers/randomizer";
 
 export default function ModalWindow() {
   const game = useGame();
   const dispatch = useGameDispatch();
-  const showModal = useMemo(
-    () => (game.modalShow ? "modal" : "modal none"),
-    [game.modalShow]
-  );
+  const [showModal, setShowModal] = useState("modal");
+
+  let location = useLocation();
+
+  useEffect(() => {
+    if (location.pathname !== "/") {
+      setShowModal("modal none");
+    } else {
+      game.modalShow ? setShowModal("modal") : setShowModal("modal none");
+    }
+  }, [game.modalShow, location.pathname]);
 
   const ModalBox = () => {
     const startButtonHandler = () => {
       game.modalShow = false;
+      game.modalTitle = "Игра";
       timerToggle(game.timerToggle, dispatch);
     };
     const continueButtonHandler = () => {
       console.log("Загрузить из LocalStorage");
       game.modalShow = false;
+      game.modalTitle = "Игра";
       timerToggle(game.timerToggle, dispatch);
     };
 
@@ -120,6 +129,8 @@ export default function ModalWindow() {
           </div>
         </div>
       );
+    } else if (game.modalTitle === "Игра") {
+      return;
     } else {
       return (
         <div className="modal__box">
@@ -172,16 +183,6 @@ export default function ModalWindow() {
       );
     }
   };
-  let location = useLocation();
-
-  useEffect(() => {
-    console.log(location.pathname, game.modalShow);
-    // if (location.pathname === "/") {
-    //   game.modalShow = true;
-    // } else {
-    //   game.modalShow = false;
-    // }
-  }, [location.pathname]);
 
   return (
     <div className={showModal}>

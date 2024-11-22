@@ -9,7 +9,7 @@ export default function TopInfo() {
       <div className="wrap">
         <div className="info__box">
           <p className="info__item">
-            Счет: <span id="info__score">{game.matchPoint}</span>
+            Счет партии: <span id="info__score">{game.matchPoint}</span>
           </p>
           <p className="info__item">
             Время: <TimeView />

@@ -8,7 +8,7 @@ interface State {
   winCondition: boolean;
   looseCondition: boolean;
   userName: string;
-  userAvatar: string;
+  userAvatar: string | ArrayBuffer | null;
   modalTitle:
     | "Начало игры"
     | "Игра"
@@ -21,10 +21,11 @@ interface State {
   modalShow: boolean;
   standartImg: Array<string>;
   difficult: "Easy" | "Normal" | "Hard";
-  level: 0 | 1 | 2 | 3 | 4;
+  level: number;
   size: Array<string>;
   cards: Array<card>;
-  userImg: Array<string>;
+  sourceImages: "standartImg" | "webImg" | "userImg";
+  userImg: Array<string | ArrayBuffer | null>;
   webImg: Array<string>;
   cardBox: Array<string>;
   turnedCards: Array<card>;
@@ -58,13 +59,20 @@ type result = {
 
 type options = {
   name: string;
-  avatar: FileList;
+  avatar: string | ArrayBuffer | null;
   size: number;
   time: number;
   mistake: number;
+  sourceImages: "standartImg" | "webImg" | "userImg";
   minWinPoints: number;
-  agreeToLoad: boolean;
-  userImages: FileList;
+  userImages: Array<string | ArrayBuffer | null>;
+};
+
+type catImg = {
+  id: string;
+  url: string;
+  width: number;
+  height: number;
 };
 
 type card = {
@@ -92,4 +100,4 @@ type GameAction =
   | { type: "setWin"; value: State["winLevel"] }
   | { type: "setLoose"; value: State["looseLevel"] };
 
-export type { State, GameAction, item, card, result, options };
+export type { State, GameAction, item, card, result, options, catImg };

@@ -1,41 +1,61 @@
 import { useState } from "react";
 import { useGame } from "../appContext/appContext";
-// import { options } from "../types/type";
+import { options, State } from "../types/type";
 
 export default function OptionsPage() {
   const game = useGame();
   const [name, setName] = useState(game.userName);
   const [avatar, setAvatar] = useState("Аватар не загружен");
-  const [size, setSize] = useState(0);
+  const [avatarAsDataURL] = useState<Array<string | ArrayBuffer | null>>([]);
+  // const [avatarSrc, setAvaStc] = useState<null | JSX.Element>(null);
+  const [size, setSize] = useState<0 | 1 | 2 | 3 | 4>(0);
   const [userImages, setUserImages] = useState(0);
-  const [loadImages, setLoadImages] = useState(true);
-  const [time, setTime] = useState(game.startTime);
+  const [filesAsDataURL] = useState<Array<string | ArrayBuffer | null>>([]);
+  const [time, setTime] = useState<number>(game.startTime);
   const [mistake, setMistake] = useState(game.maxMistakes);
   const [minWinPoints, setMinWinPoints] = useState(game.winLimitPoints);
   const [avatarIsValid, setAvatarView] = useState("options__upload-span");
   const [userImagesIsValid, setUserImagesView] = useState(
     "options__upload-span"
   );
-  const userFiles = new DataTransfer();
-  const avatarFile = new DataTransfer();
+  const [source, setSourse] = useState<"standartImg" | "webImg" | "userImg">(
+    "standartImg"
+  );
+  const [modal, setModal] = useState("options__modal none");
 
   const avatarInputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const avatarFile = new DataTransfer();
     if (!e.target.files?.length) {
-      avatarFile.items.clear();
       setAvatar("Аватар не загружен");
       setAvatarView("options__upload-span invalid");
       return;
     } else {
       avatarFile.items.clear();
       avatarFile.items.add(e.target.files[0]);
-      setAvatarView("options__upload-span valid");
       console.log(avatarFile.files);
+      const fileReader = new FileReader();
+      fileReader.readAsDataURL(avatarFile.files[0]);
+      fileReader.onload = function () {
+        // localStorage.setItem("avatar", String(fileReader.result));
+        // localStorage.getItem("avatar");
+        // setAvaStc(<img src={`${localStorage.getItem("avatar")}`} />);
+        avatarAsDataURL.push(fileReader.result);
+        console.log(avatarAsDataURL);
+      };
+      fileReader.onerror = function () {
+        setAvatar("Аватар не загружен");
+        setAvatarView("options__upload-span invalid");
+        return;
+      };
+      setAvatarView("options__upload-span valid");
+
       return e.target.files.length
         ? setAvatar("Аватар загружен")
         : setAvatar("Аватар не загружен");
     }
   };
   const userImagesInputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const userFiles = new DataTransfer();
     if (!e.target.files?.length) {
       userFiles.items.clear();
       setUserImages(0);
@@ -45,7 +65,14 @@ export default function OptionsPage() {
       userFiles.items.clear();
       for (const file of e.target.files) {
         userFiles.items.add(file);
+        const fileReader1 = new FileReader();
+        fileReader1.readAsDataURL(file);
+        fileReader1.onload = function () {
+          filesAsDataURL.push(String(fileReader1.result));
+        };
       }
+      console.log(filesAsDataURL);
+
       setUserImagesView("options__upload-span valid");
       console.log(userFiles.files);
       return e.target.files.length
@@ -54,29 +81,89 @@ export default function OptionsPage() {
     }
   };
 
-  // const optionsValidation = (data: options) => {
-  //   if (data.avatar.length === 0) return false;
-  //   if (data.userImages.length === 0) return false;
-  // };
+  const OptionModal = () => {
+    return (
+      <div className={modal}>
+        {/* {avatarSrc} */}
+        <p className="options__modal-txt">
+          На данный момент запушена игровая партия.
+        </p>
+        <p className="options__modal-txt">
+          Eсли вы сохраните настройки релультат партии будет потерян.
+        </p>
+        <div className="modal__flex">
+          <button type="submit" className="modal__btn">
+            Сохранить
+          </button>
+          <button
+            type="button"
+            className="modal__btn"
+            onClick={() => setModal("options__modal none")}
+          >
+            Отменить
+          </button>
+        </div>
+      </div>
+    );
+  };
+
+  const saveOptionsToState = ({}: options, game: State) => {
+    game.userName = name;
+    game.level = size;
+    game.startTime = time;
+    game.maxMistakes = mistake;
+    game.winLimitPoints = minWinPoints;
+    game.sourceImages = source;
+    game.userAvatar = avatarAsDataURL[0];
+    game.userImg = filesAsDataURL;
+  };
+
+  const saveOptionsToLocalStore = (options: options, game: State) => {};
 
   const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.dir(`
-      name: ${name}
-      avatar: ${avatarFile.files}
-      size: ${size}
-      time: ${time}
-      mistake: ${mistake}
-      minWinPoints: ${minWinPoints}
-      agreeToLoad: ${loadImages}
-      userImages: ${userFiles.files}
-      `);
+    if (
+      (modal === "options__modal none" && game.modalTitle === "Пауза") ||
+      game.modalTitle === "Игра"
+    ) {
+      setModal("options__modal");
+      return;
+    }
+    saveOptionsToState(
+      {
+        name,
+        size,
+        time,
+        mistake,
+        minWinPoints,
+        sourceImages: source,
+        avatar: avatarAsDataURL[0],
+        userImages: filesAsDataURL,
+      },
+      game
+    );
+    // console.dir(`
+    //   name: ${name}
+    //   avatar: avatarAsDataURL
+    //   size: ${size}
+    //   time: ${time}
+    //   mistake: ${mistake}
+    //   minWinPoints: ${minWinPoints}
+    //   sourceImages: ${source}
+    //   userImages: filesAsDataURL
+    //   `);
+    setModal("options__modal none");
   };
 
-  // useEffect(() => {
-  //   userFiles.items.clear();
-  //   avatarFile.items.clear();
-  // }, []);
+  const resetHandler = () => {
+    avatarAsDataURL.splice(0);
+    filesAsDataURL.splice(0);
+    setAvatarView("options__upload-span");
+    setAvatar("Аватар не загружен");
+    setUserImagesView("options__upload-span");
+    setUserImages(0);
+    console.log(avatarAsDataURL, filesAsDataURL);
+  };
 
   return (
     <div className="options">
@@ -123,10 +210,10 @@ export default function OptionsPage() {
               <input
                 className="options__size-radio"
                 type="radio"
-                defaultChecked={true}
-                onChange={(e) => setSize(+e.target.value)}
+                defaultChecked={game.level === 0}
+                onChange={() => setSize(0)}
                 name="size"
-                value="0"
+                value={0}
                 id="size4x3"
               />
               <label className="options__size-label" htmlFor="size4x3">
@@ -137,9 +224,10 @@ export default function OptionsPage() {
               <input
                 className="options__size-radio"
                 type="radio"
-                onChange={(e) => setSize(+e.target.value)}
+                defaultChecked={game.level === 1}
+                onChange={() => setSize(1)}
                 name="size"
-                value="1"
+                value={1}
                 id="size4x4"
               />
               <label className="options__size-label" htmlFor="size4x4">
@@ -151,8 +239,9 @@ export default function OptionsPage() {
                 className="options__size-radio"
                 type="radio"
                 name="size"
-                onChange={(e) => setSize(+e.target.value)}
-                value="2"
+                defaultChecked={game.level === 2}
+                onChange={() => setSize(2)}
+                value={2}
                 id="size5x4"
               />
               <label className="options__size-label" htmlFor="size5x4">
@@ -163,9 +252,10 @@ export default function OptionsPage() {
               <input
                 className="options__size-radio"
                 type="radio"
-                onChange={(e) => setSize(+e.target.value)}
+                defaultChecked={game.level === 3}
+                onChange={() => setSize(3)}
                 name="size"
-                value="3"
+                value={3}
                 id="size6x5"
               />
               <label className="options__size-label" htmlFor="size6x5">
@@ -176,9 +266,10 @@ export default function OptionsPage() {
               <input
                 className="options__size-radio"
                 type="radio"
-                onChange={(e) => setSize(+e.target.value)}
+                defaultChecked={game.level === 4}
+                onChange={() => setSize(4)}
                 name="size"
-                value="4"
+                value={4}
                 id="size6x6"
               />
               <label className="options__size-label" htmlFor="size6x6">
@@ -235,19 +326,49 @@ export default function OptionsPage() {
             />
           </div>
           <div className="options__flex">
-            <input
-              type="checkbox"
-              defaultChecked={true}
-              onChange={() =>
-                loadImages ? setLoadImages(false) : setLoadImages(true)
-              }
-              name="agreeToLoad"
-              id="agreeToLoad"
-              className="options__agree"
-            />
-            <label htmlFor="agreeToLoad">
-              <p>Не загружать картинки из интернета</p>
-            </label>
+            <p>Источник картинок</p>
+            <div>
+              <input
+                className="options__size-radio"
+                type="radio"
+                defaultChecked={game.sourceImages === "standartImg"}
+                onChange={() => setSourse("standartImg")}
+                name="source"
+                value="standartImg"
+                id="standart-img"
+              />
+              <label className="options__size-label" htmlFor="standart-img">
+                Базовые
+              </label>
+            </div>
+            <div>
+              <input
+                className="options__size-radio"
+                type="radio"
+                defaultChecked={game.sourceImages === "webImg"}
+                onChange={() => setSourse("webImg")}
+                name="source"
+                value="webImg"
+                id="web-img"
+              />
+              <label className="options__size-label" htmlFor="web-img">
+                Из&nbsp;сети
+              </label>
+            </div>
+            <div>
+              <input
+                className="options__size-radio"
+                type="radio"
+                name="source"
+                defaultChecked={game.sourceImages === "userImg"}
+                onChange={() => setSourse("userImg")}
+                value="userImg"
+                id="user-img"
+              />
+              <label className="options__size-label" htmlFor="user-img">
+                Свои
+              </label>
+            </div>
           </div>
           <div className="options__flex">
             <div>
@@ -274,7 +395,16 @@ export default function OptionsPage() {
             <button id="save" className="options__btn-save">
               Сохранить
             </button>
+            <button
+              id="save"
+              className="options__btn-save"
+              type="reset"
+              onClick={resetHandler}
+            >
+              Отчистить
+            </button>
           </div>
+          <OptionModal />
         </form>
       </div>
     </div>

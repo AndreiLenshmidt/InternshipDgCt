@@ -7,10 +7,10 @@ export default function BottomInfo() {
       <div className="wrap">
         <div className="info__box">
           <p className="info__item">
-            Общий счет: <span id="info-game-score">{game.gamePoint}</span>
+            Счет: <span id="info-game-score">{game.gamePoint}</span>
           </p>
           <p className="info__item">
-            Сыграно игр: <span id="info-games">{game.gamesAll}</span>
+            Всего игр: <span id="info-games">{game.gamesAll}</span>
           </p>
           <p className="info__item">
             Отгадано: <span id="info-guessed">{game.guessedPoint}</span>

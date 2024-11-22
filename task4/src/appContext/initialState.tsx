@@ -13,6 +13,7 @@ export const initialState: State = {
   userAvatar: "#user",
   modalTitle: "Начало игры",
   modalShow: true,
+  sourceImages: "standartImg",
   standartImg: ["#user", "#trophy", "#medal", "#globe", "#gear", "#play"],
   webImg: [],
   userImg: [],
