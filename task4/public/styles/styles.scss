@@ -55,7 +55,11 @@ input[type="checkbox"] {
 }
 
 .menu {
-  background-color: vars.$gray-color;
+  background-color: vars.$greeb-dark;
+  position: fixed;
+  top: 0;
+  z-index: 1;
+  width: 100%;
   &__nav {
     display: flex;
     justify-content: space-between;
@@ -79,7 +83,7 @@ input[type="checkbox"] {
 
 .game {
   background-color: vars.$green_color;
-  min-height: 200px;
+  min-height: 100vh;
   width: 100%;
 
   &__card-box {
@@ -87,12 +91,13 @@ input[type="checkbox"] {
     margin: 0 auto;
     width: fit-content;
     gap: 10px;
-    padding: 40px 10px;
+    padding: 200px 10px 40px;
     @media (width < vars.$width-tablet) {
-      // padding: 60px 10px;
+      padding: 175px 10px 40px;
     }
     @media (width < vars.$width-smartpthone) {
-      padding: 16px;
+      padding: 115px 10px 30px;
+      // padding: 16px;
     }
   }
   &__card-box4x3 {
@@ -148,7 +153,7 @@ input[type="checkbox"] {
 }
 
 .info {
-  background-color: #fff;
+  background-color: vars.$blue-color;
   &__box {
     padding: 16px 0;
     display: flex;
@@ -172,18 +177,43 @@ input[type="checkbox"] {
     }
   }
 }
+.info:first-child {
+  position: fixed;
+  z-index: 1;
+  top: 74px;
+  width: 100%;
+  @media (width < vars.$width-tablet) {
+    top: 84px;
+  }
+  @media (width < vars.$width-smartpthone) {
+    top: 59px;
+  }
+}
+.info:last-child {
+  position: fixed;
+  z-index: 1;
+  bottom: 0;
+  width: 100%;
+}
 
 .modal {
   width: 100%;
-  height: 100%;
+  height: calc(100% - 74px);
   position: absolute;
-  top: 0;
+  top: 74px;
   left: 0;
-  z-index: 1;
+  z-index: 10;
   background-color: vars.$green-modal;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  @media (width < vars.$width-tablet) {
+    height: calc(100% - 74px);
+  }
+  @media (width < vars.$width-smartpthone) {
+    top: 59px;
+    height: calc(100% - 59px);
+  }
 
   &__title {
     padding-bottom: 24px;
@@ -215,29 +245,42 @@ input[type="checkbox"] {
     padding: 10px 0;
     justify-content: space-between;
   }
+
+  &__flex:last-child {
+    justify-content: space-around;
+  }
+
+  &__icon {
+    width: 70px;
+    height: 70px;
+  }
 }
 
 .options {
+  min-height: 100vh;
+  background-color: vars.$green_color;
   &__container {
     padding: 20px 0;
     display: flex;
     flex-direction: column;
-    height: 85vh;
+    min-height: 85vh;
     justify-content: space-around;
   }
   &__flex {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px 16px;
+    padding: 14px 16px;
   }
   &__size-radio {
     display: none;
   }
   &__size-radio:checked ~ &__size-label {
-    color: vars.$blue-color;
+    background-color: vars.$blue-color;
   }
   &__size-label {
+    padding: 2px 5px;
+    border-radius: 3px;
   }
 
   &__range {
@@ -299,10 +342,10 @@ input[type="checkbox"] {
   &__agree:checked + label::after {
     background: vars.$green-modal vars.$chbox-svg center center no-repeat;
   }
-  &__agree:hover + label::after {
-    border-color: #fcfaf9;
-    background-color: rgba(252, 250, 249, 0.5647058824);
-  }
+  // &__agree:hover + label::after {
+  //   border-color: #fcfaf9;
+  //   background-color: rgba(252, 250, 249, 0.5647058824);
+  // }
   &__agree:focus + label::after {
     border-color: #1b1f21;
   }
@@ -311,26 +354,38 @@ input[type="checkbox"] {
     background-color: rgba(252, 250, 249, 0.5647058824);
     background-image: none;
   }
-  &__chbox-text {
-    color: #000000;
-    font-weight: 400;
-    font-size: 15px;
-    line-height: 140%;
-    width: 536px;
+  // &__chbox-text {
+  //   color: #000000;
+  //   font-weight: 400;
+  //   font-size: 15px;
+  //   line-height: 140%;
+  //   width: 536px;
+  // }
+  // @media (width < 1280px) {
+  //   &__chbox-text {
+  //     color: #000000;
+  //     font-weight: 400;
+  //     font-size: 13px;
+  //     line-height: 140%;
+  //     width: 320px;
+  //   }
+  // }
+  // @media (width < 768px) {
+  //   &__chbox-text {
+  //     width: 220px;
+  //   }
+  // }
+
+  &__upload-span {
+    font-size: 10px;
   }
-  @media (width < 1280px) {
-    &__chbox-text {
-      color: #000000;
-      font-weight: 400;
-      font-size: 13px;
-      line-height: 140%;
-      width: 320px;
-    }
+
+  &__range-text {
+    padding-bottom: 10px;
+    width: 100%;
   }
-  @media (width < 768px) {
-    &__chbox-text {
-      width: 220px;
-    }
+  &__range-span {
+    padding: 5px 10px;
   }
 }
 
@@ -398,6 +453,15 @@ input[type="checkbox"] {
   }
 }
 
+.invalid {
+  color: #ff0000;
+}
+.valid {
+  color: vars.$blue-valid;
+}
+.alowed {
+  color: orange;
+}
 .none {
   display: none;
 }

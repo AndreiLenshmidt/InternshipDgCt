@@ -25,7 +25,7 @@ const Avatar = () => {
       </svg>
     );
   } else {
-    return <img src="#" alt="avatar" />;
+    return <img src="#" className="menu__icon" alt="avatar" />;
   }
 };
 
@@ -34,8 +34,15 @@ const PlayPause = () => {
   const dispatch = useGameDispatch();
 
   const playPauseHandler = () => {
-    if (game.time > 0 && !game.winLevel && !game.looseLevel)
+    if (game.time > 0 && !game.winLevel && !game.looseLevel) {
+      if (!game.timerToggle) {
+        game.modalShow = false;
+      } else {
+        game.modalShow = true;
+        game.modalTitle = "Пауза";
+      }
       return timerToggle(game.timerToggle, dispatch);
+    }
   };
 
   if (game.timerToggle) {

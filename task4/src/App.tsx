@@ -13,9 +13,9 @@ function App() {
     <GameContextProvider>
       <div className="wrapper">
         <BrowserRouter>
+          <MenuComp />
           <PageWrapper>
             <ModalWindow />
-            <MenuComp />
             <Routes>
               <Route path="/" element={<GamePage />} />
               <Route path="/options" element={<OptionsPage />} />

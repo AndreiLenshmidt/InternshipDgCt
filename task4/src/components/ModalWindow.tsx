@@ -1,7 +1,8 @@
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { useGame, useGameDispatch } from "../appContext/appContext";
-import { setCards, timerToggle } from "../appReducer/dispatchFunctions";
-import { randomizer } from "../helpers/randomizer";
+import { timerToggle } from "../appReducer/dispatchFunctions";
+// import { randomizer } from "../helpers/randomizer";
+import { useLocation } from "react-router-dom";
 
 export default function ModalWindow() {
   const game = useGame();
@@ -10,11 +11,6 @@ export default function ModalWindow() {
     () => (game.modalShow ? "modal" : "modal none"),
     [game.modalShow]
   );
-
-  // const refreshGameField = () => {
-  //   const cards = randomizer(game.standartImg, game.size, game.level);
-  //   setCards(cards, dispatch);
-  // };
 
   const ModalBox = () => {
     const startButtonHandler = () => {
@@ -61,6 +57,19 @@ export default function ModalWindow() {
           </div>
         </div>
       );
+    } else if (game.modalTitle === "Пауза") {
+      return (
+        <div className="modal__box">
+          <div className="modal__flex">
+            <svg className="modal__icon" onClick={retryLevelHandler}>
+              <use xlinkHref="#retry"></use>
+            </svg>
+            <svg className="modal__icon" onClick={continueButtonHandler}>
+              <use xlinkHref="#pause"></use>
+            </svg>
+          </div>
+        </div>
+      );
     } else if (game.modalTitle === "Победа") {
       return (
         <div className="modal__box">
@@ -100,14 +109,14 @@ export default function ModalWindow() {
               <p className="modal__text">Сложность:</p>
               <p className="modal__text">{game.gameResult.difficult}</p>
             </div>
-          </div>
-          <div className="modal__flex">
-            <button className="modal__btn" onClick={saveGameHandler}>
-              Сохранить и выйти
-            </button>
-            <button className="modal__btn" onClick={nextLevelHandler}>
-              Слудующий уровень
-            </button>
+            <div className="modal__flex">
+              <button className="modal__btn" onClick={saveGameHandler}>
+                Сохранить и выйти
+              </button>
+              <button className="modal__btn" onClick={nextLevelHandler}>
+                Слудующий уровень
+              </button>
+            </div>
           </div>
         </div>
       );
@@ -150,19 +159,29 @@ export default function ModalWindow() {
               <p className="modal__text">Сложность:</p>
               <p className="modal__text">{game.gameResult.difficult}</p>
             </div>
-          </div>
-          <div className="modal__flex">
-            <button className="modal__btn" onClick={saveGameHandler}>
-              Сохранить и выйти
-            </button>
-            <button className="modal__btn" onClick={retryLevelHandler}>
-              Заново
-            </button>
+            <div className="modal__flex">
+              <button className="modal__btn" onClick={saveGameHandler}>
+                Сохранить и выйти
+              </button>
+              <button className="modal__btn" onClick={retryLevelHandler}>
+                Заново
+              </button>
+            </div>
           </div>
         </div>
       );
     }
   };
+  let location = useLocation();
+
+  useEffect(() => {
+    console.log(location.pathname, game.modalShow);
+    // if (location.pathname === "/") {
+    //   game.modalShow = true;
+    // } else {
+    //   game.modalShow = false;
+    // }
+  }, [location.pathname]);
 
   return (
     <div className={showModal}>

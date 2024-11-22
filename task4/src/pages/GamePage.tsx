@@ -4,11 +4,7 @@ import CardComp from "../components/CardComp";
 import TopInfo from "../components/TopInfo";
 import { useGame, useGameDispatch } from "../appContext/appContext";
 import { randomizer } from "../helpers/randomizer";
-import {
-  increasetime,
-  setCards,
-  timerToggle,
-} from "../appReducer/dispatchFunctions";
+import { increasetime, timerToggle } from "../appReducer/dispatchFunctions";
 import { State } from "../types/type";
 
 export default function GamePage() {
@@ -33,7 +29,7 @@ export default function GamePage() {
   };
   const refreshGameField = () => {
     const cards = randomizer(game.standartImg, game.size, game.level);
-    setCards(cards, dispatch);
+    game.cards = cards;
   };
   const refreshStatistic = (levelPoints: number) => {
     game.gamePoint += levelPoints;
@@ -61,11 +57,12 @@ export default function GamePage() {
     game.unguessedPoint = 0;
     game.winLevel = false;
     game.looseLevel = false;
+    game.cards.forEach((card) => (card.disabled = false));
     refreshGameField();
   };
 
   useEffect(() => {
-    if (game.timerToggle)
+    if (game.timerToggle && !game.looseLevel && !game.winLevel)
       setTimeout(() => increasetime(game.time, dispatch), 1000);
     if (game.time === 0 && game.timerToggle)
       timerToggle(game.timerToggle, dispatch);
@@ -105,7 +102,7 @@ export default function GamePage() {
 
   useEffect(() => {
     if (mistakes) {
-      timerToggle(game.timerToggle, dispatch);
+      game.timerToggle = false;
       game.looseLevel = true;
       refreshStatistic(game.matchPoint);
       game.modalTitle = "Поражение по ошибкам";
@@ -120,8 +117,8 @@ export default function GamePage() {
       <TopInfo />
       <div className="wrap">
         <div className={game.cardBox[game.level]}>
-          {game.cards.map((card, index) => (
-            <CardComp card={card} key={index} />
+          {game.cards.map((card) => (
+            <CardComp card={card} key={card.id} />
           ))}
         </div>
       </div>

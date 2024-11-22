@@ -11,6 +11,8 @@ interface State {
   userAvatar: string;
   modalTitle:
     | "Начало игры"
+    | "Игра"
+    | "Пауза"
     | "Победа"
     | "Поражение по очкам"
     | "Поражение по таймеру"
@@ -54,6 +56,17 @@ type result = {
   difficult: string;
 };
 
+type options = {
+  name: string;
+  avatar: FileList;
+  size: number;
+  time: number;
+  mistake: number;
+  minWinPoints: number;
+  agreeToLoad: boolean;
+  userImages: FileList;
+};
+
 type card = {
   img: string;
   turned: boolean;
@@ -79,4 +92,4 @@ type GameAction =
   | { type: "setWin"; value: State["winLevel"] }
   | { type: "setLoose"; value: State["looseLevel"] };
 
-export type { State, GameAction, item, card, result };
+export type { State, GameAction, item, card, result, options };
