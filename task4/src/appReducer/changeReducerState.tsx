@@ -20,6 +20,21 @@ export function stateReducer(state: State, action: GameAction): State {
       return { ...state, winLevel: action.value };
     case "setLoose":
       return { ...state, looseLevel: action.value };
+    case "setState":
+      return {
+        ...state,
+        userName: action.value.userName,
+        level: action.value.level,
+        startTime: action.value.startTime,
+        time: action.value.startTime,
+        maxMistakes: action.value.maxMistakes,
+        winLimitPoints: action.value.winLimitPoints,
+        sourceImages: action.value.sourceImages,
+        difficult: action.value.difficult,
+        userAvatar: action.value.userAvatar,
+        userImg: action.value.userImg,
+        delayShowCards: action.value.delayShowCards,
+      };
     default:
       throw new Error("Unknown action");
   }

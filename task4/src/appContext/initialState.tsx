@@ -24,7 +24,7 @@ export const initialState: State = {
     "012340123401234012340123401234",
     "012345012345012345012345012345012345",
   ],
-  difficult: "Easy",
+  difficult: "Легко",
   level: 0,
   cardBox: [
     "game__card-box game__card-box4x3",
@@ -37,7 +37,7 @@ export const initialState: State = {
     { img: "", turned: false, openCloseToggle: false, disabled: false, id: 0 },
   ],
   turnedCards: [],
-  delayShowCards: 1500,
+  delayShowCards: 700,
   incrementPoint: 25,
   decrementPoint: -5,
   guessedPoint: 0,

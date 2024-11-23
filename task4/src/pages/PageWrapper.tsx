@@ -1,9 +1,11 @@
-import { useEffect } from "react";
+import { useEffect, useLayoutEffect } from "react";
 import { randomizer } from "../helpers/randomizer";
 import { setCards } from "../appReducer/dispatchFunctions";
 import { useGame, useGameDispatch } from "../appContext/appContext";
 import ModalWindow from "../components/ModalWindow";
 import { catImg } from "../types/type";
+import { readGameStateFromLocalStore } from "../helpers/localStoreHalpers";
+import { initialState } from "../appContext/initialState";
 
 export function PageWrapper(prop: { children: React.ReactNode }) {
   const game = useGame();
@@ -23,6 +25,11 @@ export function PageWrapper(prop: { children: React.ReactNode }) {
     const cards = randomizer(game.standartImg, game.size, game.level);
     if (game.time === game.startTime) setCards(cards, dispatch);
   }, [game.level]);
+
+  useLayoutEffect(() => {
+    const gameSavedState = readGameStateFromLocalStore(game);
+    if (dispatch) dispatch({ type: "setState", value: gameSavedState });
+  }, []);
 
   // useEffect(() => {
   //   if (game.sourceImages === "webImg") {

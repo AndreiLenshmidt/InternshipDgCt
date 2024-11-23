@@ -97,6 +97,10 @@ export default function ModalWindow() {
               <p className="modal__text">{game.gameResult.matchPoint}</p>
             </div>
             <div className="modal__flex">
+              <p className="modal__text">Очков требуется: </p>
+              <p className="modal__text">{game.winLimitPoints}</p>
+            </div>
+            <div className="modal__flex">
               <p className="modal__text">Всего очков: </p>
               <p className="modal__text">{game.gameResult.scors}</p>
             </div>
@@ -123,7 +127,7 @@ export default function ModalWindow() {
                 Сохранить и выйти
               </button>
               <button className="modal__btn" onClick={nextLevelHandler}>
-                Слудующий уровень
+                Новая игра
               </button>
             </div>
           </div>
@@ -147,6 +151,10 @@ export default function ModalWindow() {
             <div className="modal__flex">
               <p className="modal__text">Очков получено: </p>
               <p className="modal__text">{game.gameResult.matchPoint}</p>
+            </div>
+            <div className="modal__flex">
+              <p className="modal__text">Очков требуется: </p>
+              <p className="modal__text">{game.winLimitPoints}</p>
             </div>
             <div className="modal__flex">
               <p className="modal__text">Всего очков: </p>

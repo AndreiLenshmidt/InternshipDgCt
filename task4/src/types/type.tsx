@@ -20,7 +20,7 @@ interface State {
     | "Поражение по ошибкам";
   modalShow: boolean;
   standartImg: Array<string>;
-  difficult: "Easy" | "Normal" | "Hard";
+  difficult: string;
   level: number;
   size: Array<string>;
   cards: Array<card>;
@@ -62,6 +62,8 @@ type options = {
   avatar: string | ArrayBuffer | null;
   size: number;
   time: number;
+  delay: number;
+  difficult: string;
   mistake: number;
   sourceImages: "standartImg" | "webImg" | "userImg";
   minWinPoints: number;
@@ -98,6 +100,7 @@ type GameAction =
   | { type: "setGuessedPoint"; value: State["guessedPoint"] }
   | { type: "setMistakePoint"; value: State["unguessedPoint"] }
   | { type: "setWin"; value: State["winLevel"] }
-  | { type: "setLoose"; value: State["looseLevel"] };
+  | { type: "setLoose"; value: State["looseLevel"] }
+  | { type: "setState"; value: State };
 
 export type { State, GameAction, item, card, result, options, catImg };

@@ -1,14 +1,27 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useGame } from "../appContext/appContext";
 import { options, State } from "../types/type";
+import {
+  deleteOptionsFromLocalStore,
+  saveOptionsToLocalStore,
+} from "../helpers/localStoreHalpers";
+import { difficutmLevelSize, getOptionsParam } from "../helpers/difficult";
 
 export default function OptionsPage() {
   const game = useGame();
   const [name, setName] = useState(game.userName);
   const [avatar, setAvatar] = useState("Аватар не загружен");
   const [avatarAsDataURL] = useState<Array<string | ArrayBuffer | null>>([]);
-  // const [avatarSrc, setAvaStc] = useState<null | JSX.Element>(null);
-  const [size, setSize] = useState<0 | 1 | 2 | 3 | 4>(0);
+  const [size, setSize] = useState(0);
+  const [difficult, setDifficult] = useState(game.difficult);
+  const [difficultOptions, setDiffOptions] = useState({
+    timeMin: "30",
+    timeMax: "300",
+    pointsMin: "60",
+    pointsMax: "450",
+    mistakeMin: "3",
+    mistakeMax: "50",
+  });
   const [userImages, setUserImages] = useState(0);
   const [filesAsDataURL] = useState<Array<string | ArrayBuffer | null>>([]);
   const [time, setTime] = useState<number>(game.startTime);
@@ -18,79 +31,84 @@ export default function OptionsPage() {
   const [userImagesIsValid, setUserImagesView] = useState(
     "options__upload-span"
   );
+  const [delay, setDalay] = useState(game.delayShowCards);
   const [source, setSourse] = useState<"standartImg" | "webImg" | "userImg">(
     "standartImg"
   );
   const [modal, setModal] = useState("options__modal none");
+  const fileSize = 524288;
+  const FILES_FORMAT_REG = /.jpg|.PNG|.JPG|.png|.JPEG|.jpeg/;
+
+  const fileValidation = (file: File) => {
+    if (file.size > fileSize) {
+      return "Слишком большой файл";
+    } else if (!FILES_FORMAT_REG.test(file.name)) {
+      return "Неверное расширение";
+    } else {
+      return false;
+    }
+  };
 
   const avatarInputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const avatarFile = new DataTransfer();
     if (!e.target.files?.length) {
       setAvatar("Аватар не загружен");
       setAvatarView("options__upload-span invalid");
       return;
-    } else {
-      avatarFile.items.clear();
-      avatarFile.items.add(e.target.files[0]);
-      console.log(avatarFile.files);
-      const fileReader = new FileReader();
-      fileReader.readAsDataURL(avatarFile.files[0]);
-      fileReader.onload = function () {
-        // localStorage.setItem("avatar", String(fileReader.result));
-        // localStorage.getItem("avatar");
-        // setAvaStc(<img src={`${localStorage.getItem("avatar")}`} />);
-        avatarAsDataURL.push(fileReader.result);
-        console.log(avatarAsDataURL);
-      };
-      fileReader.onerror = function () {
-        setAvatar("Аватар не загружен");
-        setAvatarView("options__upload-span invalid");
-        return;
-      };
-      setAvatarView("options__upload-span valid");
-
-      return e.target.files.length
-        ? setAvatar("Аватар загружен")
-        : setAvatar("Аватар не загружен");
     }
+    const fileIsValid = fileValidation(e.target.files[0]);
+    if (fileIsValid) {
+      setAvatar(fileIsValid);
+      setAvatarView("options__upload-span invalid");
+      return;
+    }
+    const fileReader = new FileReader();
+    fileReader.readAsDataURL(e.target.files[0]);
+    fileReader.onload = function () {
+      avatarAsDataURL.push(fileReader.result);
+      console.log(avatarAsDataURL);
+    };
+    fileReader.onerror = function () {
+      setAvatar("Аватар не загружен");
+      setAvatarView("options__upload-span invalid");
+      return;
+    };
+    setAvatarView("options__upload-span valid");
+
+    return e.target.files.length
+      ? setAvatar("Аватар загружен")
+      : setAvatar("Аватар не загружен");
   };
   const userImagesInputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const userFiles = new DataTransfer();
     if (!e.target.files?.length) {
-      userFiles.items.clear();
       setUserImages(0);
       setUserImagesView("options__upload-span alowed");
       return;
-    } else {
-      userFiles.items.clear();
-      for (const file of e.target.files) {
-        userFiles.items.add(file);
-        const fileReader1 = new FileReader();
-        fileReader1.readAsDataURL(file);
-        fileReader1.onload = function () {
-          filesAsDataURL.push(String(fileReader1.result));
-        };
-      }
-      console.log(filesAsDataURL);
-
-      setUserImagesView("options__upload-span valid");
-      console.log(userFiles.files);
-      return e.target.files.length
-        ? setUserImages(e.target.files.length)
-        : setUserImages(0);
     }
+    for (const file of e.target.files) {
+      const fileIsValid = fileValidation(file);
+      if (fileIsValid) {
+        setUserImages(0);
+        setUserImagesView("options__upload-span invalid");
+        return;
+      }
+      const fileReader1 = new FileReader();
+      fileReader1.readAsDataURL(file);
+      fileReader1.onload = function () {
+        filesAsDataURL.push(String(fileReader1.result));
+      };
+    }
+    console.log(filesAsDataURL);
+    setUserImagesView("options__upload-span valid");
+    return e.target.files.length
+      ? setUserImages(e.target.files.length)
+      : setUserImages(0);
   };
 
   const OptionModal = () => {
     return (
       <div className={modal}>
         {/* {avatarSrc} */}
-        <p className="options__modal-txt">
-          На данный момент запушена игровая партия.
-        </p>
-        <p className="options__modal-txt">
-          Eсли вы сохраните настройки релультат партии будет потерян.
-        </p>
+        <p className="options__modal-txt">Сохранить установленные настройки</p>
         <div className="modal__flex">
           <button type="submit" className="modal__btn">
             Сохранить
@@ -107,51 +125,24 @@ export default function OptionsPage() {
     );
   };
 
-  const saveOptionsToState = ({}: options, game: State) => {
+  const saveOptionsToState = () => {
     game.userName = name;
     game.level = size;
+    game.time = time;
     game.startTime = time;
     game.maxMistakes = mistake;
     game.winLimitPoints = minWinPoints;
     game.sourceImages = source;
+    game.difficult = difficult;
     game.userAvatar = avatarAsDataURL[0];
     game.userImg = filesAsDataURL;
+    game.delayShowCards = delay;
   };
-
-  const saveOptionsToLocalStore = (options: options, game: State) => {};
 
   const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (
-      (modal === "options__modal none" && game.modalTitle === "Пауза") ||
-      game.modalTitle === "Игра"
-    ) {
-      setModal("options__modal");
-      return;
-    }
-    saveOptionsToState(
-      {
-        name,
-        size,
-        time,
-        mistake,
-        minWinPoints,
-        sourceImages: source,
-        avatar: avatarAsDataURL[0],
-        userImages: filesAsDataURL,
-      },
-      game
-    );
-    // console.dir(`
-    //   name: ${name}
-    //   avatar: avatarAsDataURL
-    //   size: ${size}
-    //   time: ${time}
-    //   mistake: ${mistake}
-    //   minWinPoints: ${minWinPoints}
-    //   sourceImages: ${source}
-    //   userImages: filesAsDataURL
-    //   `);
+    saveOptionsToState();
+    saveOptionsToLocalStore(game);
     setModal("options__modal none");
   };
 
@@ -164,6 +155,11 @@ export default function OptionsPage() {
     setUserImages(0);
     console.log(avatarAsDataURL, filesAsDataURL);
   };
+
+  useEffect(() => {
+    const diffOptions = getOptionsParam(size, difficult, difficutmLevelSize);
+    setDiffOptions(diffOptions);
+  }, [size, difficult]);
 
   return (
     <div className="options">
@@ -278,6 +274,81 @@ export default function OptionsPage() {
             </div>
           </div>
           <div className="options__flex">
+            <p>Выбор сложности</p>
+            <div>
+              <div>
+                <input
+                  className="options__size-radio"
+                  type="radio"
+                  defaultChecked={difficult === "Очень легко"}
+                  onChange={() => setDifficult("Очень легко")}
+                  name="difficult"
+                  value="Очень легко"
+                  id="very-easy"
+                />
+                <label className="options__size-label" htmlFor="very-easy">
+                  Очень легко
+                </label>
+              </div>
+              <div>
+                <input
+                  className="options__size-radio"
+                  type="radio"
+                  defaultChecked={difficult === "Легко"}
+                  onChange={() => setDifficult("Легко")}
+                  name="difficult"
+                  value="Легко"
+                  id="easy"
+                />
+                <label className="options__size-label" htmlFor="easy">
+                  Легко
+                </label>
+              </div>
+              <div>
+                <input
+                  className="options__size-radio"
+                  type="radio"
+                  defaultChecked={difficult === "Норм"}
+                  onChange={() => setDifficult("Норм")}
+                  name="difficult"
+                  value="Норм"
+                  id="normal"
+                />
+                <label className="options__size-label" htmlFor="normal">
+                  Норм
+                </label>
+              </div>
+              <div>
+                <input
+                  className="options__size-radio"
+                  type="radio"
+                  defaultChecked={difficult === "Сложно"}
+                  onChange={() => setDifficult("Сложно")}
+                  name="difficult"
+                  value="Сложно"
+                  id="hard"
+                />
+                <label className="options__size-label" htmlFor="hard">
+                  Сложно
+                </label>
+              </div>
+              <div>
+                <input
+                  className="options__size-radio"
+                  type="radio"
+                  defaultChecked={difficult === "Очень сложно"}
+                  onChange={() => setDifficult("Очень сложно")}
+                  name="difficult"
+                  value="Очень сложно"
+                  id="very-hard"
+                />
+                <label className="options__size-label" htmlFor="very-hard">
+                  Очень сложно
+                </label>
+              </div>
+            </div>
+          </div>
+          <div className="options__flex">
             <div>
               <p className="options__range-text">Время</p>
               <span className="options__range-span">{time}</span>
@@ -285,8 +356,8 @@ export default function OptionsPage() {
             </div>
             <input
               onChange={(e) => setTime(+e.target.value)}
-              min={30}
-              max={300}
+              min={+difficultOptions?.timeMin}
+              max={+difficultOptions?.timeMax}
               defaultValue={game.startTime}
               className="options__range"
               type="range"
@@ -301,8 +372,8 @@ export default function OptionsPage() {
             </div>
             <input
               onChange={(e) => setMistake(+e.target.value)}
-              min={3}
-              max={50}
+              min={+difficultOptions?.mistakeMin}
+              max={+difficultOptions?.mistakeMax}
               defaultValue={game.maxMistakes}
               className="options__range"
               type="range"
@@ -317,8 +388,8 @@ export default function OptionsPage() {
             </div>
             <input
               onChange={(e) => setMinWinPoints(+e.target.value)}
-              min={50}
-              max={900}
+              min={+difficultOptions?.pointsMin}
+              max={+difficultOptions?.pointsMax}
               defaultValue={game.winLimitPoints}
               className="options__range"
               type="range"
@@ -389,10 +460,48 @@ export default function OptionsPage() {
             />
           </div>
           <div className="options__flex">
-            <p>Ваш уровень сложности</p>
+            <div>
+              <p>Время анимации</p>
+              <span>ms</span>
+            </div>
+            <div>
+              <button
+                onClick={() => setDalay(delay < 2500 ? delay + 100 : 2500)}
+                type="button"
+                id="save"
+                className="options__btn-save"
+              >
+                +
+              </button>
+              <span className="options__delay">{delay}</span>
+              <button
+                onClick={() => setDalay(delay > 100 ? delay - 100 : 100)}
+                id="save"
+                className="options__btn-save"
+                type="button"
+              >
+                -
+              </button>
+            </div>
           </div>
           <div className="options__flex">
-            <button id="save" className="options__btn-save">
+            <p>Удалить всю игровую статистику</p>
+            <button
+              id="save"
+              className="options__btn-save"
+              type="button"
+              onClick={deleteOptionsFromLocalStore}
+            >
+              Удалить
+            </button>
+          </div>
+          <div className="options__flex">
+            <button
+              type="button"
+              id="save"
+              className="options__btn-save"
+              onClick={() => setModal("options__modal")}
+            >
               Сохранить
             </button>
             <button
