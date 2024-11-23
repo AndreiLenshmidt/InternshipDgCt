@@ -2,6 +2,8 @@ import { useGame } from "../appContext/appContext";
 
 export default function BottomInfo() {
   const game = useGame();
+  const maxCardOfSize = [6, 8, 10, 15, 18];
+
   return (
     <div className="info">
       <div className="wrap">
@@ -13,7 +15,16 @@ export default function BottomInfo() {
             Всего игр: <span id="info-games">{game.gamesAll}</span>
           </p>
           <p className="info__item">
-            Отгадано: <span id="info-guessed">{game.guessedPoint}</span>
+            Открыто:{" "}
+            <span id="info-guessed">
+              {game.guessedPoint !== 0
+                ? (
+                    (game.guessedPoint / maxCardOfSize[game.level]) *
+                    100
+                  ).toFixed(0)
+                : 0}{" "}
+              %
+            </span>
           </p>
           <p className="info__item">
             Ошибок: <span id="info-mistake">{game.unguessedPoint}</span>

@@ -1,5 +1,5 @@
 export function randomizer(
-  standartImg: Array<string>,
+  images: Array<string | ArrayBuffer | null>,
   size: Array<string>,
   level: number
 ) {
@@ -13,7 +13,7 @@ export function randomizer(
     }
     numbers.push(num);
     results.push({
-      img: standartImg[+item],
+      img: images[+item],
       turned: false,
       openCloseToggle: false,
       disabled: false,

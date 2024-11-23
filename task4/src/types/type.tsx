@@ -9,15 +9,7 @@ interface State {
   looseCondition: boolean;
   userName: string;
   userAvatar: string | ArrayBuffer | null;
-  modalTitle:
-    | "Начало игры"
-    | "Игра"
-    | "Пауза"
-    | "Победа"
-    | "Поражение по очкам"
-    | "Поражение по таймеру"
-    | "Perfect"
-    | "Поражение по ошибкам";
+  modalTitle: modalTitle;
   modalShow: boolean;
   standartImg: Array<string>;
   difficult: string;
@@ -43,6 +35,16 @@ interface State {
   gameResult: result;
   gameStatistic: Array<result>;
 }
+
+type modalTitle =
+  | "Начало игры"
+  | "Игра"
+  | "Пауза"
+  | "Победа"
+  | "Поражение по очкам"
+  | "Поражение по таймеру"
+  | "Perfect"
+  | "Поражение по ошибкам";
 
 type result = {
   user: string;
@@ -71,14 +73,14 @@ type options = {
 };
 
 type catImg = {
-  id: string;
-  url: string;
-  width: number;
-  height: number;
+  _id: string;
+  mimetype: string;
+  size: number;
+  tags: Array<string>;
 };
 
 type card = {
-  img: string;
+  img: string | ArrayBuffer | null;
   turned: boolean;
   openCloseToggle: boolean;
   disabled: boolean;
@@ -101,6 +103,19 @@ type GameAction =
   | { type: "setMistakePoint"; value: State["unguessedPoint"] }
   | { type: "setWin"; value: State["winLevel"] }
   | { type: "setLoose"; value: State["looseLevel"] }
-  | { type: "setState"; value: State };
+  | { type: "setgameOptions"; value: State }
+  | { type: "setgameStatistic"; value: State["gameStatistic"] }
+  | { type: "setgamesAll"; value: State["gamesAll"] }
+  | { type: "setgamePoint"; value: State["gamePoint"] }
+  | { type: "setWebImg"; value: State["webImg"] };
 
-export type { State, GameAction, item, card, result, options, catImg };
+export type {
+  State,
+  GameAction,
+  item,
+  card,
+  result,
+  options,
+  catImg,
+  modalTitle,
+};

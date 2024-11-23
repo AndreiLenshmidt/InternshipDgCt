@@ -2,12 +2,19 @@ import { useEffect, useState } from "react";
 import { useGame, useGameDispatch } from "../appContext/appContext";
 import { timerToggle } from "../appReducer/dispatchFunctions";
 import { useLocation } from "react-router-dom";
-// import { randomizer } from "../helpers/randomizer";
+import {
+  continueButtonHandler,
+  nextLevelHandler,
+  retryLevelHandler,
+  saveGameHandler,
+} from "../helpers/modalHelpers";
+import { OptionModal } from "./OptionModal";
 
 export default function ModalWindow() {
   const game = useGame();
   const dispatch = useGameDispatch();
   const [showModal, setShowModal] = useState("modal");
+  const [modal, setModal] = useState("options__modal none");
 
   let location = useLocation();
 
@@ -25,32 +32,6 @@ export default function ModalWindow() {
       game.modalTitle = "Игра";
       timerToggle(game.timerToggle, dispatch);
     };
-    const continueButtonHandler = () => {
-      console.log("Загрузить из LocalStorage");
-      game.modalShow = false;
-      game.modalTitle = "Игра";
-      timerToggle(game.timerToggle, dispatch);
-    };
-
-    const nextLevelHandler = () => {
-      game.modalShow = false;
-      timerToggle(game.timerToggle, dispatch);
-      // refreshGameField();
-      console.log("Next level logic");
-    };
-
-    const saveGameHandler = () => {
-      game.modalShow = false;
-      timerToggle(game.timerToggle, dispatch);
-      console.log("Next level logic");
-    };
-
-    const retryLevelHandler = () => {
-      game.modalShow = false;
-      timerToggle(game.timerToggle, dispatch);
-      // refreshGameField();
-      console.log("Retry level logic");
-    };
 
     if (game.modalTitle === "Начало игры") {
       return (
@@ -58,9 +39,12 @@ export default function ModalWindow() {
           <h3 className="modal__title">{game.modalTitle}</h3>
           <div className="modal__flex">
             <button className="modal__btn" onClick={startButtonHandler}>
-              Начать с нуля
+              Новая игра
             </button>
-            <button className="modal__btn" onClick={continueButtonHandler}>
+            <button
+              className="modal__btn"
+              onClick={() => continueButtonHandler(game, dispatch)}
+            >
               Продолжить
             </button>
           </div>
@@ -69,13 +53,33 @@ export default function ModalWindow() {
     } else if (game.modalTitle === "Пауза") {
       return (
         <div className="modal__box">
-          <div className="modal__flex">
-            <svg className="modal__icon" onClick={retryLevelHandler}>
+          <OptionModal
+            game={game}
+            modal={modal}
+            setModal={setModal}
+            onClickHandler={saveGameHandler}
+          />
+          <div className="modal__flex modal__flex-around">
+            <svg
+              className="modal__icon"
+              onClick={() => retryLevelHandler(game, dispatch)}
+            >
               <use xlinkHref="#retry"></use>
             </svg>
-            <svg className="modal__icon" onClick={continueButtonHandler}>
+            <svg
+              className="modal__icon"
+              onClick={() => nextLevelHandler(game, dispatch)}
+            >
               <use xlinkHref="#pause"></use>
             </svg>
+          </div>
+          <div className="modal__flex">
+            <button
+              className="modal__btn modal__btn-save"
+              onClick={() => setModal("options__modal")}
+            >
+              Сохранить и выйти
+            </button>
           </div>
         </div>
       );
@@ -123,10 +127,10 @@ export default function ModalWindow() {
               <p className="modal__text">{game.gameResult.difficult}</p>
             </div>
             <div className="modal__flex">
-              <button className="modal__btn" onClick={saveGameHandler}>
-                Сохранить и выйти
-              </button>
-              <button className="modal__btn" onClick={nextLevelHandler}>
+              <button
+                className="modal__btn"
+                onClick={() => nextLevelHandler(game, dispatch)}
+              >
                 Новая игра
               </button>
             </div>
@@ -179,10 +183,10 @@ export default function ModalWindow() {
               <p className="modal__text">{game.gameResult.difficult}</p>
             </div>
             <div className="modal__flex">
-              <button className="modal__btn" onClick={saveGameHandler}>
-                Сохранить и выйти
-              </button>
-              <button className="modal__btn" onClick={retryLevelHandler}>
+              <button
+                className="modal__btn"
+                onClick={() => retryLevelHandler(game, dispatch)}
+              >
                 Заново
               </button>
             </div>

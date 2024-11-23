@@ -74,6 +74,11 @@ input[type="checkbox"] {
       padding: 8px 0;
     }
   }
+  &__item:last-child {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+  }
   &__icon {
     fill: vars.$black-color;
     width: 30px;
@@ -219,6 +224,9 @@ input[type="checkbox"] {
   &__title {
     padding-bottom: 24px;
     font-size: 28px;
+    @media (width < vars.$width-smartpthone) {
+      font-size: 24px;
+    }
   }
 
   &__box {
@@ -240,12 +248,21 @@ input[type="checkbox"] {
   &__btn:hover {
     background-color: vars.$blue-dark-color;
   }
+
+  &__btn-save {
+    width: 200px;
+  }
   &__flex {
     display: flex;
     font-size: 16px;
     width: 270px;
     padding: 10px 0;
     justify-content: space-between;
+  }
+  &__flex-around {
+    width: 260px;
+    justify-content: space-around;
+    padding-bottom: 30px;
   }
 
   &__flex:last-child {
@@ -262,11 +279,14 @@ input[type="checkbox"] {
   min-height: 100vh;
   background-color: vars.$green_color;
   &__container {
-    padding: 64px 0 0;
+    padding: 80px 0 0;
     display: flex;
     flex-direction: column;
     min-height: 85vh;
     justify-content: space-around;
+    @media (width < vars.$width-smartpthone) {
+      padding: 64px 0 0;
+    }
   }
   &__flex {
     display: flex;
@@ -314,7 +334,9 @@ input[type="checkbox"] {
     visibility: hidden;
     position: absolute;
   }
-
+  &__btn-upload {
+    font-size: 16px;
+  }
   &__btn-upload,
   &__btn-save {
     padding: 8px 16px;

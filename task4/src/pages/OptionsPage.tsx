@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 import { useGame } from "../appContext/appContext";
-import { options, State } from "../types/type";
 import {
   deleteOptionsFromLocalStore,
   saveOptionsToLocalStore,
 } from "../helpers/localStoreHalpers";
 import { difficutmLevelSize, getOptionsParam } from "../helpers/difficult";
+import { refreshGameInfo, refreshPoints } from "../helpers/refreshHelper";
+import { OptionModal } from "../components/OptionModal";
+import { fileValidation } from "../helpers/optionsHelpers";
 
 export default function OptionsPage() {
   const game = useGame();
@@ -36,18 +38,6 @@ export default function OptionsPage() {
     "standartImg"
   );
   const [modal, setModal] = useState("options__modal none");
-  const fileSize = 524288;
-  const FILES_FORMAT_REG = /.jpg|.PNG|.JPG|.png|.JPEG|.jpeg/;
-
-  const fileValidation = (file: File) => {
-    if (file.size > fileSize) {
-      return "Слишком большой файл";
-    } else if (!FILES_FORMAT_REG.test(file.name)) {
-      return "Неверное расширение";
-    } else {
-      return false;
-    }
-  };
 
   const avatarInputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files?.length) {
@@ -78,6 +68,7 @@ export default function OptionsPage() {
       ? setAvatar("Аватар загружен")
       : setAvatar("Аватар не загружен");
   };
+
   const userImagesInputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files?.length) {
       setUserImages(0);
@@ -104,27 +95,6 @@ export default function OptionsPage() {
       : setUserImages(0);
   };
 
-  const OptionModal = () => {
-    return (
-      <div className={modal}>
-        {/* {avatarSrc} */}
-        <p className="options__modal-txt">Сохранить установленные настройки</p>
-        <div className="modal__flex">
-          <button type="submit" className="modal__btn">
-            Сохранить
-          </button>
-          <button
-            type="button"
-            className="modal__btn"
-            onClick={() => setModal("options__modal none")}
-          >
-            Отменить
-          </button>
-        </div>
-      </div>
-    );
-  };
-
   const saveOptionsToState = () => {
     game.userName = name;
     game.level = size;
@@ -134,7 +104,7 @@ export default function OptionsPage() {
     game.winLimitPoints = minWinPoints;
     game.sourceImages = source;
     game.difficult = difficult;
-    game.userAvatar = avatarAsDataURL[0];
+    game.userAvatar = avatarAsDataURL[0] || "#user";
     game.userImg = filesAsDataURL;
     game.delayShowCards = delay;
   };
@@ -143,6 +113,7 @@ export default function OptionsPage() {
     e.preventDefault();
     saveOptionsToState();
     saveOptionsToLocalStore(game);
+    refreshPoints(game);
     setModal("options__modal none");
   };
 
@@ -153,7 +124,11 @@ export default function OptionsPage() {
     setAvatar("Аватар не загружен");
     setUserImagesView("options__upload-span");
     setUserImages(0);
-    console.log(avatarAsDataURL, filesAsDataURL);
+  };
+
+  const clearAllHandler = () => {
+    deleteOptionsFromLocalStore();
+    refreshGameInfo(game);
   };
 
   useEffect(() => {
@@ -490,7 +465,7 @@ export default function OptionsPage() {
               id="save"
               className="options__btn-save"
               type="button"
-              onClick={deleteOptionsFromLocalStore}
+              onClick={clearAllHandler}
             >
               Удалить
             </button>
@@ -513,7 +488,7 @@ export default function OptionsPage() {
               Отчистить
             </button>
           </div>
-          <OptionModal />
+          <OptionModal game={game} setModal={setModal} modal={modal} />
         </form>
       </div>
     </div>

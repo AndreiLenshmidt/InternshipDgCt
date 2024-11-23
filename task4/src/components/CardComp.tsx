@@ -7,11 +7,27 @@ import {
 } from "../appReducer/dispatchFunctions";
 import { findIndex, checkTurnedCards } from "../helpers/cardCompHelper";
 
-const StandartSvg = (prop: { id: string; className: string }) => (
-  <svg className={prop.className}>
-    <use xlinkHref={prop.id}></use>
-  </svg>
-);
+// const StandartSvg = (prop: { id: string; className: string }) => (
+//   <svg className={prop.className}>
+//     <use xlinkHref={prop.id}></use>
+//   </svg>
+// );
+
+const Image = (prop: {
+  src: string | ArrayBuffer | null;
+  className: string;
+  source: "standartImg" | "webImg" | "userImg";
+}) => {
+  if (prop.source === "standartImg") {
+    return (
+      <svg className={prop.className}>
+        <use xlinkHref={`${prop.src}`}></use>
+      </svg>
+    );
+  } else {
+    return <img src={`${prop.src}`} className={prop.className} />;
+  }
+};
 
 export default function CardComp(prop: { card: card }) {
   const [cardRotateClass, setcardRotateY] = useState("game__card");
@@ -22,32 +38,32 @@ export default function CardComp(prop: { card: card }) {
   const index = findIndex(game.cards, prop.card);
   const cardRotateY = useMemo(
     () =>
-      game.cards[index].turned
+      game.cards[index]?.turned
         ? "game__card flip-vertical-right"
         : cardRotateClass,
-    [game.cards[index].turned]
+    [game.cards[index]?.turned]
   );
   const cardFront = useMemo(
     () =>
-      game.cards[index].turned
+      game.cards[index]?.turned
         ? "game__card-front opacity-appear"
         : frontAppearClass,
-    [game.cards[index].turned]
+    [game.cards[index]?.turned]
   );
   const cardRear = useMemo(
     () =>
-      game.cards[index].turned
+      game.cards[index]?.turned
         ? "game__card-rear opacity-disappeared"
         : rearDisappearClass,
-    [game.cards[index].turned]
+    [game.cards[index]?.turned]
   );
   const openClose = useMemo(
-    () => game.cards[index].openCloseToggle,
-    [game.cards[index].openCloseToggle]
+    () => game.cards[index]?.openCloseToggle,
+    [game.cards[index]?.openCloseToggle]
   );
   const disabled = useMemo(
-    () => game.cards[index].disabled,
-    [game.cards[index].disabled]
+    () => game.cards[index]?.disabled,
+    [game.cards[index]?.disabled]
   );
   const opacity = useMemo(() => (disabled ? 0 : 1), [disabled]);
 
@@ -93,7 +109,11 @@ export default function CardComp(prop: { card: card }) {
       <svg className={cardRear}>
         <use xlinkHref="#rear"></use>
       </svg>
-      <StandartSvg id={prop.card.img} className={cardFront} />
+      <Image
+        src={prop.card.img}
+        className={cardFront}
+        source={game.sourceImages}
+      />
     </div>
   );
 }

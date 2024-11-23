@@ -1,23 +1,27 @@
 import { State } from "../types/type";
 
 export const deleteOptionsFromLocalStore = () => {
-  localStorage.getItem("gameState") ? localStorage.clear() : "";
+  localStorage.clear();
 };
 
-// export const saveOptionsToLocalStore = (game: State) => {
-//   const gameStateJSON = JSON.stringify(game);
-//   localStorage.setItem("gameState", gameStateJSON);
-// };
+export const saveStatisticToLocalStore = (game: State) => {
+  const gameStitisticJSON = JSON.stringify(game.gameStatistic);
+  localStorage.setItem("gameStatistic", gameStitisticJSON);
+  const gamesAllJSON = JSON.stringify(game.gamesAll);
+  localStorage.setItem("gamesAll", gamesAllJSON);
+  const gamePointsJSON = JSON.stringify(game.gamePoint);
+  localStorage.setItem("gamePoint", gamePointsJSON);
+};
 
-export const readGameStateFromLocalStore = (game: State) => {
-  const gameStateJSON = localStorage.getItem("gameState");
-  if (!gameStateJSON) return game;
-  const gameState = JSON.parse(gameStateJSON);
-  return gameState;
+export const readDataFromLocalStore = (dataItem: string) => {
+  const gameDataItemJSON = localStorage.getItem(dataItem);
+  if (!gameDataItemJSON) return null;
+  const gameDataItem = JSON.parse(gameDataItemJSON);
+  return gameDataItem;
 };
 
 export const saveOptionsToLocalStore = (game: State) => {
-  const gameState = {
+  const gameOptions = {
     userName: game.userName,
     level: game.level,
     startTime: game.startTime,
@@ -30,6 +34,24 @@ export const saveOptionsToLocalStore = (game: State) => {
     userImg: game.userImg,
     delayShowCards: game.delayShowCards,
   };
-  const gameStateJSON = JSON.stringify(gameState);
-  localStorage.setItem("gameState", gameStateJSON);
+  const gameOptionsJSON = JSON.stringify(gameOptions);
+  localStorage.setItem("gameOptions", gameOptionsJSON);
+};
+
+export const saveMatchState = (game: State) => {
+  const cardsJSON = JSON.stringify(game.cards);
+  const timeJSON = JSON.stringify(game.time);
+  const matchPointJSON = JSON.stringify(game.matchPoint);
+  const unguessedPointJSON = JSON.stringify(game.unguessedPoint);
+  sessionStorage.setItem("cards", cardsJSON);
+  sessionStorage.setItem("time", timeJSON);
+  sessionStorage.setItem("matchPoint", matchPointJSON);
+  sessionStorage.setItem("unguessedPoint", unguessedPointJSON);
+};
+
+export const loadMatchState = (dataItem: string) => {
+  const gameDataItemJSON = sessionStorage.getItem(dataItem);
+  if (!gameDataItemJSON) return null;
+  const gameDataItem = JSON.parse(gameDataItemJSON);
+  return gameDataItem;
 };

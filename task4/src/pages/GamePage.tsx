@@ -3,9 +3,8 @@ import BottomInfo from "../components/BottomInfo";
 import CardComp from "../components/CardComp";
 import TopInfo from "../components/TopInfo";
 import { useGame, useGameDispatch } from "../appContext/appContext";
-import { randomizer } from "../helpers/randomizer";
 import { increasetime, timerToggle } from "../appReducer/dispatchFunctions";
-import { State } from "../types/type";
+import { endMatch } from "../helpers/refreshHelper";
 
 export default function GamePage() {
   const game = useGame();
@@ -20,47 +19,6 @@ export default function GamePage() {
     [game.unguessedPoint]
   );
 
-  const allLevelPoints = () => {
-    return game.time + game.matchPoint;
-  };
-
-  const checkLimitPionts = (userPoints: number) => {
-    return game.winLimitPoints <= userPoints;
-  };
-  const refreshGameField = () => {
-    const cards = randomizer(game.standartImg, game.size, game.level);
-    game.cards = cards;
-  };
-  const refreshStatistic = (levelPoints: number) => {
-    game.gamePoint += levelPoints;
-    game.gamesAll += 1;
-    const levelStatistic = {
-      user: game.userName,
-      date: "make gate",
-      result: game.winLevel ? "Победа" : "Поражение",
-      scors: game.gamePoint,
-      matchPoint: game.matchPoint + game.time,
-      levelPoints: levelPoints,
-      mistakes: game.unguessedPoint,
-      guessed: game.guessedPoint,
-      time: game.time,
-      difficult: game.difficult,
-    };
-    game.gameResult = levelStatistic;
-    game.gameStatistic.push(levelStatistic);
-  };
-
-  const refreshState = (game: State) => {
-    game.matchPoint = 0;
-    game.time = game.startTime + 1;
-    game.guessedPoint = 0;
-    game.unguessedPoint = 0;
-    game.winLevel = false;
-    game.looseLevel = false;
-    game.cards.forEach((card) => (card.disabled = false));
-    refreshGameField();
-  };
-
   useEffect(() => {
     if (game.timerToggle && !game.looseLevel && !game.winLevel)
       setTimeout(() => increasetime(game.time, dispatch), 1000);
@@ -71,21 +29,14 @@ export default function GamePage() {
   useEffect(() => {
     if (allCardsIsDisabled === 0) {
       timerToggle(game.timerToggle, dispatch);
-      const userPoints = allLevelPoints();
-      const winForPoints = checkLimitPionts(userPoints);
+      const userPoints = game.time + game.matchPoint;
+      const winForPoints = game.winLimitPoints <= userPoints;
       if (winForPoints) {
         game.winLevel = true;
-        refreshStatistic(userPoints);
-        if (game.unguessedPoint === 0) game.modalTitle = "Perfect";
-        else game.modalTitle = "Победа";
-        game.modalShow = true;
-        refreshState(game);
+        endMatch(game, dispatch, "Победа");
       } else {
         game.looseLevel = true;
-        refreshStatistic(userPoints);
-        game.modalTitle = "Поражение по очкам";
-        game.modalShow = true;
-        refreshState(game);
+        endMatch(game, dispatch, "Поражение по очкам");
       }
     }
   }, [allCardsIsDisabled]);
@@ -93,10 +44,7 @@ export default function GamePage() {
   useEffect(() => {
     if (timeIsOver) {
       game.looseLevel = true;
-      refreshStatistic(game.matchPoint);
-      game.modalTitle = "Поражение по таймеру";
-      game.modalShow = true;
-      refreshState(game);
+      endMatch(game, dispatch, "Поражение по таймеру");
     }
   }, [timeIsOver]);
 
@@ -104,11 +52,7 @@ export default function GamePage() {
     if (mistakes) {
       game.timerToggle = false;
       game.looseLevel = true;
-      refreshStatistic(game.matchPoint);
-      game.modalTitle = "Поражение по ошибкам";
-      console.log("Поражение по ошибкам");
-      game.modalShow = true;
-      refreshState(game);
+      endMatch(game, dispatch, "Поражение по ошибкам");
     }
   }, [mistakes]);
 

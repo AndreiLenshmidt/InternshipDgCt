@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useGame, useGameDispatch } from "../appContext/appContext";
-import { item } from "../types/type";
+import { item, State } from "../types/type";
 import { timerToggle } from "../appReducer/dispatchFunctions";
 
 const Item = ({ value, id, link }: item) => {
@@ -17,15 +17,21 @@ const Item = ({ value, id, link }: item) => {
   }
 };
 
-const Avatar = () => {
-  if (true) {
+const Avatar = (prop: { game: State }) => {
+  if (prop.game.userAvatar === "#user") {
     return (
       <svg className="menu__icon">
         <use xlinkHref="#user"></use>
       </svg>
     );
   } else {
-    return <img src="#" className="menu__icon" alt="avatar" />;
+    return (
+      <img
+        src={`${prop.game.userAvatar}`}
+        className="menu__icon"
+        alt="avatar"
+      />
+    );
   }
 };
 
@@ -61,6 +67,7 @@ const PlayPause = () => {
 };
 
 export default function MenuComp() {
+  const game = useGame();
   return (
     <header className="menu">
       <div className="wrap">
@@ -78,7 +85,7 @@ export default function MenuComp() {
             <Item value="Результаты" id="#trophy" link="/scors" />
           </span>
           <span className="menu__item">
-            <Avatar />
+            <Avatar game={game} />
           </span>
         </nav>
       </div>
