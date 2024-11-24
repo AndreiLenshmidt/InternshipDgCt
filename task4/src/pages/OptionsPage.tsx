@@ -11,10 +11,10 @@ import { fileValidation } from "../helpers/optionsHelpers";
 
 export default function OptionsPage() {
   const game = useGame();
-  const [name, setName] = useState(game.userName);
+  const [name, setName] = useState("Игрок");
   const [avatar, setAvatar] = useState("Аватар не загружен");
   const [avatarAsDataURL] = useState<Array<string | ArrayBuffer | null>>([]);
-  const [size, setSize] = useState(0);
+  const [size, setSize] = useState(game.level);
   const [difficult, setDifficult] = useState(game.difficult);
   const [difficultOptions, setDiffOptions] = useState({
     timeMin: "30",
@@ -35,7 +35,7 @@ export default function OptionsPage() {
   );
   const [delay, setDalay] = useState(game.delayShowCards);
   const [source, setSourse] = useState<"standartImg" | "webImg" | "userImg">(
-    "standartImg"
+    game.sourceImages
   );
   const [modal, setModal] = useState("options__modal none");
 
@@ -134,7 +134,28 @@ export default function OptionsPage() {
   useEffect(() => {
     const diffOptions = getOptionsParam(size, difficult, difficutmLevelSize);
     setDiffOptions(diffOptions);
+    const timeRangeValue = Math.floor(
+      (parseInt(diffOptions.timeMin) + parseInt(diffOptions.timeMax)) / 2
+    );
+    const mistakeRangeValue = Math.floor(
+      (parseInt(diffOptions.mistakeMin) + parseInt(diffOptions.mistakeMax)) / 2
+    );
+    const minWinPointsRangeValue = Math.floor(
+      (parseInt(diffOptions.pointsMin) + parseInt(diffOptions.pointsMax)) / 2
+    );
+    setTime(timeRangeValue);
+    setMistake(mistakeRangeValue);
+    setMinWinPoints(minWinPointsRangeValue);
   }, [size, difficult]);
+
+  useEffect(() => {
+    setSourse(game.sourceImages);
+  }, [game.sourceImages]);
+
+  useEffect(() => {
+    setSize(game.level);
+    setDifficult(game.difficult);
+  }, [game.level, game.difficult]);
 
   return (
     <div className="options">
@@ -145,13 +166,10 @@ export default function OptionsPage() {
           onSubmit={(e) => submitHandler(e)}
         >
           <div className="options__flex">
-            <p>{name}</p>
+            <p>Игрок</p>
             <input
               onChange={(e) => setName(e.target.value)}
-              onBlur={() =>
-                name.length === 0 ? setName(game.userName) : setName(name)
-              }
-              defaultValue={game.userName}
+              value={name}
               name="name"
               type="text"
               placeholder="введите имя"
@@ -181,7 +199,7 @@ export default function OptionsPage() {
               <input
                 className="options__size-radio"
                 type="radio"
-                defaultChecked={game.level === 0}
+                checked={size === 0}
                 onChange={() => setSize(0)}
                 name="size"
                 value={0}
@@ -195,7 +213,7 @@ export default function OptionsPage() {
               <input
                 className="options__size-radio"
                 type="radio"
-                defaultChecked={game.level === 1}
+                checked={size === 1}
                 onChange={() => setSize(1)}
                 name="size"
                 value={1}
@@ -210,7 +228,7 @@ export default function OptionsPage() {
                 className="options__size-radio"
                 type="radio"
                 name="size"
-                defaultChecked={game.level === 2}
+                checked={size === 2}
                 onChange={() => setSize(2)}
                 value={2}
                 id="size5x4"
@@ -223,7 +241,7 @@ export default function OptionsPage() {
               <input
                 className="options__size-radio"
                 type="radio"
-                defaultChecked={game.level === 3}
+                checked={size === 3}
                 onChange={() => setSize(3)}
                 name="size"
                 value={3}
@@ -237,7 +255,7 @@ export default function OptionsPage() {
               <input
                 className="options__size-radio"
                 type="radio"
-                defaultChecked={game.level === 4}
+                checked={size === 4}
                 onChange={() => setSize(4)}
                 name="size"
                 value={4}
@@ -255,7 +273,7 @@ export default function OptionsPage() {
                 <input
                   className="options__size-radio"
                   type="radio"
-                  defaultChecked={difficult === "Очень легко"}
+                  checked={difficult === "Очень легко"}
                   onChange={() => setDifficult("Очень легко")}
                   name="difficult"
                   value="Очень легко"
@@ -269,7 +287,7 @@ export default function OptionsPage() {
                 <input
                   className="options__size-radio"
                   type="radio"
-                  defaultChecked={difficult === "Легко"}
+                  checked={difficult === "Легко"}
                   onChange={() => setDifficult("Легко")}
                   name="difficult"
                   value="Легко"
@@ -283,7 +301,7 @@ export default function OptionsPage() {
                 <input
                   className="options__size-radio"
                   type="radio"
-                  defaultChecked={difficult === "Норм"}
+                  checked={difficult === "Норм"}
                   onChange={() => setDifficult("Норм")}
                   name="difficult"
                   value="Норм"
@@ -297,7 +315,7 @@ export default function OptionsPage() {
                 <input
                   className="options__size-radio"
                   type="radio"
-                  defaultChecked={difficult === "Сложно"}
+                  checked={difficult === "Сложно"}
                   onChange={() => setDifficult("Сложно")}
                   name="difficult"
                   value="Сложно"
@@ -311,7 +329,7 @@ export default function OptionsPage() {
                 <input
                   className="options__size-radio"
                   type="radio"
-                  defaultChecked={difficult === "Очень сложно"}
+                  checked={difficult === "Очень сложно"}
                   onChange={() => setDifficult("Очень сложно")}
                   name="difficult"
                   value="Очень сложно"
@@ -377,7 +395,7 @@ export default function OptionsPage() {
               <input
                 className="options__size-radio"
                 type="radio"
-                defaultChecked={game.sourceImages === "standartImg"}
+                checked={source === "standartImg"}
                 onChange={() => setSourse("standartImg")}
                 name="source"
                 value="standartImg"
@@ -391,7 +409,7 @@ export default function OptionsPage() {
               <input
                 className="options__size-radio"
                 type="radio"
-                defaultChecked={game.sourceImages === "webImg"}
+                checked={source === "webImg"}
                 onChange={() => setSourse("webImg")}
                 name="source"
                 value="webImg"
@@ -406,7 +424,7 @@ export default function OptionsPage() {
                 className="options__size-radio"
                 type="radio"
                 name="source"
-                defaultChecked={game.sourceImages === "userImg"}
+                checked={source === "userImg"}
                 onChange={() => setSourse("userImg")}
                 value="userImg"
                 id="user-img"
@@ -488,7 +506,11 @@ export default function OptionsPage() {
               Отчистить
             </button>
           </div>
-          <OptionModal game={game} setModal={setModal} modal={modal} />
+          <OptionModal
+            setModal={setModal}
+            modal={modal}
+            modalText="Сохранить текущие настройки?"
+          />
         </form>
       </div>
     </div>

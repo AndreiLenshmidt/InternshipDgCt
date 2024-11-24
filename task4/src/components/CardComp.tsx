@@ -7,18 +7,16 @@ import {
 } from "../appReducer/dispatchFunctions";
 import { findIndex, checkTurnedCards } from "../helpers/cardCompHelper";
 
-// const StandartSvg = (prop: { id: string; className: string }) => (
-//   <svg className={prop.className}>
-//     <use xlinkHref={prop.id}></use>
-//   </svg>
-// );
-
 const Image = (prop: {
   src: string | ArrayBuffer | null;
   className: string;
   source: "standartImg" | "webImg" | "userImg";
+  length: number;
 }) => {
-  if (prop.source === "standartImg") {
+  if (
+    prop.source === "standartImg" ||
+    (prop.source === "userImg" && prop.length < 6)
+  ) {
     return (
       <svg className={prop.className}>
         <use xlinkHref={`${prop.src}`}></use>
@@ -113,6 +111,7 @@ export default function CardComp(prop: { card: card }) {
         src={prop.card.img}
         className={cardFront}
         source={game.sourceImages}
+        length={game.userImg.length}
       />
     </div>
   );

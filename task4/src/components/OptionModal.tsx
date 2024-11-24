@@ -1,20 +1,24 @@
-import { State } from "../types/type";
+import { useGame, useGameDispatch } from "../appContext/appContext";
+import { startButtonHandler } from "../helpers/modalHelpers";
 
 export const OptionModal = (prop: {
-  game: State;
   modal: string;
+  modalText: string;
   setModal: React.Dispatch<React.SetStateAction<string>>;
   onClickHandler?: CallableFunction;
 }) => {
+  const game = useGame();
+  const dispatch = useGameDispatch();
+
   return (
     <div className={prop.modal}>
-      <p className="options__modal-txt">Сохранить текущую игру?</p>
+      <p className="options__modal-txt">{prop.modalText}</p>
       <div className="modal__flex">
         <button
           onClick={() =>
             prop.onClickHandler
-              ? prop.onClickHandler(prop.game, prop.setModal)
-              : ""
+              ? prop.onClickHandler(game, prop.setModal)
+              : startButtonHandler(game, dispatch)
           }
           className="modal__btn"
           type="submit"

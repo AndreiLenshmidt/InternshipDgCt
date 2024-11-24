@@ -20,7 +20,7 @@ const Item = ({ value, id, link }: item) => {
 const Avatar = (prop: { game: State }) => {
   if (prop.game.userAvatar === "#user") {
     return (
-      <svg className="menu__icon">
+      <svg className="menu__icon menu__icon-avatar">
         <use xlinkHref="#user"></use>
       </svg>
     );
@@ -28,7 +28,7 @@ const Avatar = (prop: { game: State }) => {
     return (
       <img
         src={`${prop.game.userAvatar}`}
-        className="menu__icon"
+        className="menu__icon menu__icon-avatar"
         alt="avatar"
       />
     );

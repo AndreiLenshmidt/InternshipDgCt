@@ -37,7 +37,7 @@ export const refreshStatistic = (game: State) => {
       minute: "numeric",
       second: "numeric",
     }).format(new Date(Date.now())),
-    result: game.winLevel ? "Победа" : "Поражение",
+    result: game.modalTitle,
     scors: game.gamePoint,
     matchPoint: game.matchPoint + game.time,
     levelPoints: game.time + game.matchPoint,
@@ -56,7 +56,10 @@ export const refreshGameField = (
 ) => {
   if (game.sourceImages === "webImg") {
     createGameFieldfromWebImages(game, dispatch);
-  } else if (game.sourceImages === "standartImg") {
+  } else if (game.sourceImages === "userImg" && game.userImg.length >= 6) {
+    const cards = randomizer(game.userImg, game.size, game.level);
+    game.cards = cards;
+  } else {
     const cards = randomizer(game.standartImg, game.size, game.level);
     game.cards = cards;
   }
@@ -67,11 +70,11 @@ export const endMatch = (
   dispatch: React.Dispatch<GameAction> | null,
   title: modalTitle
 ) => {
+  game.modalTitle = title;
   refreshStatistic(game);
   saveStatisticToLocalStore(game);
   if (game.unguessedPoint === 0 && game.guessedPoint !== 0)
     game.modalTitle = "Perfect";
-  else game.modalTitle = title;
   game.modalShow = true;
   refreshState(game);
   refreshGameField(game, dispatch);

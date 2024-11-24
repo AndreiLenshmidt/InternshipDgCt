@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { useGame, useGameDispatch } from "../appContext/appContext";
-import { timerToggle } from "../appReducer/dispatchFunctions";
 import { useLocation } from "react-router-dom";
 import {
   continueButtonHandler,
   nextLevelHandler,
   retryLevelHandler,
   saveGameHandler,
+  startButtonHandler,
 } from "../helpers/modalHelpers";
 import { OptionModal } from "./OptionModal";
 
@@ -16,29 +16,28 @@ export default function ModalWindow() {
   const [showModal, setShowModal] = useState("modal");
   const [modal, setModal] = useState("options__modal none");
 
-  let location = useLocation();
+  const location = useLocation();
 
   useEffect(() => {
     if (location.pathname !== "/") {
       setShowModal("modal none");
     } else {
-      game.modalShow ? setShowModal("modal") : setShowModal("modal none");
+      return game.modalShow
+        ? setShowModal("modal")
+        : setShowModal("modal none");
     }
   }, [game.modalShow, location.pathname]);
 
   const ModalBox = () => {
-    const startButtonHandler = () => {
-      game.modalShow = false;
-      game.modalTitle = "Игра";
-      timerToggle(game.timerToggle, dispatch);
-    };
-
     if (game.modalTitle === "Начало игры") {
       return (
         <div className="modal__box">
           <h3 className="modal__title">{game.modalTitle}</h3>
           <div className="modal__flex">
-            <button className="modal__btn" onClick={startButtonHandler}>
+            <button
+              className="modal__btn"
+              onClick={() => startButtonHandler(game, dispatch)}
+            >
               Новая игра
             </button>
             <button
@@ -54,8 +53,8 @@ export default function ModalWindow() {
       return (
         <div className="modal__box">
           <OptionModal
-            game={game}
             modal={modal}
+            modalText="Сохранить текущую игру?"
             setModal={setModal}
             onClickHandler={saveGameHandler}
           />
@@ -78,7 +77,7 @@ export default function ModalWindow() {
               className="modal__btn modal__btn-save"
               onClick={() => setModal("options__modal")}
             >
-              Сохранить и выйти
+              Сохранить
             </button>
           </div>
         </div>

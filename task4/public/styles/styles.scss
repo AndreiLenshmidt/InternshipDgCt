@@ -83,10 +83,29 @@ input[type="checkbox"] {
     fill: vars.$black-color;
     width: 30px;
     height: 30px;
+    padding: 5px 5px;
+    box-shadow: 0 0 3px 1px;
+  }
+  &__icon:hover {
+    fill: #fff;
+  }
+  &__icon-big:hover {
+    fill: #fff;
   }
   &__icon-big {
     width: 50px;
     height: 40px;
+    padding: 0 5px;
+    box-shadow: 0 0 3px 1px;
+  }
+  &__icon-avatar {
+    box-shadow: none;
+    width: 40px;
+    height: 40px;
+    padding: 0px 0px;
+  }
+  &__icon-avatar:hover {
+    fill: #000;
   }
 }
 
@@ -111,16 +130,22 @@ input[type="checkbox"] {
   }
   &__card-box4x3 {
     grid-template-columns: 1fr 1fr 1fr 1fr;
+    @media (width < vars.$width-smartpthone) {
+      padding: 200px 10px 30px;
+    }
   }
   &__card-box5x4 {
+    padding: 145px 10px 40px;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
     @media (width < vars.$width-smartpthone) {
       grid-template-columns: 1fr 1fr 1fr 1fr;
     }
   }
   &__card-box6x5 {
+    padding: 140px 10px 40px;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
     @media (width < vars.$width-smartpthone) {
+      padding: 104px 10px 40px;
       grid-template-columns: 1fr 1fr 1fr 1fr;
     }
   }
@@ -129,7 +154,7 @@ input[type="checkbox"] {
     height: fit-content;
     background-color: #fff;
     border-radius: 5px;
-    width: 140px;
+    width: 85px;
     @media (width < vars.$width-tablet) {
       width: 100px;
     }
@@ -142,7 +167,7 @@ input[type="checkbox"] {
     background-color: #fff;
     border-radius: 5px;
     width: 100%;
-    height: 175px;
+    height: 103px;
     @media (width < vars.$width-tablet) {
       height: 120px;
     }
@@ -153,11 +178,18 @@ input[type="checkbox"] {
   &__card-front {
     position: absolute;
     width: 85%;
-    height: 115px;
+    height: 110px;
     fill: #b35f5f;
-    top: calc(50% - 58px);
-    left: 6%;
+    top: calc(50% - 55px);
+    left: 7.4%;
     opacity: 0;
+    @media (width < vars.$width-smartpthone) {
+      position: absolute;
+      width: 85%;
+      height: 72px;
+      fill: #b35f5f;
+      top: calc(50% - 36px);
+    }
   }
 }
 
@@ -173,16 +205,17 @@ input[type="checkbox"] {
       justify-content: flex-start;
     }
   }
-  &__item:last-child {
+  &__item:nth-child(2n) {
     flex-basis: 22%;
     @media (width < vars.$width-smartpthone) {
       flex-basis: 40%;
+      padding-left: 36px;
     }
   }
   &__item {
     @media (width < vars.$width-smartpthone) {
-      flex-basis: 40%;
-      padding-left: 25px;
+      flex-basis: 45%;
+      padding-left: 8px;
     }
   }
 }
@@ -244,6 +277,7 @@ input[type="checkbox"] {
     border-radius: 10px;
     line-height: 100%;
     background-color: vars.$green-dark;
+    box-shadow: 0 0 3px 1px;
   }
   &__btn:hover {
     background-color: vars.$blue-dark-color;
@@ -272,6 +306,7 @@ input[type="checkbox"] {
   &__icon {
     width: 70px;
     height: 70px;
+    box-shadow: 0 0 3px 1px;
   }
 }
 
@@ -319,6 +354,7 @@ input[type="checkbox"] {
   }
   &__size-radio:checked ~ &__size-label {
     background-color: vars.$blue-color;
+    box-shadow: 0 0 3px 1px;
   }
   &__size-label {
     padding: 2px 5px;
@@ -349,6 +385,7 @@ input[type="checkbox"] {
     font-family: inherit;
     border: 1px solid transparent;
     transition: all 0.3s;
+    box-shadow: 0 0 3px 1px;
   }
   &__btn-upload:hover,
   &__btn-save:hover {
@@ -448,6 +485,316 @@ input[type="checkbox"] {
   // &__delay {
   //   padding: 0 10px;
   // }
+}
+
+.scors {
+  padding: 74px 0 0;
+  @media (width < vars.$width-smartpthone) {
+    padding: 59px 0 0;
+  }
+  &__thbox {
+    background-color: vars.$blue-color;
+    // padding: 8px 0;
+    @media (width < vars.$width-smartpthone) {
+      font-size: 10px;
+    }
+  }
+  &__thead {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    width: 1208px;
+    font-size: 12px;
+    @media (width < vars.$width-tablet) {
+      width: 768px;
+    }
+    @media (width < vars.$width-smartpthone) {
+      width: 320px;
+    }
+  }
+  &__thtitle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    height: 46px;
+    border-top: 3px solid #fff;
+    border-right: 3px solid #fff;
+    border-bottom: 3px solid #fff;
+    position: relative;
+    @media (width < vars.$width-smartpthone) {
+      align-items: flex-start;
+      height: 94px;
+      // word-break: break-all;
+    }
+  }
+  &__thtitle:nth-child(1) {
+    width: 36px;
+    padding: 0 27px;
+    border-left: 3px solid #fff;
+    @media (width < vars.$width-smartpthone) {
+      padding: 10px 5px;
+    }
+  }
+  &__thtitle:nth-child(2) {
+    padding: 0 27px;
+    width: 70px;
+    @media (width < vars.$width-smartpthone) {
+      padding: 10px 5px 10px 6px;
+    }
+  }
+  &__thtitle:nth-child(3) {
+    padding: 0 27px;
+    width: 51px;
+    @media (width < vars.$width-smartpthone) {
+      padding: 10px 5px;
+    }
+  }
+  &__thtitle:nth-child(4) {
+    padding: 0 24px;
+    width: 82px;
+    @media (width < vars.$width-smartpthone) {
+      padding: 10px 5px;
+    }
+  }
+  &__thtitle:nth-child(5) {
+    padding: 0 24px;
+    width: 72px;
+    @media (width < vars.$width-smartpthone) {
+      padding: 10px 8px;
+    }
+  }
+  &__thtitle:nth-child(6) {
+    padding: 0 24px;
+    width: 50px;
+    @media (width < vars.$width-smartpthone) {
+      padding: 10px 3px;
+    }
+  }
+  &__thtitle:nth-child(7) {
+    padding: 0 24px;
+    width: 29px;
+    @media (width < vars.$width-smartpthone) {
+      padding: 10px 4px;
+    }
+  }
+
+  &__sort-icon {
+    width: 20px;
+    height: 24px;
+    position: absolute;
+    fill: vars.$blue-modal;
+    background-color: #fff;
+    border-radius: 3px;
+    box-shadow: 0 0 3px 0px;
+  }
+  &__sort-icon:hover {
+    background-color: vars.$green-dark;
+    fill: #fff;
+  }
+  &__sort-icon:active {
+    @media (width > vars.$width-smartpthone) {
+      background-color: vars.$green_color;
+      fill: #fff;
+    }
+  }
+  &__sort-icon:nth-child(1) {
+    top: 9px;
+    left: 2%;
+    @media (width < vars.$width-smartpthone) {
+      width: 30px;
+      top: 47px;
+      left: calc(50% - 15px);
+    }
+  }
+  &__sort-icon:last-child {
+    top: 9px;
+    right: 2%;
+    @media (width < vars.$width-smartpthone) {
+      width: 30px;
+      top: 82px;
+      right: calc(50% - 15px);
+    }
+  }
+  &__icon-abs {
+    position: absolute;
+    top: 10px;
+    left: 15px;
+  }
+  &__icon {
+    width: 30px;
+    height: 30px;
+  }
+  &__note {
+    display: flex;
+    justify-content: center;
+    margin: 0 auto;
+    width: 1208px;
+    font-size: 16px;
+    @media (width < vars.$width-tablet) {
+      width: 768px;
+    }
+    @media (width < vars.$width-smartpthone) {
+      width: 320px;
+      font-size: 9px;
+    }
+    // justify-content: space-between;
+  }
+  &__item {
+    border-bottom: 1px solid #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    height: 46px;
+    position: relative;
+    line-height: 120%;
+    @media (width < vars.$width-tablet) {
+      padding: 5px 10px;
+    }
+    @media (width < vars.$width-smartpthone) {
+      padding: 5px 8px;
+    }
+  }
+  &__item:nth-child(1) {
+    width: 90px;
+    background-color: #8c68b894;
+    border-right: 3px solid #fff;
+    border-left: 3px solid #fff;
+    text-align: center;
+    @media (width < vars.$width-tablet) {
+      width: 70px;
+    }
+    @media (width < vars.$width-smartpthone) {
+      padding: 5px 2px;
+      width: 118px;
+      word-break: break-word;
+    }
+  }
+  &__item:nth-child(2) {
+    width: 124px;
+    background-color: vars.$green_color;
+    border-right: 3px solid #fff;
+    text-align: center;
+    @media (width < vars.$width-tablet) {
+      width: 104px;
+    }
+    @media (width < vars.$width-smartpthone) {
+      padding: 5px 0px;
+    }
+  }
+  &__item:nth-child(3) {
+    width: 105px;
+    background-color: #cfdd83bf;
+    border-right: 3px solid #fff;
+    text-align: center;
+    @media (width < vars.$width-tablet) {
+      width: 85px;
+    }
+    @media (width < vars.$width-smartpthone) {
+      width: 79px;
+    }
+  }
+  &__item:nth-child(4) {
+    width: 130px;
+    background-color: #83dda3;
+    border-right: 3px solid #fff;
+    text-align: center;
+    @media (width < vars.$width-tablet) {
+      width: 110px;
+    }
+    @media (width < vars.$width-smartpthone) {
+      width: 107px;
+    }
+  }
+  &__item:nth-child(5) {
+    width: 120px;
+    background-color: #ff8997;
+    border-right: 3px solid #fff;
+    text-align: center;
+    @media (width < vars.$width-tablet) {
+      width: 100px;
+    }
+    @media (width < vars.$width-smartpthone) {
+      padding: 5px 1px;
+      width: 155px;
+    }
+  }
+  &__item:nth-child(6) {
+    width: 98px;
+    background-color: #cfe23eb5;
+    border-right: 3px solid #fff;
+    text-align: center;
+    @media (width < vars.$width-tablet) {
+      width: 78px;
+    }
+    @media (width < vars.$width-smartpthone) {
+      padding: 5px 6px;
+    }
+  }
+  &__item:nth-child(7) {
+    width: 78px;
+    background-color: #0ddf53;
+    border-right: 3px solid #fff;
+    text-align: center;
+    @media (width < vars.$width-tablet) {
+      width: 57px;
+    }
+    @media (width < vars.$width-smartpthone) {
+      width: 120px;
+      padding: 5px 0;
+    }
+  }
+  &__bottom {
+    height: 86px;
+    width: 100%;
+    border: 3px solid #fff;
+    box-sizing: border-box;
+    background-color: vars.$green-dark-opacity;
+    position: fixed;
+    bottom: 0;
+    padding: 5px;
+    text-align: center;
+    @media (width < vars.$width-smartpthone) {
+      height: 60px;
+    }
+  }
+
+  &__flex {
+    display: flex;
+    justify-content: center;
+    padding-top: 10px;
+    gap: 10px;
+  }
+  &__pag-icon {
+    width: 30px;
+    height: 40px;
+    padding: 2px 5px;
+    background-color: vars.$blue-color;
+    position: absolute;
+    fill: #fff;
+    border-radius: 3px;
+    box-shadow: 0 0 3px 0px;
+    top: calc(50% - 22px);
+  }
+  &__pag-left {
+    left: 7%;
+  }
+  &__pag-right {
+    right: 7%;
+  }
+
+  &__pag-icon:hover {
+    background-color: vars.$green-dark;
+    fill: #fff;
+  }
+  &__pag-icon:active {
+    @media (width > vars.$width-smartpthone) {
+      background-color: vars.$green_color;
+      fill: #fff;
+    }
+  }
 }
 
 .flip-vertical-right {

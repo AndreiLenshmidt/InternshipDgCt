@@ -21,7 +21,6 @@ export function randomizer(
     });
   }
   results.sort((itemA, itemB) => itemA.id - itemB.id);
-  // console.log(results);
   return results;
 }
 
