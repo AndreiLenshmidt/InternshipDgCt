@@ -78,24 +78,18 @@ export default function ScorsPage() {
 
   const leftPagBtnHandler = () => {
     if (startPagination === 0) {
-      console.log("less");
       return;
     }
     setPagStart(startPagination - pagination);
-    console.log(startPagination);
     setPagEnd(endPagination - pagination);
-    console.log(endPagination);
   };
 
   const rightPagBtnHandler = () => {
     if (endPagination >= game.gameStatistic.length) {
-      console.log("bigger");
       return;
     }
     setPagStart(startPagination + pagination);
-    console.log(startPagination);
     setPagEnd(endPagination + pagination);
-    console.log(endPagination);
   };
 
   const pagRadioHandler = (pag: number) => {
@@ -112,7 +106,6 @@ export default function ScorsPage() {
 
   useEffect(() => {
     if (rerender) {
-      console.log("rerender");
       setRerender(false);
     }
   }, [rerender]);
@@ -255,7 +248,7 @@ export default function ScorsPage() {
           <div className="scors__thtitle">
             <svg
               className="scors__sort-icon"
-              onClick={() => sort19Handler("scors")}
+              onClick={() => sort19Handler("matchPoint")}
             >
               <use xlinkHref="#sort-dec"></use>
             </svg>
@@ -268,7 +261,7 @@ export default function ScorsPage() {
             )}
             <svg
               className="scors__sort-icon"
-              onClick={() => sort91Handler("scors")}
+              onClick={() => sort91Handler("matchPoint")}
             >
               <use xlinkHref="#sort-inc"></use>
             </svg>
@@ -286,7 +279,7 @@ export default function ScorsPage() {
               <p className="scors__item">{item.difficult} </p>
               <p className="scors__item">{item.result} </p>
               <p className="scors__item">{item.mistakes} </p>
-              <p className="scors__item">{item.scors} </p>
+              <p className="scors__item">{item.matchPoint} </p>
             </div>
           ))}
       </div>
