@@ -55,7 +55,6 @@ export default function OptionsPage() {
     fileReader.readAsDataURL(e.target.files[0]);
     fileReader.onload = function () {
       avatarAsDataURL.push(fileReader.result);
-      console.log(avatarAsDataURL);
     };
     fileReader.onerror = function () {
       setAvatar("Аватар не загружен");
@@ -88,7 +87,6 @@ export default function OptionsPage() {
         filesAsDataURL.push(String(fileReader1.result));
       };
     }
-    console.log(filesAsDataURL);
     setUserImagesView("options__upload-span valid");
     return e.target.files.length
       ? setUserImages(e.target.files.length)
@@ -105,7 +103,7 @@ export default function OptionsPage() {
     game.sourceImages = source;
     game.difficult = difficult;
     game.userAvatar = avatarAsDataURL[0] || "#user";
-    game.userImg = filesAsDataURL;
+    game.userImg = filesAsDataURL.splice(0, 6);
     game.delayShowCards = delay;
   };
 
