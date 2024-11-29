@@ -116,6 +116,8 @@
 }
 
 .form-title {
+  margin-bottom: 36px;
+
   & input {
     font-weight: 400;
     font-size: 14px;
@@ -123,4 +125,11 @@
     color: #222;
     background: #fff1f0;
   }
+}
+
+.form-selects {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
 }

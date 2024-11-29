@@ -19,6 +19,8 @@ export default function TaskModalCreationEditing({
   const [taskType, setTaskType] = useState('');
   const [selectedOptionTasks, setSelectedOptionTasks] = useState('');
   const [selectedOptionComp, setSelectedOptionComp] = useState('');
+  const [selectedOptionUsers, setSelectedOptionUsers] = useState('');
+  const [selectedOptionsCheckbox, setSelectedOptionsCheckbox] = useState('');
   const [component, setComponent] = useState('');
   const [assignees, setAssignees] = useState<string[]>([]);
   const [priority, setPriority] = useState('');
@@ -43,6 +45,7 @@ export default function TaskModalCreationEditing({
   const [error, setError] = useState('');
   const [isTouched, setIsTouched] = useState(false);
 
+  // валидация поля название
   const validate = (value: string) => {
     if (value.length < 3) {
       return 'Минимальная длина — 3 символа';
@@ -63,6 +66,7 @@ export default function TaskModalCreationEditing({
     setIsTouched(true);
     setError(validate(value)); // Выполняем валидацию на потере фокуса
   };
+
   // Загрузка данных из API переделать берем из Redux??? !!!
   useEffect(() => {
     async function fetchData() {
@@ -225,8 +229,8 @@ export default function TaskModalCreationEditing({
                 value={selectedOptionTasks}
                 onChange={setSelectedOptionTasks}
                 options={options}
-                titleSelect="Тип задачи"
-                label="Задачи"
+                label="Тип задачи"
+                titleSelect="Задачи"
                 required={true}
                 // optionRenderer={(option) => option.label}
               />
@@ -244,14 +248,14 @@ export default function TaskModalCreationEditing({
                   'Релиз',
                   'Бэклог',
                 ]}
-                titleSelect="Тип задачи"
-                label="Задачи"
+                label="Компонент"
+                titleSelect="Не выбран"
                 required={true}
                 // optionRenderer={(option) => option.label}
               />
             </div>
             <div className={style['form-performers']}>
-              <label>
+              {/* <label>
                 Исполнители <span>*</span>
               </label>
               <select
@@ -269,7 +273,40 @@ export default function TaskModalCreationEditing({
                     {assignee}
                   </option>
                 ))}
-              </select>
+              </select> */}
+              <SelectCustom<string>
+                value={selectedOptionUsers}
+                onChange={setSelectedOptionUsers}
+                options={[
+                  'Задача',
+                  'Баг',
+                  'Улучшение',
+                  'Новая функциональность',
+                  'Эпик',
+                  'Релиз',
+                  'Бэклог',
+                ]}
+                label="Исполнители"
+                titleSelect="Исполнитель"
+                required={true}
+                // optionRenderer={(option) => option.label}
+              />
+              <SelectCustom<string>
+                value={selectedOptionsCheckbox}
+                onChange={setSelectedOptionsCheckbox}
+                options={[
+                  { label: 'Задача', value: 'task' },
+                  { label: 'Баг', value: 'bug' },
+                  { label: 'Улучшение', value: 'improvement' },
+                  { label: 'Новая функциональность', value: 'new-feature' },
+                  { label: 'Эпик', value: 'epic' },
+                  { label: 'Релиз', value: 'release' },
+                  { label: 'Бэклог', value: 'backlog' },
+                ]}
+                label="Тип задачи"
+                titleSelect="Выберите задачи"
+                required
+              />
             </div>
           </div>
 
