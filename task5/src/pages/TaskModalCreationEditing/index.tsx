@@ -39,6 +39,30 @@ export default function TaskModalCreationEditing({
   const [titleSelect, setTitleSelect] = useState('Задача'); // !!!
   const [itemsOptions, setItemsOptions] = useState([]);
 
+  const [value, setValue] = useState('');
+  const [error, setError] = useState('');
+  const [isTouched, setIsTouched] = useState(false);
+
+  const validate = (value: string) => {
+    if (value.length < 3) {
+      return 'Минимальная длина — 3 символа';
+    }
+    return '';
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const inputValue = e.target.value;
+    setValue(inputValue);
+    setTitle(inputValue);
+    if (isTouched) {
+      setError(validate(inputValue));
+    }
+  };
+
+  const handleBlur = () => {
+    setIsTouched(true);
+    setError(validate(value)); // Выполняем валидацию на потере фокуса
+  };
   // Загрузка данных из API переделать берем из Redux??? !!!
   useEffect(() => {
     async function fetchData() {
@@ -183,14 +207,15 @@ export default function TaskModalCreationEditing({
             </label>
             <input
               style={{
-                backgroundColor: title.length < 3 ? '#fff1f0' : '#f4f6f8',
+                backgroundColor: error ? '#fff1f0' : '#f4f6f8',
               }}
               value={title}
               placeholder="Название"
-              onChange={(e) => setTitle(e.target.value)}
+              onChange={handleChange}
+              onBlur={handleBlur}
               required
             />
-            {title.length < 3 ? <p className={style.error}>Ошибка</p> : ''}
+            {error ? <p className={style.error}>Ошибка</p> : ''}
           </div>
 
           {/* ------------- select -------------- */}
