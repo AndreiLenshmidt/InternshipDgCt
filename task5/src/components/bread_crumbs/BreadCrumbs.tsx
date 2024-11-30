@@ -10,13 +10,13 @@ export function BreadCrumbs({ crumbs }: { crumbs: LinkData[] }) {
    return (
       <div className={style.bread_crumbs}>
          {crumbs.map((crumb, i) => {
-            if (!i) return <Link href={crumb.url}>{crumb.text}</Link>;
+            if (!i) return <Link key={i} href={crumb.url}>{crumb.text}</Link>;
             else
                return (
-                  <>
+                  <span key={i} style={{display: 'contents'}}>
                      <span>/</span>
                      <Link href={crumb.url}>{crumb.text}</Link>
-                  </>
+                  </span>
                )
          })}
       </div>

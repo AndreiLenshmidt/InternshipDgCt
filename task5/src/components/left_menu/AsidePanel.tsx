@@ -17,7 +17,8 @@ export function AsidePanel() {
          </div>
 
          <div className={style.user}>
-            <div className={style.ava} style={{ backgroundImage: '' }}></div>
+            {/*  style={{ backgroundImage: '' }} */}
+            <div className={style.ava}></div>
             <div className="username">
                <h3>[[Админ Питоновский]]</h3>
                <h4>[[Web-дизайнер]]</h4>

@@ -3,6 +3,8 @@
    /* temp size: */
    height: 124px;
    width: 208px;
+   /* for grid: */
+   /* width: 100%; */
 
    border-radius: 0.5rem;
    padding: 1rem;
