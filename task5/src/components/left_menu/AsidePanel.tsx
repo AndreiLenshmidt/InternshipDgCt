@@ -7,55 +7,42 @@ import ProjectsIcon from '@public/images/icons/projects.svg';
 import { useReducer, useState } from 'react';
 
 export function AsidePanel() {
-
-   const [expanded, changeExpanded] = useReducer(v => !v, true);
+   const [expanded, changeExpanded] = useReducer((v) => !v, true);
 
    return (
-      <>
-         <div
-            className={[style.container, expanded ? '' : style.collapsed].join(
-               ' '
-            )}
-         >
-            <div className={style.title}>
-               <Logo />
-               <h3>DS KANBAN</h3>
+      <div className={[style.container, expanded ? '' : style.collapsed].join(' ')}>
+         <div className={style.title}>
+            <Logo />
+            <h3>DS KANBAN</h3>
+         </div>
+
+         <div className={style.user}>
+            <div className={style.ava} style={{ backgroundImage: '' }}></div>
+            <div className="username">
+               <h3>[[Админ Питоновский]]</h3>
+               <h4>[[Web-дизайнер]]</h4>
             </div>
+         </div>
+         <button className={style.exit}>Выйти</button>
 
-            <div className={style.user}>
-               <div className={style.ava} style={{ backgroundImage: '' }}></div>
-               <div className="username">
-                  <h3>[[Админ Питоновский]]</h3>
-                  <h4>[[Web-дизайнер]]</h4>
-               </div>
+         <hr />
+
+         {!expanded ? (
+            <div className={style.projects_logo}>
+               <ProjectsIcon />
             </div>
-            <button className={style.exit}>Выйти</button>
-
-            <hr />
-
-            {!expanded ? (
-               <div className={style.projects_logo}>
-                  <ProjectsIcon />
-               </div>
-            ) : (
-               ''
-            )}
-
+         ) : (
             <div className={style.projects}>
                <div className={style.projects_title}>
                   <ProjectsIcon />
                   <h3>Проекты</h3>
                </div>
             </div>
+         )}
 
-            <div
-               className={style.collapse_btn}
-               title="Свернуть"
-               onClick={() => changeExpanded()}
-            >
-               <Collapse />
-            </div>
+         <div className={style.collapse_btn} title="Свернуть" onClick={changeExpanded}>
+            <Collapse />
          </div>
-      </>
+      </div>
    );
 }
