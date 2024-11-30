@@ -1,7 +1,7 @@
 // import Image from 'next/image';
 
 import style from './aside-panel.module.css';
-import Logo from '@public/images/Logo.svg'
+import Logo from '@public/images/Logo.svg';
 
 export function AsidePanel() {
    return (
