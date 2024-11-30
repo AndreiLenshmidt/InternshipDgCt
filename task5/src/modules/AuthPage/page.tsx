@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import styles from "./auth.module.scss";
-import { useForm } from "react-hook-form";
-import { z, ZodType } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useGetOAuthTokenMutation } from "./api/authApi";
-import { FormDataType, LoginRequest } from "./api/authTypes";
-import { useState } from "react";
-import { useActions } from "@/store/hooks/useActions";
+import styles from './auth.module.scss';
+import { useForm } from 'react-hook-form';
+import { z, ZodType } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useGetOAuthTokenMutation } from './api/authApi';
+import { FormDataType, LoginRequest } from './api/authTypes';
+import { useState } from 'react';
+import { useActions } from '@/store/hooks/useActions';
 
 const schema: ZodType<FormDataType> = z
   .object({
@@ -26,8 +26,8 @@ export default function AuthPage() {
   });
 
   const [formData, setFormData] = useState<LoginRequest>({
-    email: "",
-    password: "",
+    email: '',
+    password: '',
   });
 
   const [login, { isLoading }] = useGetOAuthTokenMutation();
@@ -54,7 +54,7 @@ export default function AuthPage() {
           <input
             id="auth-email"
             className={styles.input}
-            {...register("email")}
+            {...register('email')}
           />
           <p>{errors.email?.message}</p>
           {/* <label className={styles.foremail} htmlFor="auth-email">
@@ -68,7 +68,7 @@ export default function AuthPage() {
           <input
             type="password"
             className={styles.input}
-            {...register("password")}
+            {...register('password')}
           />
           <p>{errors.password?.message}</p>
           {/* <label className={styles.forpassword} htmlFor="auth-password">

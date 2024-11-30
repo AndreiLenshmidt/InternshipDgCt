@@ -1,39 +1,18 @@
-"use client";
+'use client';
 
-import Image from "next/image";
-import Link from "next/link";
-import styles from "./Home.module.scss";
-// import { useGetOAuthTokenQuery } from "@/storeless/api/authApi";
-import { useEffect } from "react";
-// import { useEffect } from "react";
+import Image from 'next/image';
+import Link from 'next/link';
+import styles from './Home.module.scss';
+import { useAuth } from '@/store/hooks/useSelector';
 
 export default function MainPage() {
-  // const url = "http://dskanban.dev.digital-sector.ru/api";
-  // useEffect(() => {
-  //   const auth = async () => {
-  //     const respons = await fetch(
-  //       " https://trainee-academy.devds.ru/api/auth/token?email=dsdeveloper2%40digital-sector.ru&password=tBK8x32NVPDG57zSAcXJUh",
-  //       {
-  //         // headers: { accept: "application/json" },
-  //         method: "POST",
-  //       }
-  //     );
-  //     const data = await respons.json();
-  //     console.log(data);
-  //   };
-  //   auth();
-  // });
   // dsdeveloper2@digital-sector.ru
   // tBK8x32NVPDG57zSAcXJUh
   // glavarevdva@digital-sector.ru
   // wmK86tTbdxveXBrHynQ4Uj
 
-  // const { data, isLoading, error } = useGetOAuthTokenQuery({
-  //   email: "dsdeveloper2@digital-sector.ru",
-  //   password: "tBK8x32NVPDG57zSAcXJUh",
-  // });
-
-  // console.log(data);
+  const token = useAuth();
+  console.log(token);
 
   return (
     <>
