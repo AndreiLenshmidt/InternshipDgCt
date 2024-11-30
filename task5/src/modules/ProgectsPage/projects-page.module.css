@@ -6,8 +6,82 @@
 
       flex-shrink: 0;
       flex-grow: 1;
-      
+      flex-basis: calc(100vw - var(--nav-menu-width));
+
       padding: 2rem;
+
+      .filters {
+         display: flex;
+         justify-content: space-around;
+         gap: 1rem;
+
+         &>* {
+            flex-basis: 50%;
+
+            input {
+               width: 100%;
+            }
+         }
+      }
+
+      .archive_checkbox {
+         margin: 1rem 0;
+         display: flex;
+         gap: .5rem;
+      }
+
+      h4 {
+         font-size: 18px;
+         font-weight: 600;
+         margin-top: 3rem;
+      }
+
+      .projects,
+      .favorite_projects {
+         margin: 1rem 0;
+         display: flex;
+         flex-wrap: wrap;
+         gap: 1rem;
+      }
+
+      .favorite_projects {
+         &>* {
+            height: 151px !important;
+         }
+      }
+
+      hr {
+         height: 1px;
+         /* Neutral 300: */
+         background-color: #EEEEEE;
+         margin: 2rem 0;
+      }
+   }
+
+   input {
+      background-color: var(--bread-crumbs-back);
+
+      border-radius: .5rem;
+      font-size: 14px;
+      padding: .6rem 0;
+      padding-left: 1.2rem;
+      color: #333333;
+
+      &::placeholder {
+         color: var(--bread-crumbs-text);
+      }
+   }
+
+   h1 {
+      font-size: 32px;
+      margin: 2rem 0;
+      font-weight: bold;
+   }
+
+   h6 {
+      /* font-size: 14px; */
+      color: var(--bread-crumbs-text);
+      margin-bottom: .5rem;
    }
 
 }
