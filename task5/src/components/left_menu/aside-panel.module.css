@@ -87,5 +87,25 @@
 
    &.collapsed{
       width: 40px;
+
+      padding: 1rem 0;
+
+      .title, .user, .exit, .projects{
+         display: none;
+      }
+
+      hr{
+         margin-top: 3rem;
+      }
+
+      .collapse_btn{
+         right: .6rem;
+         transform: rotate(180deg);
+      }
+
+      .projects_logo{
+         right: -.7rem;
+         margin-top: 2.5rem;
+      }
    }
 }

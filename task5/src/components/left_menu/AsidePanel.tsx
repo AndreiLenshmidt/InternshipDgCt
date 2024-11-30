@@ -12,7 +12,11 @@ export function AsidePanel() {
 
    return (
       <>
-         <div className={[style.container, expanded ? '' : style.collapsed].join(' ')}>
+         <div
+            className={[style.container, expanded ? '' : style.collapsed].join(
+               ' '
+            )}
+         >
             <div className={style.title}>
                <Logo />
                <h3>DS KANBAN</h3>
@@ -29,6 +33,14 @@ export function AsidePanel() {
 
             <hr />
 
+            {!expanded ? (
+               <div className={style.projects_logo}>
+                  <ProjectsIcon />
+               </div>
+            ) : (
+               ''
+            )}
+
             <div className={style.projects}>
                <div className={style.projects_title}>
                   <ProjectsIcon />
@@ -36,7 +48,11 @@ export function AsidePanel() {
                </div>
             </div>
 
-            <div className={style.collapse_btn} title="Свернуть" onClick={() => changeExpanded()}>
+            <div
+               className={style.collapse_btn}
+               title="Свернуть"
+               onClick={() => changeExpanded()}
+            >
                <Collapse />
             </div>
          </div>
