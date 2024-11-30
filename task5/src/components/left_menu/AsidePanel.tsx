@@ -4,12 +4,15 @@ import style from './aside-panel.module.css';
 import Logo from '@public/images/Logo.svg';
 import Collapse from '@public/images/icons/collapse-btn.svg';
 import ProjectsIcon from '@public/images/icons/projects.svg';
+import { useReducer, useState } from 'react';
 
 export function AsidePanel() {
-   
+
+   const [expanded, changeExpanded] = useReducer(v => !v, true);
+
    return (
       <>
-         <div className={style.container}>
+         <div className={[style.container, expanded ? '' : style.collapsed].join(' ')}>
             <div className={style.title}>
                <Logo />
                <h3>DS KANBAN</h3>
@@ -33,7 +36,7 @@ export function AsidePanel() {
                </div>
             </div>
 
-            <div className={style.collapse_btn} title="Свернуть">
+            <div className={style.collapse_btn} title="Свернуть" onClick={() => changeExpanded()}>
                <Collapse />
             </div>
          </div>

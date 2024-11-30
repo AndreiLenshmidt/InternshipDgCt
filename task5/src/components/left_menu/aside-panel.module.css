@@ -84,4 +84,8 @@
          align-items: center;
       }
    }
+
+   &.collapsed{
+      width: 40px;
+   }
 }
