@@ -3,6 +3,7 @@ import Close from '@public/images/icons/close.svg';
 import style from '@/modules/TaskModalCreationEditing/TaskModalCreationEditing.module.scss';
 import ModalClose from '@/ui/ModalClose';
 import SelectCustom from '@/ui/SelectCustom';
+import SelectCustomCheckbox from '@/ui/SelectCustomCheckbox';
 
 interface TaskModalCreationEditingProps {
   isOpen: boolean;
@@ -255,25 +256,6 @@ export default function TaskModalCreationEditing({
               />
             </div>
             <div className={style['form-performers']}>
-              {/* <label>
-                Исполнители <span>*</span>
-              </label>
-              <select
-                multiple
-                value={assignees}
-                onChange={(e) =>
-                  setAssignees(
-                    Array.from(e.target.selectedOptions, (opt) => opt.value)
-                  )
-                }
-                required
-              >
-                {availableAssignees.map((assignee) => (
-                  <option key={assignee} value={assignee}>
-                    {assignee}
-                  </option>
-                ))}
-              </select> */}
               <SelectCustom<string>
                 value={selectedOptionUsers}
                 onChange={setSelectedOptionUsers}
@@ -291,7 +273,7 @@ export default function TaskModalCreationEditing({
                 required={true}
                 // optionRenderer={(option) => option.label}
               />
-              <SelectCustom<string>
+              <SelectCustomCheckbox<string>
                 value={selectedOptionsCheckbox}
                 onChange={setSelectedOptionsCheckbox}
                 options={[

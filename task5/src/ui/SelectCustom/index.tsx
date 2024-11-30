@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import style from '@/ui/SelectCustom/SelectCustom.module.scss';
+import ArrowDown from '@public/images/icons/arrow-down-select.svg';
 
 type SelectCustomProps<T> = {
   value: T;
@@ -28,6 +29,8 @@ export default function SelectCustom<T>({
 }: SelectCustomProps<T>) {
   const [taskTypes, setTaskTypes] = useState<string[]>([]); //<{ label: string; value: string }[]>
   const [loading, setLoading] = useState<boolean>(true);
+  const [isOpen, setIsOpen] = useState(false);
+
   // const [fetchError, setFetchError] = useState<string>('');
 
   useEffect(() => {
@@ -57,27 +60,36 @@ export default function SelectCustom<T>({
       ) : fetchError ? (
         <p className={style.error}>{fetchError}</p> // Если ошибка, показываем сообщение
       ) : (
-        <select
-          className={style.select}
-          id="select-custom"
-          value={value as unknown as string} // Преобразуем тип для использования в HTML
-          onChange={(e) => onChange(e.target.value as T)}
-          required={required}
-        >
-          <option value="" disabled>
-            {titleSelect}
-          </option>
-          {options.map((option, index) => (
-            <option
-              className={style.options}
-              key={index}
-              value={option as unknown as string} // Преобразуем тип для значения
-            >
-              {optionRenderer ? optionRenderer(option) : String(option)}
+        <div className={style['select-wrp']}>
+          <select
+            className={style.select}
+            id="select-custom"
+            value={value as unknown as string} // Преобразуем тип для использования в HTML
+            onChange={(e) => onChange(e.target.value as T)}
+            onClick={() => setIsOpen((prev) => !prev)}
+            required={required}
+          >
+            <option value="" disabled>
+              {titleSelect}
             </option>
-          ))}
-        </select>
+            {options.map((option, index) => (
+              <option
+                className={style.options}
+                key={index}
+                value={option as unknown as string} // Преобразуем тип для значения
+              >
+                {optionRenderer ? optionRenderer(option) : String(option)}
+              </option>
+            ))}
+          </select>
+          <span
+            className={`${style['dropdown-arrow']} ${isOpen ? style['open'] : ''}`}
+          >
+            <ArrowDown />
+          </span>
+        </div>
       )}
+
       {errors && <p className={style.error}>{errors}</p>}
     </div>
   );

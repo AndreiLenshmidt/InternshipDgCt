@@ -1,47 +1,50 @@
 import React, { useState } from 'react';
-import style from './SelectCustom.module.css';
+import style from '@/ui/SelectCustomCheckbox/SelectCustomCheckbox.module.scss';
+import ArrowDown from '@public/images/icons/arrow-down-select.svg';
 
-type Option<T> = {
+interface Option<T> {
   label: string;
   value: T;
-};
+}
 
-type SelectCustomProps<T> = {
+interface SelectCustomProps<T> {
   value: T[];
-  onChange: (value: T[]) => void;
+  onChange: (newValue: T[]) => void; // Функция для обновления значений
   options: Option<T>[];
   label?: string;
-  titleSelect: string;
+  titleSelect?: string; // Заголовок, если ничего не выбрано
   required?: boolean;
-};
+}
 
 export default function SelectCustomCheckbox<T>({
   value,
   onChange,
   options,
   label,
-  titleSelect,
+  titleSelect = 'Выберите значение',
   required = false,
 }: SelectCustomProps<T>) {
   const [isOpen, setIsOpen] = useState(false);
 
+  // Переключение состояния выбранности
   const toggleOption = (optionValue: T) => {
     if (value.includes(optionValue)) {
-      // Удаляем из выбранных, если уже есть
-      onChange(value.filter((item) => item !== optionValue));
+      onChange(value.filter((item) => item !== optionValue)); // Удалить значение
     } else {
-      // Добавляем в выбранные
-      onChange([...value, optionValue]);
+      onChange([...value, optionValue]); // Добавить значение
     }
   };
 
   return (
     <div className={style['select-custom']}>
+      {/* Заголовок */}
       {label && (
-        <label>
-          {label} {required && <span>*</span>}
+        <label className={style['label']}>
+          {label} {required && <span className={style['required']}>*</span>}
         </label>
       )}
+
+      {/* Выпадающий заголовок */}
       <div
         className={style['dropdown']}
         onClick={() => setIsOpen((prev) => !prev)}
@@ -54,17 +57,26 @@ export default function SelectCustomCheckbox<T>({
                 .join(', ')
             : titleSelect}
         </div>
+        <span
+          className={`${style['dropdown-arrow']} ${isOpen ? style['open'] : ''}`}
+        >
+          <ArrowDown />
+        </span>
       </div>
+
+      {/* Список опций */}
       {isOpen && (
         <ul className={style['dropdown-list']}>
           {options.map((option, ind) => (
             <li key={ind} className={style['dropdown-item']}>
-              <label>
+              <label className={style['checkbox-label']}>
                 <input
                   type="checkbox"
                   checked={value.includes(option.value)}
                   onChange={() => toggleOption(option.value)}
+                  className={style['checkbox-input']}
                 />
+                <span className={style['checkbox-custom']}></span>
                 {option.label}
               </label>
             </li>
