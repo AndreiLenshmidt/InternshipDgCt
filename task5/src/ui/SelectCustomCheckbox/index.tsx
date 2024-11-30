@@ -87,24 +87,12 @@ export default function SelectCustomCheckbox<T>({
             ? options
                 .filter((option) => value.includes(option.value))
                 .map((option, index) => (
-                  <span
-                    className={style['dropdown-item-header']}
-                    key={index}
-                    style={{ display: 'inline-block', marginRight: '8px' }}
-                  >
+                  <span className={style['dropdown-item-header']} key={index}>
                     {option.label}
 
                     {/* Крестик для удаления */}
                     <span
-                      style={{
-                        display: 'block',
-                        marginLeft: '5px',
-                        cursor: 'pointer',
-                        color: 'red',
-                        fontWeight: 'bold',
-                        width: '9px',
-                        height: '9px',
-                      }}
+                      className={style['close-wrp']}
                       onClick={(e) => {
                         e.stopPropagation();
                         removeItem(option.value);
