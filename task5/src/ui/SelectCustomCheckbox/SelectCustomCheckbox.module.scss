@@ -1,17 +1,21 @@
 $primary-color: #007bff;
 $border-color: #ccc;
-$background-color: #fff;
-$hover-color: #f1f1f1;
-$text-color: #333;
-$error-color: red;
+$background-color: #f4f6f8;
+$hover-color: #f4f6f8;
+$text-color: #222;
+$error-color: #eb597b;
+
+$width-arrow: 16px;
+$width-select: 285px;
+$height-select: 40px;
 
 .select-custom {
   position: relative;
-  width: 100%;
+  width: $width-select;
 
   .label {
     font-size: 14px;
-    color: $text-color;
+    color: #a6a6a6;
     margin-bottom: 8px;
     display: block;
 
@@ -23,16 +27,25 @@ $error-color: red;
 
   .dropdown {
     position: relative;
-    border: 1px solid $border-color;
-    padding: 8px 12px;
-    border-radius: 4px;
+
+    border-radius: 8px;
+    padding: 10px 20px;
+    background: $background-color;
     cursor: pointer;
     user-select: none;
+
+    &.open {
+      outline: none;
+      border: 1px solid #3787eb;
+    }
 
     .dropdown-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
+
+      .dropdown-item-header {
+      }
     }
 
     .dropdown-arrow {
@@ -41,8 +54,8 @@ $error-color: red;
       right: 15px;
       top: 50%;
       transform: translateY(-50%);
-      width: 16px;
-      height: 16px;
+      width: $width-arrow;
+      height: $width-arrow;
 
       transition: transform 0.3s ease;
 
@@ -63,13 +76,18 @@ $error-color: red;
     top: calc(100% + 4px);
     left: 0;
     width: 100%;
-    max-height: 200px;
+    max-height: 350px;
     overflow-y: auto;
     border: 1px solid $border-color;
     background-color: $background-color;
     border-radius: 4px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
+    z-index: 10;
+
+    &:focus {
+      outline: none; /* Убирает контур при фокусе */
+      border: 1px solid #3787eb;
+    }
 
     .dropdown-item {
       padding: 8px 12px;
@@ -108,14 +126,14 @@ $error-color: red;
         }
 
         .checkbox-custom {
+          position: relative;
+          display: inline-block;
           width: 16px;
           height: 16px;
           border: 1px solid $border-color;
           border-radius: 4px;
-          margin-right: 8px;
-          display: inline-block;
           background-color: $background-color;
-          position: relative;
+          margin-right: 8px;
         }
       }
     }

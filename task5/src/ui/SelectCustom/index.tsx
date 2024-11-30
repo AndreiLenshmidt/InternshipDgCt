@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import style from '@/ui/SelectCustom/SelectCustom.module.scss';
 import ArrowDown from '@public/images/icons/arrow-down-select.svg';
 
@@ -30,8 +30,29 @@ export default function SelectCustom<T>({
   const [taskTypes, setTaskTypes] = useState<string[]>([]); //<{ label: string; value: string }[]>
   const [loading, setLoading] = useState<boolean>(true);
   const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   // const [fetchError, setFetchError] = useState<string>('');
+
+  // Закрытие при клике вне компонента
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setIsOpen(false);
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isOpen]);
 
   useEffect(() => {
     setTaskTypes([
@@ -46,12 +67,12 @@ export default function SelectCustom<T>({
   }, []);
 
   // console.log(taskTypes, 'taskTypes');
-  console.log(options, 'options');
+  // console.log(options, 'options');
 
   return (
-    <div className={style['select-custom']}>
+    <div className={style['select-custom']} ref={dropdownRef}>
       {label && (
-        <label htmlFor="select-custom">
+        <label className={style.label} htmlFor="select-custom">
           {label} {required && <span>*</span>}
         </label>
       )}
@@ -61,27 +82,33 @@ export default function SelectCustom<T>({
         <p className={style.error}>{fetchError}</p> // Если ошибка, показываем сообщение
       ) : (
         <div className={style['select-wrp']}>
-          <select
-            className={style.select}
-            id="select-custom"
-            value={value as unknown as string} // Преобразуем тип для использования в HTML
-            onChange={(e) => onChange(e.target.value as T)}
-            onClick={() => setIsOpen((prev) => !prev)}
-            required={required}
+          <div
+            className={`${style['select']} ${isOpen ? style['open'] : ''}`}
+            onClick={() => setIsOpen((prev) => !prev)} // Клик по селекту для открытия
           >
-            <option value="" disabled>
-              {titleSelect}
-            </option>
-            {options.map((option, index) => (
-              <option
-                className={style.options}
-                key={index}
-                value={option as unknown as string} // Преобразуем тип для значения
-              >
-                {optionRenderer ? optionRenderer(option) : String(option)}
-              </option>
-            ))}
-          </select>
+            <span
+              className={`${style['select-title']} ${value ? style.selected : ''}`}
+            >
+              {value ? String(value) : titleSelect}
+            </span>
+          </div>
+
+          {isOpen && (
+            <ul className={style['dropdown-list']}>
+              {options.map((option, index) => (
+                <li
+                  className={style['dropdown-item']}
+                  key={index}
+                  onClick={() => {
+                    onChange(option);
+                    setIsOpen(false);
+                  }}
+                >
+                  {optionRenderer ? optionRenderer(option) : String(option)}
+                </li>
+              ))}
+            </ul>
+          )}
           <span
             className={`${style['dropdown-arrow']} ${isOpen ? style['open'] : ''}`}
           >

@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import style from '@/ui/SelectCustomCheckbox/SelectCustomCheckbox.module.scss';
 import ArrowDown from '@public/images/icons/arrow-down-select.svg';
+import Close from '@public/images/icons/close.svg';
 
 interface Option<T> {
   label: string;
@@ -25,6 +26,8 @@ export default function SelectCustomCheckbox<T>({
   required = false,
 }: SelectCustomProps<T>) {
   const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  // const [valueMain, setValueMain] = useState<T[]>([]);
 
   // Переключение состояния выбранности
   const toggleOption = (optionValue: T) => {
@@ -35,8 +38,38 @@ export default function SelectCustomCheckbox<T>({
     }
   };
 
+  // Функция для удаления элемента
+  const removeItem = (valueToRemove: T) => {
+    console.log(value, 'value --- SelectCustomCheckbox');
+
+    onChange(value.filter((v) => v !== valueToRemove)); // Удаляем из массива выбранных значений
+  };
+
+  // Закрытие при клике вне компонента
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setIsOpen(false); // Закрыть выпадающий список
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isOpen]);
+
+  console.log(value, 'value --- SelectCustomCheckbox');
+  console.log(options, 'options --- SelectCustomCheckbox');
+
   return (
-    <div className={style['select-custom']}>
+    <div className={style['select-custom']} ref={dropdownRef}>
       {/* Заголовок */}
       {label && (
         <label className={style['label']}>
@@ -46,15 +79,41 @@ export default function SelectCustomCheckbox<T>({
 
       {/* Выпадающий заголовок */}
       <div
-        className={style['dropdown']}
+        className={`${style['dropdown']} ${isOpen ? style['open'] : ''}`}
         onClick={() => setIsOpen((prev) => !prev)}
       >
         <div className={style['dropdown-header']}>
           {value.length > 0
             ? options
                 .filter((option) => value.includes(option.value))
-                .map((option) => option.label)
-                .join(', ')
+                .map((option, index) => (
+                  <span
+                    className={style['dropdown-item-header']}
+                    key={index}
+                    style={{ display: 'inline-block', marginRight: '8px' }}
+                  >
+                    {option.label}
+
+                    {/* Крестик для удаления */}
+                    <span
+                      style={{
+                        display: 'block',
+                        marginLeft: '5px',
+                        cursor: 'pointer',
+                        color: 'red',
+                        fontWeight: 'bold',
+                        width: '9px',
+                        height: '9px',
+                      }}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        removeItem(option.value);
+                      }}
+                    >
+                      <Close />
+                    </span>
+                  </span>
+                ))
             : titleSelect}
         </div>
         <span

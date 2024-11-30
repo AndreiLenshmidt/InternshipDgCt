@@ -21,7 +21,9 @@ export default function TaskModalCreationEditing({
   const [selectedOptionTasks, setSelectedOptionTasks] = useState('');
   const [selectedOptionComp, setSelectedOptionComp] = useState('');
   const [selectedOptionUsers, setSelectedOptionUsers] = useState('');
-  const [selectedOptionsCheckbox, setSelectedOptionsCheckbox] = useState('');
+  const [selectedOptionsCheckbox, setSelectedOptionsCheckbox] = useState<
+    string[]
+  >([]);
   const [component, setComponent] = useState('');
   const [assignees, setAssignees] = useState<string[]>([]);
   const [priority, setPriority] = useState('');
@@ -256,23 +258,6 @@ export default function TaskModalCreationEditing({
               />
             </div>
             <div className={style['form-performers']}>
-              <SelectCustom<string>
-                value={selectedOptionUsers}
-                onChange={setSelectedOptionUsers}
-                options={[
-                  'Задача',
-                  'Баг',
-                  'Улучшение',
-                  'Новая функциональность',
-                  'Эпик',
-                  'Релиз',
-                  'Бэклог',
-                ]}
-                label="Исполнители"
-                titleSelect="Исполнитель"
-                required={true}
-                // optionRenderer={(option) => option.label}
-              />
               <SelectCustomCheckbox<string>
                 value={selectedOptionsCheckbox}
                 onChange={setSelectedOptionsCheckbox}
@@ -285,8 +270,8 @@ export default function TaskModalCreationEditing({
                   { label: 'Релиз', value: 'release' },
                   { label: 'Бэклог', value: 'backlog' },
                 ]}
-                label="Тип задачи"
-                titleSelect="Выберите задачи"
+                label="Исполнитель"
+                titleSelect="Исполнитель"
                 required
               />
             </div>
