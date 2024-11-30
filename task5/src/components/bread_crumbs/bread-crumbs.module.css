@@ -7,12 +7,13 @@
 
    a {
       color: var(--bread-crumbs-text);
+
       &:last-child {
          color: var(--active-link);
       }
    }
 
-   span{
+   span {
       margin: 0 1rem;
    }
 }

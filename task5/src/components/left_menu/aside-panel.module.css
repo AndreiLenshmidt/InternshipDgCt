@@ -4,6 +4,9 @@
    width: var(--nav-menu-width);
    padding: 1rem;
 
+   position: sticky;
+   top: 0;
+
    .collapse_btn {
       background-color: var(--nav-menu-btns);
       border-radius: 0.5rem;
@@ -21,9 +24,10 @@
    }
 
    .title {
-      & > * {
+      &>* {
          display: inline-block;
       }
+
       h3 {
          line-height: 24px;
          vertical-align: text-bottom;
@@ -46,6 +50,7 @@
       gap: 0.5rem;
       align-items: center;
       font-size: 1rem;
+
       .ava {
          background-color: aliceblue;
          min-width: 3rem;
@@ -75,35 +80,38 @@
       margin: 1rem 0;
    }
 
-   .projects{
+   .projects {
       margin-top: 2rem;
 
-      .projects_title{
+      .projects_title {
          display: flex;
          gap: .75rem;
          align-items: center;
       }
    }
 
-   &.collapsed{
+   &.collapsed {
       width: 40px;
 
       padding: 1rem 0;
 
-      .title, .user, .exit, .projects{
+      .title,
+      .user,
+      .exit,
+      .projects {
          display: none;
       }
 
-      hr{
+      hr {
          margin-top: 3rem;
       }
 
-      .collapse_btn{
+      .collapse_btn {
          right: .6rem;
          transform: rotate(180deg);
       }
 
-      .projects_logo{
+      .projects_logo {
          right: -.7rem;
          margin-top: 2.5rem;
       }

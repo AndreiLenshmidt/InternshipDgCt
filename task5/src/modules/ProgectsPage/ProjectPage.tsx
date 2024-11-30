@@ -13,19 +13,8 @@ export function ProjectPage() {
 
    useMemo(() => {
       const columnsCount = Math.floor((width - 272) / 208);
-      // document.getElementsByTagName('html')[0].style.setProperty('--my-css-var', myVar);
-      // document.body.style.setProperty('--background-color', 'blue');
-      // globalThis.document.documentElement.style.setProperty('--columns-count', columnsCount.toString());
-
       globalThis.document?.documentElement.style.setProperty('--columns-count', columnsCount.toString());
    }, [width]);
-
-   // const columnsCount = useMemo(() => {
-   //    console.log(width);
-   //    return Math.floor((width - 272) / 208)
-   // }, [width]);
-
-   // console.log(columnsCount);
 
    return (
       <div className={style.container}>
@@ -57,9 +46,6 @@ export function ProjectPage() {
 
             <h4>Избранные проекты</h4>
 
-            {/*  style={{ gridTemplateColumns: `repeat(${columnsCount || 4}, 1fr)` }} */}
-
-            {/* style={{ gridTemplateColumns: `repeat(${columnsCount || 4}, 1fr)` }} */}
             <div className={style.favorite_projects}>
                <ProjectCard />
                <ProjectCard />
@@ -73,12 +59,12 @@ export function ProjectPage() {
                <ProjectCard />
                <ProjectCard />
                <ProjectCard />
-               {/* <ProjectCard />
                <ProjectCard />
                <ProjectCard />
                <ProjectCard />
                <ProjectCard />
-               <ProjectCard /> */}
+               <ProjectCard />
+               <ProjectCard />
             </div>
          </div>
       </div>
