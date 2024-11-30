@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import style from '@/styles/SelectCustom.module.scss';
+import style from '@/ui/SelectCustom/SelectCustom.module.scss';
 
 type SelectCustomProps<T> = {
   value: T;

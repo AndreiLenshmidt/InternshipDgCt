@@ -1,6 +1,6 @@
 import React, { useState, useEffect, ChangeEvent } from 'react';
 import Close from '@public/images/icons/close.svg';
-import style from '@/styles/TaskModalCreationEditing.module.scss';
+import style from '@/modules/TaskModalCreationEditing/TaskModalCreationEditing.module.scss';
 import ModalClose from '@/ui/ModalClose';
 import SelectCustom from '@/ui/SelectCustom';
 
