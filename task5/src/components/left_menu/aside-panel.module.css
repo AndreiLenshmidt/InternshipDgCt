@@ -1,0 +1,14 @@
+.container {
+   background-color: var(--nav-menu-back);
+   height: 100vh;
+   width: var(--nav-menu-width);
+
+   .collapse_btn {
+   }
+
+   .title {
+      /* &>h3 {
+         color: white;
+      } */
+   }
+}

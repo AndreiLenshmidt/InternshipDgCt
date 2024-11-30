@@ -1,6 +1,14 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+
+  // UI COLORS:
+
+  --nav-menu-back: #1B1A1D; // Neutral 900
+  
+
+  
+  --nav-menu-width: 272px;
 }
 
 @media (prefers-color-scheme: dark) {
