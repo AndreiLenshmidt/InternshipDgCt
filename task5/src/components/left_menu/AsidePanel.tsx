@@ -1,16 +1,40 @@
-// import Image from 'next/image';
+import Image from 'next/image';
 
 import style from './aside-panel.module.css';
 import Logo from '@public/images/Logo.svg';
+import Collapse from '@public/images/icons/collapse-btn.svg';
+import ProjectsIcon from '@public/images/icons/projects.svg';
 
 export function AsidePanel() {
+   
    return (
       <>
          <div className={style.container}>
-            <div className={style.collapse_btn}></div>
             <div className={style.title}>
                <Logo />
                <h3>DS KANBAN</h3>
+            </div>
+
+            <div className={style.user}>
+               <div className={style.ava} style={{ backgroundImage: '' }}></div>
+               <div className="username">
+                  <h3>[[Админ Питоновский]]</h3>
+                  <h4>[[Web-дизайнер]]</h4>
+               </div>
+            </div>
+            <button className={style.exit}>Выйти</button>
+
+            <hr />
+
+            <div className={style.projects}>
+               <div className={style.projects_title}>
+                  <ProjectsIcon />
+                  <h3>Проекты</h3>
+               </div>
+            </div>
+
+            <div className={style.collapse_btn} title="Свернуть">
+               <Collapse />
             </div>
          </div>
       </>
