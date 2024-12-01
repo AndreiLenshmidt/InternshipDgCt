@@ -74,7 +74,7 @@ export function KanbanPage() {
          </div>
 
          <div className={style.kanban_container}>
-            <DndContext id={'111'}>
+            <DndContext id={'111'} onDragEnd={e => console.log('dropped', e.active.id, e.over?.id)}>
                <div className={style.kanban}>
                   <TasksColumn title={'Новые'}>
                      <TaskCard />

@@ -6,6 +6,7 @@ export function TasksColumn({ children, title }: { title: string } & PropsWithCh
    // 
    const { isOver, setNodeRef } = useDroppable({
       id: title || 'droppable',
+      
    });
 
    const dropstyle = {

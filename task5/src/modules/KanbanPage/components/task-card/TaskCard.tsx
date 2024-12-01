@@ -2,8 +2,7 @@ import { useDraggable } from '@dnd-kit/core';
 import { useDrag } from 'react-dnd';
 import style from './task-card.module.css';
 
-export function TaskCard({id}: {id?: string}) {
-
+export function TaskCard({ id }: { id?: string }) {
    // const [{ opacity }, dragRef] = useDrag(
    //    () => ({
    //       type: 'image',
@@ -19,11 +18,11 @@ export function TaskCard({id}: {id?: string}) {
       id: id || 'draggable',
    });
 
-  const dragstyle = transform
-     ? {
-          transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
-       }
-     : undefined;   
+   const dragstyle = transform
+      ? {
+           transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
+        }
+      : undefined;
 
    return (
       <div className={style.card} ref={setNodeRef} {...listeners} {...attributes} style={dragstyle}>
