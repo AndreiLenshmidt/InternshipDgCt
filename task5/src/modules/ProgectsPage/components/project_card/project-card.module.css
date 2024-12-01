@@ -24,6 +24,37 @@
       font-size: 14px;
       flex-grow: 1;
    }
+
+   .favorite_icon {
+      position: absolute;
+      right: 1rem;
+      top: 1rem;
+      height: 20px;
+      width: 20px;      
+      opacity: 0;
+      transition: .5s;
+      mask: url('/images/icons/favorite-icon__hovered.svg') no-repeat;
+
+      svg{
+         left: 1px;
+         top: 1px;
+         transition: .5s;
+      }
+
+      &:hover{
+         background-color: #3787EB;
+
+         svg{
+            opacity: 0;
+         }
+      }
+   }
+
+   &:hover{
+      .favorite_icon{
+         opacity: 1;
+      }
+   }
 }
 
 .hint {
