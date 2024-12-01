@@ -14,10 +14,11 @@
       font-weight: bold;
       font-size: 14px;
    }
-
+   
    h4 {
       color: var(--tasks-text-color);
       font-size: 12px !important;
+      margin-top: 0 !important;
    }
 
    .tags {
