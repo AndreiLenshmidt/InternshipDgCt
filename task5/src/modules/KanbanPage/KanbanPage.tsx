@@ -1,14 +1,24 @@
 import { BreadCrumbs } from '@components/bread_crumbs/BreadCrumbs';
 import { Switch } from '@components/switch/Switch';
 import { useRouter } from 'next/router';
+import { useDrag } from 'react-dnd';
 import { TaskCard } from './components/task-card/TaskCard';
 import style from './kanban-page.module.css';
-
+import { DndContext, useDroppable } from '@dnd-kit/core';
 
 const projectUrl = 'projects';
 
 export function KanbanPage() {
+   //
    const router = useRouter();
+
+   const { isOver, setNodeRef } = useDroppable({
+      id: 'droppable',
+   });
+
+   const dropstyle = {
+      color: isOver ? 'green' : undefined,
+   };
 
    console.log(router.query['task-slug']);
 
@@ -63,43 +73,45 @@ export function KanbanPage() {
          </div>
 
          <div className={style.kanban_container}>
-            <div className={style.kanban}>
-               <div className="col">
-                  <h4 data-count={4}>Новые</h4>
-                  <div className={style.tasks}>
-                     <TaskCard />
-                     <TaskCard />
-                     <TaskCard />
+            <DndContext>
+               <div className={style.kanban}>
+                  <div className="col">
+                     <h4 data-count={4}>Новые</h4>
+                     <div className={style.tasks}>
+                        <TaskCard />
+                        <TaskCard />
+                        <TaskCard />
+                     </div>
+                  </div>
+
+                  <div className="col" ref={setNodeRef} style={dropstyle}>
+                     <h4 data-count={4}>В работе</h4>
+                     <div className={style.tasks}>
+                        <TaskCard />
+                     </div>
+                  </div>
+
+                  <div className="col">
+                     <h4 data-count={4}>Выполнены</h4>
+                     <div className={style.tasks}>
+                        <TaskCard />
+                        <TaskCard />
+                     </div>
+                  </div>
+
+                  <div className="col">
+                     <h4 data-count={4}>В ревью</h4>
+                     <div className={style.tasks}></div>
+                  </div>
+
+                  <div className="col">
+                     <h4 data-count={4}>В тестировании</h4>
+                     <div className={style.tasks}>
+                        <TaskCard />
+                     </div>
                   </div>
                </div>
-
-               <div className="col">
-                  <h4 data-count={4}>В работе</h4>
-                  <div className={style.tasks}>
-                     <TaskCard />
-                  </div>
-               </div>
-
-               <div className="col">
-                  <h4 data-count={4}>Выполнены</h4>
-                  <div className={style.tasks}>
-                     <TaskCard />
-                     <TaskCard />
-                  </div>
-               </div>
-
-               <div className="col">
-                  <h4 data-count={4}>В ревью</h4>
-                  <div className={style.tasks}></div>
-               </div>
-
-               <div className="col">
-                  <h4 data-count={4}>В тестировании</h4>
-                  <div className={style.tasks}>
-                     <TaskCard />
-                  </div>
-               </div>
-            </div>
+            </DndContext>
          </div>
       </>
    );
