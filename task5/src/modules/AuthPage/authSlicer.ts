@@ -1,6 +1,7 @@
 import { ServerResponse } from '@/modules/AuthPage/api/authTypes';
 import { TypeRootState } from '@/store/store';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { cookies } from 'next/headers';
 
 const initialState: ServerResponse = { token: '' };
 

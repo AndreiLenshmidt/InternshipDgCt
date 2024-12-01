@@ -1,8 +1,9 @@
-// import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { selectToken } from '@/modules/AuthPage/authSlicer';
+import { useCookies } from 'react-cookie';
 
 export const useAuth = () => {
   const token = useSelector(selectToken);
-  return token;
+  const [cookie] = useCookies(['token-auth']);
+  return token === '' ? cookie['token-auth'] : token;
 };
