@@ -59,6 +59,33 @@ export function KanbanPage() {
             <div>
                <input name="username" type="text" placeholder="Дата завершения" />
             </div>
+         </div>         
+
+         <div className={style.kanban}>
+            <div className="col">
+               <h4>Новые</h4>
+               <div className="tasks"></div>
+            </div>
+
+            <div className="col">
+               <h4>Новые</h4>
+               <div className="tasks"></div>
+            </div>
+
+            <div className="col">
+               <h4>Новые</h4>
+               <div className="tasks"></div>
+            </div>
+
+            <div className="col">
+               <h4>Новые</h4>
+               <div className="tasks"></div>
+            </div>
+
+            <div className="col">
+               <h4>Новые</h4>
+               <div className="tasks"></div>
+            </div>
          </div>
       </>
    );
