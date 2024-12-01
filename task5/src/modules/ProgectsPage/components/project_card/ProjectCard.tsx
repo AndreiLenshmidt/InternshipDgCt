@@ -12,7 +12,7 @@ export function ProjectCard({}: PropsType) {
          <div className={style.favorite_icon}>
             <FavLogo />
          </div>
-         <img src="/images/media/ProjectLogo.svg" alt="." />
+         <img src="/media/ProjectLogo.svg" alt="." />
          <h5>DS Внутренние проекты</h5>
          <div className={style.hint}>12 сотрудников</div>
       </Link>
