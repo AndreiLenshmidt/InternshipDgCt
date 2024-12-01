@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import Image from 'next/image';
-import Close from '@public/images/icons/close.svg';
+import Close from '@public/icons/close.svg';
 import styles from '@/styles/ModalClose.module.scss';
 
 type ModalProps = {

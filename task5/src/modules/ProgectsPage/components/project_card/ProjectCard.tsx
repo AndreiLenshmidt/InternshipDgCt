@@ -1,8 +1,8 @@
-import FavLogo from '@public/images/icons/favorite-icon.svg';
+import FavLogo from '@public/icons/favorite-icon.svg';
 import Link from 'next/link';
 import style from './project-card.module.css';
 
-// import ProjectLogo1 from '@public/images/media/ProjectLogo.svg';
+// import ProjectLogo1 from '@public/media/ProjectLogo.svg';
 
 type PropsType = {};
 

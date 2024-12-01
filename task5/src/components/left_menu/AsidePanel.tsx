@@ -1,9 +1,9 @@
 import Image from 'next/image';
 
 import style from './aside-panel.module.css';
-import Logo from '@public/images/Logo.svg';
-import Collapse from '@public/images/icons/collapse-btn.svg';
-import ProjectsIcon from '@public/images/icons/projects.svg';
+import Logo from '@public/Logo.svg';
+import Collapse from '@public/icons/collapse-btn.svg';
+import ProjectsIcon from '@public/icons/projects.svg';
 import { useReducer, useState } from 'react';
 
 export function AsidePanel() {
