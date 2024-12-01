@@ -1,0 +1,47 @@
+.card {
+   background-color: white;
+   min-height: 160px;
+   border-radius: 6px;
+   padding: 12px;
+
+   display: flex;
+   flex-direction: column;
+   gap: 0.75rem;
+
+   h3 {
+      font-weight: bold;
+      font-size: 14px;
+   }
+
+   h4 {
+      color: var(--tasks-text-color);
+      font-size: 12px !important;
+   }
+
+   .tags {
+      font-size: 12px;
+      display: flex;
+      justify-content: start;
+      gap: 0.25rem;
+      
+      span{
+         background-color: aliceblue;
+         padding: 2.5px 6px;
+         border-radius: 4px;
+      }
+   }
+}
+
+.prioritize {
+   font-size: 12px;
+}
+
+.header {
+   display: flex;
+   font-size: 12px;
+   justify-content: space-between;
+   
+   h5 {
+      color: var(--tasks-text-color);
+   }
+}
