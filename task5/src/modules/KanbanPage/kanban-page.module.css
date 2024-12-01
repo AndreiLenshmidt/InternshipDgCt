@@ -119,12 +119,18 @@
 
 
    &>div {
+      flex: 1 1 0px;
+      
       .tasks {
          padding: .6rem;
          background-color: #F4F6F8;
          height: 50rem;
-         width: 256px;
-         border-radius: .75rem;         
+         min-width: 256px;
+         border-radius: .75rem;
+
+         display: flex;
+         flex-direction: column;
+         gap: .6rem;
       }
    }
 }

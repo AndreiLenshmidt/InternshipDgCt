@@ -68,17 +68,24 @@ export function KanbanPage() {
                   <h4 data-count={4}>Новые</h4>
                   <div className={style.tasks}>
                      <TaskCard />
+                     <TaskCard />
+                     <TaskCard />
                   </div>
                </div>
 
                <div className="col">
                   <h4 data-count={4}>В работе</h4>
-                  <div className={style.tasks}></div>
+                  <div className={style.tasks}>
+                     <TaskCard />
+                  </div>
                </div>
 
                <div className="col">
                   <h4 data-count={4}>Выполнены</h4>
-                  <div className={style.tasks}></div>
+                  <div className={style.tasks}>
+                     <TaskCard />
+                     <TaskCard />
+                  </div>
                </div>
 
                <div className="col">
@@ -88,7 +95,9 @@ export function KanbanPage() {
 
                <div className="col">
                   <h4 data-count={4}>В тестировании</h4>
-                  <div className={style.tasks}></div>
+                  <div className={style.tasks}>
+                     <TaskCard />
+                  </div>
                </div>
             </div>
          </div>
