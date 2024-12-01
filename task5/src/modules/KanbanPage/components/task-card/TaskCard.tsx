@@ -19,8 +19,14 @@ export function TaskCard() {
       id: 'draggable',
    });
 
+  const dragstyle = transform
+     ? {
+          transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
+       }
+     : undefined;   
+
    return (
-      <div className={style.card} ref={setNodeRef} {...listeners} {...attributes} suppressHydrationWarning={true}>
+      <div className={style.card} ref={setNodeRef} {...listeners} {...attributes} style={dragstyle}>
          <div className={style.header}>
             <h5>id: 5244624</h5>
             <div className={style.prioritize}>• Высокий</div>

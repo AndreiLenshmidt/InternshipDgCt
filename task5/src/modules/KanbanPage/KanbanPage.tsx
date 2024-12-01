@@ -73,7 +73,7 @@ export function KanbanPage() {
          </div>
 
          <div className={style.kanban_container}>
-            <DndContext>
+            <DndContext id={'111'}>
                <div className={style.kanban}>
                   <div className="col">
                      <h4 data-count={4}>Новые</h4>
