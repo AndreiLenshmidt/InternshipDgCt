@@ -127,6 +127,7 @@
          height: 50rem;
          min-width: 256px;
          border-radius: .75rem;
+         transition: .5s;
 
          display: flex;
          flex-direction: column;

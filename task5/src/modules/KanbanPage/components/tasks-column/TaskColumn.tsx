@@ -5,17 +5,19 @@ import style from '../../kanban-page.module.css';
 export function TasksColumn({ children, title }: { title: string } & PropsWithChildren) {
    // 
    const { isOver, setNodeRef } = useDroppable({
-      id: 'droppable',
+      id: title || 'droppable',
    });
 
    const dropstyle = {
-      color: isOver ? 'green' : undefined,
+      backgroundColor: isOver ? 'lightgray' : undefined,
    };   
 
    return (
-      <div className="col" ref={setNodeRef} style={dropstyle}>
+      <div className="col" ref={setNodeRef}>
          <h4 data-count={4}>{title}</h4>
-         <div className={style.tasks}>{children}</div>
+         <div className={style.tasks} style={dropstyle}>
+            {children}
+         </div>
       </div>
    );
 }

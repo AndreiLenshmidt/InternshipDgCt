@@ -79,7 +79,7 @@ export function KanbanPage() {
 
                   <TasksColumn title={'Новые'}>
                      <TaskCard />
-                     <TaskCard />
+                     <TaskCard id={'2'} />
                      <TaskCard />
                   </TasksColumn>
 

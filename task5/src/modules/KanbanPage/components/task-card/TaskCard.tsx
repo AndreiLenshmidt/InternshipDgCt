@@ -2,7 +2,7 @@ import { useDraggable } from '@dnd-kit/core';
 import { useDrag } from 'react-dnd';
 import style from './task-card.module.css';
 
-export function TaskCard() {
+export function TaskCard({id}: {id?: string}) {
 
    // const [{ opacity }, dragRef] = useDrag(
    //    () => ({
@@ -16,7 +16,7 @@ export function TaskCard() {
    // );
 
    const { attributes, listeners, setNodeRef, transform } = useDraggable({
-      id: 'draggable',
+      id: id || 'draggable',
    });
 
   const dragstyle = transform
