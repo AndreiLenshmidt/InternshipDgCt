@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import { useDrag } from 'react-dnd';
 import { TaskCard } from './components/task-card/TaskCard';
 import style from './kanban-page.module.css';
+import { TasksColumn } from './components/tasks-column/TaskColumn';
 import { DndContext, useDroppable } from '@dnd-kit/core';
 
 const projectUrl = 'projects';
@@ -75,21 +76,16 @@ export function KanbanPage() {
          <div className={style.kanban_container}>
             <DndContext id={'111'}>
                <div className={style.kanban}>
-                  <div className="col">
-                     <h4 data-count={4}>Новые</h4>
-                     <div className={style.tasks}>
-                        <TaskCard />
-                        <TaskCard />
-                        <TaskCard />
-                     </div>
-                  </div>
 
-                  <div className="col" ref={setNodeRef} style={dropstyle}>
-                     <h4 data-count={4}>В работе</h4>
-                     <div className={style.tasks}>
-                        <TaskCard />
-                     </div>
-                  </div>
+                  <TasksColumn title={'Новые'}>
+                     <TaskCard />
+                     <TaskCard />
+                     <TaskCard />
+                  </TasksColumn>
+
+                  <TasksColumn title={'В работе'}>
+                     <TaskCard />
+                  </TasksColumn>
 
                   <div className="col">
                      <h4 data-count={4}>Выполнены</h4>
@@ -98,12 +94,10 @@ export function KanbanPage() {
                         <TaskCard />
                      </div>
                   </div>
-
                   <div className="col">
                      <h4 data-count={4}>В ревью</h4>
                      <div className={style.tasks}></div>
                   </div>
-
                   <div className="col">
                      <h4 data-count={4}>В тестировании</h4>
                      <div className={style.tasks}>
