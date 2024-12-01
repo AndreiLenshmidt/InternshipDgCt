@@ -12,7 +12,7 @@ export function ProjectPage() {
    const { width } = useResize();
 
    useMemo(() => {
-      const columnsCount = Math.floor((width - 272) / 208);
+      const columnsCount = Math.floor((width - 272) / 264);  // 208 - on `5/1168`
       globalThis.document?.documentElement.style.setProperty('--columns-count', columnsCount.toString());
    }, [width]);
 
