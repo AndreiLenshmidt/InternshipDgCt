@@ -1,15 +1,34 @@
 import React, { useState, useEffect, ChangeEvent } from 'react';
-import Close from '@public/images/icons/close.svg';
+import Close from '@public/icons/close.svg';
 import style from '@/modules/TaskModalCreationEditing/TaskModalCreationEditing.module.scss';
 import ModalClose from '@/ui/ModalClose';
 import SelectCustom from '@/ui/SelectCustom';
 import SelectCustomCheckbox from '@/ui/SelectCustomCheckbox';
+import { useForm, Controller } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod';
+import CalendarCustom from '@/ui/CalendarCustom';
 
 interface TaskModalCreationEditingProps {
   isOpen: boolean;
   onClose: () => void;
   taskId?: string; // Если передан, значит редактируем задачу
 }
+
+type FormData = {
+  title: string;
+  selectedOptionTasks: string;
+  selectedOptionComp: string;
+  selectedOptionsCheckbox: string[];
+  selectedOptionPriority: string;
+  priority: string;
+  estimateMinutes: string;
+  estimate: string;
+  startDate: string;
+  endDate: string;
+  description: string;
+  fileLinks: string[];
+};
 
 export default function TaskModalCreationEditing({
   isOpen,
@@ -40,122 +59,194 @@ export default function TaskModalCreationEditing({
 
   const isEditMode = Boolean(taskId);
 
-  const [errors, setErrors] = useState('');
-  const [titleSelect, setTitleSelect] = useState('Задача'); // !!!
+  // const [errors, setErrors] = useState('');
+  const [titleSelect, setTitleSelect] = useState('Задача');
   const [itemsOptions, setItemsOptions] = useState([]);
 
-  const [value, setValue] = useState('');
+  const [valueMain, setValueMain] = useState('');
   const [error, setError] = useState('');
   const [isTouched, setIsTouched] = useState(false);
 
-  // валидация поля название
-  const validate = (value: string) => {
-    if (value.length < 3) {
-      return 'Минимальная длина — 3 символа';
-    }
-    return '';
+  const [isModalOpen, setModalOpen] = useState(false);
+
+  // схема валидации min(3, 'Ошибка'),
+  const formSchema = z.object({
+    title: z.string().min(3, 'Ошибка'),
+    selectedOptionTasks: z.string().min(1, 'Тип задачи обязателен'),
+    selectedOptionComp: z.string().min(1, 'Компонент обязателен'),
+    selectedOptionsCheckbox: z
+      .array(z.string())
+      .min(1, 'Выберите хотя бы одного исполнителя'),
+
+    // Приоритет
+    selectedOptionPriority: z.string().min(1, 'Приоритет обязателен'),
+
+    // оценка
+    estimateMinutes: z
+      .string()
+      .optional()
+      .refine(
+        (value) => {
+          // Если поле пустое или содержит только числа, валидация успешна
+          return value === undefined || value === '' || /^\d+$/.test(value);
+        },
+        {
+          message: 'Оценка должна быть числом',
+        }
+      ),
+    estimate: z.string().optional(),
+
+    // календарь
+    startDate: z.string().optional(),
+    endDate: z.string().optional(),
+
+    // описание
+    description: z
+      .string()
+      .min(10, 'Описание должно содержать не менее 10 символов'),
+    fileLinks: z.array(z.string().url('Введите корректный URL')).optional(),
+  });
+
+  //
+  const {
+    register,
+    handleSubmit,
+    control,
+    setValue,
+    watch,
+    formState: { errors },
+    clearErrors,
+  } = useForm<FormData>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      title: '',
+      selectedOptionTasks: '',
+      selectedOptionComp: '',
+      selectedOptionsCheckbox: [],
+      selectedOptionPriority: '',
+      priority: '',
+      estimate: '',
+      startDate: '',
+      endDate: '',
+      description: '',
+      fileLinks: [],
+    },
+  });
+
+  // отправляем данные формы -------------------------------------------------
+  const onSubmit = (data: FormData) => {
+    console.log(data);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = e.target.value;
-    setValue(inputValue);
+    setValueMain(inputValue);
     setTitle(inputValue);
     if (isTouched) {
-      setError(validate(inputValue));
+      // setError(validate(inputValue));
     }
-  };
-
-  const handleBlur = () => {
-    setIsTouched(true);
-    setError(validate(value)); // Выполняем валидацию на потере фокуса
   };
 
   // Загрузка данных из API переделать берем из Redux??? !!!
   useEffect(() => {
-    async function fetchData() {
-      const [
-        taskTypesResponse,
-        componentsResponse,
-        assigneesResponse,
-        prioritiesResponse,
-      ] = await Promise.all([
-        fetch('/api/task-types').then((res) => res.json()),
-        fetch('/api/components').then((res) => res.json()),
-        fetch('/api/assignees').then((res) => res.json()),
-        fetch('/api/priorities').then((res) => res.json()),
-      ]);
-      setTaskTypes(taskTypesResponse);
-      setComponents(componentsResponse);
-      setAvailableAssignees(assigneesResponse);
-      setPriorities(prioritiesResponse);
-
-      if (isEditMode) {
-        const task = await fetch(`/api/tasks/${taskId}`).then((res) =>
-          res.json()
-        );
-        setTitle(task.title);
-        setTaskType(task.taskType);
-        setComponent(task.component);
-        setAssignees(task.assignees);
-        setPriority(task.priority);
-        setEstimate(task.estimate);
-        setStartDate(task.startDate);
-        setEndDate(task.endDate);
-        setDescription(task.description);
-        setFileLinks(task.fileLinks);
-      }
-    }
-    if (isOpen) fetchData();
+    // async function fetchData() {
+    //   const [
+    //     taskTypesResponse,
+    //     componentsResponse,
+    //     assigneesResponse,
+    //     prioritiesResponse,
+    //   ] = await Promise.all([
+    //     fetch('/api/task-types').then((res) => res.json()),
+    //     fetch('/api/components').then((res) => res.json()),
+    //     fetch('/api/assignees').then((res) => res.json()),
+    //     fetch('/api/priorities').then((res) => res.json()),
+    //   ]);
+    //   setTaskTypes(taskTypesResponse);
+    //   setComponents(componentsResponse);
+    //   setAvailableAssignees(assigneesResponse);
+    //   setPriorities(prioritiesResponse);
+    //   if (isEditMode) {
+    //     const task = await fetch(`/api/tasks/${taskId}`).then((res) =>
+    //       res.json()
+    //     );
+    //     setTitle(task.title);
+    //     setTaskType(task.taskType);
+    //     setComponent(task.component);
+    //     setAssignees(task.assignees);
+    //     setPriority(task.priority);
+    //     setEstimate(task.estimate);
+    //     setStartDate(task.startDate);
+    //     setEndDate(task.endDate);
+    //     setDescription(task.description);
+    //     setFileLinks(task.fileLinks);
+    //   }
+    // }
+    // if (isOpen) fetchData();
   }, [isOpen, isEditMode, taskId]);
 
-  const handleSubmit = () => {
-    const taskData = {
-      title,
-      taskType,
-      component,
-      assignees,
-      priority,
-      estimate,
-      startDate,
-      endDate,
-      description,
-      fileLinks,
-    };
+  // const handleSubmit = () => {
+  //   const taskData = {
+  //     title,
+  //     taskType,
+  //     component,
+  //     assignees,
+  //     priority,
+  //     estimate,
+  //     startDate,
+  //     endDate,
+  //     description,
+  //     fileLinks,
+  //   };
 
-    if (
-      !title ||
-      !taskType ||
-      !component ||
-      !assignees.length ||
-      !priority ||
-      !description
-    ) {
-      // alert('Заполните все обязательные поля!') // !!! ошибка под полем ввода
-      return;
-    }
+  //   if (
+  //     !title ||
+  //     !taskType ||
+  //     !component ||
+  //     !assignees.length ||
+  //     !priority ||
+  //     !description
+  //   ) {
+  //     // alert('Заполните все обязательные поля!') // !!! ошибка под полем ввода
+  //     return;
+  //   }
 
-    if (isEditMode) {
-      fetch(`/api/tasks/${taskId}`, {
-        method: 'PUT',
-        body: JSON.stringify(taskData),
-      });
-    } else {
-      fetch(`/api/tasks`, {
-        method: 'POST',
-        body: JSON.stringify(taskData),
-      });
-    }
-    onClose();
-  };
+  //   if (isEditMode) {
+  //     fetch(`/api/tasks/${taskId}`, {
+  //       method: 'PUT',
+  //       body: JSON.stringify(taskData),
+  //     });
+  //   } else {
+  //     fetch(`/api/tasks`, {
+  //       method: 'POST',
+  //       body: JSON.stringify(taskData),
+  //     });
+  //   }
+  //   onClose();
+  // };
+
+  //
+
+  // !!!
 
   const handleEstimateChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setEstimate(value.match(/^\d+$/) ? `${value}м` : value);
   };
 
-  // модалка "Закрыть окно?"
-  const [isModalOpen, setModalOpen] = useState(false);
+  // Маска – число + подстановка буквы. Пример, ввод 90 и отображается 90м
+  // Опционально - ввод 90 и парсится на 1ч 30м
+  const parseEstimate = (value: string): string => {
+    if (!value) return '';
+    if (/^\d+$/.test(value)) {
+      const minutes = parseInt(value, 10);
+      const hours = Math.floor(minutes / 60);
+      const remainingMinutes = minutes % 60;
+      return `${hours > 0 ? `${hours}ч ` : ''}${remainingMinutes}м`.trim();
+    }
+    return value;
+  };
 
+  // модалка "Закрыть окно?"
   const handleCloseModal = () => {
     setModalOpen(false); // закрыть  модалку
   };
@@ -173,6 +264,12 @@ export default function TaskModalCreationEditing({
     }
   };
 
+  // Обработчик изменения приоритета
+  const handlePriorityChange = (value: string) => {
+    setValue('selectedOptionPriority', value);
+    clearErrors('selectedOptionPriority'); // Очищаем ошибку при изменении
+  };
+
   if (!isOpen) return null;
 
   const [options, setOptions] = useState<string[]>([
@@ -180,6 +277,8 @@ export default function TaskModalCreationEditing({
     'Option 2',
     'Option 3',
   ]);
+
+  console.log(startDate, '------------startDate ');
 
   return (
     <div
@@ -206,42 +305,47 @@ export default function TaskModalCreationEditing({
             <Close />
           </button>
         </div>
-
-        <div className={style.form}>
-          <div className={style['form-title']}>
+        <form onSubmit={handleSubmit(onSubmit)} className={style.form}>
+          {/* Название */}
+          <div
+            className={`${style['form-title']} ${
+              errors.title ? style['error-title'] : ''
+            }`}
+          >
             <label>
               Название <span>*</span>
             </label>
             <input
-              style={{
-                backgroundColor: error ? '#fff1f0' : '#f4f6f8',
-              }}
-              value={title}
+              {...register('title')}
+              className={style['form-input']}
               placeholder="Название"
-              onChange={handleChange}
-              onBlur={handleBlur}
-              required
             />
-            {error ? <p className={style.error}>Ошибка</p> : ''}
+            {errors.title && (
+              <p className={style.error}>{errors.title.message}</p>
+            )}
           </div>
 
-          {/* ------------- select -------------- */}
+          {/* Selects */}
           <div className={style['form-selects']}>
-            <div className={style['form-type-task']}>
+            <div className={style['form-select']}>
               <SelectCustom<string>
-                value={selectedOptionTasks}
-                onChange={setSelectedOptionTasks}
+                value={watch('selectedOptionTasks')}
+                onChange={(value) => setValue('selectedOptionTasks', value)}
                 options={options}
                 label="Тип задачи"
                 titleSelect="Задачи"
-                required={true}
-                // optionRenderer={(option) => option.label}
+                required
               />
+              {errors.selectedOptionTasks && (
+                <p className={style.error}>
+                  {errors.selectedOptionTasks.message}
+                </p>
+              )}
             </div>
-            <div className={style['form-component']}>
+            <div className={style['form-select']}>
               <SelectCustom<string>
-                value={selectedOptionComp}
-                onChange={setSelectedOptionComp}
+                value={watch('selectedOptionComp')}
+                onChange={(value) => setValue('selectedOptionComp', value)}
                 options={[
                   'Задача',
                   'Баг',
@@ -253,14 +357,18 @@ export default function TaskModalCreationEditing({
                 ]}
                 label="Компонент"
                 titleSelect="Не выбран"
-                required={true}
-                // optionRenderer={(option) => option.label}
+                required
               />
+              {errors.selectedOptionComp && (
+                <p className={style.error}>
+                  {errors.selectedOptionComp.message}
+                </p>
+              )}
             </div>
-            <div className={style['form-performers']}>
+            <div className={style['form-select']}>
               <SelectCustomCheckbox<string>
-                value={selectedOptionsCheckbox}
-                onChange={setSelectedOptionsCheckbox}
+                value={watch('selectedOptionsCheckbox')}
+                onChange={(value) => setValue('selectedOptionsCheckbox', value)}
                 options={[
                   { label: 'Задача', value: 'task' },
                   { label: 'Баг', value: 'bug' },
@@ -274,95 +382,125 @@ export default function TaskModalCreationEditing({
                 titleSelect="Исполнитель"
                 required
               />
+              {errors.selectedOptionsCheckbox && (
+                <p className={style.error}>
+                  {errors.selectedOptionsCheckbox.message}
+                </p>
+              )}
             </div>
           </div>
 
-          {/* ------------- priority estimation -------------- */}
-          <div className={style['form-priority']}>
-            <label>
-              Приоритет <span>*</span>
-            </label>
-            <select
-              value={priority}
-              onChange={(e) => setPriority(e.target.value)}
-              required
-            >
-              <option value="" disabled>
-                Выберите приоритет
-              </option>
-              {priorities.map((prio) => (
-                <option key={prio} value={prio}>
-                  {prio}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className={style['form-estimation']}>
-            <label>Оценка</label>
-            <input value={estimate} onChange={handleEstimateChange} />
+          <div className={style['form-selects']}>
+            {/* Priority */}
+            <div className={style['form-select']}>
+              <SelectCustom
+                value={watch('selectedOptionPriority')}
+                onChange={(value) => handlePriorityChange(value)}
+                options={['Низкий', 'Средний', 'Высокий']}
+                label="Приоритет"
+                titleSelect="Приоритет"
+                required
+              />
+
+              {errors.selectedOptionPriority && (
+                <p className={style.error}>
+                  {errors.selectedOptionPriority.message}
+                </p>
+              )}
+            </div>
+
+            {/* ----------- Оценка -------- */}
+            <div className={style['form-select']}>
+              <label>Оценка</label>
+              <input
+                {...register('estimate')}
+                onBlur={(e) => {
+                  const rawValue = e.target.value;
+                  const parsed = parseEstimate(rawValue);
+                  setValue('estimate', parsed, { shouldValidate: false });
+                  setValue('estimateMinutes', rawValue, {
+                    shouldValidate: true,
+                  });
+                }}
+                className={style['form-input']}
+                type="text"
+                placeholder="Оценка"
+              />
+              {errors.estimateMinutes && (
+                <p className={style.error}>{errors.estimateMinutes.message}</p>
+              )}
+            </div>
           </div>
 
-          {/* ------------- data calendar -------------- */}
+          {/* ---------- Даты ---------- */}
           <div className={style['form-date-start']}>
-            <label>Дата начала</label>
-            <input
-              type="date"
-              value={startDate}
-              onChange={(e) => setStartDate(e.target.value)}
+            <Controller
+              name="startDate"
+              control={control}
+              render={({ field }) => (
+                <CalendarCustom value={field.value} onChange={field.onChange} />
+              )}
             />
-          </div>
-          <div className={style['form-date-end']}>
-            <label>Дата завершения</label>
-            <input
-              type="date"
-              value={endDate}
-              onChange={(e) => setEndDate(e.target.value)}
-            />
+            {errors.startDate && <p>{errors.startDate.message}</p>}
+            {errors.endDate && <p>{errors.endDate.message}</p>}
           </div>
 
-          {/* ------------- text aria -------------- */}
+          <div className={style['form-date-end']}></div>
+
+          {/* Описание */}
           <div className={style['form-description']}>
             <label>
               Описание <span>*</span>
             </label>
-            <textarea
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              required
-            />
+            <textarea {...register('description')} required />
+
+            {errors.description && (
+              <p className={style.error}>{errors.description.message}</p>
+            )}
           </div>
 
-          {/* ------------- files upload -------------- */}
+          {/* Ссылки на файлы */}
           <div className={style['form-links-files']}>
             <label>Ссылки на файлы</label>
-            <input
-              type="url"
-              value={fileLinks.join(', ')}
-              onChange={(e) => setFileLinks(e.target.value.split(', '))}
+            <Controller
+              name="fileLinks"
+              control={control}
+              render={({ field }) => (
+                <input
+                  type="text"
+                  value={field.value.join(', ')}
+                  onChange={(e) => field.onChange(e.target.value.split(', '))}
+                  placeholder="Введите ссылки через запятую"
+                />
+              )}
             />
+            {errors.fileLinks && (
+              <p className={style.error}>{errors.fileLinks.message}</p>
+            )}
           </div>
 
-          {/* ------------- link -------------- */}
-          <div></div>
-
-          {/* ------------- buttons -------------- */}
+          {/* Кнопки */}
           <div className="actions">
-            <button className="btn btn_blue" onClick={handleSubmit}>
+            <button
+              type="submit"
+              className="btn btn_blue"
+              onClick={() => onSubmit}
+            >
               {isEditMode ? 'Сохранить' : 'Добавить'}
             </button>
-            <button className="btn" onClick={onClose}>
+            <button type="button" className="btn" onClick={onClose}>
               Отменить
             </button>
           </div>
-        </div>
-
-        <ModalClose
-          title="Закрыть окно?"
-          isOpen={isModalOpen}
-          onClose={handleCloseModal}
-          onConfirm={handleConfirm}
-        />
+        </form>
       </div>
+
+      <ModalClose
+        title="Закрыть окно?"
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        onConfirm={handleConfirm}
+      />
     </div>
   );
 }

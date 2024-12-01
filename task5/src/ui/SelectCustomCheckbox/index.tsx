@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import style from '@/ui/SelectCustomCheckbox/SelectCustomCheckbox.module.scss';
-import ArrowDown from '@public/images/icons/arrow-down-select.svg';
-import Close from '@public/images/icons/close.svg';
+import ArrowDown from '@public/icons/arrow-down-select.svg';
+import Close from '@public/icons/close.svg';
 
 interface Option<T> {
   label: string;
@@ -65,8 +65,8 @@ export default function SelectCustomCheckbox<T>({
     };
   }, [isOpen]);
 
-  console.log(value, 'value --- SelectCustomCheckbox');
-  console.log(options, 'options --- SelectCustomCheckbox');
+  // console.log(value, 'value --- SelectCustomCheckbox');
+  // console.log(options, 'options --- SelectCustomCheckbox');
 
   return (
     <div className={style['select-custom']} ref={dropdownRef}>
@@ -82,28 +82,31 @@ export default function SelectCustomCheckbox<T>({
         className={`${style['dropdown']} ${isOpen ? style['open'] : ''}`}
         onClick={() => setIsOpen((prev) => !prev)}
       >
-        <div className={style['dropdown-header']}>
-          {value.length > 0
-            ? options
-                .filter((option) => value.includes(option.value))
-                .map((option, index) => (
-                  <span className={style['dropdown-item-header']} key={index}>
-                    {option.label}
+        <div className={style['dropdown-header-wrp']}>
+          <div className={style['dropdown-header']}>
+            {value.length > 0
+              ? options
+                  .filter((option) => value.includes(option.value))
+                  .map((option, index) => (
+                    <span className={style['dropdown-item-header']} key={index}>
+                      {option.label}
 
-                    {/* Крестик для удаления */}
-                    <span
-                      className={style['close-wrp']}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        removeItem(option.value);
-                      }}
-                    >
-                      <Close />
+                      {/* Крестик для удаления */}
+                      <span
+                        className={style['close-wrp']}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          removeItem(option.value);
+                        }}
+                      >
+                        <Close />
+                      </span>
                     </span>
-                  </span>
-                ))
-            : titleSelect}
+                  ))
+              : titleSelect}
+          </div>
         </div>
+
         <span
           className={`${style['dropdown-arrow']} ${isOpen ? style['open'] : ''}`}
         >

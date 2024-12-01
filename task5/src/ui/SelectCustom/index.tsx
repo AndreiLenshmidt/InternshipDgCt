@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import style from '@/ui/SelectCustom/SelectCustom.module.scss';
-import ArrowDown from '@public/images/icons/arrow-down-select.svg';
+import ArrowDown from '@public/icons/arrow-down-select.svg';
 
 type SelectCustomProps<T> = {
   value: T;
