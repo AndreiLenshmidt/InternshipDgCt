@@ -15,7 +15,7 @@ const nextConfig = {
       ...config.resolve.alias,
       '@src': path.resolve(__dirname, 'src'),
       '@public': path.resolve(__dirname, 'public'),
-      '@components': path.resolve(__dirname, 'src/components'),
+      '@components': path.resolve(__dirname, 'src/components')
     };
 
     config.module.rules.push({
