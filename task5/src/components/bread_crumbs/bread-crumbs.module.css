@@ -4,6 +4,7 @@
    width: 100%;
    padding: 0.8rem 1.6rem;
    border-radius: 0.5rem;
+   font-size: 14px;
 
    a {
       color: var(--bread-crumbs-text);
