@@ -4,16 +4,17 @@
    width: 100%;
    padding: 0.8rem 1.6rem;
    border-radius: 0.5rem;
+   font-size: 14px;
 
    a {
       color: var(--bread-crumbs-text);
-
-      &:last-child {
-         color: var(--active-link);
-      }
    }
 
    span {
       margin: 0 1rem;
+
+      &:last-child a{
+         color: var(--active-link);
+      }
    }
 }
