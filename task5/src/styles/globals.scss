@@ -304,3 +304,10 @@ h6 {
 .react-calendar__navigation__prev2-button {
    display: none; // Убираем стрелки навигации
 }
+
+.wrapped {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  min-height: 100vh;
+}
