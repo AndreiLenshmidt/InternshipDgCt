@@ -1,5 +1,10 @@
-import ProjectsPage from '@/modules/ProjectsPage/page';
+import { ProjectPage } from '@/modules/ProgectsPage/ProjectPage';
+import Layout from '@/modules/ProgectsPage/components/layout'
 
-export default function () {
-  return <ProjectsPage />;
+export default function ProjectRoute() {
+   return <ProjectPage />;
 }
+
+ProjectRoute.getLayout = function getLayout(page: React.ReactNode) {
+   return <Layout>{page}</Layout>;
+};

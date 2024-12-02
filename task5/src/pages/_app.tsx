@@ -5,17 +5,20 @@ import { Provider } from 'react-redux';
 import { store } from '@/store/store';
 
 const inter = localFont({
-  src: '../fonts/Inter-VariableFont_opsz,wght.ttf',
-  weight: '100 900',
-  display: 'swap',
+   src: '../fonts/Inter-VariableFont_opsz,wght.ttf',
+   weight: '100 900',
+   display: 'swap',
 });
 
 export default function App({ Component, pageProps }: AppProps) {
-  return (
-    <Provider store={store}>
-      <div className={`${inter.className} wrapped`}>
-        <Component {...pageProps} />
-      </div>
-    </Provider>
-  );
+   //
+   const getLayout = (Component as unknown as { getLayout: Function }).getLayout ?? ((page: React.ReactNode) => page);
+
+   return getLayout(
+      <Provider store={store}>
+         <div className={`${inter.className} wrapped`}>
+            <Component {...pageProps} />;
+         </div>
+      </Provider>
+   );
 }
