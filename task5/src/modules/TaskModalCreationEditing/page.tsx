@@ -1,13 +1,14 @@
 import React, { useState, useEffect, ChangeEvent } from 'react';
 import Close from '@public/icons/close.svg';
 import style from '@/modules/TaskModalCreationEditing/TaskModalCreationEditing.module.scss';
-import ModalClose from '@/ui/ModalClose';
-import SelectCustom from '@/ui/SelectCustom';
-import SelectCustomCheckbox from '@/ui/SelectCustomCheckbox';
+import ModalClose from '@/components/ModalClose';
+import SelectCustom from '@/components/SelectCustom';
+import SelectCustomCheckbox from '@/components/SelectCustomCheckbox';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import CalendarCustom from '@/ui/CalendarCustom';
+import CalendarCustom from '@/components/CalendarCustom';
+import TextAreaWithToolbar from '@/components/TextAreaWithToolbar';
 
 interface TaskModalCreationEditingProps {
   isOpen: boolean;
@@ -452,7 +453,10 @@ export default function TaskModalCreationEditing({
             <label>
               Описание <span>*</span>
             </label>
-            <textarea {...register('description')} required />
+
+            <TextAreaWithToolbar />
+
+            {/* <textarea {...register('description')} required /> */}
 
             {errors.description && (
               <p className={style.error}>{errors.description.message}</p>
