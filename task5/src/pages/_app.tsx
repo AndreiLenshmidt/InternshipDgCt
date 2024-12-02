@@ -1,8 +1,8 @@
-import '@/styles/globals.scss';
+import '@/styles/globals.css';
 import type { AppProps } from 'next/app';
 import localFont from 'next/font/local';
-// import { Provider } from 'react-redux';
-// import { store } from '@/store/store';
+import { Provider } from 'react-redux';
+import { store } from '@/store/store';
 
 const inter = localFont({
   src: '../fonts/Inter-VariableFont_opsz,wght.ttf',
@@ -12,10 +12,10 @@ const inter = localFont({
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    // <Provider store={store}>
-    <div className={`${inter.className} wrapped`}>
-      <Component {...pageProps} />;
-    </div>
-    // </Provider>;)
+    <Provider store={store}>
+      <div className={`${inter.className} wrapped`}>
+        <Component {...pageProps} />
+      </div>
+    </Provider>
   );
 }
