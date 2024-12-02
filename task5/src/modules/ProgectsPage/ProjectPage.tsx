@@ -13,7 +13,7 @@ export function ProjectPage() {
    //
    const { width } = useResize();
 
-   const { data: posts = [], isLoading, isSuccess, isError, error } = useGetProjectsQuery();   
+   const { data: projects = [], isLoading, isSuccess, isError, error } = useGetProjectsQuery();   
 
    useMemo(() => {
       const columnsCount = Math.floor((width - 272) / 264); // 208 - on `5/1168`
@@ -28,6 +28,14 @@ export function ProjectPage() {
                { text: 'Проекты', url: '' },
             ]}
          />
+
+         {isLoading ? 'isLoading' : 'no-Loading'}
+         <br />
+         {isSuccess ? 'isSuccess' : 'noSuccess'}
+         <br />
+         {isError ? 'error' : 'no-error'}
+         <br />
+         {projects ? projects.length : '___'}
 
          <h1>Проекты</h1>
 
