@@ -1,8 +1,6 @@
 import React, { useEffect } from 'react';
-import Image from 'next/image';
 import Close from '@public/icons/close.svg';
-import styles from '@/ui/ModalClose/ModalClose.module.scss';
-
+import styles from '@/components/ModalClose/ModalClose.module.scss';
 
 type ModalProps = {
    title: string;
@@ -11,12 +9,7 @@ type ModalProps = {
    onConfirm?: () => void;
 };
 
-export default function ModalClose({
-   title,
-   isOpen,
-   onClose,
-   onConfirm,
-}: ModalProps) {
+export default function ModalClose({ title, isOpen, onClose, onConfirm }: ModalProps) {
    // Закрытие модального окна при клике вне его области
    const handleOutsideClick = (e: MouseEvent) => {
       const target = e.target as HTMLElement;

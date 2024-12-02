@@ -2,7 +2,10 @@
    background-color: var(--nav-menu-back);
    height: 100vh;
    width: var(--nav-menu-width);
+<<<<<<< HEAD
    min-width: var(--nav-menu-width);
+=======
+>>>>>>> ds-kanban-task-dev-creation-editing_4.7
    padding: 1rem;
 
    position: sticky;
