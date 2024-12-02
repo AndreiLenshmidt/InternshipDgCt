@@ -7,6 +7,7 @@
       "build": "next build",
       "start": "next start",
       "lint": "next lint",
+      "gen-types": "npx @rtk-query/codegen-openapi openapi-config.ts",
       "prettify": "prettier ./src/**/*.{ts,tsx} --write"
    },
    "dependencies": {

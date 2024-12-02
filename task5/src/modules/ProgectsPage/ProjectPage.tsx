@@ -7,9 +7,13 @@ import { ProjectCard } from './components/project_card/ProjectCard';
 import style from './projects-page.module.css';
 import { useResize } from '@/hooks/resize';
 import { useMemo, useCallback } from 'react';
+import { useGetProjectsQuery } from './api/api';
 
 export function ProjectPage() {
+   //
    const { width } = useResize();
+
+   const { data: posts = [], isLoading, isSuccess, isError, error } = useGetProjectsQuery();   
 
    useMemo(() => {
       const columnsCount = Math.floor((width - 272) / 264); // 208 - on `5/1168`
