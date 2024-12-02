@@ -4,20 +4,19 @@
 
    // UI COLORS:
 
-   --nav-menu-back: #1b1a1d;  // Neutral 900
-   --nav-menu-btns: #2d2d2d;  // Neutral 700
+   --nav-menu-back: #1b1a1d; // Neutral 900
+   --nav-menu-btns: #2d2d2d; // Neutral 700
    --nav-menu-hints: #787878; // Neutral 600
-   --bread-crumbs-text: #A6A6A6; // Neutral 500
-   --bread-crumbs-back: #F4F6F8; // Neutral 200 --- input backs, project-cards back
+   --bread-crumbs-text: #a6a6a6; // Neutral 500
+   --bread-crumbs-back: #f4f6f8; // Neutral 200 --- input backs, project-cards back
 
    // PRIMARY:
 
-   --main-blue: #3787EB;
+   --main-blue: #3787eb;
 
-   
-   --active-link: #3787EB;    // e.g. bread-crumbs
+   --active-link: #3787eb; // e.g. bread-crumbs
 
-   --nav-menu-width: 272px;   
+   --nav-menu-width: 272px;
 }
 
 $w-cell: 32px;
@@ -36,18 +35,16 @@ body {
 }
 
 body {
-<<<<<<< HEAD
-  color: var(--foreground);
-  background: var(--background);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-=======
+   color: var(--foreground);
+   background: var(--background);
+   -webkit-font-smoothing: antialiased;
+   -moz-osx-font-smoothing: grayscale;
+
    color: var(--foreground);
    background: var(--background);
    font-family: Arial, Helvetica, sans-serif;
    -webkit-font-smoothing: antialiased;
    -moz-osx-font-smoothing: grayscale;
->>>>>>> origin/ds-kanban-task-dev__projects-page
 }
 
 * {
@@ -160,152 +157,152 @@ h6 {
 }
 
 .react-calendar {
-  width: 264px;
-  max-width: 100%;
-  background-color: #ffffff;
-  border: none;
+   width: 264px;
+   max-width: 100%;
+   background-color: #ffffff;
+   border: none;
 
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   justify-content: center;
 
-  position: absolute;
-  top: 50px;
-  left: 0px;
-  z-index: 10;
+   position: absolute;
+   top: 50px;
+   left: 0px;
+   z-index: 10;
 
-  border: 1px solid #eee;
-  border-radius: 4px;
-  width: 264px;
-  box-shadow:
-    0 8px 16px -2px rgba(27, 36, 44, 0.12),
-    0 2px 2px -1px rgba(27, 35, 44, 0.04);
-  background: #fff;
+   border: 1px solid #eee;
+   border-radius: 4px;
+   width: 264px;
+   box-shadow:
+      0 8px 16px -2px rgba(27, 36, 44, 0.12),
+      0 2px 2px -1px rgba(27, 35, 44, 0.04);
+   background: #fff;
 
-  padding: 12px 24px;
+   padding: 12px 24px;
 
-  &__navigation {
-    display: flex;
-    justify-content: center;
-    width: 100%;
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 150%;
-    color: #3787eb;
-
-    &__label {
-      text-transform: capitalize;
-    }
-
-    &__arrow {
-      width: 32px;
-      height: 32px;
-      background: none;
-      font-size: 26px;
-      font-weight: 250;
-    }
-  }
-
-  // Сегодняшний день
-  &__tile--now {
-    background: #3787eb;
-    color: #ffffff;
-  }
-
-  // Ячейки календаря (дни недели)
-  &__month-view {
-    &__weekdays {
+   &__navigation {
+      display: flex;
+      justify-content: center;
+      width: 100%;
       font-weight: 400;
-      font-size: 10px;
-      line-height: 160%;
-      color: #a6a6a6;
+      font-size: 16px;
+      line-height: 150%;
+      color: #3787eb;
 
-      &__weekday {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: $w-cell;
-        height: $w-cell;
-
-        text-transform: uppercase;
-
-        &:first-child {
-          text-decoration: none;
-        }
-
-        abbr {
-          text-decoration: none;
-        }
+      &__label {
+         text-transform: capitalize;
       }
-    }
-    &__days {
-      // Ячейки календаря (дни)
-      &__day {
-        height: $w-cell;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-weight: 400;
-        font-size: 14px;
-        line-height: 143%;
-        text-align: center;
-        color: #222;
-        border-radius: 4px;
-        transition: background-color 0.3s;
 
-        &:hover {
-          border: 1px solid #3787eb;
-          border-radius: 4px;
-          width: 32px;
-          height: 32px;
-        }
-
-        &:focus {
-          border: 2px solid #2d2d2d;
-          border-radius: 4px;
-          width: 32px;
-          height: 32px;
-        }
-        &:disabled {
-          color: #abbed1;
-        }
-
-        &--active {
-          background: #3787eb;
-          color: #ffffff;
-        }
-
-        &--neighboringMonth {
-          color: #abbed1;
-        }
+      &__arrow {
+         width: 32px;
+         height: 32px;
+         background: none;
+         font-size: 26px;
+         font-weight: 250;
       }
-    }
-  }
+   }
 
-  // Отступы между строками календаря
-  &__month-view {
-    &__days__day {
-    }
-  }
+   // Сегодняшний день
+   &__tile--now {
+      background: #3787eb;
+      color: #ffffff;
+   }
+
+   // Ячейки календаря (дни недели)
+   &__month-view {
+      &__weekdays {
+         font-weight: 400;
+         font-size: 10px;
+         line-height: 160%;
+         color: #a6a6a6;
+
+         &__weekday {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: $w-cell;
+            height: $w-cell;
+
+            text-transform: uppercase;
+
+            &:first-child {
+               text-decoration: none;
+            }
+
+            abbr {
+               text-decoration: none;
+            }
+         }
+      }
+      &__days {
+         // Ячейки календаря (дни)
+         &__day {
+            height: $w-cell;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: 400;
+            font-size: 14px;
+            line-height: 143%;
+            text-align: center;
+            color: #222;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+
+            &:hover {
+               border: 1px solid #3787eb;
+               border-radius: 4px;
+               width: 32px;
+               height: 32px;
+            }
+
+            &:focus {
+               border: 2px solid #2d2d2d;
+               border-radius: 4px;
+               width: 32px;
+               height: 32px;
+            }
+            &:disabled {
+               color: #abbed1;
+            }
+
+            &--active {
+               background: #3787eb;
+               color: #ffffff;
+            }
+
+            &--neighboringMonth {
+               color: #abbed1;
+            }
+         }
+      }
+   }
+
+   // Отступы между строками календаря
+   &__month-view {
+      &__days__day {
+      }
+   }
 }
 
 // Стили для активных дат (выбранных)
 .react-calendar__tile--active,
 .react-calendar__tile----now {
-  background-color: #3787eb;
-  color: #ffffff;
+   background-color: #3787eb;
+   color: #ffffff;
 }
 // Отступы между строками календаря
 .react-calendar__tile----now {
-  background-color: #3787eb;
-  color: #ffffff;
+   background-color: #3787eb;
+   color: #ffffff;
 }
 
 // Навигация
 .react-calendar__navigation__next2-button {
-  display: none; // Убираем стрелки навигации
+   display: none; // Убираем стрелки навигации
 }
 .react-calendar__navigation__prev2-button {
-  display: none; // Убираем стрелки навигации
+   display: none; // Убираем стрелки навигации
 }
