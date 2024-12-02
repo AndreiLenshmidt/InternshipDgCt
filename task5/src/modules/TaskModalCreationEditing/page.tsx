@@ -265,8 +265,6 @@ export default function TaskModalCreationEditing({ isOpen, onClose, taskId }: Ta
 
    const [options, setOptions] = useState<string[]>(['Option 1', 'Option 2', 'Option 3']);
 
-   console.log(startDate, '------------startDate ');
-
    return (
       <div className={style['modal-creation-editing']} onClick={handleOverlayClick}>
          <button className={style['close-button-modal']} onClick={() => setModalOpen(true)}>
@@ -391,13 +389,18 @@ export default function TaskModalCreationEditing({ isOpen, onClose, taskId }: Ta
 
                {/* Описание */}
                <div className={style['form-description']}>
-                  <label>
-                     Описание <span>*</span>
-                  </label>
-
-                  <TextAreaWithToolbar />
-
-                  {/* <textarea {...register('description')} required /> */}
+                  <Controller
+                     name="description"
+                     control={control}
+                     defaultValue=""
+                     render={({ field }) => (
+                        <TextAreaWithToolbar
+                           value={field.value}
+                           onChange={field.onChange}
+                           error={errors.description?.message}
+                        />
+                     )}
+                  />
 
                   {errors.description && <p className={style.error}>{errors.description.message}</p>}
                </div>

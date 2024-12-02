@@ -1,5 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 import style from '@/components/TextAreaWithToolbar/TextAreaWithToolbar.module.scss';
+import BoldText from '@public/icons/bold-text.svg';
+import Italic from '@public/icons/italic.svg';
+import InlineCode from '@public/icons/inline-code.svg';
+import ListBulleted from '@public/icons/list-bulleted.svg';
+import ListNumbered from '@public/icons/list-numbered.svg';
 
 interface TextAreaWithToolbarProps {
    value: string;
@@ -7,17 +12,22 @@ interface TextAreaWithToolbarProps {
    error?: string;
 }
 
+type ActiveStyles = {
+   fontWeight: 'normal' | 'bold';
+   fontStyle: 'normal' | 'italic';
+   fontFamily: 'inherit' | 'monospace';
+};
+
 export default function TextAreaWithToolbar({ value, onChange, error }: TextAreaWithToolbarProps) {
    const [text, setText] = useState<string>('');
-   const [isBold, setIsBold] = useState<boolean>(false);
-   const [isItalic, setIsItalic] = useState<boolean>(false);
-   const [isCode, setIsCode] = useState<boolean>(false);
-   const [weightingText, setWeightingText] = useState('');
-   const [styledText, setStyledText] = useState('');
-   const [familyText, setFamilyText] = useState('');
-   const [listMode, setListMode] = useState<'none' | 'bullet' | 'numbered'>('none'); // Режим списка
+   const [newText, setNewText] = useState<string>('');
+   const [activeButton, setActiveButton] = useState<string | null>(null);
+   const [numSelectionStart, setNumSelectionStart] = useState(0);
+   const [numSelectionEnd, setNumSelectionEnd] = useState(0);
+   const [numSelectionValue, setNumSelectionValue] = useState('');
+   const [currentListMode, setCurrentListMode] = useState<'bullet' | 'numbered' | 'none'>('none');
 
-   const [activeStyles, setActiveStyles] = useState({
+   const [activeStyles, setActiveStyles] = useState<ActiveStyles>({
       fontWeight: 'normal',
       fontStyle: 'normal',
       fontFamily: 'inherit',
@@ -25,170 +35,214 @@ export default function TextAreaWithToolbar({ value, onChange, error }: TextArea
 
    const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
-   // Функции для управления стилями
-   const toggleBold = () => setIsBold(!isBold);
-   const toggleItalic = () => setIsItalic(!isItalic);
-   const toggleCode = () => setIsCode(!isCode);
-
-   // Функция для установки режима списка
-   const applyFormat = (format: 'bullet' | 'numbered') => {
-      setListMode(format);
+   // Функция для применения и отмены стилей
+   const applyStyleBtn = (style: string) => {
       const textarea = textAreaRef.current;
+      if (activeButton === style) {
+         // Если стиль уже активен, сбрасываем его
+         setActiveButton(null);
+      } else {
+         // Применяем новый стиль
+         setActiveButton(style);
+      }
       if (textarea) textarea.focus();
    };
-   //  const applyFormat = (format: 'bullet' | 'numbered') => {
-   //     const textarea = textAreaRef.current;
-   //     if (textarea) {
-   //        textarea.focus(); // Сохраняем фокус на textarea
-   //        setListMode(format); // Устанавливаем режим списка
-   //     }
-   //  };
 
-   // Функция обработки ввода
-
-   const handleInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+   // Функция для установки режима списка
+   const applyListFormat = (format: 'bullet' | 'numbered' | 'none') => {
+      applyStyleBtn(format);
       const textarea = textAreaRef.current;
-      if (textarea && listMode !== 'none') {
-         const { value, selectionStart } = textarea;
 
-         // Определяем текущую строку
+      if (!textarea) return;
+
+      // Устанавливаем режим и обновляем только префикс для нового ввода
+      if (format === 'bullet') {
+         setCurrentListMode('bullet');
+      } else if (format === 'numbered') {
+         setCurrentListMode('numbered');
+      } else {
+         setCurrentListMode('none');
+      }
+
+      textarea.focus();
+   };
+
+   // Обработка ввода текста
+   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+      const textarea = textAreaRef.current;
+      if (!textarea) return;
+
+      const { value, selectionStart } = textarea;
+
+      if (e.key === 'Enter') {
+         e.preventDefault();
+
          const lastNewlineIndex = value.lastIndexOf('\n', selectionStart - 1);
          const currentLine = value.substring(lastNewlineIndex + 1, selectionStart);
 
-         // Добавляем маркер списка только если строка ещё не помечена
-         if (
-            (listMode === 'bullet' && !currentLine.startsWith('• ')) ||
-            (listMode === 'numbered' && !currentLine.match(/^\d+\.\s/))
-         ) {
-            const prefix =
-               listMode === 'bullet'
-                  ? '• ' // Маркер для маркированного списка
-                  : `${(value.match(/\n/g)?.length || 0) + 1}. `; // Номер для нумерованного списка
+         let newLinePrefix = '';
 
-            const newValue = value.substring(0, lastNewlineIndex + 1) + prefix + value.substring(lastNewlineIndex + 1);
-            setText(newValue);
-         } else {
-            setText(e.target.value); // Если маркер уже есть, просто обновляем текст
+         // Добавляем префикс в зависимости от текущего режима
+         if (currentListMode === 'bullet') {
+            newLinePrefix = '• ';
+         } else if (currentListMode === 'numbered') {
+            const match = currentLine.match(/^(\d+)\.\s/);
+            if (match) {
+               const currentNumber = parseInt(match[1], 10);
+               newLinePrefix = `${currentNumber + 1}. `;
+            } else {
+               newLinePrefix = '1. ';
+            }
          }
-      } else {
-         setText(e.target.value); // В режиме "none" обновляем текст как обычно
+
+         const before = value.substring(0, selectionStart);
+         const after = value.substring(selectionStart);
+         const updatedValue = `${before}\n${newLinePrefix}${after}`;
+
+         // Сохраняем текст в состоянии
+         setText(updatedValue);
+
+         // Устанавливаем новый курсор после обновления текста
+         const newCursorPos = selectionStart + newLinePrefix.length + 1;
+         requestAnimationFrame(() => {
+            textarea.setSelectionRange(newCursorPos, newCursorPos);
+         });
       }
    };
 
-   // const applyFormat = (format: string) => {
-   //   const textarea = textAreaRef.current; // Получаем текущий элемент textarea
-   //   if (textarea) {
-   //     textarea.focus(); // Сохраняем фокус на textarea
-   //     if (format === 'list') {
-   //       setText((prev) => `${prev}\n• `); // Добавляет символ точки
-   //     } else if (format === 'numbered-list') {
-   //       const lines = text.split('\n');
-   //       const numbered = lines
-   //         .map((line, index) => `${index + 1}. ${line}`)
-   //         .join('\n');
-   //       setText(numbered);
-   //     }
-   //   }
-   // };
+   // Функция применения активных стилей
+   const applyStyle = (style: keyof ActiveStyles) => {
+      applyStyleBtn(style);
 
-   // Функция для применения стиля
-   const applyStyle = (style: string) => {
-      const newStyles = { ...activeStyles };
-
-      if (style === 'bold') {
-         newStyles.fontWeight = newStyles.fontWeight === 'bold' ? 'normal' : 'bold';
-      } else if (style === 'italic') {
-         newStyles.fontStyle = newStyles.fontStyle === 'italic' ? 'normal' : 'italic';
-      } else if (style === 'code') {
-         newStyles.fontFamily = newStyles.fontFamily === 'monospace' ? 'inherit' : 'monospace';
-      }
-
-      setActiveStyles(newStyles);
-
-      // Сохраняем фокус на textarea
       const textarea = textAreaRef.current;
-      if (textarea) {
-         textarea.focus();
+      if (!textarea) return;
+
+      const { value, selectionStart, selectionEnd } = textarea;
+
+      if (value.length > 0) {
+         setNumSelectionEnd(selectionEnd);
+         setNumSelectionStart(selectionStart);
+         setNumSelectionValue(value);
       }
+
+      setActiveStyles((prev) => ({
+         ...prev,
+         [style]:
+            style === 'fontWeight'
+               ? prev.fontWeight === 'bold'
+                  ? 'normal'
+                  : 'bold'
+               : style === 'fontStyle'
+                 ? prev.fontStyle === 'italic'
+                    ? 'normal'
+                    : 'italic'
+                 : prev.fontFamily === 'monospace'
+                   ? 'inherit'
+                   : 'monospace',
+      }));
+
+      if (textarea) textarea.focus();
    };
-   // const applyStyleToSelection = (style: string) => {
-   //   const textarea = textAreaRef.current; // Получаем текущий элемент textarea
-   //   if (textarea) {
-   //     const { selectionStart, selectionEnd, value } = textarea;
-   //     const selectedText = value.substring(selectionStart, selectionEnd);
 
-   //     let styledText = selectedText;
-   //     console.log(styledText, 'styledText');
+   const handleInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+      const textarea = textAreaRef.current;
+      if (!textarea) return;
 
-   //     if (style === 'bold') {
-   //       styledText = `${selectedText}`;
-   //       toggleBold();
-   //       setWeightingText('700');
-   //     } else if (style === 'italic') {
-   //       styledText = `${selectedText}`;
-   //       toggleItalic();
-   //       setStyledText('italic');
-   //     } else if (style === 'code') {
-   //       styledText = `${selectedText}`;
-   //       toggleCode();
-   //       setFamilyText('monospace');
-   //     }
+      const { value, selectionStart, selectionEnd } = textarea;
 
-   //     const newText =
-   //       value.substring(0, selectionStart) +
-   //       styledText +
-   //       value.substring(selectionEnd);
+      if (numSelectionValue) {
+         // Получаем текст до курсора
+         const before = numSelectionValue.substring(0, numSelectionStart);
 
-   //     setText(newText);
+         // Получаем текст после курсора
+         const after = numSelectionValue.substring(numSelectionEnd);
 
-   //     // Сохраняем выделение после обновления текста
-   //     textarea.setSelectionRange(
-   //       selectionStart + styledText.length,
-   //       selectionStart + styledText.length
-   //     );
+         // Новый ввод текста
+         const newTextInput = e.target.value.slice(numSelectionStart);
 
-   //     textarea.focus(); // Сохраняем фокус на textarea
-   //   }
-   // };
+         // Применяем стили, например, добавляем жирный текст (Markdown синтаксис)
+         //  const styledText = applyStylesToText(newTextInput);
 
-   // useEffect(() => {}, [weightingText, styledText, familyText]);
+         // Формируем итоговый текст с новым введённым текстом
+         const finalText = before + newTextInput + after;
+
+         // Обновляем состояние (и передаем в родительский компонент, если нужно)
+         //  setNewText(styledText);
+         //  onChange(finalText);
+
+         // Обновляем состояние текста
+         setText(newText);
+         //  onChange(newText);
+
+         // Сохраняем курсор после ввода
+         textarea.setSelectionRange(numSelectionStart + newTextInput.length, numSelectionStart + newTextInput.length);
+      } else {
+         onChange(value);
+      }
+
+      // onChange(e.target.value);
+      setText(e.target.value);
+   };
+
+   useEffect(() => {
+      if (text) onChange(text);
+   }, [text]);
 
    return (
       <div className={style['textarea-wrp']}>
          {/* Панель инструментов */}
          <div className={style['textarea-header']}>
+            {/* Кнопка жирного текста */}
             <button
-               // onClick={() => applyStyleToSelection('bold')}
-               style={{ fontWeight: isBold ? '700' : '400' }}
+               className={`${style['btn-textarea-icon']} ${activeButton === 'fontWeight' ? style['btn-textarea-active'] : ''}`}
+               onClick={() => applyStyle('fontWeight')}
             >
-               Жирный
+               <BoldText />
             </button>
-            <button
-               // onClick={() => applyStyleToSelection('italic')}
-               style={{ fontStyle: isItalic ? 'italic' : 'normal' }}
-            >
-               Курсив
-            </button>
-            <button
-               // onClick={() => applyStyleToSelection('code')}
-               style={{ fontFamily: isCode ? 'monospace' : 'inherit' }}
-            >
-               Код
-            </button>
-            <button onClick={() => applyFormat('bullet')}>Список</button>
-            <button onClick={() => applyFormat('numbered')}>Нумерованный список</button>
-         </div>
 
+            {/* Кнопка курсива */}
+            <button
+               className={`${style['btn-textarea-icon']} ${activeButton === 'fontStyle' ? style['btn-textarea-active'] : ''}`}
+               onClick={() => applyStyle('fontStyle')}
+            >
+               <Italic />
+            </button>
+
+            {/* Кнопка кода */}
+            <button
+               className={`${style['btn-textarea-icon']} ${activeButton === 'fontFamily' ? style['btn-textarea-active'] : ''}`}
+               onClick={() => applyStyle('fontFamily')}
+            >
+               <InlineCode />
+            </button>
+
+            {/* Кнопка маркированного списка */}
+            <button
+               className={`${style['btn-textarea-icon']} ${activeButton === 'bullet' ? style['btn-textarea-active'] : ''}`}
+               onClick={() => applyListFormat(currentListMode === 'bullet' ? 'none' : 'bullet')}
+            >
+               <ListBulleted />
+            </button>
+
+            {/* Кнопка нумерованного списка */}
+            <button
+               className={`${style['btn-textarea-icon']} ${activeButton === 'numbered' ? style['btn-textarea-active'] : ''}`}
+               onClick={() => applyListFormat(currentListMode === 'numbered' ? 'none' : 'numbered')}
+            >
+               <ListNumbered />
+            </button>
+         </div>
          {/* Поле ввода */}
          <textarea
             ref={textAreaRef}
             className={style.textarea}
-            value={text}
+            value={value}
             onChange={handleInput}
+            onKeyDown={handleKeyDown}
             style={{
-               fontWeight: isBold ? '700' : '400',
-               fontStyle: isItalic ? 'italic' : 'normal',
-               fontFamily: isCode ? 'monospace' : 'inherit',
+               fontWeight: activeStyles.fontWeight || 'normal',
+               fontStyle: activeStyles.fontStyle || 'normal',
+               fontFamily: activeStyles.fontFamily || 'inherit',
             }}
          />
       </div>
