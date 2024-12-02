@@ -5,21 +5,19 @@ import localFont from 'next/font/local';
 // import { store } from '@/store/store';
 
 const inter = localFont({
-  src: '../fonts/Inter-VariableFont_opsz,wght.ttf',
-  weight: '100 900',
-  display: 'swap',
+   src: '../fonts/Inter-VariableFont_opsz,wght.ttf',
+   weight: '100 900',
+   display: 'swap',
 });
 
 export default function App({ Component, pageProps }: AppProps) {
-<<<<<<< HEAD
-  return (
-    // <Provider store={store}>
-    <div className={`${inter.className} wrapped`}>
-      <Component {...pageProps} />;
-    </div>
-    // </Provider>;)
-  );
-=======
+   return (
+      // <Provider store={store}>
+      <div className={`${inter.className} wrapped`}>
+         <Component {...pageProps} />;
+      </div>
+      // </Provider>;)
+   );
+
    return <Component {...pageProps} />;
->>>>>>> origin/ds-kanban-task-dev__projects-page
 }

@@ -1,23 +1,24 @@
 .textarea-wrp {
-  width: 100%;
-  height: 148px;
-  margin: '0 auto';
+   width: 100%;
+   min-height: 148px;
+   margin: '0 auto';
 
-  .textarea-header {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 3px;
-    background-color: #f4f6f8;
-    padding: 8px 20px;
-  }
+   .textarea-header {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 3px;
+      background-color: #f4f6f8;
+      padding: 8px 20px;
+   }
 
-  .textarea {
-    width: 100%;
-    height: 100%;
-    font-size: 16px;
-    line-height: 143%;
-    color: #222;
-    background-color: #f4f6f8;
-    padding: 16px 20px;
-  }
+   .textarea {
+      width: 100%;
+      min-height: 116px;
+      resize: none;
+      font-size: 16px;
+      line-height: 143%;
+      color: #222;
+      background-color: #f4f6f8;
+      padding: 16px 20px;
+   }
 }
