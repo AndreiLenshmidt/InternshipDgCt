@@ -18,7 +18,7 @@ export default function App({ Component, pageProps }: AppProps) {
    return getLayout(
       <Provider store={store}>
          <div className={`${inter.className} wrapped`}>
-            <Component {...pageProps} />;
+            <Component {...pageProps} />
          </div>
       </Provider>
    );

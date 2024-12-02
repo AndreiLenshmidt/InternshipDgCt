@@ -55,5 +55,5 @@ export default function MainPage() {
         <p className="developer">Максим Егоров</p>
       </footer>
     </>
-  );
+  )
 }
