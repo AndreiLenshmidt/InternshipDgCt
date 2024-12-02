@@ -11,6 +11,7 @@ const inter = localFont({
 });
 
 export default function App({ Component, pageProps }: AppProps) {
+<<<<<<< HEAD
   return (
     // <Provider store={store}>
     <div className={`${inter.className} wrapped`}>
@@ -18,4 +19,7 @@ export default function App({ Component, pageProps }: AppProps) {
     </div>
     // </Provider>;)
   );
+=======
+   return <Component {...pageProps} />;
+>>>>>>> origin/ds-kanban-task-dev__projects-page
 }
