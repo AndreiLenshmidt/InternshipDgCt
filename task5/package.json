@@ -28,6 +28,7 @@
       "zod": "^3.23.8"
    },
    "devDependencies": {
+      "@graphql-codegen/typescript-rtk-query": "^3.1.1",
       "@rtk-query/codegen-openapi": "^2.0.0",
       "@types/node": "^20",
       "@types/react": "^18",
