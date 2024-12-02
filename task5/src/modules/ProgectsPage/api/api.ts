@@ -5,35 +5,23 @@ import { getCookie } from '@/utils/cookies';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
 
-// import type { Post } from '@/features/posts/postsSlice'
-// export type { Post }
-
-// fetch('/project', {
-//    headers: {
-//       token: getCookie('token-auth') || ''
-//    }
-// }).then(r => r.json()).then(console.log)
-
-
-
 export const projectsApi = createApi({
    reducerPath: 'projects',
    baseQuery: fetchBaseQuery({ baseUrl: BASE_URL, credentials: 'include' }),
    endpoints: (builder) => ({
       getProjects: builder.query<ProjectShort[], void>({
-         query: () => `/project`,
+         query: () => {
+            return {
+               url: `/project`,
+               headers: {
+                  Authorization: `Bearer ${getCookie('token-auth')}`
+               }
+            }
+         }
       }),
    }),
 })
 
-// query: () => {
-//    return {
-//       url: `/project`,
-//       headers: {
-//          token: getCookie('token-auth')
-//       }
-//    }
-// }
 
 export const { useGetProjectsQuery } = projectsApi;
 
