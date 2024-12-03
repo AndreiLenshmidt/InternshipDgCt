@@ -7,9 +7,13 @@ import { ProjectCard } from './components/project_card/ProjectCard';
 import style from './projects-page.module.css';
 import { useResize } from '@/hooks/resize';
 import { useMemo, useCallback } from 'react';
+import { useGetProjectsQuery } from './api/api';
 
 export function ProjectPage() {
+   //
    const { width } = useResize();
+
+   const { data: projects = [], isLoading, isSuccess, isError, error } = useGetProjectsQuery();   
 
    useMemo(() => {
       const columnsCount = Math.floor((width - 272) / 264); // 208 - on `5/1168`
@@ -24,6 +28,14 @@ export function ProjectPage() {
                { text: 'Проекты', url: '' },
             ]}
          />
+
+         {isLoading ? 'isLoading' : 'no-Loading'}
+         <br />
+         {isSuccess ? 'isSuccess' : 'noSuccess'}
+         <br />
+         {isError ? 'error' : 'no-error'}
+         <br />
+         {projects ? projects.length : '___'}
 
          <h1>Проекты</h1>
 

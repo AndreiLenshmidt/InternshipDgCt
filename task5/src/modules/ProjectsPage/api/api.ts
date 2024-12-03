@@ -1,16 +1,34 @@
 // Import the RTK Query methods from the React-specific entry point
+import { ProjectShort } from '@/api/data.types';
+import { BASE_URL } from '@/consts'
+import { getCookie } from '@/utils/cookies';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
 
-// export const pokemonApi = createApi({
-//    reducerPath: 'pokemonApi',
-//    baseQuery: fetchBaseQuery({ baseUrl: 'https://pokeapi.co/api/v2/' }),
-//    endpoints: (builder) => ({
-//       getPokemonByName: builder.query<Pokemon, string>({
-//          query: (name) => `pokemon/${name}`,
-//       }),
-//    }),
-// })
+export const projectsApi = createApi({
+   reducerPath: 'projects',
+   baseQuery: fetchBaseQuery({ baseUrl: BASE_URL, credentials: 'include' }),
+   endpoints: (builder) => ({
+      getProjects: builder.query<ProjectShort[], void>({
+         query: () => {
+            return {
+               url: `/project`,
+               headers: {
+                  Authorization: `Bearer ${getCookie('token-auth')}`
+               }
+            }
+         }
+      }),
+   }),
+})
+
+
+export const { useGetProjectsQuery } = projectsApi;
+
+
+
+// export const { useProjectsQuery } = projectsApi
+
 
 
 // // Use the `Post` type we've already defined in `postsSlice`,
