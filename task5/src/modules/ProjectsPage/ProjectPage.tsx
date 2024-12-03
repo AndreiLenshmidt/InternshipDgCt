@@ -13,7 +13,7 @@ export function ProjectPage() {
    //
    const { width } = useResize();
 
-   const { data: projects = [], isLoading, isSuccess, isError, error } = useGetProjectsQuery();   
+   const { data: projects = [], isLoading, isSuccess, isError, error } = useGetProjectsQuery();
 
    useMemo(() => {
       const columnsCount = Math.floor((width - 272) / 264); // 208 - on `5/1168`
