@@ -1,14 +1,15 @@
 import React, { useState, useEffect, ChangeEvent } from 'react';
 import Close from '@public/icons/close.svg';
-import style from '@/modules/TaskModalCreationEditing/TaskModalCreationEditing.module.scss';
-import ModalClose from '@/components/ModalClose';
-import SelectCustom from '@/components/SelectCustom';
-import SelectCustomCheckbox from '@/components/SelectCustomCheckbox';
+import style from '@/modules/TaskModalCreationEditing/task-modal-creation-editing.module.scss';
+import ModalClose from '@/components/modal_close/ModalClose';
+import SelectCustom from '@/components/select_custom/SelectCustom';
+import SelectCustomCheckbox from '@/components/select_custom_checkbox/select-custom-checkbox';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import CalendarCustom from '@/components/CalendarCustom';
-import TextAreaWithToolbar from '@/components/TextAreaWithToolbar';
+import CalendarCustom from '@/components/calendar_custom/CalendarCustom';
+import TextAreaWithToolbar from '@/components/text_area_with_toolbar/TextAreaWithToolbar';
+import FileUpload from '@/components/file_upload/FileUpload';
 
 interface TaskModalCreationEditingProps {
    isOpen: boolean;
@@ -28,7 +29,10 @@ type FormData = {
    startDate: string;
    endDate: string;
    description: string;
-   fileLinks: string[];
+   fileLinks?: string[];
+   layoutLink?: string;
+   markupLink?: string;
+   devLink?: string;
 };
 
 export default function TaskModalCreationEditing({ isOpen, onClose, taskId }: TaskModalCreationEditingProps) {
@@ -64,7 +68,7 @@ export default function TaskModalCreationEditing({ isOpen, onClose, taskId }: Ta
 
    const [isModalOpen, setModalOpen] = useState(false);
 
-   // схема валидации min(3, 'Ошибка'),
+   // схема валидации
    const formSchema = z.object({
       title: z.string().min(3, 'Ошибка'),
       selectedOptionTasks: z.string().min(1, 'Тип задачи обязателен'),
@@ -95,7 +99,26 @@ export default function TaskModalCreationEditing({ isOpen, onClose, taskId }: Ta
 
       // описание
       description: z.string().min(10, 'Описание должно содержать не менее 10 символов'),
+
+      // ссылки
       fileLinks: z.array(z.string().url('Введите корректный URL')).optional(),
+
+      // ссылки URL
+      layoutLink: z
+         .string()
+         .url('Введите корректный URL')
+         .refine((value) => value.startsWith('http'), 'Ссылка должна начинаться с http')
+         .optional(),
+      markupLink: z
+         .string()
+         .url('Введите корректный URL')
+         .refine((value) => value.startsWith('http'), 'Ссылка должна начинаться с http')
+         .optional(),
+      devLink: z
+         .string()
+         .url('Введите корректный URL')
+         .refine((value) => value.startsWith('http'), 'Ссылка должна начинаться с http')
+         .optional(),
    });
 
    //
@@ -121,6 +144,9 @@ export default function TaskModalCreationEditing({ isOpen, onClose, taskId }: Ta
          endDate: '',
          description: '',
          fileLinks: [],
+         layoutLink: '',
+         markupLink: '',
+         devLink: '',
       },
    });
 
@@ -267,7 +293,7 @@ export default function TaskModalCreationEditing({ isOpen, onClose, taskId }: Ta
 
    return (
       <div className={style['modal-creation-editing']} onClick={handleOverlayClick}>
-         <button className={style['close-button-modal']} onClick={() => setModalOpen(true)}>
+         <button className={style['close-button-modal']} type="button" onClick={() => setModalOpen(true)}>
             <Close />
          </button>
 
@@ -275,7 +301,7 @@ export default function TaskModalCreationEditing({ isOpen, onClose, taskId }: Ta
             <div className={style.heder}>
                <h2 className={style.title}>{isEditMode ? 'Редактировать задачу' : 'Создать задачу'}</h2>
 
-               <button className={style['close-button']} onClick={() => setModalOpen(true)}>
+               <button className={style['close-button']} type="button" onClick={() => setModalOpen(true)}>
                   <Close />
                </button>
             </div>
@@ -405,30 +431,81 @@ export default function TaskModalCreationEditing({ isOpen, onClose, taskId }: Ta
                   {errors.description && <p className={style.error}>{errors.description.message}</p>}
                </div>
 
-               {/* Ссылки на файлы */}
-               <div className={style['form-links-files']}>
-                  <label>Ссылки на файлы</label>
+               {/* Блок поле загрузки файлов */}
+               <div className={style['form-files']}>
                   <Controller
                      name="fileLinks"
                      control={control}
-                     render={({ field }) => (
-                        <input
-                           type="text"
-                           value={field.value.join(', ')}
-                           onChange={(e) => field.onChange(e.target.value.split(', '))}
-                           placeholder="Введите ссылки через запятую"
-                        />
+                     render={({ field: { value, onChange }, fieldState: { error } }) => (
+                        <FileUpload files={value || []} onFilesChange={onChange} error={error?.message} />
                      )}
                   />
-                  {errors.fileLinks && <p className={style.error}>{errors.fileLinks.message}</p>}
+               </div>
+
+               {/* Ссылки на файлы */}
+               <div className={style['form-links-files']}>
+                  {/* Layout Link */}
+                  <div className={style['form-link-item']}>
+                     <label>Layout Link</label>
+                     <Controller
+                        name="layoutLink"
+                        control={control}
+                        render={({ field }) => (
+                           <input
+                              type="text"
+                              value={field.value || ''}
+                              onChange={(e) => field.onChange(e.target.value)}
+                              placeholder="Layout link"
+                           />
+                        )}
+                     />
+                     {errors.layoutLink && <p className={style.error}>{errors.layoutLink.message}</p>}
+                  </div>
+
+                  {/* Markup Link */}
+                  <div className={style['form-link-item']}>
+                     <label>Markup Link</label>
+                     <Controller
+                        name="markupLink"
+                        control={control}
+                        render={({ field }) => (
+                           <input
+                              type="text"
+                              value={field.value || ''}
+                              onChange={(e) => field.onChange(e.target.value)}
+                              placeholder="Markup link"
+                           />
+                        )}
+                     />
+                     {errors.markupLink && <p className={style.error}>{errors.markupLink.message}</p>}
+                  </div>
+
+                  {/* Dev Link */}
+                  <div className={style['form-link-item']}>
+                     <label>Dev Link</label>
+                     <Controller
+                        name="devLink"
+                        control={control}
+                        render={({ field }) => (
+                           <input
+                              type="text"
+                              value={field.value || ''}
+                              onChange={(e) => field.onChange(e.target.value)}
+                              placeholder="Dev link"
+                           />
+                        )}
+                     />
+                     {errors.devLink && <p className={style.error}>{errors.devLink.message}</p>}
+                  </div>
                </div>
 
                {/* Кнопки */}
-               <div className="actions">
-                  <button type="submit" className="btn btn_blue" onClick={() => onSubmit}>
+               <div className={style['actions']}>
+                  {/*  */}
+                  <button type="submit" className={style['btn_blue']} onClick={() => onSubmit}>
                      {isEditMode ? 'Сохранить' : 'Добавить'}
                   </button>
-                  <button type="button" className="btn" onClick={onClose}>
+                  <button className={style['btn']} type="button" onClick={onClose}>
                      Отменить
                   </button>
                </div>

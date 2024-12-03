@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import style from '@/components/TextAreaWithToolbar/TextAreaWithToolbar.module.scss';
+import style from '@/components/text_area_with_toolbar/text-area-with-toolbar.module.scss';
 import BoldText from '@public/icons/bold-text.svg';
 import Italic from '@public/icons/italic.svg';
 import InlineCode from '@public/icons/inline-code.svg';
@@ -195,6 +195,7 @@ export default function TextAreaWithToolbar({ value, onChange, error }: TextArea
             {/* Кнопка жирного текста */}
             <button
                className={`${style['btn-textarea-icon']} ${activeButton === 'fontWeight' ? style['btn-textarea-active'] : ''}`}
+               type="button"
                onClick={() => applyStyle('fontWeight')}
             >
                <BoldText />
@@ -203,6 +204,7 @@ export default function TextAreaWithToolbar({ value, onChange, error }: TextArea
             {/* Кнопка курсива */}
             <button
                className={`${style['btn-textarea-icon']} ${activeButton === 'fontStyle' ? style['btn-textarea-active'] : ''}`}
+               type="button"
                onClick={() => applyStyle('fontStyle')}
             >
                <Italic />
@@ -211,6 +213,7 @@ export default function TextAreaWithToolbar({ value, onChange, error }: TextArea
             {/* Кнопка кода */}
             <button
                className={`${style['btn-textarea-icon']} ${activeButton === 'fontFamily' ? style['btn-textarea-active'] : ''}`}
+               type="button"
                onClick={() => applyStyle('fontFamily')}
             >
                <InlineCode />
@@ -219,6 +222,7 @@ export default function TextAreaWithToolbar({ value, onChange, error }: TextArea
             {/* Кнопка маркированного списка */}
             <button
                className={`${style['btn-textarea-icon']} ${activeButton === 'bullet' ? style['btn-textarea-active'] : ''}`}
+               type="button"
                onClick={() => applyListFormat(currentListMode === 'bullet' ? 'none' : 'bullet')}
             >
                <ListBulleted />
@@ -227,11 +231,13 @@ export default function TextAreaWithToolbar({ value, onChange, error }: TextArea
             {/* Кнопка нумерованного списка */}
             <button
                className={`${style['btn-textarea-icon']} ${activeButton === 'numbered' ? style['btn-textarea-active'] : ''}`}
+               type="button"
                onClick={() => applyListFormat(currentListMode === 'numbered' ? 'none' : 'numbered')}
             >
                <ListNumbered />
             </button>
          </div>
+         <div></div>
          {/* Поле ввода */}
          <textarea
             ref={textAreaRef}
