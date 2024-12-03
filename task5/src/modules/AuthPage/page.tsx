@@ -39,6 +39,7 @@ export default function AuthPage() {
       const paylord = await login(formData);
       setAuthToken(paylord.data);
       setCookie('token-auth', paylord.data?.token);
+
       setTimeout(() => router.replace('/projects', { scroll: false }), 2000);
    };
 

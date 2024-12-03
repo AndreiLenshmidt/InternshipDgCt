@@ -17,12 +17,10 @@ export default function App({ Component, pageProps }: AppProps) {
    const getLayout = (Component as unknown as { getLayout: Function }).getLayout ?? ((page: React.ReactNode) => page);
 
    return getLayout(
-      // <Provider store={store}>
-      <div className={inter.className}>
-         <TaskModalCreationEditing isOpen={true} onClose={() => true} taskId="4546" />
-
-         {/* <Component {...pageProps} /> */}
-      </div>
-      // </Provider>
+      <Provider store={store}>
+         <div className={inter.className}>
+            <Component {...pageProps} />
+         </div>
+      </Provider>
    );
 }

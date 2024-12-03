@@ -10,11 +10,20 @@ import * as z from 'zod';
 import CalendarCustom from '@/components/calendar_custom/CalendarCustom';
 import TextAreaWithToolbar from '@/components/text_area_with_toolbar/TextAreaWithToolbar';
 import FileUpload from '@/components/file_upload/FileUpload';
+import { useGetProjectsQuery } from '../ProjectsPage/api/api';
+import { useCreateTaskMutation, useGetTasksQuery, useUpdateTaskMutation } from './api/taskApiActions';
+import { useGetOAuthTokenMutation } from '../AuthPage/api/authApi';
+import { useGetTaskByTaskIdQuery } from '../TaskPage/api/taskApi';
+import task from '@/pages/projects/kanban/task';
+import { useOptimisticDeleteTask } from './utils/useOptimisticDeleteTask';
+import { useDispatch } from 'react-redux';
+import { useOptimisticCreateTask } from './utils/useOptimisticCreateTask';
 
 interface TaskModalCreationEditingProps {
    isOpen: boolean;
    onClose: () => void;
-   taskId?: string; // Если передан, значит редактируем задачу
+   slug: string;
+   taskId?: number; // Если передан, значит редактируем задачу
 }
 
 type FormData = {
@@ -35,7 +44,7 @@ type FormData = {
    devLink?: string;
 };
 
-export default function TaskModalCreationEditing({ isOpen, onClose, taskId }: TaskModalCreationEditingProps) {
+export default function TaskModalCreationEditing({ isOpen, onClose, slug, taskId }: TaskModalCreationEditingProps) {
    const [title, setTitle] = useState('');
    const [taskType, setTaskType] = useState('');
    const [selectedOptionTasks, setSelectedOptionTasks] = useState('');
@@ -63,10 +72,26 @@ export default function TaskModalCreationEditing({ isOpen, onClose, taskId }: Ta
    const [itemsOptions, setItemsOptions] = useState([]);
 
    const [valueMain, setValueMain] = useState('');
-   const [error, setError] = useState('');
+   // const [error, setError] = useState('');
    const [isTouched, setIsTouched] = useState(false);
 
    const [isModalOpen, setModalOpen] = useState(false);
+
+   const dispatch = useDispatch();
+   // Получаем данные
+   // const { data, isLoading, isSuccess } = useGetTaskByTaskIdQuery(7); // taskId !!!
+
+   // const { data, error, isLoading } = useGetTasksQuery('8'); // TaskSingle taskId
+   // console.log(data, isLoading, isSuccess, '------------- data, isLoading, isSuccess ----------');
+
+   const { data: projects = [], isLoading } = useGetProjectsQuery();
+   console.log(projects, '------------- projects ,isLoading----------');
+
+   // dispatch(taskApi.util.resetApiState());
+   const { data: tasks = [] } = useGetTasksQuery('project2');
+   console.log(tasks, '------------- tasks,  ----------');
+
+   // !!! ===================================================================================
 
    // схема валидации
    const formSchema = z.object({
@@ -150,9 +175,59 @@ export default function TaskModalCreationEditing({ isOpen, onClose, taskId }: Ta
       },
    });
 
+   // !!! ===================================================================================
+   // Создать задачу -------------------------------------------------
+   const handleCreate = useOptimisticCreateTask();
+   // const [taskName, setTaskName] = useState('');
+
+   // const handleSubmit = () => {
+   //    handleCreate(slug,{ name: taskName, description: 'Temporary description' TaskSingle  });
+   // };
+
+   //  <input
+   //     type="text"
+   //     value={taskName}
+   //     onChange={(e) => setTaskName(e.target.value)}
+   // />
+   // <button onClick={handleSubmit}>Create Task</button>
+
+   // Обновить данные --------------------------------------------------------
+   const { refetch } = useGetTaskByTaskIdQuery(4); // taskId
+   // const handleUpdate = async () => {
+   //    await updateTask({ id: taskId, body: { name: 'New Name' } });
+   //    refetch(); // Обновление данных после успешного запроса
+   // };
+
+   // Редактировать (обновить) задачу -------------------------------------------
+   const [updateTask, { isLoading: isUpdating, error }] = useUpdateTaskMutation();
+
+   // const handleUpdate = async () => {
+   //    try {
+   //       await updateTask({
+   //          id: taskId,
+   //          body: {
+   //             name: 'Updated Task Name',
+   //             description: 'Updated Task Description',
+   //          },
+   //       }).unwrap(); // .unwrap() для обработки ошибок
+   //       alert('Task updated successfully!');
+   //    } catch (err) {
+   //       console.error('Failed to update the task:', err);
+   //    }
+   // };
+
+   // Удалить задачу -------------------------------------------------------------
+
    // отправляем данные формы -------------------------------------------------
    const onSubmit = (data: FormData) => {
       console.log(data);
+
+      // async (formData: LoginRequest) => {
+      //    const paylord = await login(formData);
+      //    setAuthToken(paylord.data);
+      //    setCookie('token-auth', paylord.data?.token);
+      //    setTimeout(() => router.replace('/projects', { scroll: false }), 2000);
+      // };
    };
 
    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -164,8 +239,39 @@ export default function TaskModalCreationEditing({ isOpen, onClose, taskId }: Ta
       }
    };
 
-   // Загрузка данных из API переделать берем из Redux??? !!!
+   // Загрузка данных из API ----------------------------- !!!
    useEffect(() => {
+      //store useGetOAuthTokenMutation
+      // const { data: projects = [], isLoading, isSuccess, isError, error } = useGetProjectsQuery();
+      // console.log(projects, isLoading, isSuccess, isError, error, 'projects, isLoading, isSuccess, isError, error');
+      //       {
+      // const { data, error, isLoading } = useGetTaskByTaskIdQuery(7); // taskId
+      // const { data, error, isLoading } = useGetTasksQuery('8'); // taskId
+      // console.log(data, error, isLoading, 'data, error, isLoading');
+      // const [login, { isError, isSuccess }] = useGetOAuthTokenMutation();
+      // console.log(login, isError, isSuccess, 'login, isError, isSuccess');
+      //   "data": [
+      //     {
+      //       "id": 0,
+      //       "name": "string",
+      //       "component": 0,
+      //       "priority": 0,
+      //       "stage": 0,
+      //       "task_type": 0,
+      //       "users": 0,
+      //       "possibleTaskNextStages": [
+      //         0
+      //       ],
+      //       "deadline": "string",
+      //       "created_by": 0,
+      //       "created_at": "string",
+      //       "updated_at": "string",
+      //       "begin": "2022-11-30T08:48:00.000000Z",
+      //       "end": "2022-12-31T16:48:00.000000Z",
+      //       "rank": "string"
+      //     }
+      //   ]
+      // }
       // async function fetchData() {
       //   const [
       //     taskTypesResponse,
@@ -199,7 +305,8 @@ export default function TaskModalCreationEditing({ isOpen, onClose, taskId }: Ta
       //   }
       // }
       // if (isOpen) fetchData();
-   }, [isOpen, isEditMode, taskId]);
+      // isOpen, isEditMode, taskId;
+   }, []);
 
    // const handleSubmit = () => {
    //   const taskData = {
@@ -288,8 +395,10 @@ export default function TaskModalCreationEditing({ isOpen, onClose, taskId }: Ta
    };
 
    if (!isOpen) return null;
+   if (isLoading) return <div>Loading task...</div>;
+   if (!task) return <div>Task not found</div>;
 
-   const [options, setOptions] = useState<string[]>(['Option 1', 'Option 2', 'Option 3']);
+   // const [options, setOptions] = useState<string[]>(['Option 1', 'Option 2', 'Option 3']);
 
    return (
       <div className={style['modal-creation-editing']} onClick={handleOverlayClick}>
@@ -321,7 +430,7 @@ export default function TaskModalCreationEditing({ isOpen, onClose, taskId }: Ta
                      <SelectCustom<string>
                         value={watch('selectedOptionTasks')}
                         onChange={(value) => setValue('selectedOptionTasks', value)}
-                        options={options}
+                        options={['Option 1', 'Option 2', 'Option 3']}
                         label="Тип задачи"
                         titleSelect="Задачи"
                         required

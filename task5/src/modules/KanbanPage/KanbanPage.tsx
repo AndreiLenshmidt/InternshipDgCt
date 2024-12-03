@@ -6,6 +6,8 @@ import { TaskCard } from './components/task-card/TaskCard';
 import style from './kanban-page.module.css';
 import { TasksColumn } from './components/tasks-column/TaskColumn';
 import { DndContext, useDroppable } from '@dnd-kit/core';
+import TaskModalCreationEditing from '../TaskModalCreationEditing/page';
+import task from '@/pages/projects/kanban/task';
 
 const projectUrl = 'projects';
 
@@ -21,7 +23,7 @@ export function KanbanPage() {
       color: isOver ? 'green' : undefined,
    };
 
-   console.log(router.query['task-slug']);
+   console.log(router.query['task-slug'], 'router.query[task-slug]');
 
    return (
       <>
@@ -74,7 +76,7 @@ export function KanbanPage() {
          </div>
 
          <div className={style.kanban_container}>
-            <DndContext id={'111'} onDragEnd={e => console.log('dropped', e.active.id, e.over?.id)}>
+            <DndContext id={'111'} onDragEnd={(e) => console.log('dropped', e.active.id, e.over?.id)}>
                <div className={style.kanban}>
                   <TasksColumn title={'Новые'}>
                      <TaskCard />
@@ -99,6 +101,8 @@ export function KanbanPage() {
                </div>
             </DndContext>
          </div>
+
+         <TaskModalCreationEditing isOpen={true} onClose={() => true} slug="xxxx" taskId={7} />
       </>
    );
 }
