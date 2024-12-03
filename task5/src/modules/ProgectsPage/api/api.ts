@@ -9,7 +9,7 @@ export const projectsApi = createApi({
    reducerPath: 'projects',
    baseQuery: fetchBaseQuery({ baseUrl: BASE_URL, credentials: 'include' }),
    endpoints: (builder) => ({
-      getProjects: builder.query<ProjectShort[], void>({
+      getProjects: builder.query<{ data: Array<ProjectShort & { is_favorite: boolean, user_count: number, is_archived: 0 | 1 }> }, void>({
          query: () => {
             return {
                url: `/project`,
