@@ -8,7 +8,7 @@ import { useActions } from '@/store/hooks/useActions';
 import { useCookies } from 'react-cookie';
 import { ChangeEvent, FocusEvent, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import LoaderIcon from '@public/icons/mainPageBtnLoader.svg';
+import LoaderIcon from '@public/icons/auth-loader.svg';
 
 const schema: ZodType<FormDataType> = z
    .object({
