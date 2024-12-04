@@ -6,16 +6,15 @@ import UlMarker from '@public/icons/fs-marker-num.svg';
 import styles from './commform.module.scss';
 import FileUploader from '../FileUploader.tsx/FileUploader';
 import FilePriview from '../FilePreveiw/FilePreview';
+import { TaskSingle } from '@/api/data.types';
 
-export default function CommentForm() {
+export default function CommentForm({ task }: { task: TaskSingle | undefined }) {
    return (
       <form>
          <div className={styles.comments}>
             <FileUploader />
             <div className={styles.preveiw_box}>
-               {'12'.split('').map((item, index) => (
-                  <FilePriview key={index} file={item} />
-               ))}
+               {task?.files ? task?.files.map((item, index) => <FilePriview file={item} key={index} />) : <></>}
             </div>
             <h3 className={styles.commtitle}>Комментарии</h3>
             <div className={styles.commstyler}>

@@ -1,24 +1,22 @@
+import { Comment } from '@/api/data.types';
 import styles from './comment.module.scss';
 
-export default function CommentComp({ comment }: { comment: string }) {
+export default function CommentComp({ comment }: { comment: Comment | undefined }) {
    return (
       <div className={styles.comment}>
          <div className={styles.flex}>
             <div className={`${styles.flex} ${styles.userinfo}`}>
                <figure className={styles.avatarbox}>
-                  <img src="#" alt="#" />
+                  <img src={comment?.user?.avatar?.link} alt={comment?.user?.avatar?.original_name} />
                </figure>
                <div>
-                  <p className={styles.username}>Прекраснопуський Хома</p>
-                  <p className={styles.userdate}>16 авг. 2022 22:22</p>
+                  <p className={styles.username}>{comment?.user?.name}</p>
+                  <p className={styles.userdate}>{comment?.updated_at || comment?.updated_at}</p>
                </div>
             </div>
             <div>icons</div>
          </div>
-         <p className={styles.text}>
-            Задача выполнена, можно проверять.Внесены изменения в роуты: -
-            http://demo.ru./swagger/index.html#/common/get_header__typePage_
-         </p>
+         <p className={styles.text}>{comment?.content}</p>
       </div>
    );
 }

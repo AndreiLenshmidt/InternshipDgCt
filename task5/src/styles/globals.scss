@@ -4,20 +4,20 @@
 
    // UI COLORS:
 
-   --nav-menu-back: #1b1a1d;  // Neutral 900
-   --nav-menu-btns: #2d2d2d;  // Neutral 700
+   --nav-menu-back: #1b1a1d; // Neutral 900
+   --nav-menu-btns: #2d2d2d; // Neutral 700
    --nav-menu-hints: #787878; // Neutral 600
-   --bread-crumbs-text: #A6A6A6; // Neutral 500
-   --bread-crumbs-back: #F4F6F8; // Neutral 200 --- input backs, project-cards back
+   --bread-crumbs-text: #a6a6a6; // Neutral 500
+   --bread-crumbs-back: #f4f6f8; // Neutral 200 --- input backs, project-cards back
 
    // PRIMARY:
 
-   --main-blue: #3787EB;
-   --tasks-text-color: #798FA5;
+   --main-blue: #3787eb;
+   --tasks-text-color: #798fa5;
 
-   --active-link: #3787EB;    // e.g. bread-crumbs
+   --active-link: #3787eb; // e.g. bread-crumbs
 
-   --nav-menu-width: 272px;   
+   --nav-menu-width: 272px;
 }
 
 $w-cell: 32px;
@@ -306,8 +306,16 @@ h6 {
 }
 
 .wrapped {
-  display: flex;
-  justify-content: space-between;
-  flex-direction: column;
-  min-height: 100vh;
+   display: flex;
+   justify-content: space-between;
+   flex-direction: column;
+   min-height: 100vh;
+}
+
+.editor-paragraph {
+   font-family: inherit;
+   font-weight: inherit;
+   font-size: inherit;
+   line-height: inherit;
+   color: inherit;
 }
