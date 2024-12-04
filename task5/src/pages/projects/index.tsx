@@ -1,5 +1,5 @@
-import { ProjectPage } from '@/modules/ProgectsPage/ProjectPage';
-import Layout from '@/modules/ProgectsPage/components/layout'
+import { ProjectPage } from '@/modules/ProjectsPage/ProjectPage';
+import Layout from '@/modules/ProjectsPage/components/layout';
 
 export default function ProjectRoute() {
    return <ProjectPage />;

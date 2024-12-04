@@ -42,7 +42,11 @@ export default function MainPage() {
             <Image src="/mainlogo.svg" alt="logo" width={159} height={43} priority={true} />
             <LogInLogOutButton inOut={inOut} />
          </header>
-         <main>Main</main>
+         <main className={styles.main}>
+            <Link className={styles.link} href="/projects">
+               Перейти к проектам
+            </Link>
+         </main>
          <footer className={styles.footer}>
             <p className="developer">Андрей Леншмидт</p>
             <p className="developer">Александр Саншайн</p>
