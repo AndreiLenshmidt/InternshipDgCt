@@ -158,17 +158,17 @@ export default function TaskModalCreationEditing({ isOpen, onClose, slug, taskId
 
    // Получаем данные
    const { data: projects = [], isLoading } = useGetProjectsQuery();
-   console.log(projects, '------------- projects ,isLoading----------');
+   // console.log(projects, '------------- projects ,isLoading----------');
 
    // const { data: tasks = [] } = useGetTasksQuery({ slug: 'project1', filters: { id: [2] } });
    const { data: tasks = [] } = useGetTasksQuery({
       slug: 'project3',
       filters: { type_id: [] },
    });
-   console.log(tasks, '------------- tasks filter,  ----------');
+   // console.log(tasks, '------------- tasks filter,  ----------');
 
    const { data: projectUsers, error } = useGetUsersQuery('project2');
-   console.log(projectUsers, '------------- projectUsers,  ----------');
+   // console.log(projectUsers, '------------- projectUsers,  ----------');
 
    // !!! ===================================================================================
 
@@ -276,14 +276,14 @@ export default function TaskModalCreationEditing({ isOpen, onClose, slug, taskId
          devLink: '',
       },
    });
-   console.log(errors, 'errors '); //!!!
+   // console.log(errors, 'errors '); //!!!
 
    // !!! ===================================================================================
    // Создать задачу -------------------------------------------------
    const handleCreate = useOptimisticCreateTask();
 
    // Редактировать (обновить) задачу -------------------------------------------
-   console.log('======= files', files, 'files =======');
+   // console.log('======= files', files, 'files =======');
 
    const transformFiles = (
       files: (File | ExtendedFile | null)[] | undefined
@@ -347,13 +347,13 @@ export default function TaskModalCreationEditing({ isOpen, onClose, slug, taskId
 
    // Загрузка данных из API ----------------------------- !!!
    useEffect(() => {
-      console.log(tasks?.data?.[1]?.task_type, '------------- tasks.data[0].task_type  ----------');
+      // console.log(tasks?.data?.[1]?.task_type, '------------- tasks.data[0].task_type  ----------');
 
-      console.log(mapTaskType(5), 'mapTaskType(3)');
+      // console.log(mapTaskType(5), 'mapTaskType(3)');
 
       const selectedOptionTasks = watch('selectedOptionTasks');
 
-      console.log('*********selectedOptionTasks', selectedOptionTasks);
+      // console.log('*********selectedOptionTasks', selectedOptionTasks);
    }, [selectedOptionTasks]);
 
    const handleEstimateChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -433,7 +433,7 @@ export default function TaskModalCreationEditing({ isOpen, onClose, slug, taskId
                         value={watch('selectedOptionTasks')}
                         onChange={(value) => {
                            setValue('selectedOptionTasks', value);
-                           console.log('@@@Selected Option Comp:', value);
+                           // console.log('@@@Selected Option Comp:', value);
                         }}
                         options={taskTypes}
                         label="Тип задачи"

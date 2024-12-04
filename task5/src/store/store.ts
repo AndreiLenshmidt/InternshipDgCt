@@ -4,6 +4,7 @@ import authReduser from '@/modules/AuthPage/authSlicer';
 import { projectsApi } from '@/modules/ProjectsPage/api/api';
 import { taskApi } from '@/modules/TaskPage/api/taskApi';
 import { taskApiActions } from '@/modules/TaskModalCreationEditing/api/taskApiActions';
+import { tasksApi } from '@/api/tasks/tasks.api';
 // import { setupListeners } from "@reduxjs/toolkit/query";
 
 export const store = configureStore({
@@ -12,6 +13,7 @@ export const store = configureStore({
       auth: authReduser,
       [projectsApi.reducerPath]: projectsApi.reducer,
       [taskApi.reducerPath]: taskApi.reducer,
+      [tasksApi.reducerPath]: tasksApi.reducer,
       [taskApiActions.reducerPath]: taskApiActions.reducer,
    },
    middleware: (getDefaultMiddleware) =>
@@ -19,6 +21,7 @@ export const store = configureStore({
          .concat(authApi.middleware)
          .concat(projectsApi.middleware)
          .concat(taskApi.middleware)
+         .concat(tasksApi.middleware)
          .concat(taskApiActions.middleware),
 });
 

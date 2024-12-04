@@ -8,6 +8,8 @@ import { TasksColumn } from './components/tasks-column/TaskColumn';
 import { DndContext, useDroppable } from '@dnd-kit/core';
 import TaskModalCreationEditing from '../TaskModalCreationEditing/page';
 import task from '@/pages/projects/kanban/task';
+import { useGetAllTasksQuery } from '@/api/tasks/tasks.api';
+import { useGetProjectQuery } from '../ProjectsPage/api/api';
 
 const projectUrl = 'projects';
 
@@ -23,7 +25,14 @@ export function KanbanPage() {
       color: isOver ? 'green' : undefined,
    };
 
-   console.log(router.query['task-slug'], 'router.query[task-slug]');
+   const {
+      data: { data: tasks } = { data: [] },
+      isLoading,
+      isSuccess,
+      isError,
+   } = useGetAllTasksQuery(router.query['task-slug'] as string);
+
+   const { data: { data: project } = { data: null }, error } = useGetProjectQuery(router.query['task-slug'] as string);
 
    return (
       <>
@@ -35,8 +44,10 @@ export function KanbanPage() {
             ]}
          />
 
+         {JSON.stringify(tasks)}
+
          <div className={style.title}>
-            <h1>[Demo Project]</h1>
+            <h1>{project?.name}</h1>
 
             <Switch onChange={(v) => v} checked={false} />
             <h6>Только мои</h6>

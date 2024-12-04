@@ -10,7 +10,7 @@ import style from '../projects-page.module.css';
 export default function Layout({ children }: PropsWithChildren) {
    
 
-   console.log('layout...');
+   // console.log('layout...');
    
    
    return (
