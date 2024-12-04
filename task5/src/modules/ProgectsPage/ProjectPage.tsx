@@ -63,8 +63,8 @@ export function ProjectPage() {
                .map((proj) => {
                   return <ProjectCard key={proj.id} project={proj} />;
                })}
-            <ProjectCard />
-            <ProjectCard />
+            {/* <ProjectCard />
+            <ProjectCard /> */}
          </div>
 
          <hr />
@@ -75,6 +75,7 @@ export function ProjectPage() {
                .map((proj) => {
                   return <ProjectCard key={proj.id} project={proj} />;
                })}
+            {/* <ProjectCard />
             <ProjectCard />
             <ProjectCard />
             <ProjectCard />
@@ -84,8 +85,7 @@ export function ProjectPage() {
             <ProjectCard />
             <ProjectCard />
             <ProjectCard />
-            <ProjectCard />
-            <ProjectCard />
+            <ProjectCard /> */}
          </div>
       </>
    );

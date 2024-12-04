@@ -1,3 +1,4 @@
+import { BASE_URL } from '@/consts';
 import FavLogo from '@public/icons/favorite-icon.svg';
 import Link from 'next/link';
 import { ProjectItem } from '../../api/api';
@@ -16,7 +17,7 @@ export function ProjectCard({ project }: PropsType) {
          <div className={style.favorite_icon}>
             <FavLogo />
          </div>
-         <img src={project?.logo?.link || "/media/ProjectLogo.svg"} alt="." />
+         <img src={project?.logo?.link ? BASE_URL + project?.logo?.link : '/media/ProjectLogo.svg'} alt="." />
          <h5>{project?.name || 'DS Внутренние проекты'}</h5>
          <div className={style.hint}>{project?.user_count ? `${project.user_count} сотрудников` : 'TODO'}</div>
       </Link>

@@ -1,6 +1,6 @@
 // Import the RTK Query methods from the React-specific entry point
 import { ProjectShort } from '@/api/data.types';
-import { BASE_URL } from '@/consts'
+import { BASE_API_URL } from '@/consts'
 import { getCookie } from '@/utils/cookies';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
@@ -8,7 +8,7 @@ export type ProjectItem = ProjectShort & { is_favorite: boolean, user_count: num
 
 export const projectsApi = createApi({
    reducerPath: 'projects',
-   baseQuery: fetchBaseQuery({ baseUrl: BASE_URL, credentials: 'include' }),
+   baseQuery: fetchBaseQuery({ baseUrl: BASE_API_URL, credentials: 'include' }),
    endpoints: (builder) => ({
       getProjects: builder.query<{ data: Array<ProjectItem> }, void>({
          query: () => {
