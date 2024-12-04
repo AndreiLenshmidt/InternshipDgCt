@@ -9,10 +9,28 @@ import Delete from '@public/icons/task-delete.svg';
 import Clock from '@public/icons/clock.svg';
 import Calendar from '@public/icons/calendar.svg';
 import parse from 'html-react-parser';
+import MarkersTask from '../Markers/Markers';
+import SelectCustom from '@/components/SelectCustom';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
 
 export default function TaskContent({ task, link }: { task: TaskSingle | undefined; link: string }) {
    const isAdmin = false;
    const isOpen = 'none';
+   // const [value, setValue] = useState('');
+   const [selectedOptionComp, setSelectedOptionComp] = useState<string | (string | undefined)[] | undefined>(
+      'Не выбрано'
+   );
+   const {
+      // register,
+      // handleSubmit,
+      // control,
+      // watch,
+      formState: { errors },
+      // clearErrors,
+   } = useForm<FormData>();
+
+   const selectOptions = [task?.stage?.name, task?.possibleTaskNextStages?.map((stage) => stage.name)];
    return (
       <>
          <div className={styles.content}>
@@ -39,29 +57,14 @@ export default function TaskContent({ task, link }: { task: TaskSingle | undefin
                   {isAdmin ? <Create className={styles.aside_icon} /> : <></>}
                </div>
             </div>
-            <div className={styles.aside_select}>
-               <p className={styles.aside_option}>{task?.stage?.name}</p>
-               {task?.possibleTaskNextStages?.map((nexStage, index) => (
-                  <p key={index} className={`${styles.aside_option} ${styles[isOpen]}`}>
-                     {nexStage.name}
-                  </p>
-               ))}
-            </div>
+            <SelectCustom
+               value={selectedOptionComp}
+               onChange={(value) => setSelectedOptionComp(value)}
+               titleSelect="Не выбран"
+               options={selectOptions}
+            />
             <div className={`${styles.flex} ${styles.aside_tabbox}`}>
-               <div>
-                  <p className={styles.aside_tasktext}>Приоритет</p>
-                  <p className={styles.aside_tabtext}>{task?.priority?.name}</p>
-               </div>
-               <div>
-                  <p className={styles.aside_tasktext}>Компонент</p>
-                  <p className={styles.aside_tabtext} style={{ backgroundColor: task?.component?.color }}>
-                     {task?.component?.name}
-                  </p>
-               </div>
-               <div>
-                  <p className={styles.aside_tasktext}>Тип</p>
-                  <p className={styles.aside_tabtext}>{task?.stage?.name}</p>
-               </div>
+               <MarkersTask priority={task?.priority} component={task?.component} stage={task?.stage} />
             </div>
             <div className={styles.flexcentre}>
                <span className={styles.aside_text}>Оценка</span>
@@ -91,7 +94,7 @@ export default function TaskContent({ task, link }: { task: TaskSingle | undefin
             <div className={styles.aside_infobox}>
                <div>
                   <p className={`${styles.aside_text} ${styles.pb8}`}>Эпик</p>
-                  <p className={styles.aside_text}>
+                  <p className={styles.aside_text} style={{ color: '#3787eb' }}>
                      #{task?.epic?.id} {task?.epic?.name}
                   </p>
                </div>
@@ -143,13 +146,17 @@ export default function TaskContent({ task, link }: { task: TaskSingle | undefin
             <div className={`${styles.aside_infobox} ${styles.pt16}`}>
                <div>
                   <p className={`${styles.aside_text} ${styles.pb8}`}>Layout Link</p>
-                  <p className={styles.aside_text}>{task?.layout_link || 'нет'}</p>
+                  <p className={styles.aside_text} style={{ color: '#3787eb' }}>
+                     {task?.layout_link || 'нет'}
+                  </p>
                </div>
             </div>
             <div className={`${styles.aside_infobox} ${styles.pt16}`}>
                <div>
                   <p className={`${styles.aside_text} ${styles.pb8}`}>Dev Link</p>
-                  <p className={styles.aside_text}>{task?.dev_link || 'нет'}</p>
+                  <p className={styles.aside_text} style={{ color: '#3787eb' }}>
+                     {task?.dev_link || 'нет'}
+                  </p>
                </div>
             </div>
          </div>

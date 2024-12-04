@@ -61,28 +61,11 @@ $custom-select-arrow: url("data:image/svg+xml,%3Csvg width='12' height='6' viewB
       height: 14px;
       margin-right: 6px;
    }
-   &_tasktext {
-      font-weight: 400;
-      font-size: 12px;
-      color: #abbed1;
-      padding-bottom: 8px;
-   }
    &_tabbox {
       padding: 24px 0;
       text-align-last: left;
    }
-   &_tabtext {
-      font-weight: 500;
-      font-size: 12px;
-      line-height: 133%;
-      text-align: center;
-      color: #fff;
-      border-radius: 4px;
-      padding: 1px 6px;
-      width: fit-content;
-      height: 18px;
-      background-color: #4761ee;
-   }
+
    &_text {
       font-weight: 400;
       font-size: 12px;
