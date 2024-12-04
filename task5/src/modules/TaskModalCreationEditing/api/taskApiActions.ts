@@ -1,28 +1,10 @@
-import { TaskMultiple, TaskSingle } from '@/api/data.types';
+import { TaskSingle, User } from '@/api/data.types';
 import { BASE_URL } from '@/consts';
 import { getCookie } from '@/utils/cookies';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-// export const tasksApi = createApi({
-//    reducerPath: 'projects',
-//    baseQuery: fetchBaseQuery({ baseUrl: BASE_URL, credentials: 'include' }),
-//    endpoints: (builder) => ({
-//       getTasks: builder.query<ProjectShort[], string>({
-//          query: (idTask) => {
-//             return {
-//                url: `/project/${idTask}/task`,
-//                headers: {
-//                   Authorization: `Bearer ${getCookie('token-auth')}`,
-//                },
-//             };
-//          },
-//       }),
-//    }),
-// });
-
-// export const { useGetTasksQuery } = tasksApi;
-
 const token = getCookie('token-auth');
+console.log(token);
 
 export const taskApiActions = createApi({
    reducerPath: 'api/single_task_actions',
@@ -37,6 +19,7 @@ export const taskApiActions = createApi({
             },
          }),
       }),
+
       updateTask: build.mutation<void, { id: number; body: Partial<TaskSingle> }>({
          query: ({ id, body }) => ({
             url: `/task/${id}`,
@@ -47,6 +30,7 @@ export const taskApiActions = createApi({
             },
          }),
       }),
+
       createTask: build.mutation<TaskSingle, Partial<TaskSingle>>({
          query: (slug) => ({
             url: `/project/${slug}/task`,
@@ -56,6 +40,7 @@ export const taskApiActions = createApi({
             },
          }),
       }),
+
       deleteTask: build.mutation<void, number>({
          query: (id) => ({
             url: `/task/${id}`,
@@ -65,9 +50,34 @@ export const taskApiActions = createApi({
             },
          }),
       }),
-      getTasks: build.query<TaskSingle[], string>({
-         query: (slug: string) => ({
-            url: `/project/${slug}/task`,
+
+      getTasks: build.query<TaskSingle[], { slug: string; filters?: Record<string, string | number | number[]> }>({
+         query: ({ slug, filters }) => {
+            const searchParams = new URLSearchParams();
+            if (filters) {
+               Object.entries(filters).forEach(([key, value]) => {
+                  if (Array.isArray(value)) {
+                     // Если значение — массив, добавляем каждый элемент
+                     value.forEach((v) => searchParams.append(`filter[${key}][]`, v.toString()));
+                  } else {
+                     // Если значение — строка или число
+                     searchParams.append(`filter[${key}][]`, value.toString());
+                  }
+               });
+            }
+            return {
+               url: `/project/${slug}/task?${searchParams.toString()}`,
+               headers: {
+                  Authorization: `Bearer ${token}`,
+               },
+            };
+         },
+      }),
+
+      getUsers: build.query<User[], string>({
+         query: (slug) => ({
+            url: `/project/${slug}/user`,
+            method: 'GET',
             headers: {
                Authorization: `Bearer ${token}`,
             },
@@ -82,4 +92,32 @@ export const {
    useCreateTaskMutation,
    useDeleteTaskMutation,
    useGetTasksQuery,
+   useGetUsersQuery,
 } = taskApiActions;
+
+// Использование фильтрации
+// const { data, error, isLoading } = useGetTasksQuery({
+//    slug: 'my-project',
+//    filters: { type_id: [1]},
+// });
+
+// const { data: tasks = [], error } = useGetTasksQuery({
+//    slug: 'project1',
+//    filters: { id: [5, 10, 15] }, // Несколько id
+// });
+
+// const { data, error, isLoading } = useGetTasksQuery({
+//    slug: 'my-project',
+//    filters: { type_id: []}, // Все значения
+// });
+
+// Это выполнит запрос с фильтрацией:
+//GET /project/my-project/task?filter[type_id]=1&filter[name]=Example%20Task
+
+// Без фильтрации
+// const {data: tasks = [],isLoading, error,} = useGetTasksQuery({
+//    slug: 'project1', // указываем только slug
+// });
+
+//getUsers
+//const { data: users, error, isLoading } = useGetUsersQuery('project2');

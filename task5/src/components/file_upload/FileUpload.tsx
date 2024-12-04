@@ -1,29 +1,44 @@
 import React, { useState } from 'react';
 import style from '@/components/file_upload/file-upload.module.scss';
 import Clipper from '@public/icons/clipper.svg';
+import { File } from '@/api/data.types';
 
 interface FileUploadProps {
-   files: string[];
-   onFilesChange: (files: string[]) => void;
+   files: File[];
+   onFilesChange: (files: File[]) => void;
    error?: string;
 }
 
 export default function FileUpload({ files, onFilesChange, error }: FileUploadProps) {
    const [isDragging, setIsDragging] = useState(false);
 
+   // Функция для проверки, существует ли файл с таким же именем или ссылкой
+   const isDuplicateFile = (newFile: File): boolean => {
+      return files.some((file) => file?.original_name === newFile?.original_name || file?.link === newFile?.link);
+   };
+
    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
       const newFiles = event.target.files;
       if (!newFiles) return;
 
-      const updatedFiles = [...files];
+      const updatedFiles: File[] = [...files];
+
       for (const file of Array.from(newFiles)) {
-         // Преобразование файла в URL
-         const fileUrl = URL.createObjectURL(file);
-         updatedFiles.push(fileUrl);
+         const newFile: File = {
+            id: undefined,
+            original_name: file.name,
+            link: URL.createObjectURL(file),
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString(),
+         };
+
+         if (!isDuplicateFile(newFile)) {
+            updatedFiles.push(newFile);
+         }
       }
 
-      onFilesChange(updatedFiles); // Обновляем файлы в форме
-      event.target.value = ''; // Сбрасываем поле для повторного выбора
+      onFilesChange(updatedFiles);
+      event.target.value = ''; // Сброс поля ввода
    };
 
    const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
@@ -40,31 +55,42 @@ export default function FileUpload({ files, onFilesChange, error }: FileUploadPr
       setIsDragging(false);
 
       const droppedFiles = event.dataTransfer.files;
-      const updatedFiles = [...files];
+      const updatedFiles: File[] = [...files];
       for (const file of Array.from(droppedFiles)) {
-         const fileUrl = URL.createObjectURL(file);
-         updatedFiles.push(fileUrl);
+         if (!file) continue;
+
+         const newFile: File = {
+            original_name: file.name,
+            link: URL.createObjectURL(file),
+            created_at: new Date().toISOString(),
+         };
+
+         // Проверяем на дубликаты перед добавлением
+         if (!isDuplicateFile(newFile)) {
+            updatedFiles.push(newFile);
+         }
       }
 
       onFilesChange(updatedFiles);
    };
 
-   const handleRemoveFile = (fileUrl: string) => {
-      const updatedFiles = files.filter((url) => url !== fileUrl);
+   const handleRemoveFile = (file: File) => {
+      const updatedFiles = files.filter((f) => f?.link !== file?.link);
       onFilesChange(updatedFiles);
    };
 
    return (
       <div className={style['files-upload']}>
+         {/* Предпросмотр загруженных файлов */}
          <div className={style['files-prev']}>
             {files.length > 0 && (
                <ul className={style['list']}>
-                  {files.map((fileUrl, index) => (
+                  {files.map((file, index) => (
                      <li className={style['item']} key={index}>
-                        <a href={fileUrl} target="_blank" rel="noopener noreferrer">
-                           {fileUrl}
+                        <a href={file?.link} target="_blank" rel="noopener noreferrer">
+                           {file?.original_name || 'Без имени'}
                         </a>
-                        <button type="button" onClick={() => handleRemoveFile(fileUrl)}>
+                        <button type="button" onClick={() => handleRemoveFile(file)}>
                            ✕
                         </button>
                      </li>
@@ -72,6 +98,8 @@ export default function FileUpload({ files, onFilesChange, error }: FileUploadPr
                </ul>
             )}
          </div>
+
+         {/* Зона загрузки файлов */}
          <div
             className={`${style['inp-wrp']} ${isDragging ? style['drag-active'] : ''}`}
             onDragOver={handleDragOver}
@@ -86,6 +114,27 @@ export default function FileUpload({ files, onFilesChange, error }: FileUploadPr
             </label>
             <input className={style['input']} id="file-upload" type="file" multiple onChange={handleFileChange} />
          </div>
+
+         {/* Ошибка (если есть) */}
+         {error && <div className={style['error']}>{error}</div>}
       </div>
    );
 }
+
+// Использование
+// const [files, setFiles] = useState<File[]>([]);
+
+//   const handleFilesChange = (newFiles: File[]) => {
+//      setFiles(newFiles);
+//   };
+
+// return (
+//    <div>
+//       <h1>Загрузка файлов</h1>
+//       <FileUpload
+//          files={files}
+//          onFilesChange={handleFilesChange}
+//          error={files.length === 0 ? 'Необходимо загрузить хотя бы один файл' : undefined}
+//       />
+//    </div>
+// );

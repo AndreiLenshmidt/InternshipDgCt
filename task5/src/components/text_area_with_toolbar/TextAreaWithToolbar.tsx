@@ -7,7 +7,7 @@ import ListBulleted from '@public/icons/list-bulleted.svg';
 import ListNumbered from '@public/icons/list-numbered.svg';
 
 interface TextAreaWithToolbarProps {
-   value: string;
+   value: string | undefined;
    onChange: (value: string) => void;
    error?: string;
 }

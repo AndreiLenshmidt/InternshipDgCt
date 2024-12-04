@@ -4,8 +4,8 @@ import style from '@/components/calendar_custom/calendar-custom.module.scss';
 import CalendarIcon from '@public/icons/calendar.svg';
 
 interface CalendarCustomProps {
-   value?: string;
-   onChange: (date: string) => void;
+   value?: { startDate?: string; endDate?: string };
+   onChange: (dates: { startDate: string | null; endDate: string | null }) => void;
 }
 
 type TileDisabledParams = {
@@ -13,30 +13,27 @@ type TileDisabledParams = {
 };
 
 export default function CalendarCustom({ value, onChange }: CalendarCustomProps) {
-   const [startDate, setStartDate] = useState<Date | null>(value ? new Date(value) : null);
-   const [endDate, setEndDate] = useState<Date | null>(null);
-   const [animationState, setAnimationState] = useState<'open' | 'hidden' | null>(null);
+   const [startDate, setStartDate] = useState<Date | null>(value?.startDate ? new Date(value.startDate) : null);
+   const [endDate, setEndDate] = useState<Date | null>(value?.endDate ? new Date(value.endDate) : null);
    const [errorsShow, setErrorsShow] = useState<string | null>(null);
-   const [dateSelected, setDateSelected] = useState<boolean>(false); // Флаг для отслеживания выбора даты
-   const [showStartCalendar, setShowStartCalendar] = useState<boolean>(false); // Состояние для открытия календаря начала
-   const [showEndCalendar, setShowEndCalendar] = useState<boolean>(false); // Состояние для открытия календаря завершения
+   const [showStartCalendar, setShowStartCalendar] = useState<boolean>(false); // Состояние для показа календаря начала
+   const [showEndCalendar, setShowEndCalendar] = useState<boolean>(false); // Состояние для показа календаря завершения
    const calendarRef = useRef<HTMLDivElement | null>(null);
 
-   // Выбор даты
+   // Обработчик выбора даты (для начала и завершения)
    const handleDateClick = (date: Date) => {
       if (showStartCalendar) {
          setStartDate(date);
-         onChange(date.toISOString());
+         onChange({ startDate: date.toISOString(), endDate: endDate ? endDate.toISOString() : null });
+         setShowStartCalendar(false);
       } else if (showEndCalendar) {
          setEndDate(date);
-         onChange(date.toISOString());
+         onChange({ startDate: startDate ? startDate.toISOString() : null, endDate: date.toISOString() });
+         setShowEndCalendar(false);
       }
-      setShowStartCalendar(false); // Закрыть календарь после выбора
-      setShowEndCalendar(false); // Закрыть календарь после выбора
    };
 
-   // Закрытие календаря при клике вне его области
-
+   // Обработчик клика вне области календаря
    const handleClickOutside = (event: MouseEvent) => {
       if (calendarRef.current && !calendarRef.current.contains(event.target as Node)) {
          setShowStartCalendar(false);
@@ -44,133 +41,55 @@ export default function CalendarCustom({ value, onChange }: CalendarCustomProps)
       }
    };
 
-   // Обработчик клика на документ
    useEffect(() => {
-      if (calendarRef.current) {
-         const handle = (event: MouseEvent) => handleClickOutside(event);
-         document.addEventListener('mousedown', handle);
-
-         // Убираем обработчик при размонтировании компонента
-         return () => {
-            document.removeEventListener('mousedown', handle);
-         };
-      }
+      const handle = (event: MouseEvent) => handleClickOutside(event);
+      document.addEventListener('mousedown', handle);
+      return () => {
+         document.removeEventListener('mousedown', handle);
+      };
    }, []);
 
-   // Добавляем классы
+   // Добавление классов для ячеек
    const tileClassName = ({ date }: TileDisabledParams) => {
       const startDateObj = startDate ? new Date(startDate) : null;
       const endDateObj = endDate ? new Date(endDate) : null;
 
-      // Если есть startDate и текущий день раньше, чем startDate, блокируем эту дату
-      if (startDateObj && date < startDateObj) {
-         return style.disabledDate; // Класс для блокировки
-      }
-
-      // Если текущий день равен startDate, применяем стиль startDate
-      if (startDateObj && date.toDateString() === startDateObj.toDateString()) {
-         return style.startDate;
-      }
-
-      // Если есть и startDate, и endDate, и текущий день в диапазоне между ними
-      if (startDateObj && endDateObj && date > startDateObj && date < endDateObj) {
-         return style.range;
-      }
-
-      // Если текущий день равен endDate, применяем стиль endDate
-      if (endDateObj && date.toDateString() === endDateObj.toDateString()) {
-         return style.endDate;
-      }
-
+      if (startDateObj && date < startDateObj) return style.disabledDate;
+      if (startDateObj && date.toDateString() === startDateObj.toDateString()) return style.startDate;
+      if (startDateObj && endDateObj && date > startDateObj && date < endDateObj) return style.range;
+      if (endDateObj && date.toDateString() === endDateObj.toDateString()) return style.endDate;
       return '';
    };
 
-   // Отключение ячеек календаря
+   // Отключение выбора недопустимых дат
    const tileDisabled = ({ date }: TileDisabledParams) => {
       const today = new Date();
 
-      // Разрешаем выбирать все даты начиная с сегодняшнего дня, включая startDate
-      if (date < today) {
-         return true; // Блокируем все даты до сегодняшнего дня
-      }
+      if (date < today) return true;
 
-      // Дата начала не может быть больше даты завершения!
-      if (showStartCalendar) {
-         if (endDate && date > endDate) {
-            return true;
-         }
-      }
+      if (showStartCalendar && endDate && date > endDate) return true;
 
-      // Разрешаем выбор startDate всегда, даже если endDate выбрана
-      if (showStartCalendar) {
-         return false;
-      }
+      if (showEndCalendar && startDate && date < new Date(startDate)) return true;
 
-      // Для выбора endDate, проверяем, чтобы оно не было раньше startDate
-      if (startDate && date < new Date(startDate)) {
-         return true; // Блокируем дату завершения, которая раньше startDate
-      }
-
-      return false; // Разрешаем все остальные даты
+      return false;
    };
 
-   // Показать календарь с анимацией // ???
-   // const openCalendar = (type: 'start' | 'end') => {
-   //   setShowCalendar(type);
-   //   setAnimationState('open');
-   // };
-
-   // Скрыть календарь с анимацией // ???
-   const closeCalendar = () => {
-      setShowStartCalendar(false);
-      setShowEndCalendar(false);
-      setAnimationState('hidden');
-      setTimeout(() => {
-         setShowStartCalendar(false); // Закрыть календарь после выбора
-         setShowEndCalendar(false);
-      }, 300);
-   };
-
-   // Обработчик клика по полю "Дата начала"
-   const handleInputClick = () => {
-      // // Если календарь уже открыт для выбора даты начала, и дата не была выбрана
-      // if (showCalendar === 'start' && !dateSelected) {
-      //   closeCalendar(); // Закрыть календарь
-      // } else {
-      //   setShowCalendar('start'); // Открыть календарь для выбора даты начала
-      // }
-   };
-
+   // Переключение календарей
    const handleStartDateClick = () => {
-      if (showStartCalendar) {
-         setShowStartCalendar(false); // Закрыть, если уже открыт
-      } else {
-         setAnimationState('open');
-         setShowStartCalendar(true); // Открыть календарь для даты начала
-         setShowEndCalendar(false); // Закрыть календарь для даты завершения
-      }
+      setShowStartCalendar(!showStartCalendar);
+      setShowEndCalendar(false);
    };
 
    const handleEndDateClick = () => {
-      if (showEndCalendar) {
-         setShowEndCalendar(false); // Закрыть, если уже открыт
-      } else {
-         setAnimationState('open');
-         setShowEndCalendar(true); // Открыть календарь для даты завершения
-         setShowStartCalendar(false); // Закрыть календарь для даты начала
-      }
+      setShowEndCalendar(!showEndCalendar);
+      setShowStartCalendar(false);
    };
 
    return (
       <div className={style['date-range-picker']} ref={calendarRef}>
          <div className={style['inputs-date']}>
-            <div
-               className={style['input-wrp']}
-               onClick={() => {
-                  handleStartDateClick();
-                  setShowStartCalendar(!showStartCalendar);
-               }}
-            >
+            {/* Дата начала */}
+            <div className={style['input-wrp']} onClick={handleStartDateClick}>
                <label>Дата начала</label>
                <div className={style['inp']}>
                   <input
@@ -178,20 +97,18 @@ export default function CalendarCustom({ value, onChange }: CalendarCustomProps)
                      value={startDate ? startDate.toLocaleDateString() : ''}
                      placeholder="Дата начала"
                      readOnly
-                     // onClick={() => openCalendar('start')}
                   />
                   <span className={style['calendar-icon']}>
                      <CalendarIcon />
                   </span>
 
-                  {/* ---------------- Дата Начала --------------------- */}
                   {showStartCalendar && (
                      <div className="calendar-wrapper">
                         <Calendar
                            locale="ru"
                            className="custom-calendar"
                            value={startDate || new Date()}
-                           onClickDay={(date) => handleDateClick(date)}
+                           onClickDay={handleDateClick}
                            formatMonthYear={(locale, date) =>
                               `${date.toLocaleString(locale, { month: 'long' })} ${date.getFullYear()}`
                            }
@@ -201,18 +118,10 @@ export default function CalendarCustom({ value, onChange }: CalendarCustomProps)
                      </div>
                   )}
                </div>
-
-               {errorsShow ? <p className={style.error}>{errorsShow}</p> : ''}
             </div>
 
             {/* Дата завершения */}
-            <div
-               className={style['input-wrp']}
-               onClick={() => {
-                  handleEndDateClick();
-                  setShowEndCalendar(!showEndCalendar);
-               }}
-            >
+            <div className={style['input-wrp']} onClick={handleEndDateClick}>
                <label>Дата завершения</label>
                <div className={style['inp']}>
                   <input
@@ -220,20 +129,18 @@ export default function CalendarCustom({ value, onChange }: CalendarCustomProps)
                      value={endDate ? endDate.toLocaleDateString() : ''}
                      placeholder="Дата завершения"
                      readOnly
-                     // onClick={() => openCalendar('end')}
                   />
                   <span className={style['calendar-icon']}>
                      <CalendarIcon />
                   </span>
 
-                  {/* Календарь для выбора даты завершения */}
                   {showEndCalendar && (
                      <div className="calendar-wrapper">
                         <Calendar
                            locale="ru"
                            className="custom-calendar"
                            value={endDate || new Date()}
-                           onClickDay={(date) => handleDateClick(date)}
+                           onClickDay={handleDateClick}
                            formatMonthYear={(locale, date) =>
                               `${date.toLocaleString(locale, { month: 'long' })} ${date.getFullYear()}`
                            }
@@ -243,10 +150,16 @@ export default function CalendarCustom({ value, onChange }: CalendarCustomProps)
                      </div>
                   )}
                </div>
-
-               {errorsShow ? <p className={style.error}>{errorsShow}</p> : ''}
             </div>
          </div>
       </div>
    );
 }
+
+// Использование
+// const handleDateChange = (dates: { startDate: string | null; endDate: string | null }) => {
+//    console.log('Дата начала:', dates.startDate);
+//    console.log('Дата завершения:', dates.endDate);
+// };
+
+// return <CalendarCustom value={{ startDate: '2024-12-01', endDate: '2024-12-10' }} onChange={handleDateChange} />;

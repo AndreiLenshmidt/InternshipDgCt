@@ -168,13 +168,23 @@
    align-items: center;
    justify-content: space-between;
    gap: 16px;
+
+   @media (max-width: 1050px) {
+      flex-wrap: wrap;
+      justify-content: center;
+   }
 }
 
 .form-select {
    position: relative;
    top: 0;
    left: 0;
-   flex: 1 1 100%;
+   flex: 1 1 285px;
+
+   @media (max-width: 1050px) {
+      flex-wrap: wrap;
+      justify-content: center;
+   }
 
    & div {
       max-width: 100%;

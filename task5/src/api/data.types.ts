@@ -239,6 +239,7 @@ export interface TaskSingle {
    stage?: Stage;
    /** Тип задачи */
    task_type?: TaskType;
+
    users?: User[];
    /** Проект, одиночная выборка */
    project?: ProjectSingle;

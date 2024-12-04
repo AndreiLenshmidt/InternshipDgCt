@@ -2,47 +2,40 @@ import React, { useEffect, useRef, useState } from 'react';
 import style from '@/components/select_custom_checkbox/SelectCustomCheckbox.module.scss';
 import ArrowDown from '@public/icons/arrow-down-select.svg';
 import Close from '@public/icons/close.svg';
+import { User } from '@/api/data.types';
 
-interface Option<T> {
-   label: string;
-   value: T;
-}
-
-interface SelectCustomProps<T> {
-   value: T[];
-   onChange: (newValue: T[]) => void; // Функция для обновления значений
-   options: Option<T>[];
+interface SelectCustomProps {
+   value: User[];
+   onChange: (newValue: User[]) => void; // Функция для обновления значений
+   options: User[];
    label?: string;
    titleSelect?: string; // Заголовок, если ничего не выбрано
    required?: boolean;
 }
 
-export default function SelectCustomCheckbox<T>({
+export default function SelectCustomCheckbox({
    value,
    onChange,
    options,
    label,
    titleSelect = 'Выберите значение',
    required = false,
-}: SelectCustomProps<T>) {
+}: SelectCustomProps) {
    const [isOpen, setIsOpen] = useState(false);
    const dropdownRef = useRef<HTMLDivElement>(null);
-   // const [valueMain, setValueMain] = useState<T[]>([]);
 
    // Переключение состояния выбранности
-   const toggleOption = (optionValue: T) => {
-      if (value.includes(optionValue)) {
-         onChange(value.filter((item) => item !== optionValue)); // Удалить значение
+   const toggleOption = (optionValue: User) => {
+      if (value.some((item) => item.id === optionValue.id)) {
+         onChange(value.filter((item) => item.id !== optionValue.id)); // Удалить значение
       } else {
          onChange([...value, optionValue]); // Добавить значение
       }
    };
 
    // Функция для удаления элемента
-   const removeItem = (valueToRemove: T) => {
-      console.log(value, 'value --- SelectCustomCheckbox');
-
-      onChange(value.filter((v) => v !== valueToRemove)); // Удаляем из массива выбранных значений
+   const removeItem = (valueToRemove: User) => {
+      onChange(value.filter((v) => v.id !== valueToRemove.id)); // Удаляем из массива выбранных значений
    };
 
    // Закрытие при клике вне компонента
@@ -62,9 +55,6 @@ export default function SelectCustomCheckbox<T>({
       };
    }, [isOpen]);
 
-   // console.log(value, 'value --- SelectCustomCheckbox');
-   // console.log(options, 'options --- SelectCustomCheckbox');
-
    return (
       <div className={style['select-custom']} ref={dropdownRef}>
          {/* Заголовок */}
@@ -82,24 +72,21 @@ export default function SelectCustomCheckbox<T>({
             <div className={style['dropdown-header-wrp']}>
                <div className={style['dropdown-header']}>
                   {value.length > 0
-                     ? options
-                          .filter((option) => value.includes(option.value))
-                          .map((option, index) => (
-                             <span className={style['dropdown-item-header']} key={index}>
-                                {option.label}
-
-                                {/* Крестик для удаления */}
-                                <span
-                                   className={style['close-wrp']}
-                                   onClick={(e) => {
-                                      e.stopPropagation();
-                                      removeItem(option.value);
-                                   }}
-                                >
-                                   <Close />
-                                </span>
+                     ? value.map((user) => (
+                          <span className={style['dropdown-item-header']} key={user.id}>
+                             {user.name} {user.surname}
+                             {/* Крестик для удаления */}
+                             <span
+                                className={style['close-wrp']}
+                                onClick={(e) => {
+                                   e.stopPropagation();
+                                   removeItem(user);
+                                }}
+                             >
+                                <Close />
                              </span>
-                          ))
+                          </span>
+                       ))
                      : titleSelect}
                </div>
             </div>
@@ -112,17 +99,17 @@ export default function SelectCustomCheckbox<T>({
          {/* Список опций */}
          {isOpen && (
             <ul className={style['dropdown-list']}>
-               {options.map((option, ind) => (
-                  <li key={ind} className={style['dropdown-item']}>
+               {options.map((user) => (
+                  <li key={user.id} className={style['dropdown-item']}>
                      <label className={style['checkbox-label']}>
                         <input
                            type="checkbox"
-                           checked={value.includes(option.value)}
-                           onChange={() => toggleOption(option.value)}
+                           checked={value.some((v) => v.id === user.id)}
+                           onChange={() => toggleOption(user)}
                            className={style['checkbox-input']}
                         />
                         <span className={style['checkbox-custom']}></span>
-                        {option.label}
+                        {user.name} {user.surname}
                      </label>
                   </li>
                ))}
@@ -131,3 +118,23 @@ export default function SelectCustomCheckbox<T>({
       </div>
    );
 }
+
+// Использование
+// const users: User[] = [
+//    { id: 1, name: 'Иван', surname: 'Иванов', email: 'ivanov@mail.com' },
+//    { id: 2, name: 'Мария', surname: 'Петрова', email: 'petrova@mail.com' },
+//    { id: 3, name: 'Анна', surname: 'Сидорова', email: 'sidorova@mail.com' },
+// ];
+
+// const [selectedUsers, setSelectedUsers] = useState<User[]>([]);
+
+// return (
+//    <SelectCustomCheckbox
+//       value={selectedUsers}
+//       onChange={setSelectedUsers}
+//       options={users}
+//       label="Выберите пользователей"
+//       titleSelect="Нет выбранных пользователей"
+//       required
+//    />
+// );

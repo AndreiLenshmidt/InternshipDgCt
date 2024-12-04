@@ -1,18 +1,19 @@
 import React, { useState, useEffect, useRef } from 'react';
 import style from '@/components/select_custom/select-custom.module.scss';
 import ArrowDown from '@public/icons/arrow-down-select.svg';
+import { Component, Priority, Stage, TaskType } from '@/api/data.types';
 
 type SelectCustomProps<T> = {
-   value: T;
-   onChange: (value: T) => void;
-   options: T[]; // Опции для выпадающего списка
+   value: TaskType | Stage | Priority | Component | undefined;
+   onChange: (value: TaskType | Stage | Priority | Component | undefined) => void;
+   options: TaskType[] | Stage[] | Priority[] | Component[] | undefined; // Опции для выпадающего списка
    titleSelect: string; // Подсказка при выборе
    label?: string; // Текст для `<label>`
    required?: boolean; // Указание, обязательное поле или нет
    errors?: string; // Сообщение об ошибке
    isLoading?: boolean; // Флаг загрузки
    fetchError?: string; // Сообщение об ошибке при загрузке
-   optionRenderer?: (option: T) => React.ReactNode; // Позволяет кастомизировать отображение опций
+   optionRenderer?: (option: TaskType | Stage | Priority | Component | undefined) => React.ReactNode; // Позволяет кастомизировать отображение опций
 };
 
 export default function SelectCustom<T>({
@@ -27,12 +28,8 @@ export default function SelectCustom<T>({
    fetchError,
    optionRenderer,
 }: SelectCustomProps<T>) {
-   const [taskTypes, setTaskTypes] = useState<string[]>([]); //<{ label: string; value: string }[]>
-   const [loading, setLoading] = useState<boolean>(true);
    const [isOpen, setIsOpen] = useState(false);
    const dropdownRef = useRef<HTMLDivElement>(null);
-
-   // const [fetchError, setFetchError] = useState<string>('');
 
    // Закрытие при клике вне компонента
    useEffect(() => {
@@ -50,13 +47,6 @@ export default function SelectCustom<T>({
          document.removeEventListener('mousedown', handleClickOutside);
       };
    }, [isOpen]);
-
-   useEffect(() => {
-      setTaskTypes(['Задача', 'Баг', 'Улучшение', 'Новая функциональность', 'Эпик', 'Релиз', 'Бэклог']);
-   }, []);
-
-   // console.log(taskTypes, 'taskTypes');
-   // console.log(options, 'options');
 
    return (
       <div className={style['select-custom']} ref={dropdownRef}>
@@ -82,18 +72,19 @@ export default function SelectCustom<T>({
 
                {isOpen && (
                   <ul className={style['dropdown-list']}>
-                     {options.map((option, index) => (
-                        <li
-                           className={style['dropdown-item']}
-                           key={index}
-                           onClick={() => {
-                              onChange(option);
-                              setIsOpen(false);
-                           }}
-                        >
-                           {optionRenderer ? optionRenderer(option) : String(option)}
-                        </li>
-                     ))}
+                     {options &&
+                        options.map((option, index) => (
+                           <li
+                              className={style['dropdown-item']}
+                              key={index}
+                              onClick={() => {
+                                 onChange(option);
+                                 setIsOpen(false);
+                              }}
+                           >
+                              {optionRenderer ? optionRenderer(option) : option.name}
+                           </li>
+                        ))}
                   </ul>
                )}
                <span className={`${style['dropdown-arrow']} ${isOpen ? style['open'] : ''}`}>
