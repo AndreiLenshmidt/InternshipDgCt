@@ -19,7 +19,9 @@ export function ProjectCard({ project }: PropsType) {
          </div>
          <img src={project?.logo?.link ? BASE_URL + project?.logo?.link : '/media/ProjectLogo.svg'} alt="." />
          <h5>{project?.name || 'DS Внутренние проекты'}</h5>
-         <div className={style.hint}>{project?.user_count ? `${project.user_count} сотрудников` : 'TODO'}</div>
+         <div className={style.hint}>
+            {project?.user_count ? `${project.user_count} сотрудников` : 'Сотрудников не найдено'}
+         </div>
       </Link>
    );
 }
