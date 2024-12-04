@@ -13,9 +13,7 @@ export function ProjectPage() {
    //
    const { width } = useResize();
 
-   // const { data: projects = { data: [] }, isLoading, isSuccess, isError, error } = useGetProjectsQuery();
-   // const { data } = projects;
-   const { data: { data: projects } = {data: []}, isLoading, isSuccess, isError, error } = useGetProjectsQuery();
+   const { data: { data: projects } = { data: [] }, isLoading, isSuccess, isError, error } = useGetProjectsQuery();
 
    useMemo(() => {
       const columnsCount = Math.floor((width - 272) / 264); // 208 - on `5/1168`
@@ -35,7 +33,7 @@ export function ProjectPage() {
          <br />
          {isSuccess ? 'isSuccess' : 'noSuccess'}
          <br />
-         {isError ? 'error' : 'no-error'}
+         {isError ? error : 'no-error'}
          <br />
          {/* {projects ? projects.data : '___'} */}
 
@@ -60,9 +58,11 @@ export function ProjectPage() {
 
          <div className={style.favorite_projects}>
             {/* {JSON.stringify(projects.data)} */}
-            {projects.filter(proj => proj.is_favorite).map(proj => {
-               return <ProjectCard />;
-            })}
+            {projects
+               .filter((proj) => proj.is_favorite)
+               .map((proj) => {
+                  return <ProjectCard key={proj.id} project={proj} />;
+               })}
             <ProjectCard />
             <ProjectCard />
          </div>
@@ -70,6 +70,11 @@ export function ProjectPage() {
          <hr />
 
          <div className={style.projects}>
+            {projects
+               .filter((proj) => !proj.is_favorite)
+               .map((proj) => {
+                  return <ProjectCard key={proj.id} project={proj} />;
+               })}
             <ProjectCard />
             <ProjectCard />
             <ProjectCard />

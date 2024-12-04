@@ -36,7 +36,7 @@
       width: 20px;
       opacity: 0;
       transition: 0.5s;
-      mask: url('/images/icons/favorite-icon__hovered.svg') no-repeat;
+      mask: url('/icons/favorite-icon__hovered.svg') no-repeat;
 
       svg {
          left: 1px;

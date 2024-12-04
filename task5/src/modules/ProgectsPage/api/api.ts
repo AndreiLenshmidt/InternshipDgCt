@@ -4,12 +4,13 @@ import { BASE_URL } from '@/consts'
 import { getCookie } from '@/utils/cookies';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
+export type ProjectItem = ProjectShort & { is_favorite: boolean, user_count: number, is_archived: 0 | 1 };
 
 export const projectsApi = createApi({
    reducerPath: 'projects',
    baseQuery: fetchBaseQuery({ baseUrl: BASE_URL, credentials: 'include' }),
    endpoints: (builder) => ({
-      getProjects: builder.query<{ data: Array<ProjectShort & { is_favorite: boolean, user_count: number, is_archived: 0 | 1 }> }, void>({
+      getProjects: builder.query<{ data: Array<ProjectItem> }, void>({
          query: () => {
             return {
                url: `/project`,
