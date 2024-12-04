@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import style from '@/components/SelectCustomCheckbox/SelectCustomCheckbox.module.scss';
+import style from '@/components/select_custom_checkbox/SelectCustomCheckbox.module.scss';
 import ArrowDown from '@public/icons/arrow-down-select.svg';
 import Close from '@public/icons/close.svg';
 

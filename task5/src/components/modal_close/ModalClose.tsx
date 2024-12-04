@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import Close from '@public/icons/close.svg';
-import styles from '@/components/ModalClose/ModalClose.module.scss';
+import styles from '@/components/modal_close/modal-close.module.scss';
 
 type ModalProps = {
    title: string;
@@ -38,17 +38,16 @@ export default function ModalClose({ title, isOpen, onClose, onConfirm }: ModalP
          <div className={styles.modal}>
             <div className={styles.header}>
                <h2 className={styles.title}>{title}</h2>
-               <button className={styles['close-button']} onClick={onClose}>
-                  {/* &times; */}
+               <button className={styles['close-button']} type="button" onClick={onClose}>
                   <Close />
                </button>
             </div>
 
             <div className={styles.footer}>
-               <button className={styles.button} onClick={onConfirm}>
+               <button className={styles.button} type="button" onClick={onConfirm}>
                   Да
                </button>
-               <button className={styles.button} onClick={onClose}>
+               <button className={styles.button} type="button" onClick={onClose}>
                   Нет
                </button>
             </div>

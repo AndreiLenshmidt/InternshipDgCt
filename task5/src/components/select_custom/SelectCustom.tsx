@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import style from '@/components/SelectCustom/SelectCustom.module.scss';
+import style from '@/components/select_custom/select-custom.module.scss';
 import ArrowDown from '@public/icons/arrow-down-select.svg';
 
 type SelectCustomProps<T> = {

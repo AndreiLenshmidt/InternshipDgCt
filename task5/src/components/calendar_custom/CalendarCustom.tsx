@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Calendar from 'react-calendar';
-import style from '@/components/CalendarCustom/CalendarCustom.module.scss';
+import style from '@/components/calendar_custom/calendar-custom.module.scss';
 import CalendarIcon from '@public/icons/calendar.svg';
 
 interface CalendarCustomProps {

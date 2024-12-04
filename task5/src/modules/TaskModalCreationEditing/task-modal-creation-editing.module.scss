@@ -195,3 +195,73 @@
       }
    }
 }
+
+.form-description {
+   p {
+      position: static;
+      margin-top: 4px;
+      margin-bottom: 10px;
+   }
+}
+
+// Ссылки
+.form-links-files {
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   gap: 16px;
+
+   font-family: var(--font-family);
+   font-weight: 400;
+   font-size: 14px;
+   line-height: 120%;
+   color: #a6a6a6;
+
+   margin-bottom: 32px;
+
+   .form-link-item {
+      label {
+      }
+
+      input {
+         font-size: 16px;
+         line-height: 143%;
+         color: #222;
+         background-color: #f4f6f8;
+         margin-top: 6px;
+      }
+   }
+}
+
+// кнопки Создать Добавить Отменить
+.actions {
+   display: flex;
+   gap: 8px;
+
+   button {
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 171%;
+      text-align: center;
+
+      border-radius: 6px;
+      padding: 10px 22px;
+      width: 130px;
+      height: 48px;
+
+      transition: opacity 0.3s ease-in-out;
+
+      &:hover {
+         opacity: 0.5;
+      }
+   }
+
+   .btn_blue {
+      color: #fff;
+      background-color: #3787eb;
+   }
+   .btn {
+      color: #3787eb;
+      border: 1px solid #3787eb;
+   }
+}

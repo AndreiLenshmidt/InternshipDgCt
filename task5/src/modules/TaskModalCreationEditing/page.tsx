@@ -1,19 +1,29 @@
 import React, { useState, useEffect, ChangeEvent } from 'react';
 import Close from '@public/icons/close.svg';
-import style from '@/modules/TaskModalCreationEditing/TaskModalCreationEditing.module.scss';
-import ModalClose from '@/components/ModalClose';
-import SelectCustom from '@/components/SelectCustom';
-import SelectCustomCheckbox from '@/components/SelectCustomCheckbox';
+import style from '@/modules/TaskModalCreationEditing/task-modal-creation-editing.module.scss';
+import ModalClose from '@/components/modal_close/ModalClose';
+import SelectCustom from '@/components/select_custom/SelectCustom';
+import SelectCustomCheckbox from '@/components/select_custom_checkbox/select-custom-checkbox';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import CalendarCustom from '@/components/CalendarCustom';
-import TextAreaWithToolbar from '@/components/TextAreaWithToolbar';
+import CalendarCustom from '@/components/calendar_custom/CalendarCustom';
+import TextAreaWithToolbar from '@/components/text_area_with_toolbar/TextAreaWithToolbar';
+import FileUpload from '@/components/file_upload/FileUpload';
+import { useGetProjectsQuery } from '../ProjectsPage/api/api';
+import { useCreateTaskMutation, useGetTasksQuery, useUpdateTaskMutation } from './api/taskApiActions';
+import { useGetOAuthTokenMutation } from '../AuthPage/api/authApi';
+import { useGetTaskByTaskIdQuery } from '../TaskPage/api/taskApi';
+import task from '@/pages/projects/kanban/task';
+import { useOptimisticDeleteTask } from './utils/useOptimisticDeleteTask';
+import { useDispatch } from 'react-redux';
+import { useOptimisticCreateTask } from './utils/useOptimisticCreateTask';
 
 interface TaskModalCreationEditingProps {
    isOpen: boolean;
    onClose: () => void;
-   taskId?: string; // Если передан, значит редактируем задачу
+   slug: string;
+   taskId?: number; // Если передан, значит редактируем задачу
 }
 
 type FormData = {
@@ -28,10 +38,13 @@ type FormData = {
    startDate: string;
    endDate: string;
    description: string;
-   fileLinks: string[];
+   fileLinks?: string[];
+   layoutLink?: string;
+   markupLink?: string;
+   devLink?: string;
 };
 
-export default function TaskModalCreationEditing({ isOpen, onClose, taskId }: TaskModalCreationEditingProps) {
+export default function TaskModalCreationEditing({ isOpen, onClose, slug, taskId }: TaskModalCreationEditingProps) {
    const [title, setTitle] = useState('');
    const [taskType, setTaskType] = useState('');
    const [selectedOptionTasks, setSelectedOptionTasks] = useState('');
@@ -59,12 +72,28 @@ export default function TaskModalCreationEditing({ isOpen, onClose, taskId }: Ta
    const [itemsOptions, setItemsOptions] = useState([]);
 
    const [valueMain, setValueMain] = useState('');
-   const [error, setError] = useState('');
+   // const [error, setError] = useState('');
    const [isTouched, setIsTouched] = useState(false);
 
    const [isModalOpen, setModalOpen] = useState(false);
 
-   // схема валидации min(3, 'Ошибка'),
+   const dispatch = useDispatch();
+   // Получаем данные
+   // const { data, isLoading, isSuccess } = useGetTaskByTaskIdQuery(7); // taskId !!!
+
+   // const { data, error, isLoading } = useGetTasksQuery('8'); // TaskSingle taskId
+   // console.log(data, isLoading, isSuccess, '------------- data, isLoading, isSuccess ----------');
+
+   const { data: projects = [], isLoading } = useGetProjectsQuery();
+   console.log(projects, '------------- projects ,isLoading----------');
+
+   // dispatch(taskApi.util.resetApiState());
+   const { data: tasks = [] } = useGetTasksQuery('project2');
+   console.log(tasks, '------------- tasks,  ----------');
+
+   // !!! ===================================================================================
+
+   // схема валидации
    const formSchema = z.object({
       title: z.string().min(3, 'Ошибка'),
       selectedOptionTasks: z.string().min(1, 'Тип задачи обязателен'),
@@ -95,7 +124,26 @@ export default function TaskModalCreationEditing({ isOpen, onClose, taskId }: Ta
 
       // описание
       description: z.string().min(10, 'Описание должно содержать не менее 10 символов'),
+
+      // ссылки
       fileLinks: z.array(z.string().url('Введите корректный URL')).optional(),
+
+      // ссылки URL
+      layoutLink: z
+         .string()
+         .url('Введите корректный URL')
+         .refine((value) => value.startsWith('http'), 'Ссылка должна начинаться с http')
+         .optional(),
+      markupLink: z
+         .string()
+         .url('Введите корректный URL')
+         .refine((value) => value.startsWith('http'), 'Ссылка должна начинаться с http')
+         .optional(),
+      devLink: z
+         .string()
+         .url('Введите корректный URL')
+         .refine((value) => value.startsWith('http'), 'Ссылка должна начинаться с http')
+         .optional(),
    });
 
    //
@@ -121,12 +169,65 @@ export default function TaskModalCreationEditing({ isOpen, onClose, taskId }: Ta
          endDate: '',
          description: '',
          fileLinks: [],
+         layoutLink: '',
+         markupLink: '',
+         devLink: '',
       },
    });
+
+   // !!! ===================================================================================
+   // Создать задачу -------------------------------------------------
+   const handleCreate = useOptimisticCreateTask();
+   // const [taskName, setTaskName] = useState('');
+
+   // const handleSubmit = () => {
+   //    handleCreate(slug,{ name: taskName, description: 'Temporary description' TaskSingle  });
+   // };
+
+   //  <input
+   //     type="text"
+   //     value={taskName}
+   //     onChange={(e) => setTaskName(e.target.value)}
+   // />
+   // <button onClick={handleSubmit}>Create Task</button>
+
+   // Обновить данные --------------------------------------------------------
+   const { refetch } = useGetTaskByTaskIdQuery(4); // taskId
+   // const handleUpdate = async () => {
+   //    await updateTask({ id: taskId, body: { name: 'New Name' } });
+   //    refetch(); // Обновление данных после успешного запроса
+   // };
+
+   // Редактировать (обновить) задачу -------------------------------------------
+   const [updateTask, { isLoading: isUpdating, error }] = useUpdateTaskMutation();
+
+   // const handleUpdate = async () => {
+   //    try {
+   //       await updateTask({
+   //          id: taskId,
+   //          body: {
+   //             name: 'Updated Task Name',
+   //             description: 'Updated Task Description',
+   //          },
+   //       }).unwrap(); // .unwrap() для обработки ошибок
+   //       alert('Task updated successfully!');
+   //    } catch (err) {
+   //       console.error('Failed to update the task:', err);
+   //    }
+   // };
+
+   // Удалить задачу -------------------------------------------------------------
 
    // отправляем данные формы -------------------------------------------------
    const onSubmit = (data: FormData) => {
       console.log(data);
+
+      // async (formData: LoginRequest) => {
+      //    const paylord = await login(formData);
+      //    setAuthToken(paylord.data);
+      //    setCookie('token-auth', paylord.data?.token);
+      //    setTimeout(() => router.replace('/projects', { scroll: false }), 2000);
+      // };
    };
 
    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -138,8 +239,39 @@ export default function TaskModalCreationEditing({ isOpen, onClose, taskId }: Ta
       }
    };
 
-   // Загрузка данных из API переделать берем из Redux??? !!!
+   // Загрузка данных из API ----------------------------- !!!
    useEffect(() => {
+      //store useGetOAuthTokenMutation
+      // const { data: projects = [], isLoading, isSuccess, isError, error } = useGetProjectsQuery();
+      // console.log(projects, isLoading, isSuccess, isError, error, 'projects, isLoading, isSuccess, isError, error');
+      //       {
+      // const { data, error, isLoading } = useGetTaskByTaskIdQuery(7); // taskId
+      // const { data, error, isLoading } = useGetTasksQuery('8'); // taskId
+      // console.log(data, error, isLoading, 'data, error, isLoading');
+      // const [login, { isError, isSuccess }] = useGetOAuthTokenMutation();
+      // console.log(login, isError, isSuccess, 'login, isError, isSuccess');
+      //   "data": [
+      //     {
+      //       "id": 0,
+      //       "name": "string",
+      //       "component": 0,
+      //       "priority": 0,
+      //       "stage": 0,
+      //       "task_type": 0,
+      //       "users": 0,
+      //       "possibleTaskNextStages": [
+      //         0
+      //       ],
+      //       "deadline": "string",
+      //       "created_by": 0,
+      //       "created_at": "string",
+      //       "updated_at": "string",
+      //       "begin": "2022-11-30T08:48:00.000000Z",
+      //       "end": "2022-12-31T16:48:00.000000Z",
+      //       "rank": "string"
+      //     }
+      //   ]
+      // }
       // async function fetchData() {
       //   const [
       //     taskTypesResponse,
@@ -173,7 +305,8 @@ export default function TaskModalCreationEditing({ isOpen, onClose, taskId }: Ta
       //   }
       // }
       // if (isOpen) fetchData();
-   }, [isOpen, isEditMode, taskId]);
+      // isOpen, isEditMode, taskId;
+   }, []);
 
    // const handleSubmit = () => {
    //   const taskData = {
@@ -262,14 +395,14 @@ export default function TaskModalCreationEditing({ isOpen, onClose, taskId }: Ta
    };
 
    if (!isOpen) return null;
+   if (isLoading) return <div>Loading task...</div>;
+   if (!task) return <div>Task not found</div>;
 
-   const [options, setOptions] = useState<string[]>(['Option 1', 'Option 2', 'Option 3']);
-
-   console.log(startDate, '------------startDate ');
+   // const [options, setOptions] = useState<string[]>(['Option 1', 'Option 2', 'Option 3']);
 
    return (
       <div className={style['modal-creation-editing']} onClick={handleOverlayClick}>
-         <button className={style['close-button-modal']} onClick={() => setModalOpen(true)}>
+         <button className={style['close-button-modal']} type="button" onClick={() => setModalOpen(true)}>
             <Close />
          </button>
 
@@ -277,7 +410,7 @@ export default function TaskModalCreationEditing({ isOpen, onClose, taskId }: Ta
             <div className={style.heder}>
                <h2 className={style.title}>{isEditMode ? 'Редактировать задачу' : 'Создать задачу'}</h2>
 
-               <button className={style['close-button']} onClick={() => setModalOpen(true)}>
+               <button className={style['close-button']} type="button" onClick={() => setModalOpen(true)}>
                   <Close />
                </button>
             </div>
@@ -297,7 +430,7 @@ export default function TaskModalCreationEditing({ isOpen, onClose, taskId }: Ta
                      <SelectCustom<string>
                         value={watch('selectedOptionTasks')}
                         onChange={(value) => setValue('selectedOptionTasks', value)}
-                        options={options}
+                        options={['Option 1', 'Option 2', 'Option 3']}
                         label="Тип задачи"
                         titleSelect="Задачи"
                         required
@@ -391,41 +524,97 @@ export default function TaskModalCreationEditing({ isOpen, onClose, taskId }: Ta
 
                {/* Описание */}
                <div className={style['form-description']}>
-                  <label>
-                     Описание <span>*</span>
-                  </label>
-
-                  <TextAreaWithToolbar />
-
-                  {/* <textarea {...register('description')} required /> */}
+                  <Controller
+                     name="description"
+                     control={control}
+                     defaultValue=""
+                     render={({ field }) => (
+                        <TextAreaWithToolbar
+                           value={field.value}
+                           onChange={field.onChange}
+                           error={errors.description?.message}
+                        />
+                     )}
+                  />
 
                   {errors.description && <p className={style.error}>{errors.description.message}</p>}
                </div>
 
-               {/* Ссылки на файлы */}
-               <div className={style['form-links-files']}>
-                  <label>Ссылки на файлы</label>
+               {/* Блок поле загрузки файлов */}
+               <div className={style['form-files']}>
                   <Controller
                      name="fileLinks"
                      control={control}
-                     render={({ field }) => (
-                        <input
-                           type="text"
-                           value={field.value.join(', ')}
-                           onChange={(e) => field.onChange(e.target.value.split(', '))}
-                           placeholder="Введите ссылки через запятую"
-                        />
+                     render={({ field: { value, onChange }, fieldState: { error } }) => (
+                        <FileUpload files={value || []} onFilesChange={onChange} error={error?.message} />
                      )}
                   />
-                  {errors.fileLinks && <p className={style.error}>{errors.fileLinks.message}</p>}
+               </div>
+
+               {/* Ссылки на файлы */}
+               <div className={style['form-links-files']}>
+                  {/* Layout Link */}
+                  <div className={style['form-link-item']}>
+                     <label>Layout Link</label>
+                     <Controller
+                        name="layoutLink"
+                        control={control}
+                        render={({ field }) => (
+                           <input
+                              type="text"
+                              value={field.value || ''}
+                              onChange={(e) => field.onChange(e.target.value)}
+                              placeholder="Layout link"
+                           />
+                        )}
+                     />
+                     {errors.layoutLink && <p className={style.error}>{errors.layoutLink.message}</p>}
+                  </div>
+
+                  {/* Markup Link */}
+                  <div className={style['form-link-item']}>
+                     <label>Markup Link</label>
+                     <Controller
+                        name="markupLink"
+                        control={control}
+                        render={({ field }) => (
+                           <input
+                              type="text"
+                              value={field.value || ''}
+                              onChange={(e) => field.onChange(e.target.value)}
+                              placeholder="Markup link"
+                           />
+                        )}
+                     />
+                     {errors.markupLink && <p className={style.error}>{errors.markupLink.message}</p>}
+                  </div>
+
+                  {/* Dev Link */}
+                  <div className={style['form-link-item']}>
+                     <label>Dev Link</label>
+                     <Controller
+                        name="devLink"
+                        control={control}
+                        render={({ field }) => (
+                           <input
+                              type="text"
+                              value={field.value || ''}
+                              onChange={(e) => field.onChange(e.target.value)}
+                              placeholder="Dev link"
+                           />
+                        )}
+                     />
+                     {errors.devLink && <p className={style.error}>{errors.devLink.message}</p>}
+                  </div>
                </div>
 
                {/* Кнопки */}
-               <div className="actions">
-                  <button type="submit" className="btn btn_blue" onClick={() => onSubmit}>
+               <div className={style['actions']}>
+                  {/*  */}
+                  <button type="submit" className={style['btn_blue']} onClick={() => onSubmit}>
                      {isEditMode ? 'Сохранить' : 'Добавить'}
                   </button>
-                  <button type="button" className="btn" onClick={onClose}>
+                  <button className={style['btn']} type="button" onClick={onClose}>
                      Отменить
                   </button>
                </div>

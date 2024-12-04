@@ -15,22 +15,17 @@ export const projectsApi = createApi({
             return {
                url: `/project`,
                headers: {
-                  Authorization: `Bearer ${getCookie('token-auth')}`
-               }
-            }
-         }
+                  Authorization: `Bearer ${getCookie('token-auth')}`,
+               },
+            };
+         },
       }),
    }),
-})
-
+});
 
 export const { useGetProjectsQuery } = projectsApi;
 
-
-
 // export const { useProjectsQuery } = projectsApi
-
-
 
 // // Use the `Post` type we've already defined in `postsSlice`,
 // // and then re-export it for ease of use

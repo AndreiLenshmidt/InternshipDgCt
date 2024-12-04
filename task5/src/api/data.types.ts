@@ -9,6 +9,9 @@
  * ---------------------------------------------------------------
  */
 
+import { release } from 'os';
+import { boolean, string, number } from 'zod';
+
 /** Может принимать любое значение */
 export type AnyValue = string | number | boolean | [] | object;
 
@@ -250,6 +253,8 @@ export interface TaskSingle {
       | 'link_tasks'
       | 'link_task_release'
       | 'attach_file'
+      | 'can_view_time'
+      | 'manage_grades'
    )[];
    /**
     * Может ли текущий пользователь добавить файл к задаче

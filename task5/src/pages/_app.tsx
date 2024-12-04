@@ -4,6 +4,7 @@ import type { AppProps } from 'next/app';
 import localFont from 'next/font/local';
 import { Provider } from 'react-redux';
 import { store } from '@/store/store';
+import TaskModalCreationEditing from '@/modules/TaskModalCreationEditing/page';
 
 const inter = localFont({
    src: '../fonts/Inter-VariableFont_opsz,wght.ttf',
