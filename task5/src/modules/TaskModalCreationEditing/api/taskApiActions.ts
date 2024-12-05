@@ -6,9 +6,11 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 const token = getCookie('token-auth');
 console.log(token);
 
+export const BASE_URL_API = BASE_URL + 'api';
+
 export const taskApiActions = createApi({
    reducerPath: 'api/single_task_actions',
-   baseQuery: fetchBaseQuery({ baseUrl: BASE_URL }),
+   baseQuery: fetchBaseQuery({ baseUrl: BASE_URL_API }),
    endpoints: (build) => ({
       getTaskByTaskId: build.query<TaskSingle, number>({
          query: (id: number) => ({

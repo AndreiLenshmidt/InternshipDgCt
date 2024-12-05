@@ -110,11 +110,18 @@ export default function TaskModalCreationEditing({ isOpen, onClose, slug, taskId
    const [selectedOptionTasks, setSelectedOptionTasks] = useState([]);
    const [selectedOptionComp, setSelectedOptionComp] = useState('');
    const [selectedOptionUsers, setSelectedOptionUsers] = useState('');
+   // !!!
+   const users: User[] = [
+      { id: 1, name: 'Иван', surname: 'Иванов', email: 'ivanov@mail.com' },
+      { id: 2, name: 'Мария', surname: 'Петрова', email: 'petrova@mail.com' },
+      { id: 3, name: 'Анна', surname: 'Сидорова', email: 'sidorova@mail.com' },
+   ];
    const [priority, setPriority] = useState([
       { id: 1, name: 'Низкий' },
       { id: 2, name: 'Средний' },
       { id: 3, name: 'Высокий' },
    ]);
+   const [files, setFiles] = useState<File[]>([]);
 
    const [selectedOptionsCheckbox, setSelectedOptionsCheckbox] = useState<string[]>([]);
    const [component, setComponent] = useState('');
@@ -142,15 +149,7 @@ export default function TaskModalCreationEditing({ isOpen, onClose, slug, taskId
 
    const [isModalOpen, setModalOpen] = useState(false);
 
-   /// !!!
-   const users: User[] = [
-      { id: 1, name: 'Иван', surname: 'Иванов', email: 'ivanov@mail.com' },
-      { id: 2, name: 'Мария', surname: 'Петрова', email: 'petrova@mail.com' },
-      { id: 3, name: 'Анна', surname: 'Сидорова', email: 'sidorova@mail.com' },
-   ];
-
    const [selectedUsers, setSelectedUsers] = useState<User[]>([]);
-   const [files, setFiles] = useState<File[]>([]);
 
    const handleFilesChange = (newFiles: File[]) => {
       setFiles(newFiles);
@@ -349,12 +348,12 @@ export default function TaskModalCreationEditing({ isOpen, onClose, slug, taskId
    useEffect(() => {
       console.log(tasks?.data?.[1]?.task_type, '------------- tasks.data[0].task_type  ----------');
 
-      console.log(mapTaskType(5), 'mapTaskType(3)');
+      console.log(mapTaskType(tasks?.data?.[1]?.task_type), 'mapTaskType(3)');
 
       const selectedOptionTasks = watch('selectedOptionTasks');
 
       console.log('*********selectedOptionTasks', selectedOptionTasks);
-   }, [selectedOptionTasks]);
+   }, [selectedOptionTasks, projectUsers, isLoading]);
 
    const handleEstimateChange = (e: ChangeEvent<HTMLInputElement>) => {
       const value = e.target.value;

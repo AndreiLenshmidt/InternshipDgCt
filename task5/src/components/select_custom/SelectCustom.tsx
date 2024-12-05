@@ -48,6 +48,8 @@ export default function SelectCustom<T>({
       };
    }, [isOpen]);
 
+   console.log(value, 'value');
+
    return (
       <div className={style['select-custom']} ref={dropdownRef}>
          {label && (
@@ -66,7 +68,7 @@ export default function SelectCustom<T>({
                   onClick={() => setIsOpen((prev) => !prev)} // Клик по селекту для открытия
                >
                   <span className={`${style['select-title']} ${value ? style.selected : ''}`}>
-                     {value ? String(value) : titleSelect}
+                     {value.name ? (optionRenderer ? optionRenderer(value) : String(value)) : titleSelect}
                   </span>
                </div>
 
