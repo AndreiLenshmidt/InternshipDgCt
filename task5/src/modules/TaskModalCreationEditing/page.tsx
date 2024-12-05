@@ -161,8 +161,8 @@ export default function TaskModalCreationEditing({ isOpen, onClose, slug, taskId
 
    // const { data: tasks = [] } = useGetTasksQuery({ slug: 'project1', filters: { id: [2] } });
    const { data: tasks = [] } = useGetTasksQuery({
-      slug: 'project3',
-      filters: { type_id: [] },
+      slug: 'project1',
+      filters: { type_id: [5] },
    });
    console.log(tasks, '------------- tasks filter,  ----------');
 
