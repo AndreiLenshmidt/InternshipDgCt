@@ -1,41 +1,70 @@
+import { DragEvent, useEffect, useRef, useState } from 'react';
 import styles from './uploader.module.scss';
+// import { useActions } from '@/store/hooks/useActions';
+// import { selectTask } from '../../slicerTask';
 
-export default function FileUploader() {
-   const avatarInputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+const BYTES_IN_MB = 1048576;
+const MAX_FILE_SIZE = 10;
+
+export default function FileUploader({
+   addFilesTOState,
+   fileList,
+}: {
+   addFilesTOState: CallableFunction;
+   fileList: File[];
+}) {
+   // const [dragStyle, setDrafStyle] = useState<string>('');
+   const fileValidation = (file: File, fileList: File[]) => {
+      if (file.size > BYTES_IN_MB * MAX_FILE_SIZE) {
+         // console.log(file.size, BYTES_IN_MB * MAX_FILE_SIZE);
+         return false;
+      } else if (fileList.filter((item) => item.name === file.name).length !== 0) {
+         return false;
+      } else {
+         return true;
+      }
+   };
+   const addFiles = (inputFileList: FileList) => {
+      const files = new DataTransfer();
+      for (const file of inputFileList) {
+         if (fileValidation(file, fileList)) {
+            files.items.add(file);
+         }
+      }
+      addFilesTOState([...fileList, ...files.files]);
+   };
+   // const dragEnterHandler = (e: DragEvent<HTMLLabelElement>) => {
+   //    e.preventDefault();
+   //    console.log('dragE');
+   //    // setDrafStyle('upload_dragstyle');
+   //    // addFiles(e.target?.files);
+   // };
+   // const dragOverHandler = (e: DragEvent<HTMLLabelElement>) => {
+   //    e.preventDefault();
+   //    console.log('dragO');
+   //    // setDrafStyle('');
+   //    // addFiles(e.target?.files);
+   // };
+   const dropHandler = (e: DragEvent<HTMLLabelElement>) => {
       e.preventDefault();
-      //    if (!e.target.files?.length) {
-      //      setAvatar("Аватар не загружен");
-      //      setAvatarView("options__upload-span invalid");
-      //      return;
-      //    }
-      //    const fileIsValid = fileValidation(e.target.files[0]);
-      //    if (fileIsValid) {
-      //      setAvatar(fileIsValid);
-      //      setAvatarView("options__upload-span invalid");
-      //      return;
-      //    }
-      //    const fileReader = new FileReader();
-      //    fileReader.readAsDataURL(e.target.files[0]);
-      //    fileReader.onload = function () {
-      //      avatarAsDataURL.push(fileReader.result);
-      //    };
-      //    fileReader.onerror = function () {
-      //      setAvatar("Аватар не загружен");
-      //      setAvatarView("options__upload-span invalid");
-      //      return;
-      //    };
-      //    setAvatarView("options__upload-span valid");
-      //    return e.target.files.length
-      //      ? setAvatar("Аватар загружен")
-      //      : setAvatar("Аватар не загружен");
+      addFiles(e.dataTransfer.files);
+      console.log('drop');
    };
 
    return (
-      <label className={styles.upload} htmlFor="image_uploads">
+      <label
+         className={styles.upload}
+         // onDragEnter={(e) => dragEnterHandler(e)}
+         // onDragOverCapture={(e) => dragOverHandler(e)}
+         onDragOver={(e) => {
+            e.stopPropagation();
+            e.preventDefault();
+         }}
+         onDrop={(e) => dropHandler(e)}
+      >
          <p className={styles.upload_text}>Выбери файлы или перетащи их сюда</p>
          <input
-            onChange={(e) => avatarInputHandler(e)}
-            id="image_uploads"
+            onChange={(e) => (e.target?.files ? addFiles(e.target?.files) : false)}
             className={styles.upload_input}
             name="avatar"
             type="file"

@@ -5,11 +5,18 @@ import OlMarker from '@public/icons/fs-marker.svg';
 import UlMarker from '@public/icons/fs-marker-num.svg';
 import styles from './commform.module.scss';
 import FileUploader from '../FileUploader.tsx/FileUploader';
-import FilePriview from '../FilePreveiw/FilePreview';
 import { TaskSingle } from '@/api/data.types';
-import { ChangeEvent, useRef, useState } from 'react';
+import { ChangeEvent, Dispatch, SetStateAction, useRef, useState } from 'react';
 
-export default function CommentForm({ task }: { task: TaskSingle | undefined }) {
+export default function CommentForm({
+   task,
+   addFilesTOState,
+   fileList,
+}: {
+   task: TaskSingle | undefined;
+   addFilesTOState: CallableFunction;
+   fileList: File[];
+}) {
    const [value, setValue] = useState('');
    const [fontWeight, setBold] = useState(400);
    const [fontStyle, setItalic] = useState('normal');
@@ -22,10 +29,6 @@ export default function CommentForm({ task }: { task: TaskSingle | undefined }) 
    return (
       <form>
          <div className={styles.comments}>
-            <FileUploader />
-            <div className={styles.preveiw_box}>
-               {task?.files ? task?.files.map((item, index) => <FilePriview file={item} key={index} />) : <></>}
-            </div>
             <h3 className={styles.commtitle}>Комментарии</h3>
             <div className={styles.commstyler}>
                <Bold className={styles.icon} onClick={() => (fontWeight === 400 ? setBold(800) : setBold(400))} />
@@ -50,7 +53,7 @@ export default function CommentForm({ task }: { task: TaskSingle | undefined }) 
                value={value}
             ></textarea>
          </div>
-         <FileUploader />
+         <FileUploader addFilesTOState={addFilesTOState} fileList={fileList} />
          <button className={styles.submitter} type="submit">
             Отправить
          </button>

@@ -24,6 +24,12 @@ $custom-select-arrow: url("data:image/svg+xml,%3Csvg width='12' height='6' viewB
       line-height: 140%;
       color: #2d2d2d;
    }
+   &_preveiw {
+      padding-bottom: 32px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+   }
 }
 
 .aside {

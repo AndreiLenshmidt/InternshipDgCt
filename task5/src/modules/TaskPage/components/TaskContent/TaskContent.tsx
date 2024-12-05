@@ -11,8 +11,11 @@ import Calendar from '@public/icons/calendar.svg';
 import parse from 'html-react-parser';
 import MarkersTask from '../Markers/Markers';
 import SelectCustom from '@/components/SelectCustom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import FileUploader from '../FileUploader.tsx/FileUploader';
+import FilePriview from '../FilePreveiw/FilePreview';
+import { useActions } from '@/store/hooks/useActions';
 
 export default function TaskContent({ task, link }: { task: TaskSingle | undefined; link: string }) {
    const isAdmin = false;
@@ -21,6 +24,8 @@ export default function TaskContent({ task, link }: { task: TaskSingle | undefin
    const [selectedOptionComp, setSelectedOptionComp] = useState<string | (string | undefined)[] | undefined>(
       'Не выбрано'
    );
+   const [files, setFiles] = useState<File[]>([]);
+   const [filesComments, setFIlesComments] = useState<File[]>([]);
    const {
       // register,
       // handleSubmit,
@@ -29,6 +34,11 @@ export default function TaskContent({ task, link }: { task: TaskSingle | undefin
       formState: { errors },
       // clearErrors,
    } = useForm<FormData>();
+
+   useEffect(() => {
+      console.log(files, 'files');
+      console.log(filesComments, 'comments');
+   }, [files, filesComments]);
 
    const selectOptions = [task?.stage?.name, task?.possibleTaskNextStages?.map((stage) => stage.name)];
    return (
@@ -39,7 +49,11 @@ export default function TaskContent({ task, link }: { task: TaskSingle | undefin
                <CopyLink className={styles.content_copy} />
             </div>
             <div className={styles.content_desc}>{parse(task?.description || '<p>Описание задачи</p>')}</div>
-            <CommentForm task={task} />
+            <FileUploader addFilesTOState={setFiles} fileList={files} />
+            <div className={styles.content_preveiw}>
+               {files ? files.map((item, index) => <FilePriview file={item} key={index} />) : <></>}
+            </div>
+            <CommentForm task={task} addFilesTOState={setFIlesComments} fileList={filesComments} />
             <div>
                {task?.comments ? (
                   task?.comments.map((item, index) => <CommentComp comment={item} key={index} />)
@@ -85,9 +99,7 @@ export default function TaskContent({ task, link }: { task: TaskSingle | undefin
                   <p className={`${styles.aside_text} ${styles.pb8}`}>Дата начала</p>
                   <p className={styles.aside__textblack}>
                      <Calendar className={styles.aside_calendar} />
-                     {task?.date_start
-                        ? new Intl.DateTimeFormat('ru-RU').format(new Date(task?.date_start))
-                        : 'не установлена'}
+                     {task?.date_start ? new Intl.DateTimeFormat('ru-RU').format(new Date(task?.date_start)) : 'нет'}
                   </p>
                </div>
             </div>
@@ -112,7 +124,7 @@ export default function TaskContent({ task, link }: { task: TaskSingle | undefin
                                  <></>
                               )}
                            </figure>
-                           <p className={styles.flexcentre}>
+                           <p className={styles.flexcentre} style={{ paddingLeft: 8 }}>
                               {user.surname} {user.name} {user.patronymic}
                            </p>
                         </div>
@@ -137,7 +149,7 @@ export default function TaskContent({ task, link }: { task: TaskSingle | undefin
                            <></>
                         )}
                      </figure>
-                     <p className={styles.flexcentre}>
+                     <p className={styles.flexcentre} style={{ paddingLeft: 8 }}>
                         {task?.created_by?.surname} {task?.created_by?.name} {task?.created_by?.patronymic}
                      </p>
                   </div>
