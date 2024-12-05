@@ -27,6 +27,7 @@ import { Priority, Stage, TaskSingle, TaskType, User } from '@/api/data.types';
 import { mapTaskType, taskTypes, compTypes } from './utils/transformTaskSingle';
 import { File } from '@/api/data.types';
 import { useUpdateTaskMain } from '@/modules/TaskModalCreationEditing/hook/useUpdateTaskMain.ts';
+import { useCreateTaskMain } from '@/modules/TaskModalCreationEditing/hook/useCreateTaskMain.ts';
 
 // export interface ExtendedFile {
 //    id?: number;
@@ -186,10 +187,26 @@ export default function TaskModalCreationEditing({ isOpen, onClose, slug, taskId
    const handleUpdateTask = () => {
       updateTaskMain(8, { date_start: '31.12.2024' });
    };
+   // Добавить (создать) задачу -------------------------------------------
+   const {
+      createTaskMain,
+      isLoading: isCreateLoading,
+      isSuccess: createIsSuccess,
+      error: createError,
+   } = useCreateTaskMain();
+
+   const handleCreateTask = async (nameSlug, taskData) => {
+      try {
+         const response = await createTaskMain(nameSlug, taskData);
+         console.log('Задача создана:', response);
+      } catch (e) {
+         console.error('Ошибка создания задачи:', e);
+      }
+   };
 
    // Общие состояния
-   const isLoading = isUpdateLoading || isGetTaskByTaskIdLoading;
-   const error = updateError;
+   const isLoading = isUpdateLoading || isGetTaskByTaskIdLoading || isCreateLoading;
+   const error = updateError || createError;
 
    // Получаем данные
    // useEffect(() => {
@@ -353,27 +370,34 @@ export default function TaskModalCreationEditing({ isOpen, onClose, slug, taskId
    //    });
    // };
 
+   const generateRandomId = (): number => {
+      return Math.floor(Math.random() * 900) + 100; // Генерация случайного числа от 100 до 999
+   };
+
+   // id: 9, // generateRandomId(), // Генерируем случайный ID для задачи 100-999
+   // users: formData.selectedOptionsCheckbox,
+   // files: formData.fileLinks,
+
    const transformToServerData = (formData: FormData): TaskSingle => ({
-      name: formData.name,
-      task_type: formData.selectedOptionTasks,
-      component: formData.selectedOptionComp,
-      users: formData.selectedOptionsCheckbox,
-      priority: formData.selectedOptionPriority,
-      estimate_worker: formData.estimateMinutes,
-      date_start: formData.date.startDate,
-      date_end: formData.date.endDate,
-      files: formData.fileLinks,
-      layout_link: formData.layoutLink || null,
-      markup_link: formData.markupLink || null,
-      dev_link: formData.devLink || null,
+      name: formData.name || '', // Название задачи
+      description: formData.description || '', // Описание задачи
+      stage_id: formData.stage_id || 1, // ID стадии (по умолчанию 0)
+      task_type_id: formData.selectedOptionTasks?.id || 0, // ID типа задачи (по умолчанию 0)
+      component_id: formData.selectedOptionComp?.id || 0, // ID компонента задачи (по умолчанию 0)
+      priority_id: formData.selectedOptionPriority?.id || 0, // ID приоритета задачи (по умолчанию 0)
+      block_id: formData.block_id || 0, // ID задачи, которая блокирует текущую (по умолчанию 0)
+      release_id: formData.release_id || 0, // ID релиза, к которому привязана задача (по умолчанию 0)
+      related_id: formData.related_id || 0, // ID задачи, с которой связана текущая (по умолчанию 0)
+      epic_id: formData.epic_id || 0, // ID эпика, к которому привязана задача (по умолчанию 0)
+      estimate_cost: formData.estimate_cost || 0, // Оценка стоимости задачи (по умолчанию 0)
+      estimate_worker: formData.estimateMinutes || 0, // Оценка времени для работы
+      layout_link: formData.layoutLink || '', // Ссылка на макет
+      markup_link: formData.markupLink || '', // Ссылка на вёрстку
+      dev_link: formData.devLink || '', // Ссылка на сборку
+      executors: formData.selectedOptionsCheckbox || [0], // Исполнители задачи (по умолчанию 0)
+      begin: formData.date.startDate || '', // Дата начала работы
+      end: formData.date.endDate || '', // Дата окончания работы
    });
-
-   // const handleUpdate = useOptimisticUpdateTask();
-   // //    const [taskName, setTaskName] = useState('');
-
-   // const handleSave = () => {
-   //    // handleUpdate(slug, taskId, { name: taskName... TaskSingle  });
-   // };
 
    // отправляем данные формы -------------------------------------------------
    const onSubmit = (data: FormData) => {
@@ -384,46 +408,9 @@ export default function TaskModalCreationEditing({ isOpen, onClose, slug, taskId
 
       console.log('serverData', serverData);
 
-      handleUpdateTask();
+      if (serverData) handleCreateTask('test', serverData);
 
-      // const handleSubmit = async (e: React.FormEvent) => {
-      //    e.preventDefault();
-      //    try {
-      //       await updateTask({
-      //          id: 1, // реальный ID задачи
-      //          body: taskData,
-      //       }).unwrap();
-      //       alert('Task updated successfully!');
-      //    } catch (e) {
-      //       console.error('Failed to update task:', e);
-      //    }
-      // };
-   };
-
-   // const handleChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
-   //    const inputValue = e.target.value;
-   //    setValueMain(inputValue);
-   //    setName(inputValue);
-   //    if (isTouched) {
-   //       // setError(validate(inputValue));
-   //    }
-   // };
-
-   // Загрузка данных из API ----------------------------- !!!
-   // console.log(tasks, '------------- tasks filter,  ----------');
-
-   // useEffect(() => {
-   // if (tasks.length !== 0) {
-   // }
-   // console.log(tasks?.data?.[0]?.task_type, '------------- tasks.data[0].task_type  ----------');
-   // console.log(mapTaskType(tasks?.data?.[0]?.task_type), 'mapTaskType(3)');
-   // console.log('*********selectedTaskType', selectedTaskType);
-   // console.log('selectedOptionTasks', selectedOptionTasks);
-   // }, [data]);
-
-   const handleEstimateChange = (e: ChangeEvent<HTMLInputElement>) => {
-      const value = e.target.value;
-      setEstimate(value.match(/^\d+$/) ? `${value}м` : value);
+      //if (serverData) handleUpdateTask();
    };
 
    // Маска – число + подстановка буквы. Пример, ввод 90 и отображается 90м
@@ -457,6 +444,16 @@ export default function TaskModalCreationEditing({ isOpen, onClose, slug, taskId
       }
    };
 
+   // Обработчик изменения Название
+   // const handleChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
+   //    const inputValue = e.target.value;
+   //    setValueMain(inputValue);
+   //    setName(inputValue);
+   //    if (isTouched) {
+   //       // setError(validate(inputValue));
+   //    }
+   // };
+
    // Обработчик изменения Тип Задачи
    const handleTaskTypeChange = (value) => {
       setValue('selectedOptionTasks', value);
@@ -482,6 +479,12 @@ export default function TaskModalCreationEditing({ isOpen, onClose, slug, taskId
       setValue('selectedOptionPriority', value);
 
       clearErrors('selectedOptionPriority'); // Очищаем ошибку при изменении
+   };
+
+   // Обработчик изменения Оценка
+   const handleEstimateChange = (e: ChangeEvent<HTMLInputElement>) => {
+      const value = e.target.value;
+      setEstimate(value.match(/^\d+$/) ? `${value}м` : value);
    };
 
    // Обработчик изменения Оценка

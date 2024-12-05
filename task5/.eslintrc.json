@@ -12,7 +12,7 @@
    ],
 
    "parser": "@typescript-eslint/parser",
-   "plugins": ["@typescript-eslint", "module-resolver"],
+   "plugins": ["@typescript-eslint", "module-resolver", "auto-import"],
 
    "parserOptions": {
       "ecmaVersion": 2020,
@@ -31,6 +31,12 @@
             "newlines-between": "always"
          }
       ],
-      "module-resolver/use-alias": "error"
+      "module-resolver/use-alias": "error",
+      "auto-import/auto-import": [
+         "error",
+         {
+            "imports": ["react", "next/image"]
+         }
+      ]
    }
 }
