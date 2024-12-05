@@ -229,6 +229,8 @@ export interface TaskSingle {
    id?: number;
    /** Заголовок задачи */
    name?: string;
+   /** Date Start task */
+   date_start: string | null;
    /** Описание задачи */
    description?: string;
    /** Компонент задачи */
@@ -239,7 +241,7 @@ export interface TaskSingle {
    stage?: Stage;
    /** Тип задачи */
    task_type?: TaskType;
-
+   /** UsersList */
    users?: User[];
    /** Проект, одиночная выборка */
    project?: ProjectSingle;
@@ -254,8 +256,6 @@ export interface TaskSingle {
       | 'link_tasks'
       | 'link_task_release'
       | 'attach_file'
-      | 'can_view_time'
-      | 'manage_grades'
    )[];
    /**
     * Может ли текущий пользователь добавить файл к задаче
@@ -275,7 +275,8 @@ export interface TaskSingle {
    dev_link?: string | null;
    /** Стадий, на которые можно перевести эту задачу */
    possibleTaskNextStages?: Stage[];
-   files?: File[];
+   /** files */
+   files?: File[] | undefined;
    /** Задачи, заблокированные этой задачей */
    block?: TaskSingle[] | null;
    /** Эпик, к которому привязана эта задача */
@@ -312,7 +313,7 @@ export interface TaskSingle {
    /** Крайний срок исполнения задачи */
    deadline?: string | null;
    /** Идентификатор пользователя, создавшего задачу */
-   created_by?: number;
+   created_by?: User;
    /** Дата создания */
    created_at?: string;
    /** Дата обновления */
@@ -547,6 +548,8 @@ export interface Component {
    id?: number;
    /** Название компонента */
    name?: string;
+   /** color*/
+   color?: string;
 }
 
 /** Стадия (колонка) задачи */

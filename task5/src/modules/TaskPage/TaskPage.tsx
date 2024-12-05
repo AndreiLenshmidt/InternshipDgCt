@@ -1,15 +1,32 @@
+import { BreadCrumbs } from '@components/bread_crumbs/BreadCrumbs';
+import { AsidePanel } from '@components/left_menu/AsidePanel';
+import styles from './task-page.module.scss';
 import { useGetTaskByTaskIdQuery } from './api/taskApi';
+import { useRouter } from 'next/router';
+import TaskContent from './components/TaskContent/TaskContent';
+import { BASE_URL } from '@/consts';
 
-export default function TaskPage(prop: { id: number }) {
-   //    const { data: tasks } = useGetAllTasksQuery('project2');
-   //    console.log(tasks);
-
-   const { data, isLoading, isSuccess, isError } = useGetTaskByTaskIdQuery(prop.id);
-   console.log(data, isLoading, isSuccess, isError);
+export default function TaskPage() {
+   const router = useRouter();
+   // console.log(id);
+   const { data } = useGetTaskByTaskIdQuery(Number(router.query['slug']));
+   console.log(data?.data);
 
    return (
-      <>
-         <h1>task {prop.id}</h1>
-      </>
+      <div className={styles.layout_page}>
+         <AsidePanel />
+         <div className={styles.layout_content}>
+            <BreadCrumbs
+               crumbs={[
+                  { text: 'Главная', url: '' },
+                  { text: 'Проекты', url: '' },
+                  { text: 'Название проекта', url: '' },
+               ]}
+            />
+            <div className={styles.page_container}>
+               <TaskContent task={data?.data} link={`${BASE_URL}${router.asPath}`} />
+            </div>
+         </div>
+      </div>
    );
 }

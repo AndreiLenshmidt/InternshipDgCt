@@ -1,0 +1,39 @@
+.comment {
+   padding-top: 32px;
+}
+
+.flex {
+   display: flex;
+   justify-content: space-between;
+}
+.userinfo {
+}
+.avatarbox {
+   background-color: #f4f6f8;
+   border-radius: 100%;
+   width: 32px;
+   height: 32px;
+}
+.username {
+   padding-left: 8px;
+   font-weight: 500;
+   font-size: 13px;
+   color: #2d2d2d;
+}
+.userdate {
+   padding-left: 8px;
+   padding-top: 4px;
+   font-weight: 400;
+   font-size: 12px;
+   line-height: 120%;
+   color: #abbed1;
+}
+.text {
+   padding-top: 16px;
+   font-weight: 400;
+   font-size: 13px;
+   line-height: 140%;
+   color: #2d2d2d;
+   width: 100%;
+   word-wrap: break-word;
+}

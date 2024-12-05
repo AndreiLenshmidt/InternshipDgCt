@@ -1,0 +1,39 @@
+.file {
+   &_box {
+      padding: 8px;
+      border-radius: 12px;
+      width: 200px;
+      height: 149px;
+      background-color: #f4f6f8;
+   }
+   &_imgbox {
+      border-radius: 8px;
+      width: 184px;
+      height: 88px;
+      background: #ffffff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+   }
+   &_img {
+   }
+   &_name {
+      font-family: inherit;
+      font-weight: 400;
+      font-size: 12px;
+      line-height: 120%;
+      color: #3787eb;
+      padding-top: 12px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+   }
+   &_date {
+      font-family: inherit;
+      text-overflow: ellipsis;
+      font-weight: 400;
+      font-size: 12px;
+      color: #abbed1;
+      padding-top: 8px;
+   }
+}

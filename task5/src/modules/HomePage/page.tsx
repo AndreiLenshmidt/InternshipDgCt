@@ -46,6 +46,9 @@ export default function MainPage() {
             <Link className={styles.link} href="/projects">
                Перейти к проектам
             </Link>
+            <Link className={styles.link} href="/projects/kanban/task">
+               Перейти к задаче
+            </Link>
          </main>
          <footer className={styles.footer}>
             <p className="developer">Андрей Леншмидт</p>
