@@ -5,17 +5,18 @@ import OlMarker from '@public/icons/fs-marker.svg';
 import UlMarker from '@public/icons/fs-marker-num.svg';
 import styles from './commform.module.scss';
 import FileUploader from '../FileUploader.tsx/FileUploader';
-import { TaskSingle } from '@/api/data.types';
+import { ResponseFile, TaskSingle } from '@/api/data.types';
 import { ChangeEvent, Dispatch, SetStateAction, useRef, useState } from 'react';
+import FilePriview from '../FilePreveiw/FilePreview';
 
 export default function CommentForm({
    task,
-   addFilesTOState,
+   changeFilesInState,
    fileList,
 }: {
    task: TaskSingle | undefined;
-   addFilesTOState: CallableFunction;
-   fileList: File[];
+   changeFilesInState: CallableFunction;
+   fileList: ResponseFile[];
 }) {
    const [value, setValue] = useState('');
    const [fontWeight, setBold] = useState(400);
@@ -53,7 +54,22 @@ export default function CommentForm({
                value={value}
             ></textarea>
          </div>
-         <FileUploader addFilesTOState={addFilesTOState} fileList={fileList} />
+         <FileUploader addFilesTOState={changeFilesInState} fileList={fileList} />
+         <div className={styles.preveiw_box}>
+            {fileList ? (
+               fileList.map((item, index) => (
+                  <FilePriview
+                     files={fileList}
+                     deleteFile={changeFilesInState}
+                     inComment={true}
+                     file={item}
+                     key={index}
+                  />
+               ))
+            ) : (
+               <></>
+            )}
+         </div>
          <button className={styles.submitter} type="submit">
             Отправить
          </button>

@@ -30,6 +30,13 @@ $custom-select-arrow: url("data:image/svg+xml,%3Csvg width='12' height='6' viewB
       flex-wrap: wrap;
       gap: 8px;
    }
+   &_copy {
+      fill: #abbed1;
+      cursor: pointer;
+   }
+   &_copy:hover > path {
+      fill: #3787eb;
+   }
 }
 
 .aside {
@@ -43,6 +50,11 @@ $custom-select-arrow: url("data:image/svg+xml,%3Csvg width='12' height='6' viewB
    }
    &_icon {
       margin-left: 8px;
+      fill: #abbed1;
+      cursor: pointer;
+   }
+   &_icon:hover > path {
+      fill: #3787eb;
    }
    &_select {
       padding: 10px 20px 10px 36px;

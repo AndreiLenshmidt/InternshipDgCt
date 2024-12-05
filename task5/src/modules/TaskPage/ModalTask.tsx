@@ -1,7 +1,6 @@
 import styles from './task-page.module.scss';
 import TaskContent from './components/TaskContent/TaskContent';
-import { taskApi, useGetTaskByTaskIdQuery } from './api/taskApi';
-import { BASE_URL } from '@/consts';
+import { useGetTaskByTaskIdQuery } from '@/api/appApi';
 
 export default function ModalTask({ id }: { id: number }) {
    const { data, isLoading, isSuccess } = useGetTaskByTaskIdQuery(id);
@@ -13,7 +12,7 @@ export default function ModalTask({ id }: { id: number }) {
       return (
          <div className={styles.layout_modal}>
             <div className={styles.layout_modalbox}>
-               <TaskContent task={data?.data} link={`${BASE_URL}/task/${id}`} />
+               <TaskContent task={data?.data} />
             </div>
          </div>
       );

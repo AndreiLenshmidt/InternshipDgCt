@@ -1,4 +1,4 @@
-import { TaskSingle } from '@/api/data.types';
+import { ResponseFile, TaskSingle } from '@/api/data.types';
 import styles from './task-modal.module.scss';
 import CopyLink from '@public/icons/copy-task-link.svg';
 import CommentComp from '../Comment/CommentComp';
@@ -15,45 +15,48 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import FileUploader from '../FileUploader.tsx/FileUploader';
 import FilePriview from '../FilePreveiw/FilePreview';
-import { useActions } from '@/store/hooks/useActions';
+import Link from 'next/link';
+// import { useActions } from '@/store/hooks/useActions';
 
-export default function TaskContent({ task, link }: { task: TaskSingle | undefined; link: string }) {
+export default function TaskContent({ task }: { task: TaskSingle | undefined }) {
    const isAdmin = false;
    const isOpen = 'none';
    // const [value, setValue] = useState('');
    const [selectedOptionComp, setSelectedOptionComp] = useState<string | (string | undefined)[] | undefined>(
       'Не выбрано'
    );
-   const [files, setFiles] = useState<File[]>([]);
-   const [filesComments, setFIlesComments] = useState<File[]>([]);
-   const {
-      // register,
-      // handleSubmit,
-      // control,
-      // watch,
-      formState: { errors },
-      // clearErrors,
-   } = useForm<FormData>();
+   const [files, setFiles] = useState<ResponseFile[]>(task?.files || []);
+   const [filesComments, setFIlesComments] = useState<ResponseFile[]>([]);
 
-   useEffect(() => {
-      console.log(files, 'files');
-      console.log(filesComments, 'comments');
-   }, [files, filesComments]);
+   // useEffect(() => {
+   //    console.log(files, 'files');
+   //    console.log(filesComments, 'comments');
+   // }, [files, filesComments]);
 
    const selectOptions = [task?.stage?.name, task?.possibleTaskNextStages?.map((stage) => stage.name)];
+
    return (
       <>
          <div className={styles.content}>
             <div className={styles.flex}>
                <h2 className={styles.content_title}>{task?.name || 'Название задачи'}</h2>
-               <CopyLink className={styles.content_copy} />
+               <CopyLink
+                  className={styles.content_copy}
+                  onClick={async () => await navigator.clipboard.writeText(window.location.href)}
+               />
             </div>
             <div className={styles.content_desc}>{parse(task?.description || '<p>Описание задачи</p>')}</div>
             <FileUploader addFilesTOState={setFiles} fileList={files} />
             <div className={styles.content_preveiw}>
-               {files ? files.map((item, index) => <FilePriview file={item} key={index} />) : <></>}
+               {files ? (
+                  files.map((item, index) => (
+                     <FilePriview deleteFile={setFiles} files={files} file={item} key={index} inComment={false} />
+                  ))
+               ) : (
+                  <></>
+               )}
             </div>
-            <CommentForm task={task} addFilesTOState={setFIlesComments} fileList={filesComments} />
+            <CommentForm task={task} changeFilesInState={setFIlesComments} fileList={filesComments} />
             <div>
                {task?.comments ? (
                   task?.comments.map((item, index) => <CommentComp comment={item} key={index} />)
@@ -99,16 +102,20 @@ export default function TaskContent({ task, link }: { task: TaskSingle | undefin
                   <p className={`${styles.aside_text} ${styles.pb8}`}>Дата начала</p>
                   <p className={styles.aside__textblack}>
                      <Calendar className={styles.aside_calendar} />
-                     {task?.date_start ? new Intl.DateTimeFormat('ru-RU').format(new Date(task?.date_start)) : 'нет'}
+                     {task?.date_start || 'нет'}
                   </p>
                </div>
             </div>
             <div className={styles.aside_infobox}>
                <div>
                   <p className={`${styles.aside_text} ${styles.pb8}`}>Эпик</p>
-                  <p className={styles.aside_text} style={{ color: '#3787eb' }}>
+                  <Link
+                     href={`/projects/task/${task?.epic?.id}`}
+                     className={styles.aside_text}
+                     style={{ color: '#3787eb' }}
+                  >
                      #{task?.epic?.id} {task?.epic?.name}
-                  </p>
+                  </Link>
                </div>
             </div>
             <div className={styles.aside_infobox}>

@@ -31,7 +31,7 @@ export interface User {
    /** Email пользователя */
    email?: string;
    /** Файл */
-   avatar?: File;
+   avatar?: ResponseFile;
    /** Пол пользователя */
    gender?: Gender;
    /** Теги пользователя */
@@ -65,7 +65,7 @@ export interface ProjectSingle {
    /** Флоу используемый в проекте */
    flow?: Flow;
    /** Файл */
-   logo?: File;
+   logo?: ResponseFile;
    /** Роль пользователя на проекте. Присутствует только в контексте запроса информации о пользователе */
    role?: UserProjectRole;
    /** Дата создания */
@@ -144,7 +144,7 @@ export interface ProjectMultiple {
    /** Символьный идентификатор проекта */
    slug?: string;
    /** Файл */
-   logo?: File;
+   logo?: ResponseFile;
    /** Роль пользователя на проекте. Присутствует только в контексте запроса информации о пользователе */
    role?: UserProjectRole;
    /** Дата создания */
@@ -170,7 +170,7 @@ export interface ProjectShort {
    /** Символьный идентификатор проекта */
    slug?: string;
    /** Файл */
-   logo?: File;
+   logo?: ResponseFile;
 }
 
 /** Флоу используемый в проекте */
@@ -273,7 +273,7 @@ export interface TaskSingle {
    /** Стадий, на которые можно перевести эту задачу */
    possibleTaskNextStages?: Stage[];
    /** files */
-   files?: File[] | undefined;
+   files?: ResponseFile[] | undefined;
    /** Задачи, заблокированные этой задачей */
    block?: TaskSingle[] | null;
    /** Эпик, к которому привязана эта задача */
@@ -371,7 +371,7 @@ export interface TaskGradeUserList {
    /** Email пользователя */
    email?: string;
    /** Файл */
-   avatar?: File;
+   avatar?: ResponseFile;
    /** Пол пользователя */
    gender?: Gender;
    telegram?: string;
@@ -482,7 +482,7 @@ export interface Comment {
    /** Текст комментария. В рамках приложения используется Markdown разметка. Старые задачи возвращают HTML */
    content?: string;
    /** Файлы, прикреплённые к комментарию */
-   files?: File[];
+   files?: ResponseFile[];
    /** Пользователь */
    user?: User;
    /** Дата создания */
@@ -606,7 +606,7 @@ export type UserProjectRole = {
 } | null;
 
 /** Файл */
-export type File = {
+export type ResponseFile = {
    /** Идентификатор файла */
    id?: number;
    /** Оригинальное название файла */
@@ -1726,11 +1726,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
        */
       fileCreate: (
          data: {
-            file?: File[];
+            file?: ResponseFile[];
          },
          params: RequestParams = {}
       ) =>
-         this.request<File, void | ValidationError>({
+         this.request<ResponseFile, void | ValidationError>({
             path: `/file`,
             method: 'POST',
             body: data,
