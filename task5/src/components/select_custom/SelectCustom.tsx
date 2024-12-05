@@ -6,10 +6,10 @@ import { Component, Priority, Stage, TaskType } from '@/api/data.types';
 type SelectCustomProps<T> = {
    value: TaskType | Stage | Priority | Component | undefined;
    onChange: (value: TaskType | Stage | Priority | Component | undefined) => void;
-   options: TaskType[] | Stage[] | Priority[] | Component[] | undefined; // Опции для выпадающего списка
-   titleSelect: string; // Подсказка при выборе
-   label?: string; // Текст для `<label>`
-   required?: boolean; // Указание, обязательное поле или нет
+   options: TaskType[] | Stage[] | Priority[] | Component[] | undefined;
+   titleSelect: string;
+   label?: string;
+   required?: boolean;
    errors?: string; // Сообщение об ошибке
    isLoading?: boolean; // Флаг загрузки
    fetchError?: string; // Сообщение об ошибке при загрузке
@@ -56,16 +56,16 @@ export default function SelectCustom<T>({
             </label>
          )}
          {isLoading ? (
-            <p>Загрузка...</p> // Показываем индикатор загрузки
+            <p>Загрузка...</p>
          ) : fetchError ? (
-            <p className={style.error}>{fetchError}</p> // Если ошибка, показываем сообщение
+            <p className={style.error}>{fetchError}</p>
          ) : (
             <div className={style['select-wrp']}>
                <div
                   className={`${style['select']} ${isOpen ? style['open'] : ''}`}
-                  onClick={() => setIsOpen((prev) => !prev)} // Клик по селекту для открытия
+                  onClick={() => setIsOpen((prev) => !prev)}
                >
-                  <span className={`${style['select-title']} ${value ? style.selected : ''}`}>
+                  <span className={`${style['select-title']} ${value.name ? style.selected : ''}`}>
                      {value.name ? (optionRenderer ? optionRenderer(value.name) : String(value.name)) : titleSelect}
                   </span>
                </div>
@@ -82,7 +82,9 @@ export default function SelectCustom<T>({
                                  setIsOpen(false);
                               }}
                            >
-                              {optionRenderer ? optionRenderer(option) : option.name}
+                              <span style={{ backgroundColor: option.color ? option.color : '' }}>
+                                 {optionRenderer ? optionRenderer(option) : option.name}
+                              </span>
                            </li>
                         ))}
                   </ul>
@@ -96,4 +98,18 @@ export default function SelectCustom<T>({
          {errors && <p className={style.error}>{errors}</p>}
       </div>
    );
+}
+
+// Использование
+{
+   /* <SelectCustom<TaskType>
+   value={watch('selectedOptionTasks')}
+   onChange={(value) => {
+      setValue('selectedOptionTasks', value);
+   }}
+   options={taskTypes}
+   label="Тип задачи"
+   titleSelect="Задача"
+   required
+/>; */
 }

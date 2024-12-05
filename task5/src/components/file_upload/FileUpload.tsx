@@ -1,16 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import style from '@/components/file_upload/file-upload.module.scss';
 import Clipper from '@public/icons/clipper.svg';
 import { File } from '@/api/data.types';
 
 interface FileUploadProps {
    files: File[];
-   onFilesChange: (files: File[]) => void;
+   onFilesChange: ((files: File[]) => void) | undefined;
    error?: string;
 }
 
 export default function FileUpload({ files, onFilesChange, error }: FileUploadProps) {
    const [isDragging, setIsDragging] = useState(false);
+   const [permissions, setPermissions] = useState(false);
 
    // Функция для проверки, существует ли файл с таким же именем или ссылкой
    const isDuplicateFile = (newFile: File): boolean => {
@@ -33,11 +34,18 @@ export default function FileUpload({ files, onFilesChange, error }: FileUploadPr
          };
 
          if (!isDuplicateFile(newFile)) {
+            setPermissions(false);
             updatedFiles.push(newFile);
          }
       }
 
-      onFilesChange(updatedFiles);
+      if (onFilesChange) {
+         setPermissions(false);
+         onFilesChange(updatedFiles);
+      } else {
+         setPermissions(true); // Если нет прав показываем сообщение
+      }
+
       event.target.value = ''; // Сброс поля ввода
    };
 
@@ -116,6 +124,7 @@ export default function FileUpload({ files, onFilesChange, error }: FileUploadPr
          </div>
 
          {/* Ошибка (если есть) */}
+         {permissions && <div className={style['error']}>У вас нет разрешения на загрузку файла.</div>}
          {error && <div className={style['error']}>{error}</div>}
       </div>
    );

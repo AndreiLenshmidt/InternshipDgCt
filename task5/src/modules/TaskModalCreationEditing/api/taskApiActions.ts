@@ -1,21 +1,18 @@
 import { TaskSingle, User } from '@/api/data.types';
-import { BASE_URL } from '@/consts';
+import { BASE_URL, BASE_API_URL } from '@/consts';
 import { getCookie } from '@/utils/cookies';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 const token = getCookie('token-auth');
-console.log(token);
-
-export const BASE_URL_API = BASE_URL + 'api';
+// console.log(token);
 
 export const taskApiActions = createApi({
    reducerPath: 'api/single_task_actions',
-   baseQuery: fetchBaseQuery({ baseUrl: BASE_URL_API }),
+   baseQuery: fetchBaseQuery({ baseUrl: BASE_API_URL }),
    endpoints: (build) => ({
-      getTaskByTaskId: build.query<TaskSingle, number>({
+      getTaskByTaskId: build.query<{ data: TaskSingle }, number>({
          query: (id: number) => ({
             url: `/task/${id}`,
-            method: 'GET',
             headers: {
                Authorization: `Bearer ${token}`,
             },

@@ -23,7 +23,7 @@ export function KanbanPage() {
       color: isOver ? 'green' : undefined,
    };
 
-   console.log(router.query['task-slug'], 'router.query[task-slug]');
+   // console.log(router.query['task-slug'], 'router.query[task-slug]');
 
    return (
       <>

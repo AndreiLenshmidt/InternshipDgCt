@@ -3,41 +3,42 @@ const path = require('path');
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    typedRoutes: true,
-  },
-  sassOptions: {
-    // алиасы для SCSS
-    includePaths: [path.join(__dirname, 'styles')],
-  },
-  webpack(config) {
-    config.resolve.alias = {
-      ...config.resolve.alias,
-      '@src': path.resolve(__dirname, 'src'),
-      '@public': path.resolve(__dirname, 'public'),
-      '@components': path.resolve(__dirname, 'src/components')
-    };
+   experimental: {
+      typedRoutes: true,
+   },
+   sassOptions: {
+      // алиасы для SCSS
+      includePaths: [path.join(__dirname, 'styles')],
+   },
 
-    config.module.rules.push({
-      test: /\.svg$/,
-      oneOf: [
-        {
-          resourceQuery: /url/, // для background-image
-          type: 'asset/resource',
-          generator: {
-            filename: 'static/media/[name].[hash][ext]',
-          },
-        },
-        {
-          issuer: /\.(js|ts)x?$/,
-          resourceQuery: { not: [/url/] }, // для импорта SVG как компонента
-          use: ['@svgr/webpack'],
-        },
-      ],
-    });
+   webpack(config) {
+      config.resolve.alias = {
+         ...config.resolve.alias,
+         '@src': path.resolve(__dirname, 'src'),
+         '@public': path.resolve(__dirname, 'public'),
+         '@components': path.resolve(__dirname, 'src/components'),
+      };
 
-    return config;
-  },
+      config.module.rules.push({
+         test: /\.svg$/,
+         oneOf: [
+            {
+               resourceQuery: /url/, // для background-image
+               type: 'asset/resource',
+               generator: {
+                  filename: 'static/media/[name].[hash][ext]',
+               },
+            },
+            {
+               issuer: /\.(js|ts)x?$/,
+               resourceQuery: { not: [/url/] }, // для импорта SVG как компонента
+               use: ['@svgr/webpack'],
+            },
+         ],
+      });
+
+      return config;
+   },
 };
 
 module.exports = nextConfig;
