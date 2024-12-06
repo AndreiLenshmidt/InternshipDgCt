@@ -78,58 +78,67 @@ export const appApi = createApi({
             },
          }),
       }),
-      getTaskComments: build.query<{ data: TaskSingle }, number>({
-         query: (id: number | undefined) => ({
-            url: `/task/${id}/comment`,
-            headers: {
-               Authorization: `Bearer ${token}`,
-               accept: 'application/json',
-            },
-         }),
-      }),
-      sendUSerComment: build.mutation<{ data: TaskSingle }, number>({
-         query: (id: number | undefined) => ({
-            url: `/task/${id}/comment`,
-            method: 'POST',
-            headers: {
-               accept: 'application/json',
-               'Content-Type': 'application/json',
-               Authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify({
-               content: 'string',
-               files: [0],
-            }),
-         }),
-      }),
-      patchUSerComment: build.mutation<{ data: TaskSingle }, number>({
-         query: (id: number | undefined) => ({
-            url: `/task/${id}/comment`,
-            method: 'PATCH',
-            headers: {
-               accept: 'application/json',
-               'Content-Type': 'application/json',
-               Authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify({
-               content: 'string',
-               files: [0],
-            }),
-         }),
-      }),
-      deleteUSerComment: build.mutation<{ data: TaskSingle }, number>({
-         query: (id: number | undefined) => ({
-            url: `/task/${id}/comment`,
-            method: 'DELETE',
-            headers: {
-               accept: 'application/json',
-               Authorization: `Bearer ${token}`,
-            },
-         }),
-      }),
+      // getTaskComments: build.query<{ data: TaskSingle }, number>({
+      //    query: (id: number | undefined) => ({
+      //       url: `/task/${id}/comment`,
+      //       headers: {
+      //          Authorization: `Bearer ${token}`,
+      //          accept: 'application/json',
+      //       },
+      //    }),
+      // }),
+      // sendUSerComment: build.mutation<{ data: TaskSingle }, number>({
+      //    query: (id: number | undefined) => ({
+      //       url: `/task/${id}/comment`,
+      //       method: 'POST',
+      //       headers: {
+      //          accept: 'application/json',
+      //          'Content-Type': 'application/json',
+      //          Authorization: `Bearer ${token}`,
+      //       },
+      //       body: JSON.stringify({
+      //          content: 'string',
+      //          files: [0],
+      //       }),
+      //    }),
+      // }),
+      // patchUSerComment: build.mutation<{ data: TaskSingle }, number>({
+      //    query: (id: number | undefined) => ({
+      //       url: `/task/${id}/comment`,
+      //       method: 'PATCH',
+      //       headers: {
+      //          accept: 'application/json',
+      //          'Content-Type': 'application/json',
+      //          Authorization: `Bearer ${token}`,
+      //       },
+      //       body: JSON.stringify({
+      //          content: 'string',
+      //          files: [0],
+      //       }),
+      //    }),
+      // }),
+      // deleteUSerComment: build.mutation<{ data: TaskSingle }, number>({
+      //    query: (id: number | undefined) => ({
+      //       url: `/task/${id}/comment`,
+      //       method: 'DELETE',
+      //       headers: {
+      //          accept: 'application/json',
+      //          Authorization: `Bearer ${token}`,
+      //       },
+      //    }),
+      // }),
       getAllTasks: build.query<TaskMultiple, string>({
          query: (slug: string) => ({
             url: `/project/${slug}/task`,
+            headers: {
+               accept: 'application/json',
+               Authorization: `Bearer ${token}`,
+            },
+         }),
+      }),
+      getCurrentUser: build.query<{ data: User }, void>({
+         query: () => ({
+            url: '/auth/user',
             headers: {
                accept: 'application/json',
                Authorization: `Bearer ${token}`,
@@ -146,9 +155,10 @@ export const {
    useDeleteTaskMutation,
    useGetTasksQuery,
    useGetUsersQuery,
-   useGetTaskCommentsQuery,
-   useSendUSerCommentMutation,
-   usePatchUSerCommentMutation,
-   useDeleteUSerCommentMutation,
+   // useGetTaskCommentsQuery,
+   // useSendUSerCommentMutation,
+   // usePatchUSerCommentMutation,
+   // useDeleteUSerCommentMutation,
    useGetAllTasksQuery,
+   useGetCurrentUserQuery,
 } = appApi;

@@ -1,4 +1,4 @@
-import { ResponseFile, TaskSingle } from '@/api/data.types';
+import { ResponseFile, TaskSingle, User, Comment } from '@/api/data.types';
 import styles from './task-modal.module.scss';
 import CopyLink from '@public/icons/copy-task-link.svg';
 import CommentComp from '../Comment/CommentComp';
@@ -12,28 +12,47 @@ import parse from 'html-react-parser';
 import MarkersTask from '../Markers/Markers';
 import SelectCustom from '@/components/SelectCustom';
 import { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
 import FileUploader from '../FileUploader.tsx/FileUploader';
 import FilePriview from '../FilePreveiw/FilePreview';
 import Link from 'next/link';
-// import { useActions } from '@/store/hooks/useActions';
 
-export default function TaskContent({ task }: { task: TaskSingle | undefined }) {
-   const isAdmin = false;
-   const isOpen = 'none';
+export default function TaskContent({
+   task,
+   activeUser,
+}: {
+   task: TaskSingle | undefined;
+   activeUser: User | undefined;
+}) {
+   const isAdmin = activeUser?.is_admin;
+   // const isOpen = 'none';
    // const [value, setValue] = useState('');
    const [selectedOptionComp, setSelectedOptionComp] = useState<string | (string | undefined)[] | undefined>(
       'Не выбрано'
    );
    const [files, setFiles] = useState<ResponseFile[]>(task?.files || []);
    const [filesComments, setFIlesComments] = useState<ResponseFile[]>([]);
+   const [comments, setComments] = useState<Comment[]>(task?.comments || []);
+   const [selectOptions, setSelectOptions] = useState<(string | (string | undefined)[] | undefined)[]>([]);
+   const [titleSelect, setTitleSelect] = useState('не установлен');
 
    // useEffect(() => {
-   //    console.log(files, 'files');
-   //    console.log(filesComments, 'comments');
-   // }, [files, filesComments]);
+   //    // console.log(files, 'files');
+   //    // console.log(filesComments, 'comments');
+   //    console.log(comments);
+   // }, [comments]);
 
-   const selectOptions = [task?.stage?.name, task?.possibleTaskNextStages?.map((stage) => stage.name)];
+   useEffect(() => {
+      if (task?.possibleTaskNextStages) {
+         setSelectOptions(task?.possibleTaskNextStages?.map((stage) => stage.name));
+         console.log(titleSelect);
+      }
+   }, [task?.possibleTaskNextStages]);
+
+   useEffect(() => {
+      if (task?.stage?.name) {
+         setTitleSelect(task?.stage?.name);
+      }
+   }, [task?.stage?.name]);
 
    return (
       <>
@@ -46,23 +65,32 @@ export default function TaskContent({ task }: { task: TaskSingle | undefined }) 
                />
             </div>
             <div className={styles.content_desc}>{parse(task?.description || '<p>Описание задачи</p>')}</div>
-            <FileUploader addFilesTOState={setFiles} fileList={files} />
+            <FileUploader addFilesTOState={task?.can_attach_file ? setFiles : () => {}} fileList={files} />
             <div className={styles.content_preveiw}>
-               {files ? (
-                  files.map((item, index) => (
-                     <FilePriview deleteFile={setFiles} files={files} file={item} key={index} inComment={false} />
-                  ))
-               ) : (
-                  <></>
-               )}
+               {files.map((item, index) => (
+                  <FilePriview
+                     editMode={true}
+                     deleteFile={setFiles}
+                     files={files}
+                     file={item}
+                     key={index}
+                     inComment={false}
+                  />
+               ))}
             </div>
-            <CommentForm task={task} changeFilesInState={setFIlesComments} fileList={filesComments} />
+            <CommentForm
+               submitType="create"
+               task={task}
+               changeFilesInState={task?.can_attach_file ? setFIlesComments : () => {}}
+               fileList={filesComments}
+               activeUser={activeUser}
+               comments={comments}
+               setComments={setComments}
+            />
             <div>
-               {task?.comments ? (
-                  task?.comments.map((item, index) => <CommentComp comment={item} key={index} />)
-               ) : (
-                  <></>
-               )}
+               {comments.map((item, index) => (
+                  <CommentComp activeUser={activeUser} comment={item} key={index} />
+               ))}
             </div>
          </div>
          <div className={styles.aside}>
@@ -77,7 +105,7 @@ export default function TaskContent({ task }: { task: TaskSingle | undefined }) 
             <SelectCustom
                value={selectedOptionComp}
                onChange={(value) => setSelectedOptionComp(value)}
-               titleSelect="Не выбран"
+               titleSelect={titleSelect}
                options={selectOptions}
             />
             <div className={`${styles.flex} ${styles.aside_tabbox}`}>
@@ -166,7 +194,7 @@ export default function TaskContent({ task }: { task: TaskSingle | undefined }) 
                <div>
                   <p className={`${styles.aside_text} ${styles.pb8}`}>Layout Link</p>
                   <p className={styles.aside_text} style={{ color: '#3787eb' }}>
-                     {task?.layout_link || 'нет'}
+                     <Link href={`${task?.layout_link}`}>{task?.layout_link || 'нет'}</Link>
                   </p>
                </div>
             </div>
@@ -174,7 +202,15 @@ export default function TaskContent({ task }: { task: TaskSingle | undefined }) 
                <div>
                   <p className={`${styles.aside_text} ${styles.pb8}`}>Dev Link</p>
                   <p className={styles.aside_text} style={{ color: '#3787eb' }}>
-                     {task?.dev_link || 'нет'}
+                     <Link href={`${task?.dev_link}`}>{task?.dev_link || 'нет'}</Link>
+                  </p>
+               </div>
+            </div>
+            <div className={`${styles.aside_infobox} ${styles.pt16}`}>
+               <div>
+                  <p className={`${styles.aside_text} ${styles.pb8}`}>Markup Link</p>
+                  <p className={styles.aside_text} style={{ color: '#3787eb' }}>
+                     <Link href={`${task?.markup_link}`}>{task?.markup_link || 'нет'}</Link>
                   </p>
                </div>
             </div>

@@ -27,6 +27,12 @@
       right: 0;
       cursor: pointer;
    }
+   &_carticon > rect {
+      fill: none;
+   }
+   &_carticon:hover > path {
+      fill: rgb(235, 89, 123);
+   }
    &_imgbox {
       border-radius: 8px;
       width: 184px;

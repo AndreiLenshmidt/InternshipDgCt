@@ -35,7 +35,7 @@ const addFiles = (inputFileList: FileList, fileList: ResponseFile[], addFilesTOS
          // files.items.add(file);
          const correctFormatFile = fileFormatter(file);
          fileList.push(correctFormatFile);
-         console.log(correctFormatFile);
+         // console.log(correctFormatFile);
       }
       addFilesTOState([...fileList]);
    }

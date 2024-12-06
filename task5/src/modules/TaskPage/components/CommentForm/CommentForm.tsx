@@ -5,18 +5,28 @@ import OlMarker from '@public/icons/fs-marker.svg';
 import UlMarker from '@public/icons/fs-marker-num.svg';
 import styles from './commform.module.scss';
 import FileUploader from '../FileUploader.tsx/FileUploader';
-import { ResponseFile, TaskSingle } from '@/api/data.types';
-import { ChangeEvent, Dispatch, SetStateAction, useRef, useState } from 'react';
+import { ResponseFile, TaskSingle, User, Comment } from '@/api/data.types';
+import { FormEvent, useEffect, useState } from 'react';
 import FilePriview from '../FilePreveiw/FilePreview';
 
 export default function CommentForm({
    task,
    changeFilesInState,
    fileList,
+   activeUser,
+   comments,
+   editableComment,
+   setComments,
+   submitType,
 }: {
-   task: TaskSingle | undefined;
+   task?: TaskSingle | undefined;
    changeFilesInState: CallableFunction;
    fileList: ResponseFile[];
+   activeUser: User | undefined;
+   comments?: Comment[];
+   editableComment?: Comment;
+   setComments?: CallableFunction;
+   submitType: 'create' | 'edit';
 }) {
    const [value, setValue] = useState('');
    const [fontWeight, setBold] = useState(400);
@@ -24,11 +34,47 @@ export default function CommentForm({
    // const [code, setCode] = useState('');
    const [olMarker, setOl] = useState('');
    const [ulMarker, setUl] = useState('');
+   const copyEditableComment = {
+      content: editableComment?.content,
+      files: editableComment?.files,
+   };
 
-   // const texterea = useRef<HTMLTextAreaElement>(null);
+   const submitHandler = (e: FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+      if (value.length === 0) return;
+      if (comments && setComments && submitType === 'create') {
+         const comment = commentFormatter(value, activeUser, fileList);
+         setComments([comment, ...comments]);
+         // console.log(comments);
+         resetCommentFields();
+         // create fetch function
+      } else if (submitType === 'edit') {
+         // edit fetch function
+      }
+   };
+   const commentFormatter = (value: string, activeUser: User | undefined, files: ResponseFile[]): Comment => {
+      const date = new Intl.DateTimeFormat('ru-RU', {
+         day: 'numeric',
+         month: 'short',
+         year: 'numeric',
+      }).format(new Date(Date.now()));
+      return {
+         id: Date.now() + Math.floor(Math.random() * 10000),
+         content: value,
+         files: fileList,
+         user: activeUser,
+         created_at: date,
+         updated_at: date,
+      };
+   };
+
+   const resetCommentFields = () => {
+      setValue('');
+      changeFilesInState([]);
+   };
 
    return (
-      <form>
+      <form onSubmit={(e) => submitHandler(e)}>
          <div className={styles.comments}>
             <h3 className={styles.commtitle}>Комментарии</h3>
             <div className={styles.commstyler}>
@@ -59,6 +105,7 @@ export default function CommentForm({
             {fileList ? (
                fileList.map((item, index) => (
                   <FilePriview
+                     editMode={true}
                      files={fileList}
                      deleteFile={changeFilesInState}
                      inComment={true}

@@ -9,11 +9,13 @@ export default function FilePriview({
    inComment,
    deleteFile,
    files,
+   editMode,
 }: {
    file: ResponseFile;
    inComment: boolean;
    deleteFile: CallableFunction;
    files: ResponseFile[];
+   editMode: boolean;
 }) {
    if (inComment) {
       return (
@@ -21,10 +23,14 @@ export default function FilePriview({
             <p className={styles.file_name} style={{ paddingTop: 0, color: '#2d2d2d', maxWidth: 85 }}>
                {file?.original_name}
             </p>
-            <Close
-               className={styles.file_closeicon}
-               onClick={() => deleteFile(files.filter((item) => item?.id !== file?.id))}
-            />
+            {editMode ? (
+               <Close
+                  className={styles.file_closeicon}
+                  onClick={() => deleteFile(files.filter((item) => item?.id !== file?.id))}
+               />
+            ) : (
+               <></>
+            )}
          </div>
       );
    } else {
