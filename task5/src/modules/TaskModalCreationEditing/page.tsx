@@ -195,7 +195,7 @@ export default function TaskModalCreationEditing({ isOpen, onClose, slug, taskId
       error: createError,
    } = useCreateTaskMain();
 
-   const handleCreateTask = async (nameSlug, taskData) => {
+   const handleCreateTask = async (nameSlug: string, taskData: TaskData) => {
       try {
          const response = await createTaskMain(nameSlug, taskData);
          console.log('Задача создана:', response);
@@ -381,7 +381,7 @@ export default function TaskModalCreationEditing({ isOpen, onClose, slug, taskId
    const transformToServerData = (formData: FormData): TaskSingle => ({
       name: formData.name || '', // Название задачи
       description: formData.description || '', // Описание задачи
-      stage_id: formData.stage_id || 1, // ID стадии (по умолчанию 0)
+      stage_id: formData.stage_id || 0, // ID стадии (по умолчанию 0)
       task_type_id: formData.selectedOptionTasks?.id || 0, // ID типа задачи (по умолчанию 0)
       component_id: formData.selectedOptionComp?.id || 0, // ID компонента задачи (по умолчанию 0)
       priority_id: formData.selectedOptionPriority?.id || 0, // ID приоритета задачи (по умолчанию 0)
@@ -645,7 +645,7 @@ export default function TaskModalCreationEditing({ isOpen, onClose, slug, taskId
                      render={({ field: { value, onChange }, fieldState: { error } }) => (
                         <FileUpload
                            files={files || []}
-                           onFilesChange={taskData.can_attach_file ? handleFilesChange : undefined} // Разрешение на загрузку файлов
+                           onFilesChange={true ? handleFilesChange : undefined} // Разрешение на загрузку файлов // taskData.can_attach_file
                            error={error?.message}
                         />
                      )}

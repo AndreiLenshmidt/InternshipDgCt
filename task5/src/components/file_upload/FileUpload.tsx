@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import style from '@/components/file_upload/file-upload.module.scss';
 import Clipper from '@public/icons/clipper.svg';
 import { File } from '@/api/data.types';
@@ -13,11 +13,12 @@ export default function FileUpload({ files, onFilesChange, error }: FileUploadPr
    const [isDragging, setIsDragging] = useState(false);
    const [permissions, setPermissions] = useState(false);
 
-   // Функция для проверки, существует ли файл с таким же именем или ссылкой
+   // Проверка на дубликаты
    const isDuplicateFile = (newFile: File): boolean => {
       return files.some((file) => file?.original_name === newFile?.original_name || file?.link === newFile?.link);
    };
 
+   // Обработчик изменения файла
    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
       const newFiles = event.target.files;
       if (!newFiles) return;
@@ -43,12 +44,13 @@ export default function FileUpload({ files, onFilesChange, error }: FileUploadPr
          setPermissions(false);
          onFilesChange(updatedFiles);
       } else {
-         setPermissions(true); // Если нет прав показываем сообщение
+         setPermissions(true);
       }
 
       event.target.value = ''; // Сброс поля ввода
    };
 
+   // Обработчики Drag and Drop
    const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
       event.preventDefault();
       setIsDragging(true);
@@ -73,7 +75,6 @@ export default function FileUpload({ files, onFilesChange, error }: FileUploadPr
             created_at: new Date().toISOString(),
          };
 
-         // Проверяем на дубликаты перед добавлением
          if (!isDuplicateFile(newFile)) {
             updatedFiles.push(newFile);
          }
@@ -82,9 +83,17 @@ export default function FileUpload({ files, onFilesChange, error }: FileUploadPr
       onFilesChange(updatedFiles);
    };
 
+   // Удаление файла
    const handleRemoveFile = (file: File) => {
       const updatedFiles = files.filter((f) => f?.link !== file?.link);
       onFilesChange(updatedFiles);
+   };
+
+   // Проверка, является ли файл изображением
+   const isImageFile = (fileName: string): boolean => {
+      const imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'bmp', 'svg'];
+      const ext = fileName.split('.').pop()?.toLowerCase();
+      return imageExtensions.includes(ext || '');
    };
 
    return (
@@ -95,9 +104,13 @@ export default function FileUpload({ files, onFilesChange, error }: FileUploadPr
                <ul className={style['list']}>
                   {files.map((file, index) => (
                      <li className={style['item']} key={index}>
-                        <a href={file?.link} target="_blank" rel="noopener noreferrer">
-                           {file?.original_name || 'Без имени'}
-                        </a>
+                        {isImageFile(file?.original_name || '') ? (
+                           <img src={file.link} alt={file.original_name} className={style['preview-image']} />
+                        ) : (
+                           <a href={file?.link} target="_blank" rel="noopener noreferrer">
+                              {file?.original_name || 'Без имени'}
+                           </a>
+                        )}
                         <button type="button" onClick={() => handleRemoveFile(file)}>
                            ✕
                         </button>
@@ -142,7 +155,7 @@ export default function FileUpload({ files, onFilesChange, error }: FileUploadPr
 //       <h1>Загрузка файлов</h1>
 //       <FileUpload
 //          files={files}
-//          onFilesChange={handleFilesChange}
+//          onFilesChange={askData.can_attach_file ? handleFilesChange : undefined} // Разрешение на загрузку файлов // taskData.can_attach_file
 //          error={files.length === 0 ? 'Необходимо загрузить хотя бы один файл' : undefined}
 //       />
 //    </div>
