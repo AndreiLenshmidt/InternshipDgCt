@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { getCookie } from '@/utils/cookies';
-import { TaskSingle, TaskMultiple, User } from '@/api/data.types';
+import { TaskSingle, TaskMultiple, User, ResponseFile } from '@/api/data.types';
 import { BASE_URL } from '@/consts';
 
 const token = getCookie('token-auth');
@@ -87,21 +87,21 @@ export const appApi = createApi({
       //       },
       //    }),
       // }),
-      // sendUSerComment: build.mutation<{ data: TaskSingle }, number>({
-      //    query: (id: number | undefined) => ({
-      //       url: `/task/${id}/comment`,
-      //       method: 'POST',
-      //       headers: {
-      //          accept: 'application/json',
-      //          'Content-Type': 'application/json',
-      //          Authorization: `Bearer ${token}`,
-      //       },
-      //       body: JSON.stringify({
-      //          content: 'string',
-      //          files: [0],
-      //       }),
-      //    }),
-      // }),
+      createComment: build.mutation<{ data: TaskSingle }, number>({
+         query: (id: number | undefined) => ({
+            url: `/task/${id}/comment`,
+            method: 'POST',
+            headers: {
+               accept: 'application/json',
+               'Content-Type': 'application/json',
+               Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+               content: 'string',
+               files: [0],
+            }),
+         }),
+      }),
       // patchUSerComment: build.mutation<{ data: TaskSingle }, number>({
       //    query: (id: number | undefined) => ({
       //       url: `/task/${id}/comment`,
@@ -145,6 +145,18 @@ export const appApi = createApi({
             },
          }),
       }),
+      sendFiles: build.mutation<ResponseFile, FormData>({
+         query: (form: FormData) => ({
+            url: '/file',
+            method: 'POST',
+            headers: {
+               accept: 'application/json',
+               'Content-Type': 'multipart/form-data',
+               Authorization: `Bearer ${token}`,
+            },
+            body: form,
+         }),
+      }),
    }),
 });
 
@@ -161,4 +173,5 @@ export const {
    // useDeleteUSerCommentMutation,
    useGetAllTasksQuery,
    useGetCurrentUserQuery,
+   useSendFilesMutation,
 } = appApi;

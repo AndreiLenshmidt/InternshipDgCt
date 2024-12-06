@@ -15,6 +15,7 @@ import { useEffect, useState } from 'react';
 import FileUploader from '../FileUploader.tsx/FileUploader';
 import FilePriview from '../FilePreveiw/FilePreview';
 import Link from 'next/link';
+import { log } from 'console';
 
 export default function TaskContent({
    task,
@@ -27,30 +28,22 @@ export default function TaskContent({
    // const isOpen = 'none';
    // const [value, setValue] = useState('');
    const [selectedOptionComp, setSelectedOptionComp] = useState<string | (string | undefined)[] | undefined>(
-      'Не выбрано'
+      task?.stage?.name || 'не установлено'
    );
    const [files, setFiles] = useState<ResponseFile[]>(task?.files || []);
    const [filesComments, setFIlesComments] = useState<ResponseFile[]>([]);
    const [comments, setComments] = useState<Comment[]>(task?.comments || []);
    const [selectOptions, setSelectOptions] = useState<(string | (string | undefined)[] | undefined)[]>([]);
-   const [titleSelect, setTitleSelect] = useState('не установлен');
-
-   // useEffect(() => {
-   //    // console.log(files, 'files');
-   //    // console.log(filesComments, 'comments');
-   //    console.log(comments);
-   // }, [comments]);
 
    useEffect(() => {
       if (task?.possibleTaskNextStages) {
          setSelectOptions(task?.possibleTaskNextStages?.map((stage) => stage.name));
-         console.log(titleSelect);
       }
    }, [task?.possibleTaskNextStages]);
 
    useEffect(() => {
       if (task?.stage?.name) {
-         setTitleSelect(task?.stage?.name);
+         setSelectedOptionComp(task?.stage?.name);
       }
    }, [task?.stage?.name]);
 
@@ -89,7 +82,13 @@ export default function TaskContent({
             />
             <div>
                {comments.map((item, index) => (
-                  <CommentComp activeUser={activeUser} comment={item} key={index} />
+                  <CommentComp
+                     allComments={comments}
+                     setComments={setComments}
+                     activeUser={activeUser}
+                     comment={item}
+                     key={index}
+                  />
                ))}
             </div>
          </div>
@@ -105,7 +104,7 @@ export default function TaskContent({
             <SelectCustom
                value={selectedOptionComp}
                onChange={(value) => setSelectedOptionComp(value)}
-               titleSelect={titleSelect}
+               titleSelect={`${selectedOptionComp}`}
                options={selectOptions}
             />
             <div className={`${styles.flex} ${styles.aside_tabbox}`}>
@@ -151,7 +150,7 @@ export default function TaskContent({
                   <p className={`${styles.aside_text} ${styles.pb8}`}>Исполнитель</p>
                   {task?.users ? (
                      task.users.map((user, index) => (
-                        <div key={index} className={`${styles.flexcentre} ${styles.pb8}`}>
+                        <div key={index} className={styles.pb8} style={{ display: 'flex' }}>
                            <figure className={styles.avatarbox}>
                               {user.avatar?.link ? (
                                  <img src={`https://trainee-academy.devds.ru${user.avatar?.link}`} alt={user.name} />
@@ -159,7 +158,7 @@ export default function TaskContent({
                                  <></>
                               )}
                            </figure>
-                           <p className={styles.flexcentre} style={{ paddingLeft: 8 }}>
+                           <p style={{ paddingLeft: 8, flexBasis: '80%' }}>
                               {user.surname} {user.name} {user.patronymic}
                            </p>
                         </div>
@@ -172,7 +171,7 @@ export default function TaskContent({
             <div className={`${styles.aside_infobox} ${styles.pt16}`}>
                <div>
                   <p className={`${styles.aside_text} ${styles.pb8}`}>Постановщик</p>
-                  <div className={`${styles.flex} ${styles.pb8}`}>
+                  <div className={styles.pb8} style={{ display: 'flex' }}>
                      <figure className={styles.avatarbox}>
                         {task?.created_by?.avatar?.link ? (
                            <img
@@ -184,7 +183,7 @@ export default function TaskContent({
                            <></>
                         )}
                      </figure>
-                     <p className={styles.flexcentre} style={{ paddingLeft: 8 }}>
+                     <p style={{ paddingLeft: 8, flexBasis: '80%' }}>
                         {task?.created_by?.surname} {task?.created_by?.name} {task?.created_by?.patronymic}
                      </p>
                   </div>

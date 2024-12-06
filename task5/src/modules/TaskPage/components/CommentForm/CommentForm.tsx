@@ -18,6 +18,7 @@ export default function CommentForm({
    editableComment,
    setComments,
    submitType,
+   closeEdit,
 }: {
    task?: TaskSingle | undefined;
    changeFilesInState: CallableFunction;
@@ -27,6 +28,7 @@ export default function CommentForm({
    editableComment?: Comment;
    setComments?: CallableFunction;
    submitType: 'create' | 'edit';
+   closeEdit?: CallableFunction;
 }) {
    const [value, setValue] = useState('');
    const [fontWeight, setBold] = useState(400);
@@ -34,10 +36,16 @@ export default function CommentForm({
    // const [code, setCode] = useState('');
    const [olMarker, setOl] = useState('');
    const [ulMarker, setUl] = useState('');
-   const copyEditableComment = {
-      content: editableComment?.content,
-      files: editableComment?.files,
-   };
+   // const copyEditableComment = {
+   //    content: editableComment?.content,
+   //    files: editableComment?.files,
+   // };
+
+   useEffect(() => {
+      if (submitType === 'edit' && editableComment?.content) {
+         setValue(editableComment?.content);
+      }
+   }, []);
 
    const submitHandler = (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
@@ -47,12 +55,16 @@ export default function CommentForm({
          setComments([comment, ...comments]);
          // console.log(comments);
          resetCommentFields();
-         // create fetch function
+         // fetcher create comment
       } else if (submitType === 'edit') {
-         // edit fetch function
+         if (editableComment?.content) {
+            editableComment.content = value;
+         }
+         closeEdit && closeEdit(false);
+         // fetcher edit comment
       }
    };
-   const commentFormatter = (value: string, activeUser: User | undefined, files: ResponseFile[]): Comment => {
+   const commentFormatter = (value: string, activeUser: User | undefined, fileList: ResponseFile[]): Comment => {
       const date = new Intl.DateTimeFormat('ru-RU', {
          day: 'numeric',
          month: 'short',
@@ -94,6 +106,7 @@ export default function CommentForm({
             </div>
             <textarea
                // contentEditable={true}
+               autoFocus={submitType === 'edit'}
                onChange={(e) => setValue(e.target.value)}
                className={styles.texterea}
                style={{ fontWeight: fontWeight, fontStyle: fontStyle }}

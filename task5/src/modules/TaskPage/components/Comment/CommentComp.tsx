@@ -4,28 +4,37 @@ import Edit from '@public/icons/task-edit.svg';
 import Delete from '@public/icons/task-delete.svg';
 import Copy from '@public/icons/copy-comment.svg';
 import Close from '@public/icons/close.svg';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import FilePriview from '../FilePreveiw/FilePreview';
 import CommentForm from '../CommentForm/CommentForm';
 
 export default function CommentComp({
    comment,
+   allComments,
+   setComments,
    activeUser,
 }: {
    comment: Comment | undefined;
+   allComments: Comment[];
+   setComments: CallableFunction;
    activeUser: User | undefined;
 }) {
    const [editMode, setEditMode] = useState(false);
    const [commentFiles, setCommentFiles] = useState(comment?.files || []);
+
    const deleteCommentHandler = () => {
-      console.log('delete');
+      // console.log('delete');
+      setComments(allComments.filter((comm) => comm.id !== comment?.id));
+      // fetcher delete comment
    };
-   const deleteFileFromComment = () => {};
 
    const escapeEditComment = () => {
       setEditMode(!editMode);
       setCommentFiles(comment?.files || []);
    };
+
+   useEffect(() => {}, [comment?.files]);
+
    return (
       <div className={styles.comment}>
          <div className={styles.flex}>
@@ -66,6 +75,7 @@ export default function CommentComp({
                activeUser={activeUser}
                fileList={commentFiles || []}
                changeFilesInState={setCommentFiles}
+               closeEdit={setEditMode}
             />
          ) : (
             <p className={styles.text}>{comment?.content}</p>
