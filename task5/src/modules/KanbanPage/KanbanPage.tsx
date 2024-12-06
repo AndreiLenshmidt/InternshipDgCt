@@ -10,33 +10,39 @@ import TaskModalCreationEditing from '../TaskModalCreationEditing/page';
 import { useGetAllTasksQuery, useGetTaskStagesQuery, useGetTaskTypesQuery } from '@/api/tasks/tasks.api';
 import { useGetProjectQuery } from '../ProjectsPage/api/api';
 import { useMemo } from 'react';
-import { groupBy } from '@/utils/core';
+import { groupBy, groupByObject } from '@/utils/core';
 import { projectsUrl, projectUrl } from '@/consts';
+import { Stage, TaskMultiple } from '@/api/data.types';
 
 // import task from '@/pages/projects/kanban/task';
 
-
-
 export function KanbanPage() {
    //
-   // 
+   //
    const router = useRouter();
 
-   
    const route = useMemo(() => router.query['task-slug'] as string, [router.query['task-slug']]);
    const loaded = useMemo(() => ({ skip: !router.query['task-slug'] }), [router.query['task-slug']]);
 
-   
    const { data: { data: project } = { data: null }, error } = useGetProjectQuery(route, loaded);
    const { data: { data: taskStages } = { data: null } } = useGetTaskStagesQuery(undefined, loaded);
 
-   const { data: { data: tasks } = { data: [] }, isLoading, isSuccess, isError } = useGetAllTasksQuery(route, loaded);
-
+   const {
+      data: { data: tasks } = { data: [] },
+      isLoading,
+      isSuccess,
+      isError,
+   } = useGetAllTasksQuery(route, { skip: !router.query['task-slug'] || !taskStages?.length });
 
 
    const stagedTasks = useMemo(() => {
-      return groupBy(tasks as (Record<PropertyKey, unknown> & { stage: number })[], 'stage');
-   }, [tasks]);
+      return groupByObject(
+         taskStages as Required<Stage>[],
+         tasks as (Record<PropertyKey, unknown> & TaskMultiple)[],
+         'stage'
+      );
+   }, [tasks, taskStages]);
+   
 
    const { isOver, setNodeRef } = useDroppable({
       id: 'droppable',
@@ -44,6 +50,7 @@ export function KanbanPage() {
 
    const dropstyle = { color: isOver ? 'green' : undefined };
 
+   
    return (
       <>
          <BreadCrumbs
@@ -97,6 +104,20 @@ export function KanbanPage() {
          </div>
 
          <div className={style.kanban_container}>
+            <DndContext id={'11'} onDragEnd={(e) => console.log('dropped', e.active.id, e.over?.id)}>
+               {taskStages?.map((stage) => {
+                  return (
+                     <TasksColumn key={stage.id} title={stage.name || ''}>
+                        {stagedTasks
+                           .filter((v) => v)
+                           .map((task) => {
+                              return '';
+                           })}
+                     </TasksColumn>
+                  );
+               })}
+            </DndContext>
+
             <DndContext id={'111'} onDragEnd={(e) => console.log('dropped', e.active.id, e.over?.id)}>
                <div className={style.kanban}>
                   <TasksColumn title={'Новые'}>
