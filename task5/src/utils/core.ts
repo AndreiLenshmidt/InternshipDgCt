@@ -21,13 +21,13 @@ export function groupBy<T extends PropertyKey>(xs: Array<{ [k in T]?: PropertyKe
 };
 
 
-export function groupByObject<T extends PropertyKey, GroupedType extends { [k in T]?: PropertyKey }>(
-   tarArr: Array<{ id: string | number } & Record<PropertyKey, unknown>>,
+export function groupByObject<T extends PropertyKey, GroupedType extends { [k in T]?: PropertyKey }, CompositeType extends { id: string | number }>(
+   tarArr: Array<CompositeType>,
    arr: Array<GroupedType>,
    key: T) {
 
-   if (!tarArr.length) return [];
-   
+   if (!tarArr?.length) return [] as unknown as Record<string, [GroupedType[], CompositeType]>;
+
    // type GroupedType = { [k in T]?: PropertyKey } & Record<PropertyKey, unknown>;
 
    const entries = Object.entries(
@@ -51,5 +51,11 @@ export function groupByObject<T extends PropertyKey, GroupedType extends { [k in
       }
    })
 
-   return entries as unknown as [string, GroupedType[], typeof tarArr[number]][];
+   const result = entries.reduce((acc, v) => {
+      acc[v.shift() as unknown as string] = v as unknown as [GroupedType[], typeof tarArr[number]];
+      return acc;
+   }, {} as Record<string, [GroupedType[], typeof tarArr[number]]>)
+
+   return result as Record<string, [GroupedType[], CompositeType]>;
+   // return entries as unknown as [string, GroupedType[], typeof tarArr[number]][];
 };

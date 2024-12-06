@@ -34,7 +34,6 @@ export function KanbanPage() {
       isError,
    } = useGetAllTasksQuery(route, { skip: !router.query['task-slug'] || !taskStages?.length });
 
-
    const stagedTasks = useMemo(() => {
       return groupByObject(
          taskStages as Required<Stage>[],
@@ -42,7 +41,6 @@ export function KanbanPage() {
          'stage'
       );
    }, [tasks, taskStages]);
-   
 
    const { isOver, setNodeRef } = useDroppable({
       id: 'droppable',
@@ -50,7 +48,6 @@ export function KanbanPage() {
 
    const dropstyle = { color: isOver ? 'green' : undefined };
 
-   
    return (
       <>
          <BreadCrumbs
@@ -105,20 +102,27 @@ export function KanbanPage() {
 
          <div className={style.kanban_container}>
             <DndContext id={'11'} onDragEnd={(e) => console.log('dropped', e.active.id, e.over?.id)}>
+               <div className={style.kanban}>
                {taskStages?.map((stage) => {
-                  return (
-                     <TasksColumn key={stage.id} title={stage.name || ''}>
-                        {stagedTasks
-                           .filter((v) => v)
-                           .map((task) => {
-                              return '';
+                  if (stage.id) {
+                     
+                     const [stageTasks, stageInfo] = stagedTasks[stage.id] || [];
+
+                     return (
+                        <TasksColumn key={stage.id} title={stage.name || ''}>
+                           {stageTasks?.map((task) => {
+                              return <TaskCard id={task.name} key={task.id} />;
                            })}
-                     </TasksColumn>
-                  );
+                        </TasksColumn>
+                     );
+                  }
+
+                  return null;
                })}
+               </div>
             </DndContext>
 
-            <DndContext id={'111'} onDragEnd={(e) => console.log('dropped', e.active.id, e.over?.id)}>
+            {/* <DndContext id={'111'} onDragEnd={(e) => console.log('dropped', e.active.id, e.over?.id)}>
                <div className={style.kanban}>
                   <TasksColumn title={'Новые'}>
                      <TaskCard />
@@ -141,7 +145,7 @@ export function KanbanPage() {
                      <TaskCard />
                   </TasksColumn>
                </div>
-            </DndContext>
+            </DndContext> */}
          </div>
 
          <TaskModalCreationEditing isOpen={true} onClose={() => true} slug="xxxx" taskId={7} />
