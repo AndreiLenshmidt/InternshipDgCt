@@ -7,13 +7,15 @@ import style from './kanban-page.module.css';
 import { TasksColumn } from './components/tasks-column/TaskColumn';
 import { DndContext, useDroppable } from '@dnd-kit/core';
 import TaskModalCreationEditing from '../TaskModalCreationEditing/page';
-import task from '@/pages/projects/kanban/task';
 import { useGetAllTasksQuery, useGetTaskStagesQuery, useGetTaskTypesQuery } from '@/api/tasks/tasks.api';
 import { useGetProjectQuery } from '../ProjectsPage/api/api';
 import { useMemo } from 'react';
 import { groupBy } from '@/utils/core';
+import { projectsUrl, projectUrl } from '@/consts';
 
-const projectUrl = 'project';
+// import task from '@/pages/projects/kanban/task';
+
+
 
 export function KanbanPage() {
    //
@@ -47,7 +49,7 @@ export function KanbanPage() {
          <BreadCrumbs
             crumbs={[
                { text: 'Главная', url: '/' },
-               { text: 'Проекты', url: '/' + projectUrl },
+               { text: 'Проекты', url: projectsUrl },
                { text: project?.name || '', url: `/${projectUrl}/${router.query['task-slug']}` },
             ]}
          />

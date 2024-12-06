@@ -8,6 +8,7 @@ import style from './projects-page.module.css';
 import { useResize } from '@/hooks/resize';
 import { useMemo, useCallback } from 'react';
 import { useGetProjectsQuery } from './api/api';
+import { projectsUrl } from '@/consts';
 
 
 export function ProjectPage() {
@@ -25,8 +26,8 @@ export function ProjectPage() {
       <>
          <BreadCrumbs
             crumbs={[
-               { text: 'Главная', url: '' },
-               { text: 'Проекты', url: '' },
+               { text: 'Главная', url: '/' },
+               { text: 'Проекты', url: projectsUrl },
             ]}
          />
 

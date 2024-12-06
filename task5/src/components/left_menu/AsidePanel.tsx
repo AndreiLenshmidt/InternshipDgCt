@@ -4,7 +4,9 @@ import style from './aside-panel.module.css';
 import Logo from '@public/Logo.svg';
 import Collapse from '@public/icons/collapse-btn.svg';
 import ProjectsIcon from '@public/icons/projects.svg';
+import Link from 'next/link';
 import { useReducer, useState } from 'react';
+import { projectsUrl, projectUrl } from '@/consts';
 
 export function AsidePanel() {
    const [expanded, changeExpanded] = useReducer((v) => !v, true);
@@ -36,7 +38,9 @@ export function AsidePanel() {
             <div className={style.projects}>
                <div className={style.projects_title}>
                   <ProjectsIcon />
-                  <h3>Проекты</h3>
+                  <Link href={projectsUrl}>
+                     <h3>Проекты</h3>
+                  </Link>
                </div>
             </div>
          )}
