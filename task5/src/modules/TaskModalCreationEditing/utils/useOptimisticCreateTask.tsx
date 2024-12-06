@@ -1,9 +1,9 @@
 import { TaskSingle } from '@/api/data.types';
-import { taskApiActions } from '../api/taskApiActions';
+import { taskApiActions, useCreateTaskMutation } from '../api/taskApiActions';
 
 // Оптимистичное создание задачи (POST)
 export const useOptimisticCreateTask = () => {
-   const [createTask] = taskApiActions.useCreateTaskMutation();
+   const [createTask, { isLoading, isSuccess, error }] = taskApiActions.useCreateTaskMutation();
    const { updateQueryData } = taskApiActions.util;
 
    const handleCreate = async (slug: string, newTask: TaskSingle) => {

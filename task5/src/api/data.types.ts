@@ -558,6 +558,8 @@ export interface Stage {
    id?: number;
    /** Название стадии */
    name?: string;
+   /** Цвет стадии */
+   color?: string;
 }
 
 /** Приоритет задачи */

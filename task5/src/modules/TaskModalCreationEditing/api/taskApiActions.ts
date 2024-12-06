@@ -1,4 +1,4 @@
-import { TaskSingle, User } from '@/api/data.types';
+import { TaskSingle, User, Component, Priority, TaskType } from '@/api/data.types';
 import { BASE_URL, BASE_API_URL } from '@/consts';
 import { getCookie } from '@/utils/cookies';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
@@ -30,10 +30,11 @@ export const taskApiActions = createApi({
          }),
       }),
 
-      createTask: build.mutation<TaskSingle, Partial<TaskSingle>>({
-         query: (slug) => ({
+      createTask: build.mutation<TaskSingle, { slug: string; body: Partial<TaskSingle> }>({
+         query: ({ slug, body }) => ({
             url: `/project/${slug}/task`,
             method: 'POST',
+            body,
             headers: {
                Authorization: `Bearer ${token}`,
             },
@@ -82,6 +83,36 @@ export const taskApiActions = createApi({
             },
          }),
       }),
+
+      getComponents: build.query<Component[], void>({
+         query: () => ({
+            url: `/component`,
+            method: 'GET',
+            headers: {
+               Authorization: `Bearer ${token}`, // Если нужен токен
+            },
+         }),
+      }),
+
+      getPriorities: build.query<Priority[], void>({
+         query: () => ({
+            url: `/priority`,
+            method: 'GET',
+            headers: {
+               Authorization: `Bearer ${token}`, // Если нужен токен
+            },
+         }),
+      }),
+
+      getTaskTypes: build.query<TaskType[], void>({
+         query: () => ({
+            url: `/task_type`,
+            method: 'GET',
+            headers: {
+               Authorization: `Bearer ${token}`, // Если требуется авторизация
+            },
+         }),
+      }),
    }),
 });
 
@@ -92,6 +123,9 @@ export const {
    useDeleteTaskMutation,
    useGetTasksQuery,
    useGetUsersQuery,
+   useGetComponentsQuery,
+   useGetPrioritiesQuery,
+   useGetTaskTypesQuery,
 } = taskApiActions;
 
 // Использование фильтрации
