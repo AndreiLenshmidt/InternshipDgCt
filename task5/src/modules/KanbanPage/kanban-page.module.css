@@ -118,8 +118,10 @@
 
 
 
-   &>div {
+   &>div, &>.col {
+
       flex: 1 1 0px;
+      min-width: 245px;
 
       .tasks {
          padding: .6rem;

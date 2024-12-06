@@ -58,7 +58,7 @@ export function KanbanPage() {
             ]}
          />
 
-         {JSON.stringify(stagedTasks)}
+         {/* {JSON.stringify(stagedTasks)} */}
 
          <div className={style.title}>
             <h1>{project?.name}</h1>
