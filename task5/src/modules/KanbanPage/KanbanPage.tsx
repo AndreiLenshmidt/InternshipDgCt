@@ -8,31 +8,39 @@ import { TasksColumn } from './components/tasks-column/TaskColumn';
 import { DndContext, useDroppable } from '@dnd-kit/core';
 import TaskModalCreationEditing from '../TaskModalCreationEditing/page';
 import task from '@/pages/projects/kanban/task';
-import { useGetAllTasksQuery } from '@/api/tasks/tasks.api';
+import { useGetAllTasksQuery, useGetTaskStagesQuery, useGetTaskTypesQuery } from '@/api/tasks/tasks.api';
 import { useGetProjectQuery } from '../ProjectsPage/api/api';
+import { useMemo } from 'react';
+import { groupBy } from '@/utils/core';
 
-const projectUrl = 'projects';
+const projectUrl = 'project';
 
 export function KanbanPage() {
    //
+   // 
    const router = useRouter();
+
+   
+   const route = useMemo(() => router.query['task-slug'] as string, [router.query['task-slug']]);
+   const loaded = useMemo(() => ({ skip: !router.query['task-slug'] }), [router.query['task-slug']]);
+
+   
+   const { data: { data: project } = { data: null }, error } = useGetProjectQuery(route, loaded);
+   const { data: { data: taskStages } = { data: null } } = useGetTaskStagesQuery(undefined, loaded);
+
+   const { data: { data: tasks } = { data: [] }, isLoading, isSuccess, isError } = useGetAllTasksQuery(route, loaded);
+
+
+
+   const stagedTasks = useMemo(() => {
+      return groupBy(tasks as (Record<PropertyKey, unknown> & { stage: number })[], 'stage');
+   }, [tasks]);
 
    const { isOver, setNodeRef } = useDroppable({
       id: 'droppable',
    });
 
-   const dropstyle = {
-      color: isOver ? 'green' : undefined,
-   };
-
-   const {
-      data: { data: tasks } = { data: [] },
-      isLoading,
-      isSuccess,
-      isError,
-   } = useGetAllTasksQuery(router.query['task-slug'] as string);
-
-   const { data: { data: project } = { data: null }, error } = useGetProjectQuery(router.query['task-slug'] as string);
+   const dropstyle = { color: isOver ? 'green' : undefined };
 
    return (
       <>
@@ -40,11 +48,11 @@ export function KanbanPage() {
             crumbs={[
                { text: 'Главная', url: '/' },
                { text: 'Проекты', url: '/' + projectUrl },
-               { text: '[Demo Project]', url: `/${projectUrl}/${router.query['task-slug']}` },
+               { text: project?.name || '', url: `/${projectUrl}/${router.query['task-slug']}` },
             ]}
          />
 
-         {JSON.stringify(tasks)}
+         {JSON.stringify(stagedTasks)}
 
          <div className={style.title}>
             <h1>{project?.name}</h1>
