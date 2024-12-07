@@ -9,13 +9,17 @@ import { DndContext, useDroppable } from '@dnd-kit/core';
 import TaskModalCreationEditing from '../TaskModalCreationEditing/page';
 import { useGetAllTasksQuery, useGetTaskPrioritiesQuery, useGetTaskTagsQuery } from '@/api/tasks/tasks.api';
 import { useGetProjectQuery } from '../ProjectsPage/api/api';
-import { useEffect, useMemo } from 'react';
+import { JSXElementConstructor, useEffect, useMemo } from 'react';
 import { groupBy, groupByObject } from '@/utils/core';
 import { projectsUrl, projectUrl } from '@/consts';
 import { Stage, TaskMultiple } from '@/api/data.types';
-import { Scrollbars } from 'react-custom-scrollbars';
-
+import { ScrollbarProps, Scrollbars } from 'react-custom-scrollbars';
+// import { Scrollbar } from 'react-scrollbars-custom';
 // import task from '@/pages/projects/kanban/task';
+
+
+const ScrollBar = Scrollbars as unknown as JSXElementConstructor<ScrollbarProps>;
+
 
 export function KanbanPage() {
    //
@@ -48,6 +52,10 @@ export function KanbanPage() {
    });
 
    const dropstyle = { color: isOver ? 'green' : undefined };
+
+   // interface Scrollbars {
+   //    refs: Record<string, any>;
+   // }
 
    return (
       <>
@@ -101,7 +109,9 @@ export function KanbanPage() {
             </div>
          </div>
 
-         <Scrollbars style={{ width: 500, height: 300 }}>
+         <ScrollBar
+            style={{ width: 500, height: 300 }}
+         >
             <div className={style.kanban_container}>
                <DndContext id={'11'} onDragEnd={(e) => console.log('dropped', e.active.id, e.over?.id)}>
                   <div className={style.kanban}>
@@ -123,7 +133,7 @@ export function KanbanPage() {
                   </div>
                </DndContext>
             </div>
-         </Scrollbars>
+         </ScrollBar>
 
          <TaskModalCreationEditing isOpen={true} onClose={() => true} slug="xxxx" taskId={7} />
       </>

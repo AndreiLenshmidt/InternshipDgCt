@@ -77,11 +77,13 @@
 }
 
 .kanban_container {
-   width: 100%;
    overflow: auto;
-
+   
    overflow: -moz-scrollbars-none;
    scrollbar-width: none;
+   
+   width: 100%;
+   width: max-content;
 
    &::-webkit-scrollbar {
       width: 0;
