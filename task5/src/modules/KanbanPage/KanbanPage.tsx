@@ -14,7 +14,7 @@ import { groupBy, groupByObject } from '@/utils/core';
 import { projectsUrl, projectUrl } from '@/consts';
 import { Stage, TaskMultiple } from '@/api/data.types';
 import { ScrollbarProps, Scrollbars } from 'react-custom-scrollbars';
-// import { Scrollbar } from 'react-scrollbars-custom';
+import { Scrollbar } from 'react-scrollbars-custom';
 // import task from '@/pages/projects/kanban/task';
 
 
@@ -109,9 +109,8 @@ export function KanbanPage() {
             </div>
          </div>
 
-         <ScrollBar
-            style={{ width: 500, height: 300 }}
-         >
+         {/* autoHeight autoHeightMin={500} */}
+         <Scrollbar style={{ width: 500, height: 300 }}>
             <div className={style.kanban_container}>
                <DndContext id={'11'} onDragEnd={(e) => console.log('dropped', e.active.id, e.over?.id)}>
                   <div className={style.kanban}>
@@ -133,7 +132,7 @@ export function KanbanPage() {
                   </div>
                </DndContext>
             </div>
-         </ScrollBar>
+         </Scrollbar>
 
          <TaskModalCreationEditing isOpen={true} onClose={() => true} slug="xxxx" taskId={7} />
       </>
