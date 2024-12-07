@@ -9,22 +9,24 @@ import { DndContext, useDroppable } from '@dnd-kit/core';
 import TaskModalCreationEditing from '../TaskModalCreationEditing/page';
 import { useGetAllTasksQuery, useGetTaskPrioritiesQuery, useGetTaskTagsQuery } from '@/api/tasks/tasks.api';
 import { useGetProjectQuery } from '../ProjectsPage/api/api';
-import { JSXElementConstructor, useEffect, useMemo } from 'react';
+import { JSXElementConstructor, useEffect, useMemo, useRef } from 'react';
 import { groupBy, groupByObject } from '@/utils/core';
 import { projectsUrl, projectUrl } from '@/consts';
 import { Stage, TaskMultiple } from '@/api/data.types';
 import { ScrollbarProps, Scrollbars } from 'react-custom-scrollbars';
 import { Scrollbar } from 'react-scrollbars-custom';
+import { useResize } from '@/hooks/resize';
 // import task from '@/pages/projects/kanban/task';
 
-
 const ScrollBar = Scrollbars as unknown as JSXElementConstructor<ScrollbarProps>;
-
 
 export function KanbanPage() {
    //
    //
    const router = useRouter();
+   const { width } = useResize();
+
+   const wrapper = useRef<HTMLDivElement>(null);
 
    const route = useMemo(() => router.query['task-slug'] as string, [router.query['task-slug']]);
    const loaded = useMemo(() => ({ skip: !router.query['task-slug'] }), [router.query['task-slug']]);
@@ -46,6 +48,10 @@ export function KanbanPage() {
          'stage'
       );
    }, [tasks, project?.flow?.possibleProjectStages]);
+
+   useEffect(() => {
+      console.log(wrapper.current?.offsetWidth);
+   }, [wrapper]);
 
    const { isOver, setNodeRef } = useDroppable({
       id: 'droppable',
@@ -110,8 +116,14 @@ export function KanbanPage() {
          </div>
 
          {/* autoHeight autoHeightMin={500} */}
-         <Scrollbar style={{ width: 500, height: 300 }}>
-            <div className={style.kanban_container}>
+         <Scrollbar
+            noScrollY
+            style={{
+               width: width - 336, // TODO (reTODO) with s/m
+               height: 800, // TODO
+            }}
+         >
+            <div ref={wrapper} className={style.kanban_container}>
                <DndContext id={'11'} onDragEnd={(e) => console.log('dropped', e.active.id, e.over?.id)}>
                   <div className={style.kanban}>
                      {project?.flow?.possibleProjectStages?.map((stage) => {
@@ -120,9 +132,11 @@ export function KanbanPage() {
 
                            return (
                               <TasksColumn key={stage.id} stage={stage} tasksAmount={stageTasks?.length || 0}>
-                                 {stageTasks?.map((task) => {
-                                    return <TaskCard task={task} key={task.id} />;
-                                 })}
+                                 <Scrollbar noScrollX style={{ height: 800, width: 250 }}>
+                                    {stageTasks?.map((task) => {
+                                       return <TaskCard task={task} key={task.id} />;
+                                    })}
+                                 </Scrollbar>
                               </TasksColumn>
                            );
                         }
