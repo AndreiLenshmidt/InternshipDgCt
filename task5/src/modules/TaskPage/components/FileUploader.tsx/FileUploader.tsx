@@ -21,21 +21,14 @@ export default function FileUploader({
       fileList: ResponseFile[]
    ) => {
       e.target?.files ? addFiles(e.target?.files, fileList, addFilesTOState) : false;
-      // const form = new FormData();
-      // if (e.target?.files) {
-      //    for (const file of e.target?.files) {
-      //       const fileReader = new FileReader();
-      //       // fileReader.readAsArrayBuffer(new Blob([file]));
-      //       // fileReader.onload = function () {
-      //       // fileReader.result;
-      //       form.append('file', file, file.name));
-      //       console.log(fileReader.result);
-      //       // };
-      //    }
-      //    const paylord = await sendler(form);
-      //    // console.log(paylord);
-      //    // console.log(response, isLoading, isError);
-      // }
+      const form = new FormData();
+      if (e.target?.files) {
+         for (const file of e.target?.files) {
+            form.append('file[]', file);
+         }
+         const paylord = await sendler(form);
+         console.log(paylord);
+      }
    };
 
    return (

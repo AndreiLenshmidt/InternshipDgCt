@@ -90,6 +90,9 @@ $defalt-avatar: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg
       font-size: 12px;
       color: #abbed1;
    }
+   &_text > strong {
+      font-weight: 800;
+   }
    &_textblack {
       font-weight: 400;
       font-size: 12px;

@@ -15,7 +15,6 @@ import { useEffect, useState } from 'react';
 import FileUploader from '../FileUploader.tsx/FileUploader';
 import FilePriview from '../FilePreveiw/FilePreview';
 import Link from 'next/link';
-import { log } from 'console';
 
 export default function TaskContent({
    task,

@@ -85,12 +85,23 @@ export default function CommentForm({
       changeFilesInState([]);
    };
 
+   const boldHandler = () => {};
+   const inputHandler = (e: FormEvent<HTMLDivElement>) => {
+      // setValue(e.target.outerText);
+      // // console.dir(e.target);
+      // console.log(value);
+   };
+
    return (
       <form onSubmit={(e) => submitHandler(e)}>
          <div className={styles.comments}>
             <h3 className={styles.commtitle}>Комментарии</h3>
             <div className={styles.commstyler}>
-               <Bold className={styles.icon} onClick={() => (fontWeight === 400 ? setBold(800) : setBold(400))} />
+               <Bold
+                  className={styles.icon}
+                  // onClick={() => (fontWeight === 400 ? setBold(800) : setBold(400))}
+                  onClick={boldHandler}
+               />
                <Italic
                   className={styles.icon}
                   onClick={() => (fontStyle === 'normal' ? setItalic('italic') : setItalic('normal'))}
@@ -112,6 +123,7 @@ export default function CommentForm({
                style={{ fontWeight: fontWeight, fontStyle: fontStyle }}
                value={value}
             ></textarea>
+            {/* <div className={styles.texterea} contentEditable={true} onInput={(e) => inputHandler(e)}></div> */}
          </div>
          <FileUploader addFilesTOState={changeFilesInState} fileList={fileList} />
          <div className={styles.preveiw_box}>

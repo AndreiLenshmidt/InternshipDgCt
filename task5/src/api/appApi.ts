@@ -8,7 +8,7 @@ export const BASE_URL_API = BASE_URL + 'api';
 
 export const appApi = createApi({
    reducerPath: 'api/single_task',
-   baseQuery: fetchBaseQuery({ baseUrl: BASE_URL_API }),
+   baseQuery: fetchBaseQuery({ baseUrl: BASE_URL_API, credentials: 'same-origin' }),
    endpoints: (build) => ({
       getTaskByTaskId: build.query<{ data: TaskSingle }, number>({
          query: (id: number | undefined) => ({

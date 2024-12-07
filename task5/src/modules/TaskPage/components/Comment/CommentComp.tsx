@@ -4,9 +4,10 @@ import Edit from '@public/icons/task-edit.svg';
 import Delete from '@public/icons/task-delete.svg';
 import Copy from '@public/icons/copy-comment.svg';
 import Close from '@public/icons/close.svg';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import FilePriview from '../FilePreveiw/FilePreview';
 import CommentForm from '../CommentForm/CommentForm';
+import parse from 'html-react-parser';
 
 export default function CommentComp({
    comment,
@@ -33,7 +34,10 @@ export default function CommentComp({
       setCommentFiles(comment?.files || []);
    };
 
+   // const preref = useRef(null);
+
    useEffect(() => {}, [comment?.files]);
+   useEffect(() => {}, []);
 
    return (
       <div className={styles.comment}>
@@ -78,7 +82,7 @@ export default function CommentComp({
                closeEdit={setEditMode}
             />
          ) : (
-            <p className={styles.text}>{comment?.content}</p>
+            <pre className={styles.text}>{parse(comment?.content || '<p>Описание задачи</p>')}</pre>
          )}
          {!editMode ? (
             <div className={styles.preview}>
