@@ -124,7 +124,7 @@ export function KanbanPage() {
             }}
          >
             <div ref={wrapper} className={style.kanban_container}>
-               <DndContext id={'11'} onDragEnd={(e) => console.log('dropped', e.active.id, e.over?.id)}>
+               <DndContext id={'11'} onDragStart={(e) => {}} onDragEnd={(e) => console.log('dropped', e.active.id, e.over?.id)}>
                   <div className={style.kanban}>
                      {project?.flow?.possibleProjectStages?.map((stage) => {
                         if (stage.id) {
@@ -137,6 +137,8 @@ export function KanbanPage() {
                                        return <TaskCard task={task} key={task.id} />;
                                     })}
                                  </Scrollbar>
+                                 {/* ScrollbarsCustom-Scroller, ScrollbarsCustom-Wrapper, ScrollbarsCustom-Scroller? -> display: contents; */}
+                                 {/* ScrollbarsCustom-Scroller, ScrollbarsCustom-Wrapper -> overflow: null; */}
                               </TasksColumn>
                            );
                         }
