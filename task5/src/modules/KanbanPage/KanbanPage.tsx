@@ -15,7 +15,6 @@ import { projectsUrl, projectUrl } from '@/consts';
 import { Stage, TaskMultiple } from '@/api/data.types';
 import { Scrollbars } from 'react-custom-scrollbars';
 
-
 // import task from '@/pages/projects/kanban/task';
 
 export function KanbanPage() {
@@ -27,14 +26,14 @@ export function KanbanPage() {
    const loaded = useMemo(() => ({ skip: !router.query['task-slug'] }), [router.query['task-slug']]);
 
    const { data: { data: project } = { data: null }, error } = useGetProjectQuery(route, loaded);
-   const { data: { data: priorities } = { data: null } } = useGetTaskPrioritiesQuery(undefined, loaded);   
-   
+   const { data: { data: priorities } = { data: null } } = useGetTaskPrioritiesQuery(undefined, loaded);
+
    const {
       data: { data: tasks } = { data: [] },
       isLoading,
       isSuccess,
       isError,
-   } = useGetAllTasksQuery(route, { skip: !router.query['task-slug'] || !(project && priorities) });  //  || !taskStages?.length
+   } = useGetAllTasksQuery(route, { skip: !router.query['task-slug'] || !(project && priorities) }); //  || !taskStages?.length
 
    const stagedTasks = useMemo(() => {
       return groupByObject(
@@ -102,53 +101,29 @@ export function KanbanPage() {
             </div>
          </div>
 
-         <div className={style.kanban_container}>
-            <DndContext id={'11'} onDragEnd={(e) => console.log('dropped', e.active.id, e.over?.id)}>
-               <div className={style.kanban}>
-                  {project?.flow?.possibleProjectStages?.map((stage) => {
-                     if (stage.id) {
+         <Scrollbars style={{ width: 500, height: 300 }}>
+            <div className={style.kanban_container}>
+               <DndContext id={'11'} onDragEnd={(e) => console.log('dropped', e.active.id, e.over?.id)}>
+                  <div className={style.kanban}>
+                     {project?.flow?.possibleProjectStages?.map((stage) => {
+                        if (stage.id) {
+                           const [stageTasks, stageInfo] = stagedTasks[stage.id] || [];
 
-                        const [stageTasks, stageInfo] = stagedTasks[stage.id] || [];
+                           return (
+                              <TasksColumn key={stage.id} stage={stage} tasksAmount={stageTasks?.length || 0}>
+                                 {stageTasks?.map((task) => {
+                                    return <TaskCard task={task} key={task.id} />;
+                                 })}
+                              </TasksColumn>
+                           );
+                        }
 
-                        return (
-                           <TasksColumn key={stage.id} stage={stage} tasksAmount={stageTasks?.length || 0}>
-                              {stageTasks?.map((task) => {
-                                 return <TaskCard task={task} key={task.id} />;
-                              })}
-                           </TasksColumn>
-                        );
-                     }
-
-                     return null;
-                  })}
-               </div>
-            </DndContext>
-
-            {/* <DndContext id={'111'} onDragEnd={(e) => console.log('dropped', e.active.id, e.over?.id)}>
-               <div className={style.kanban}>
-                  <TasksColumn title={'Новые'}>
-                     <TaskCard />
-                     <TaskCard id={'2'} />
-                     <TaskCard />
-                  </TasksColumn>
-
-                  <TasksColumn title={'В работе'}>
-                     <TaskCard />
-                  </TasksColumn>
-
-                  <TasksColumn title={'Выполнены'}>
-                     <TaskCard />
-                     <TaskCard />
-                  </TasksColumn>
-
-                  <TasksColumn title={'В ревью'}></TasksColumn>
-
-                  <TasksColumn title={'В тестировании'}>
-                     <TaskCard />
-                  </TasksColumn>
-               </div>
-            </DndContext> */}
-         </div>
+                        return null;
+                     })}
+                  </div>
+               </DndContext>
+            </div>
+         </Scrollbars>
 
          <TaskModalCreationEditing isOpen={true} onClose={() => true} slug="xxxx" taskId={7} />
       </>
