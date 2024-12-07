@@ -7,9 +7,9 @@ import style from './kanban-page.module.css';
 import { TasksColumn } from './components/tasks-column/TaskColumn';
 import { DndContext, useDroppable } from '@dnd-kit/core';
 import TaskModalCreationEditing from '../TaskModalCreationEditing/page';
-import { useGetAllTasksQuery, useGetTaskTypesQuery } from '@/api/tasks/tasks.api';
+import { useGetAllTasksQuery, useGetTaskPrioritiesQuery, useGetTaskTagsQuery } from '@/api/tasks/tasks.api';
 import { useGetProjectQuery } from '../ProjectsPage/api/api';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { groupBy, groupByObject } from '@/utils/core';
 import { projectsUrl, projectUrl } from '@/consts';
 import { Stage, TaskMultiple } from '@/api/data.types';
@@ -25,17 +25,17 @@ export function KanbanPage() {
    const loaded = useMemo(() => ({ skip: !router.query['task-slug'] }), [router.query['task-slug']]);
 
    const { data: { data: project } = { data: null }, error } = useGetProjectQuery(route, loaded);
+   const { data: { data: priorities } = { data: null } } = useGetTaskPrioritiesQuery(undefined, loaded);   
    
    const {
       data: { data: tasks } = { data: [] },
       isLoading,
       isSuccess,
       isError,
-   } = useGetAllTasksQuery(route, { skip: !router.query['task-slug'] || !project });  //  || !taskStages?.length
+   } = useGetAllTasksQuery(route, { skip: !router.query['task-slug'] || !(project && priorities) });  //  || !taskStages?.length
 
    const stagedTasks = useMemo(() => {
       return groupByObject(
-         // taskStages as Required<Stage>[],
          project?.flow?.possibleProjectStages as Required<Stage>[],
          tasks as (Record<PropertyKey, unknown> & TaskMultiple)[],
          'stage'
@@ -109,9 +109,9 @@ export function KanbanPage() {
                         const [stageTasks, stageInfo] = stagedTasks[stage.id] || [];
 
                         return (
-                           <TasksColumn key={stage.id} title={stage.name || ''}>
+                           <TasksColumn key={stage.id} stage={stage} tasksAmount={stageTasks?.length || 0}>
                               {stageTasks?.map((task) => {
-                                 return <TaskCard id={task.name} key={task.id} />;
+                                 return <TaskCard task={task} key={task.id} />;
                               })}
                            </TasksColumn>
                         );

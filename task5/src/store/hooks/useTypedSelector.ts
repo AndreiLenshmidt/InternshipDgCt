@@ -1,5 +1,5 @@
 import { TypedUseSelectorHook, useSelector } from "react-redux";
-import { TypeRootState } from "../store";
+import { GlobalState } from "../store";
 
-export const useTypedSelector: TypedUseSelectorHook<TypeRootState> =
+export const useTypedSelector: TypedUseSelectorHook<GlobalState> =
   useSelector;

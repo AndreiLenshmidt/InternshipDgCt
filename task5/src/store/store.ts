@@ -14,6 +14,7 @@ export const store = configureStore({
       [projectsApi.reducerPath]: projectsApi.reducer,
       [taskApi.reducerPath]: taskApi.reducer,
       [tasksApi.reducerPath]: tasksApi.reducer,
+      tasks: tasksApi.reducer,
       [taskApiActions.reducerPath]: taskApiActions.reducer,
    },
    middleware: (getDefaultMiddleware) =>
@@ -27,3 +28,4 @@ export const store = configureStore({
 
 // setupListeners(store.dispatch);
 export type TypeRootState = ReturnType<typeof store.getState>;
+
