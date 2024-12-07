@@ -7,9 +7,13 @@ import ProjectsIcon from '@public/icons/projects.svg';
 import Link from 'next/link';
 import { useReducer, useState } from 'react';
 import { projectsUrl, projectUrl } from '@/consts';
+import { useGetCurrentUserQuery } from '@/api/user/user.api';
 
 export function AsidePanel() {
+   // 
    const [expanded, changeExpanded] = useReducer((v) => !v, true);
+
+   const { data: { data: user } = { data: null }, isLoading, isError } = useGetCurrentUserQuery();
 
    return (
       <div className={[style.container, expanded ? '' : style.collapsed].join(' ')}>
@@ -20,10 +24,18 @@ export function AsidePanel() {
 
          <div className={style.user}>
             {/*  style={{ backgroundImage: '' }} */}
-            <div className={style.ava}></div>
+            <div className={style.ava} style={user?.avatar ? { backgroundImage: `url(${user?.avatar?.link})` } : {}}></div>
             <div className="username">
-               <h3>[[Админ Питоновский]]</h3>
-               <h4>[[Web-дизайнер]]</h4>
+               {isLoading ? (
+                  <h3>loading...</h3>
+               ) : (
+                  <>
+                     <h3>
+                        {user?.name} {user?.surname}
+                     </h3>
+                     <h4>{user?.position}</h4>
+                  </>
+               )}
             </div>
          </div>
          <button className={style.exit}>Выйти</button>
