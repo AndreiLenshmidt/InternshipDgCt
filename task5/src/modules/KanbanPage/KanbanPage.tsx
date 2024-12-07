@@ -25,22 +25,24 @@ export function KanbanPage() {
    const loaded = useMemo(() => ({ skip: !router.query['task-slug'] }), [router.query['task-slug']]);
 
    const { data: { data: project } = { data: null }, error } = useGetProjectQuery(route, loaded);
-   const { data: { data: taskStages } = { data: null } } = useGetTaskStagesQuery(undefined, loaded);
 
+   // const { data: { data: taskStages } = { data: null } } = useGetTaskStagesQuery(undefined, loaded);
+   
    const {
       data: { data: tasks } = { data: [] },
       isLoading,
       isSuccess,
       isError,
-   } = useGetAllTasksQuery(route, { skip: !router.query['task-slug'] || !taskStages?.length });
+   } = useGetAllTasksQuery(route, { skip: !router.query['task-slug'] || !project });  //  || !taskStages?.length
 
    const stagedTasks = useMemo(() => {
       return groupByObject(
-         taskStages as Required<Stage>[],
+         // taskStages as Required<Stage>[],
+         project?.flow?.possibleProjectStages as Required<Stage>[],
          tasks as (Record<PropertyKey, unknown> & TaskMultiple)[],
          'stage'
       );
-   }, [tasks, taskStages]);
+   }, [tasks, project?.flow?.possibleProjectStages]);
 
    const { isOver, setNodeRef } = useDroppable({
       id: 'droppable',
@@ -58,7 +60,7 @@ export function KanbanPage() {
             ]}
          />
 
-         {/* {JSON.stringify(stagedTasks)} */}
+         {/* {JSON.stringify(project)} */}
 
          <div className={style.title}>
             <h1>{project?.name}</h1>
@@ -103,22 +105,22 @@ export function KanbanPage() {
          <div className={style.kanban_container}>
             <DndContext id={'11'} onDragEnd={(e) => console.log('dropped', e.active.id, e.over?.id)}>
                <div className={style.kanban}>
-               {taskStages?.map((stage) => {
-                  if (stage.id) {
-                     
-                     const [stageTasks, stageInfo] = stagedTasks[stage.id] || [];
+                  {project?.flow?.possibleProjectStages?.map((stage) => {
+                     if (stage.id) {
 
-                     return (
-                        <TasksColumn key={stage.id} title={stage.name || ''}>
-                           {stageTasks?.map((task) => {
-                              return <TaskCard id={task.name} key={task.id} />;
-                           })}
-                        </TasksColumn>
-                     );
-                  }
+                        const [stageTasks, stageInfo] = stagedTasks[stage.id] || [];
 
-                  return null;
-               })}
+                        return (
+                           <TasksColumn key={stage.id} title={stage.name || ''}>
+                              {stageTasks?.map((task) => {
+                                 return <TaskCard id={task.name} key={task.id} />;
+                              })}
+                           </TasksColumn>
+                        );
+                     }
+
+                     return null;
+                  })}
                </div>
             </DndContext>
 
