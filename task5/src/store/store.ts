@@ -5,12 +5,14 @@ import { projectsApi } from '@/modules/ProjectsPage/api/api';
 import { taskApi } from '@/modules/TaskPage/api/taskApi';
 import { taskApiActions } from '@/modules/TaskModalCreationEditing/api/taskApiActions';
 import { tasksApi } from '@/api/tasks/tasks.api';
+import { userApi } from '@/api/user/user.api';
 // import { setupListeners } from "@reduxjs/toolkit/query";
 
 export const store = configureStore({
    reducer: {
       [authApi.reducerPath]: authApi.reducer,
       auth: authReduser,
+      [userApi.reducerPath]: userApi.reducer,
       [projectsApi.reducerPath]: projectsApi.reducer,
       [taskApi.reducerPath]: taskApi.reducer,
       [tasksApi.reducerPath]: tasksApi.reducer,
@@ -20,6 +22,7 @@ export const store = configureStore({
    middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware()
          .concat(authApi.middleware)
+         .concat(userApi.middleware)
          .concat(projectsApi.middleware)
          .concat(taskApi.middleware)
          .concat(tasksApi.middleware)
