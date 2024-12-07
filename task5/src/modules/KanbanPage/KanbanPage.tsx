@@ -13,6 +13,8 @@ import { useEffect, useMemo } from 'react';
 import { groupBy, groupByObject } from '@/utils/core';
 import { projectsUrl, projectUrl } from '@/consts';
 import { Stage, TaskMultiple } from '@/api/data.types';
+import { Scrollbars } from 'react-custom-scrollbars';
+
 
 // import task from '@/pages/projects/kanban/task';
 
