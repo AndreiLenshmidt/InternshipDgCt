@@ -9,10 +9,14 @@ export const tasksApi = createApi({
    reducerPath: 'api/tasks',
    baseQuery: fetchBaseQuery({ baseUrl: BASE_API_URL, prepareHeaders }),
    endpoints: (build) => ({
-      getTaskStages: build.query<{ data: Array<Stage> }, void>({ query: () => `/stage` }),
+      // getTaskStages: build.query<{ data: Array<Stage> }, void>({ query: () => `/stage` }),
       getTaskTypes: build.query<{ data: Array<TaskType> }, void>({ query: () => `/task_type` }),
       getAllTasks: build.query<{ data: Array<TaskMultiple> }, string>({ query: (slug: string) => `/project/${slug}/task` }),
    }),
 });
 
-export const { useGetAllTasksQuery, useGetTaskTypesQuery, useGetTaskStagesQuery } = tasksApi;
+export const {
+   useGetAllTasksQuery,
+   useGetTaskTypesQuery,
+   // useGetTaskStagesQuery
+} = tasksApi;

@@ -7,7 +7,7 @@ import style from './kanban-page.module.css';
 import { TasksColumn } from './components/tasks-column/TaskColumn';
 import { DndContext, useDroppable } from '@dnd-kit/core';
 import TaskModalCreationEditing from '../TaskModalCreationEditing/page';
-import { useGetAllTasksQuery, useGetTaskStagesQuery, useGetTaskTypesQuery } from '@/api/tasks/tasks.api';
+import { useGetAllTasksQuery, useGetTaskTypesQuery } from '@/api/tasks/tasks.api';
 import { useGetProjectQuery } from '../ProjectsPage/api/api';
 import { useMemo } from 'react';
 import { groupBy, groupByObject } from '@/utils/core';
@@ -25,8 +25,6 @@ export function KanbanPage() {
    const loaded = useMemo(() => ({ skip: !router.query['task-slug'] }), [router.query['task-slug']]);
 
    const { data: { data: project } = { data: null }, error } = useGetProjectQuery(route, loaded);
-
-   // const { data: { data: taskStages } = { data: null } } = useGetTaskStagesQuery(undefined, loaded);
    
    const {
       data: { data: tasks } = { data: [] },
