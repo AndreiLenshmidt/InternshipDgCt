@@ -3,6 +3,32 @@ const path = require('path');
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+   async headers() {
+      return [
+         {
+            source: '/api/file',
+            headers: [
+               {
+                  key: 'Access-Control-Allow-Origin',
+                  value: 'true',
+               },
+               {
+                  key: 'Access-Control-Allow-Origin',
+                  value: '*',
+               },
+               {
+                  key: 'Access-Control-Allow-Origin',
+                  value: 'GET, DELETE, POST, PATCH, PUT',
+               },
+               {
+                  key: 'Access-Control-Allow-Headers',
+                  value: 'Content-Type, multipart/form-data',
+               },
+            ],
+         },
+      ];
+   },
+
    experimental: {
       typedRoutes: true,
    },
