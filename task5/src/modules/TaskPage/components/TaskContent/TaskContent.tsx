@@ -44,7 +44,10 @@ export default function TaskContent({
       if (task?.stage?.name) {
          setSelectedOptionComp(task?.stage?.name);
       }
-   }, [task?.stage?.name]);
+      if (task?.files) {
+         setFiles(task?.files);
+      }
+   }, [task?.stage?.name, task?.files]);
 
    return (
       <>
@@ -57,7 +60,11 @@ export default function TaskContent({
                />
             </div>
             <div className={styles.content_desc}>{parse(task?.description || '<p>Описание задачи</p>')}</div>
-            <FileUploader addFilesTOState={task?.can_attach_file ? setFiles : () => {}} fileList={files} />
+            <FileUploader
+               inForm={false}
+               addFilesTOState={task?.can_attach_file ? setFiles : () => {}}
+               fileList={files}
+            />
             <div className={styles.content_preveiw}>
                {files.map((item, index) => (
                   <FilePriview

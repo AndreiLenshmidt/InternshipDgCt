@@ -82,7 +82,7 @@ export default function CommentComp({
                closeEdit={setEditMode}
             />
          ) : (
-            <pre className={styles.text}>{parse(comment?.content || '<p>Описание задачи</p>')}</pre>
+            <div className={styles.text}>{parse(comment?.content || '<p>Описание задачи</p>')}</div>
          )}
          {!editMode ? (
             <div className={styles.preview}>

@@ -319,3 +319,22 @@ h6 {
    line-height: inherit;
    color: inherit;
 }
+// Стили для редактора комментариев
+.editable.strong {
+   font-weight: 700;
+}
+.editable.italic {
+   font-style: italic;
+}
+.editable.code {
+   font-style: italic;
+   font-size: 12px;
+}
+.editable.item {
+   list-style-type: auto;
+   list-style-position: inside;
+}
+.editable.item-ul {
+   list-style-type: circle;
+   list-style-position: inside;
+}

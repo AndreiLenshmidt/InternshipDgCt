@@ -6,7 +6,7 @@ import UlMarker from '@public/icons/fs-marker-num.svg';
 import styles from './commform.module.scss';
 import FileUploader from '../FileUploader.tsx/FileUploader';
 import { ResponseFile, TaskSingle, User, Comment } from '@/api/data.types';
-import { FormEvent, useEffect, useState } from 'react';
+import { FormEvent, useEffect, useRef, useState, FocusEvent, KeyboardEvent } from 'react';
 import FilePriview from '../FilePreveiw/FilePreview';
 
 export default function CommentForm({
@@ -31,19 +31,17 @@ export default function CommentForm({
    closeEdit?: CallableFunction;
 }) {
    const [value, setValue] = useState('');
-   const [fontWeight, setBold] = useState(400);
-   const [fontStyle, setItalic] = useState('normal');
-   // const [code, setCode] = useState('');
-   const [olMarker, setOl] = useState('');
-   const [ulMarker, setUl] = useState('');
-   // const copyEditableComment = {
-   //    content: editableComment?.content,
-   //    files: editableComment?.files,
-   // };
+   const [bold, setBold] = useState('icon');
+   const [italic, setItalic] = useState('icon');
+   const [code, setCode] = useState('icon');
+   const [olMarker, setOl] = useState('icon');
+   const [ulMarker, setUl] = useState('icon');
+   const [currentEl, setCurrent] = useState<HTMLElement>();
+   const commentRef = useRef<HTMLDivElement>(null);
 
    useEffect(() => {
-      if (submitType === 'edit' && editableComment?.content) {
-         setValue(editableComment?.content);
+      if (submitType === 'edit' && editableComment?.content && commentRef.current) {
+         setValue((commentRef.current.innerHTML = editableComment?.content));
       }
    }, []);
 
@@ -80,52 +78,237 @@ export default function CommentForm({
       };
    };
 
+   useEffect(() => {
+      const p = document.createElement('p');
+      p.className = 'editable';
+      p.textContent = 'Описание';
+      if (!commentRef.current) return;
+      commentRef.current.append(p);
+   }, []);
+
    const resetCommentFields = () => {
+      if (!commentRef.current) return;
+      commentRef.current.innerHTML = '<p class="editable">Описание</p>';
+      setBold('icon');
+      setItalic('icon');
+      setCode('icon');
+      setUl('icon');
+      setOl('icon');
       setValue('');
       changeFilesInState([]);
    };
 
-   const boldHandler = () => {};
-   const inputHandler = (e: FormEvent<HTMLDivElement>) => {
-      // setValue(e.target.outerText);
-      // // console.dir(e.target);
-      // console.log(value);
+   const setFocus = (elem: HTMLElement) => {
+      const selection = window.getSelection();
+      const range = document.createRange();
+      range.selectNodeContents(elem);
+      range.collapse(false);
+      if (selection) {
+         selection.removeAllRanges();
+         selection.addRange(range);
+      }
    };
+
+   const boldHandler = () => {
+      if (!commentRef.current) return;
+      if (!commentRef.current.lastElementChild) return;
+      if (bold === 'icon') {
+         const strong = document.createElement('strong');
+         strong.className = 'editable strong';
+         strong.innerHTML = '&nbsp;';
+         // console.log(currentEl);
+         currentEl?.append(strong);
+         setCurrent(strong);
+         setFocus(strong);
+         setBold('activeicon');
+      } else if (bold === 'activeicon') {
+         const elem = commentRef.current.lastElementChild;
+         if (elem instanceof HTMLParagraphElement) {
+            elem.innerHTML += '&nbsp;';
+            setFocus(elem);
+            setCurrent(elem);
+         } else if (elem.lastChild instanceof HTMLLIElement) {
+            elem.lastChild.innerHTML += '&nbsp;';
+            setFocus(elem.lastChild);
+            setCurrent(elem.lastChild);
+         }
+         setBold('icon');
+         setItalic('icon');
+         setCode('icon');
+      }
+   };
+
+   const italicHandler = () => {
+      if (!commentRef.current) return;
+      if (!commentRef.current.lastElementChild) return;
+      if (italic === 'icon') {
+         const em = document.createElement('em');
+         em.className = 'editable italic';
+         em.innerHTML = '&nbsp;';
+         // console.dir(currentEl);
+         currentEl?.append(em);
+         setCurrent(em);
+         setFocus(em);
+         setItalic('activeicon');
+      } else if (italic === 'activeicon') {
+         const elem = commentRef.current.lastElementChild;
+         if (elem instanceof HTMLParagraphElement) {
+            elem.innerHTML += '&nbsp;';
+            setFocus(elem);
+            setCurrent(elem);
+         } else if (elem.lastChild instanceof HTMLLIElement) {
+            elem.lastChild.innerHTML += '&nbsp;';
+            setFocus(elem.lastChild);
+            setCurrent(elem.lastChild);
+         }
+         setBold('icon');
+         setItalic('icon');
+         setCode('icon');
+      }
+   };
+
+   const codeHandler = () => {
+      if (!commentRef.current) return;
+      if (!commentRef.current.lastElementChild) return;
+      if (code === 'icon') {
+         const code = document.createElement('code');
+         code.className = 'editable code';
+         code.innerHTML = '&nbsp;';
+         // console.dir(currentEl);
+         currentEl?.append(code);
+         setCurrent(code);
+         setFocus(code);
+         setCode('activeicon');
+      } else if (code === 'activeicon') {
+         const elem = commentRef.current.lastElementChild;
+         if (elem instanceof HTMLParagraphElement) {
+            elem.innerHTML += '&nbsp;';
+            setFocus(elem);
+            setCurrent(elem);
+         } else if (elem.lastChild instanceof HTMLLIElement) {
+            elem.lastChild.innerHTML += '&nbsp;';
+            setFocus(elem.lastChild);
+            setCurrent(elem.lastChild);
+         }
+         setBold('icon');
+         setItalic('icon');
+         setCode('icon');
+      }
+   };
+
+   const ulListHandler = () => {
+      if (!commentRef.current) return;
+      if (ulMarker === 'icon') {
+         const ul = document.createElement('ul');
+         const li = document.createElement('li');
+         li.innerHTML = '<br>';
+         li.className = 'editable item-ul';
+         ul.append(li);
+         commentRef.current.append(ul);
+         setCurrent(li);
+         setFocus(ul);
+         setUl('activeicon');
+         setOl('icon');
+         setBold('icon');
+         setItalic('icon');
+         setCode('icon');
+      } else if (ulMarker === 'activeicon') {
+         const p = document.createElement('p');
+         const elem = commentRef.current;
+         p.className = 'editable';
+         p.innerHTML += '<br>';
+         elem.append(p);
+         setFocus(p);
+         setBold('icon');
+         setItalic('icon');
+         setCode('icon');
+         setUl('icon');
+         setOl('icon');
+      }
+   };
+   const olListHandler = () => {
+      if (!commentRef.current) return;
+      if (olMarker === 'icon' && commentRef.current) {
+         const ol = document.createElement('ol');
+         const li = document.createElement('li');
+         li.innerHTML = '<br>';
+         li.className = 'editable item';
+         ol.append(li);
+         commentRef.current.append(ol);
+         setCurrent(li);
+         setFocus(ol);
+         setOl('activeicon');
+         setUl('icon');
+         setBold('icon');
+         setItalic('icon');
+         setCode('icon');
+      } else if (olMarker === 'activeicon') {
+         const p = document.createElement('p');
+         const elem = commentRef.current;
+         p.className = 'editable';
+         p.innerHTML += '<br>';
+         elem.append(p);
+         setFocus(p);
+         setBold('icon');
+         setItalic('icon');
+         setCode('icon');
+         setOl('icon');
+         setUl('icon');
+      }
+   };
+
+   const inputHandler = (e: FormEvent<HTMLDivElement>) => {
+      if (e.target instanceof HTMLDivElement) {
+         setValue(e.target.innerHTML);
+      }
+   };
+
+   const focusHandler = (e: FocusEvent<HTMLDivElement, Element>) => {
+      if (e.target.innerHTML === '<p class="editable">Описание</p>') {
+         e.target.innerHTML = '<p class="editable"><br></p>';
+         const child = e.target.lastChild;
+         child instanceof HTMLElement && setCurrent(child);
+      }
+   };
+
+   const keyDownHandler = (e: KeyboardEvent<HTMLDivElement>) => {
+      if (!commentRef.current) return;
+      if (e.key === 'Backspace' && commentRef.current.innerHTML === '<p class="editable"><br></p>') {
+         e.preventDefault();
+      }
+   };
+
+   useEffect(() => {
+      if (commentRef.current?.lastChild instanceof HTMLParagraphElement) {
+         setCurrent(commentRef.current?.lastChild);
+      }
+      if (commentRef.current?.lastChild?.lastChild instanceof HTMLLIElement) {
+         setCurrent(commentRef.current?.lastChild?.lastChild);
+      }
+   }, [commentRef.current?.lastChild, commentRef.current?.lastChild?.lastChild]);
 
    return (
       <form onSubmit={(e) => submitHandler(e)}>
          <div className={styles.comments}>
             <h3 className={styles.commtitle}>Комментарии</h3>
             <div className={styles.commstyler}>
-               <Bold
-                  className={styles.icon}
-                  // onClick={() => (fontWeight === 400 ? setBold(800) : setBold(400))}
-                  onClick={boldHandler}
-               />
-               <Italic
-                  className={styles.icon}
-                  onClick={() => (fontStyle === 'normal' ? setItalic('italic') : setItalic('normal'))}
-               />
-               <Code
-                  className={styles.icon}
-                  onClick={() =>
-                     !value.startsWith('<code>') ? setValue(`<code>${value}</code>`) : setValue(value.slice(6, -7))
-                  }
-               />
-               <OlMarker className={styles.icon} onClick={() => {}} />
-               <UlMarker className={styles.icon} onClick={() => {}} />
+               <Bold className={styles[bold]} onClick={boldHandler} />
+               <Italic className={styles[italic]} onClick={italicHandler} />
+               <Code className={styles[code]} onClick={codeHandler} />
+               <OlMarker className={styles[olMarker]} onClick={olListHandler} />
+               <UlMarker className={styles[ulMarker]} onClick={ulListHandler} />
             </div>
-            <textarea
-               // contentEditable={true}
-               autoFocus={submitType === 'edit'}
-               onChange={(e) => setValue(e.target.value)}
+            <div
+               ref={commentRef}
+               spellCheck="true"
                className={styles.texterea}
-               style={{ fontWeight: fontWeight, fontStyle: fontStyle }}
-               value={value}
-            ></textarea>
-            {/* <div className={styles.texterea} contentEditable={true} onInput={(e) => inputHandler(e)}></div> */}
+               contentEditable={true}
+               onInput={(e) => inputHandler(e)}
+               onFocus={(e) => focusHandler(e)}
+               onKeyDown={(e) => keyDownHandler(e)}
+            ></div>
          </div>
-         <FileUploader addFilesTOState={changeFilesInState} fileList={fileList} />
+         <FileUploader inForm={true} addFilesTOState={changeFilesInState} fileList={fileList} />
          <div className={styles.preveiw_box}>
             {fileList ? (
                fileList.map((item, index) => (

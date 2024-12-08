@@ -1,35 +1,30 @@
-import { useSendFilesMutation } from '@/api/appApi';
+import { useAddFilesToCommemtMutation, useAddFilesToTaskMutation, useSendFilesMutation } from '@/api/appApi';
 import styles from './uploader.module.scss';
 import { ResponseFile } from '@/api/data.types';
-import { addFiles, dropHandler } from '@/utils/taskfiles';
-// import { Blob, File } from 'buffer';
-import { ChangeEvent, useState } from 'react';
+import { sendFiles } from '@/utils/taskfiles';
+import { useRef } from 'react';
+import { useRouter } from 'next/router';
 
 export default function FileUploader({
+   inForm,
    addFilesTOState,
    fileList,
+   commentId,
 }: {
+   inForm: boolean;
    addFilesTOState: CallableFunction;
    fileList: ResponseFile[];
+   commentId?: number;
 }) {
-   // const [data] = useState<FormData>(new FormData());
-   const [sendler, { data: response, isLoading, isError }] = useSendFilesMutation();
+   const upload = useRef(null);
+   // обработать isLoading, isError
+   const [sendler, { isLoading, isError }] = useSendFilesMutation();
 
-   const sendFiles = async (
-      e: ChangeEvent<HTMLInputElement>,
-      addFilesTOState: CallableFunction,
-      fileList: ResponseFile[]
-   ) => {
-      e.target?.files ? addFiles(e.target?.files, fileList, addFilesTOState) : false;
-      const form = new FormData();
-      if (e.target?.files) {
-         for (const file of e.target?.files) {
-            form.append('file[]', file);
-         }
-         const paylord = await sendler(form);
-         console.log(paylord);
-      }
-   };
+   const [addFilesToTask, { isLoading: addedLoading, isError: errorAdded }] = useAddFilesToTaskMutation();
+   const [addFileToComments, {}] = useAddFilesToCommemtMutation();
+
+   const router = useRouter();
+   const taskID = Number(router.query['slug']);
 
    return (
       <label
@@ -38,11 +33,25 @@ export default function FileUploader({
             e.stopPropagation();
             e.preventDefault();
          }}
-         onDrop={(e) => dropHandler(e, fileList, addFilesTOState)}
+         onDrop={(e) => {
+            e.preventDefault();
+            if (e.dataTransfer.files) {
+               const mutation = inForm ? addFileToComments : addFilesToTask;
+               const id = inForm && commentId ? commentId : taskID;
+               return sendFiles(e.dataTransfer, addFilesTOState, fileList, sendler, mutation, id, inForm);
+            }
+         }}
       >
          <p className={styles.upload_text}>Выбери файлы или перетащи их сюда</p>
          <input
-            onChange={(e) => sendFiles(e, addFilesTOState, fileList)}
+            ref={upload}
+            onChange={() => {
+               if (upload.current) {
+                  const mutation = inForm ? addFileToComments : addFilesToTask;
+                  const id = inForm && commentId ? commentId : taskID;
+                  return sendFiles(upload.current, addFilesTOState, fileList, sendler, mutation, id, inForm);
+               }
+            }}
             className={styles.upload_input}
             name="avatar"
             type="file"

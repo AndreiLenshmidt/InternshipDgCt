@@ -6,18 +6,16 @@ import { useEffect, useState } from 'react';
 
 export default function MainPage() {
    const [inOut, setInOut] = useState(false);
-   const [cookies, setCookie] = useCookies(['userIsAuth']);
    const [token, _, removeCookie] = useCookies(['token-auth']);
 
    useEffect(() => {
-      if (cookies.userIsAuth) {
+      if (token['token-auth']) {
          setInOut(true);
       }
    });
 
    const LogInLogOutButton = ({ inOut }: { inOut: boolean }) => {
       const logOut = () => {
-         setCookie('userIsAuth', false);
          removeCookie('token-auth');
          setInOut(false);
       };

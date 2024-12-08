@@ -145,16 +145,55 @@ export const appApi = createApi({
             },
          }),
       }),
-      sendFiles: build.mutation<ResponseFile, FormData>({
+      sendFiles: build.mutation<{ data: ResponseFile[] }, FormData>({
          query: (form: FormData) => ({
             url: '/file',
             method: 'POST',
             headers: {
                accept: 'application/json',
-               'Content-Type': 'multipart/form-data',
                Authorization: `Bearer ${token}`,
             },
             body: form,
+         }),
+      }),
+      addFilesToTask: build.mutation<{ data: TaskSingle }, { task: number; file: number }>({
+         query: ({ task, file }) => ({
+            url: `/task/${task}/file/${file}`,
+            method: 'PATCH',
+            headers: {
+               accept: 'application/json',
+               Authorization: `Bearer ${token}`,
+            },
+         }),
+      }),
+      delFilesFromTask: build.mutation<{ data: TaskSingle }, { task: number; file: number }>({
+         query: ({ task, file }) => ({
+            url: `/task/${task}/file/${file}`,
+            method: 'DELETE',
+            headers: {
+               accept: 'application/json',
+               Authorization: `Bearer ${token}`,
+            },
+         }),
+      }),
+      addFilesToCommemt: build.mutation<{ data: Comment }, { comment: number; file: number }>({
+         query: ({ comment, file }) => ({
+            url: `/comment/${comment}/file/${file}`,
+            method: 'PATCH',
+            headers: {
+               accept: 'application/json',
+               Authorization: `Bearer ${token}`,
+            },
+         }),
+      }),
+      delFilesFromComment: build.mutation<{ data: Comment }, { comment: number; file: number }>({
+         query: ({ comment, file }) => ({
+            url: `/comment/${comment}/file/${file}`,
+            method: 'DELETE',
+            headers: {
+               accept: 'application/json',
+               Authorization: `Bearer ${token}`,
+            },
          }),
       }),
    }),
@@ -174,4 +213,8 @@ export const {
    useGetAllTasksQuery,
    useGetCurrentUserQuery,
    useSendFilesMutation,
+   useAddFilesToTaskMutation,
+   useDelFilesFromTaskMutation,
+   useAddFilesToCommemtMutation,
+   useDelFilesFromCommentMutation,
 } = appApi;
