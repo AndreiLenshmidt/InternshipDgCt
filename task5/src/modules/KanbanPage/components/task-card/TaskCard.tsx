@@ -1,7 +1,7 @@
 import { TaskMultiple } from '@/api/data.types';
 import { store, TypeRootState as GlobalState, TypeRootState } from '@/store/store';
 import { useDraggable } from '@dnd-kit/core';
-import { useEffect, useMemo } from 'react';
+import { LegacyRef, useEffect, useMemo } from 'react';
 // import { RootState } from '@reduxjs/toolkit/dist/query/react';
 import { useDrag } from 'react-dnd';
 import { useSelector } from 'react-redux';
@@ -56,18 +56,30 @@ export function TaskCard({ task }: { task: TaskMultiple }) {
       console.log(tasktypesInfo);
    }, [tasktypesInfo]);
 
-   const { attributes, listeners, setNodeRef, transform } = useDraggable({
-      id: task.id || 'draggable',
-   });
+  const [{ opacity }, dragRef] = useDrag(
+     () => ({
+        type: 'text',
+        item: { id: task.id },
+        collect: (monitor) => ({
+           opacity: monitor.isDragging() ? 0.5 : 1,
+        }),
+     }),
+     []
+  );
 
-   const dragstyle = transform
-      ? {
-           transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
-        }
-      : undefined;
+   // const { attributes, listeners, setNodeRef, transform } = useDraggable({
+   //    id: task.id || 'draggable',
+   // });
+
+   // const dragstyle = transform
+   //    ? {
+   //         transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
+   //      }
+   //    : undefined;
 
    return (
-      <div className={style.card} ref={setNodeRef} {...listeners} {...attributes} style={dragstyle}>
+      //  ref={setNodeRef} {...listeners} {...attributes} style={dragstyle}
+      <div className={style.card} ref={dragRef as unknown as LegacyRef<HTMLDivElement>}>
          <div className={style.header}>
             <h5>id: {task.id}</h5>
             <div className={style.prioritize} style={colorSchema.priorities[priority?.id || 0 - 1]}>

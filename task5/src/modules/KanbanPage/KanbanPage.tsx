@@ -16,6 +16,8 @@ import { Stage, TaskMultiple } from '@/api/data.types';
 import { ScrollbarProps, Scrollbars } from 'react-custom-scrollbars';
 import { Scrollbar } from 'react-scrollbars-custom';
 import { useResize } from '@/hooks/resize';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+import { DndProvider } from 'react-dnd';
 // import task from '@/pages/projects/kanban/task';
 
 const ScrollBar = Scrollbars as unknown as JSXElementConstructor<ScrollbarProps>;
@@ -124,7 +126,8 @@ export function KanbanPage() {
             }}
          >
             <div ref={wrapper} className={style.kanban_container}>
-               <DndContext id={'11'} onDragStart={(e) => {}} onDragEnd={(e) => console.log('dropped', e.active.id, e.over?.id)}>
+               {/* <DndContext id={'11'} onDragStart={(e) => {}} onDragEnd={(e) => console.log('dropped', e.active.id, e.over?.id)}> */}
+               <DndProvider backend={HTML5Backend}>
                   <div className={style.kanban}>
                      {project?.flow?.possibleProjectStages?.map((stage) => {
                         if (stage.id) {
@@ -146,7 +149,8 @@ export function KanbanPage() {
                         return null;
                      })}
                   </div>
-               </DndContext>
+               </DndProvider>
+               {/* </DndContext> */}
             </div>
          </Scrollbar>
 
