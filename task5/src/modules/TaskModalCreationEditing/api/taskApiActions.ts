@@ -1,4 +1,4 @@
-import { TaskSingle, User, Component, Priority, TaskType } from '@/api/data.types';
+import { TaskSingle, User, Component, Priority, TaskType, ResponseFile, ResponseFile } from '@/api/data.types';
 import { BASE_URL, BASE_API_URL } from '@/consts';
 import { getCookie } from '@/utils/cookies';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
@@ -84,7 +84,7 @@ export const taskApiActions = createApi({
          }),
       }),
 
-      getComponents: build.query<Component[], void>({
+      getComponents: build.query<{ data: Component[] }, void>({
          query: () => ({
             url: `/component`,
             method: 'GET',
@@ -113,6 +113,26 @@ export const taskApiActions = createApi({
             },
          }),
       }),
+      sendFilesTask: build.mutation<ResponseFile, { taskId: number; fileId: number }>({
+         query: ({ taskId, formFile }) => ({
+            url: `/task/${taskId}/file/${fileId}`,
+            method: 'POST',
+            headers: {
+               accept: 'application/json',
+               Authorization: `Bearer ${token}`,
+            },
+         }),
+      }),
+      deleteFileTask: build.mutation<void, { taskId: number; fileId: number }>({
+         query: ({ taskId, fileId }) => ({
+            url: `/task/${taskId}/file/${fileId}`,
+            method: 'DELETE',
+            headers: {
+               accept: 'application/json',
+               Authorization: `Bearer ${token}`,
+            },
+         }),
+      }),
    }),
 });
 
@@ -126,6 +146,8 @@ export const {
    useGetComponentsQuery,
    useGetPrioritiesQuery,
    useGetTaskTypesQuery,
+   useSendFilesTaskMutation,
+   useDeleteFileTaskMutation,
 } = taskApiActions;
 
 // Использование фильтрации

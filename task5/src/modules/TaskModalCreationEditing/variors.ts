@@ -1,4 +1,5 @@
 import { TaskSingle, TaskType, Component, Stage, Priority, User } from '@/api/data.types';
+
 export const typesTasksOptions: TaskType[] = [
    { id: 1, name: 'Баг' },
    { id: 2, name: 'Задача' },

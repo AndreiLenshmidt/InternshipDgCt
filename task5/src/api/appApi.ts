@@ -151,7 +151,6 @@ export const appApi = createApi({
             method: 'POST',
             headers: {
                accept: 'application/json',
-               'Content-Type': 'multipart/form-data',
                Authorization: `Bearer ${token}`,
             },
             body: form,

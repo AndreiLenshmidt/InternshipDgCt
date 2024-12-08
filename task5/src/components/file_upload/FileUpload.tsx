@@ -1,20 +1,29 @@
 import React, { useState } from 'react';
 import style from '@/components/file_upload/file-upload.module.scss';
 import Clipper from '@public/icons/clipper.svg';
-import { File } from '@/api/data.types';
+import { ResponseFile } from '@/api/data.types';
+import { useFileUploader } from '@/modules/TaskModalCreationEditing/utils/useFileUploader';
+import {
+   useSendFilesTaskMutation,
+   useDeleteFileTaskMutation,
+} from '@/modules/TaskModalCreationEditing/api/taskApiActions';
 
+type ResponseFileWithObject = ResponseFile & {
+   fileObject: File;
+};
 interface FileUploadProps {
-   files: File[];
-   onFilesChange: ((files: File[]) => void) | undefined;
+   files: ResponseFile[];
+   onFilesChange: ((files: ResponseFileWithObject[]) => void) | undefined;
    error?: string;
 }
 
 export default function FileUpload({ files, onFilesChange, error }: FileUploadProps) {
    const [isDragging, setIsDragging] = useState(false);
    const [permissions, setPermissions] = useState(false);
+   const [deleteFileTaskMutation] = useDeleteFileTaskMutation();
 
    // Проверка на дубликаты
-   const isDuplicateFile = (newFile: File): boolean => {
+   const isDuplicateFile = (newFile: ResponseFile): boolean => {
       return files.some((file) => file?.original_name === newFile?.original_name || file?.link === newFile?.link);
    };
 
@@ -23,16 +32,18 @@ export default function FileUpload({ files, onFilesChange, error }: FileUploadPr
       const newFiles = event.target.files;
       if (!newFiles) return;
 
-      const updatedFiles: File[] = [...files];
+      const updatedFiles = [...files];
 
       for (const file of Array.from(newFiles)) {
-         const newFile: File = {
-            id: undefined,
+         const newFile: ResponseFileWithObject = {
+            id: Math.floor(Math.random() * 1000),
             original_name: file.name,
             link: URL.createObjectURL(file),
             created_at: new Date().toISOString(),
             updated_at: new Date().toISOString(),
-         };
+
+            fileObject: file,
+         } as ResponseFile & { fileObject: File };
 
          if (!isDuplicateFile(newFile)) {
             setPermissions(false);
@@ -65,11 +76,11 @@ export default function FileUpload({ files, onFilesChange, error }: FileUploadPr
       setIsDragging(false);
 
       const droppedFiles = event.dataTransfer.files;
-      const updatedFiles: File[] = [...files];
+      const updatedFiles: ResponseFile[] = [...files];
       for (const file of Array.from(droppedFiles)) {
          if (!file) continue;
 
-         const newFile: File = {
+         const newFile: ResponseFile = {
             original_name: file.name,
             link: URL.createObjectURL(file),
             created_at: new Date().toISOString(),
@@ -83,10 +94,23 @@ export default function FileUpload({ files, onFilesChange, error }: FileUploadPr
       onFilesChange(updatedFiles);
    };
 
+   // Удаляем файлы к задаче(файлы остаются в базе)
+   const handleDeleteFile = async (taskId: number, files: ResponseFileWithObject[]) => {
+      try {
+         const response = await deleteFileTaskMutation({ taskId: taskId, fileId: files.id }).unwrap();
+         console.log('Файл успешно удалён из задачи');
+      } catch (error) {
+         console.error('Ошибка при удалении файла:', error);
+      }
+   };
+
    // Удаление файла
-   const handleRemoveFile = (file: File) => {
-      const updatedFiles = files.filter((f) => f?.link !== file?.link);
+   const handleRemoveFile = (file: ResponseFile) => {
+      const updatedFiles: ResponseFile[] | undefined = files.filter((f) => f?.link !== file?.link);
       onFilesChange(updatedFiles);
+
+      console.log(file, 'file delete');
+      // handleDeleteFile(taskId: 27, files:file)
    };
 
    // Проверка, является ли файл изображением
