@@ -8,6 +8,8 @@ import FileUploader from '../FileUploader.tsx/FileUploader';
 import { ResponseFile, TaskSingle, User, Comment } from '@/api/data.types';
 import { FormEvent, useEffect, useRef, useState, FocusEvent, KeyboardEvent } from 'react';
 import FilePriview from '../FilePreveiw/FilePreview';
+import { useCreateCommentMutation, usePatchCommentMutation } from '@/api/appApi';
+import { commentFormatter } from '@/utils/taskUtils';
 
 export default function CommentForm({
    task,
@@ -39,56 +41,70 @@ export default function CommentForm({
    const [currentEl, setCurrent] = useState<HTMLElement>();
    const commentRef = useRef<HTMLDivElement>(null);
 
+   const [createComment, {}] = useCreateCommentMutation();
+   const [patchComment, {}] = usePatchCommentMutation();
+
    useEffect(() => {
       if (submitType === 'edit' && editableComment?.content && commentRef.current) {
          setValue((commentRef.current.innerHTML = editableComment?.content));
       }
+      if (submitType === 'create') {
+         const p = document.createElement('p');
+         p.className = 'editable placeholder';
+         p.textContent = 'Описание';
+         if (!commentRef.current) return;
+         commentRef.current.append(p);
+      }
    }, []);
 
-   const submitHandler = (e: FormEvent<HTMLFormElement>) => {
+   useEffect(() => {
+      if (commentRef.current?.lastChild instanceof HTMLParagraphElement) {
+         setCurrent(commentRef.current?.lastChild);
+      }
+      if (commentRef.current?.lastChild?.lastChild instanceof HTMLLIElement) {
+         setCurrent(commentRef.current?.lastChild?.lastChild);
+      }
+   }, [commentRef.current?.lastChild, commentRef.current?.lastChild?.lastChild]);
+
+   const submitHandler = async (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       if (value.length === 0) return;
       if (comments && setComments && submitType === 'create') {
          const comment = commentFormatter(value, activeUser, fileList);
-         setComments([comment, ...comments]);
-         // console.log(comments);
-         resetCommentFields();
-         // fetcher create comment
-      } else if (submitType === 'edit') {
-         if (editableComment?.content) {
-            editableComment.content = value;
+         const sendFilesIds = comment.files?.map((file) => (typeof file?.id === 'number' ? file?.id : -1));
+         if (task?.id && comment.content && sendFilesIds) {
+            const paylord = await createComment({ id: task?.id, content: comment.content, files: sendFilesIds });
+            console.log(paylord.data);
          }
+         setComments([comment, ...comments]); // если успешно
+         resetCommentFields();
+      } else if (submitType === 'edit') {
+         if (!editableComment?.id || !comments || !setComments) return; // файл не загружен
+         const sendFilesIds = fileList.map((file) => (typeof file?.id === 'number' ? file.id : -1));
+         const paylord = await patchComment({ id: editableComment?.id, content: value, files: sendFilesIds });
+         console.log(paylord.data?.data);
+         const comm: Comment = {
+            id: editableComment.id,
+            content: value,
+            files: fileList,
+            user: editableComment.user,
+            created_at: editableComment.created_at,
+            updated_at: new Date(Date.now()).toDateString(),
+         };
+         // console.log(comm);
+         const res = [comm, ...comments.filter((item) => item.id !== editableComment.id)];
+         setComments(res);
+         // console.log(res);
+         // console.log(comments);
+
+         // console.log(editableComment, comments, index);
          closeEdit && closeEdit(false);
-         // fetcher edit comment
       }
    };
-   const commentFormatter = (value: string, activeUser: User | undefined, fileList: ResponseFile[]): Comment => {
-      const date = new Intl.DateTimeFormat('ru-RU', {
-         day: 'numeric',
-         month: 'short',
-         year: 'numeric',
-      }).format(new Date(Date.now()));
-      return {
-         id: Date.now() + Math.floor(Math.random() * 10000),
-         content: value,
-         files: fileList,
-         user: activeUser,
-         created_at: date,
-         updated_at: date,
-      };
-   };
-
-   useEffect(() => {
-      const p = document.createElement('p');
-      p.className = 'editable';
-      p.textContent = 'Описание';
-      if (!commentRef.current) return;
-      commentRef.current.append(p);
-   }, []);
 
    const resetCommentFields = () => {
       if (!commentRef.current) return;
-      commentRef.current.innerHTML = '<p class="editable">Описание</p>';
+      commentRef.current.innerHTML = '<p class="editable placeholder">Описание</p>';
       setBold('icon');
       setItalic('icon');
       setCode('icon');
@@ -109,19 +125,18 @@ export default function CommentForm({
       }
    };
 
-   const boldHandler = () => {
+   const textStyleHandler = (elState: string, tagName: string, setElState: CallableFunction) => {
       if (!commentRef.current) return;
       if (!commentRef.current.lastElementChild) return;
-      if (bold === 'icon') {
-         const strong = document.createElement('strong');
-         strong.className = 'editable strong';
-         strong.innerHTML = '&nbsp;';
-         // console.log(currentEl);
-         currentEl?.append(strong);
-         setCurrent(strong);
-         setFocus(strong);
-         setBold('activeicon');
-      } else if (bold === 'activeicon') {
+      if (elState === 'icon') {
+         const element = document.createElement('tagName');
+         element.className = `editable ${tagName}`;
+         element.innerHTML = '&nbsp;';
+         currentEl?.append(element);
+         setCurrent(element);
+         setFocus(element);
+         setElState('activeicon');
+      } else if (elState === 'activeicon') {
          const elem = commentRef.current.lastElementChild;
          if (elem instanceof HTMLParagraphElement) {
             elem.innerHTML += '&nbsp;';
@@ -138,81 +153,23 @@ export default function CommentForm({
       }
    };
 
-   const italicHandler = () => {
+   const listTypeHandler = (listType: 'ol' | 'ul', listState: string) => {
       if (!commentRef.current) return;
-      if (!commentRef.current.lastElementChild) return;
-      if (italic === 'icon') {
-         const em = document.createElement('em');
-         em.className = 'editable italic';
-         em.innerHTML = '&nbsp;';
-         // console.dir(currentEl);
-         currentEl?.append(em);
-         setCurrent(em);
-         setFocus(em);
-         setItalic('activeicon');
-      } else if (italic === 'activeicon') {
-         const elem = commentRef.current.lastElementChild;
-         if (elem instanceof HTMLParagraphElement) {
-            elem.innerHTML += '&nbsp;';
-            setFocus(elem);
-            setCurrent(elem);
-         } else if (elem.lastChild instanceof HTMLLIElement) {
-            elem.lastChild.innerHTML += '&nbsp;';
-            setFocus(elem.lastChild);
-            setCurrent(elem.lastChild);
-         }
-         setBold('icon');
-         setItalic('icon');
-         setCode('icon');
-      }
-   };
-
-   const codeHandler = () => {
-      if (!commentRef.current) return;
-      if (!commentRef.current.lastElementChild) return;
-      if (code === 'icon') {
-         const code = document.createElement('code');
-         code.className = 'editable code';
-         code.innerHTML = '&nbsp;';
-         // console.dir(currentEl);
-         currentEl?.append(code);
-         setCurrent(code);
-         setFocus(code);
-         setCode('activeicon');
-      } else if (code === 'activeicon') {
-         const elem = commentRef.current.lastElementChild;
-         if (elem instanceof HTMLParagraphElement) {
-            elem.innerHTML += '&nbsp;';
-            setFocus(elem);
-            setCurrent(elem);
-         } else if (elem.lastChild instanceof HTMLLIElement) {
-            elem.lastChild.innerHTML += '&nbsp;';
-            setFocus(elem.lastChild);
-            setCurrent(elem.lastChild);
-         }
-         setBold('icon');
-         setItalic('icon');
-         setCode('icon');
-      }
-   };
-
-   const ulListHandler = () => {
-      if (!commentRef.current) return;
-      if (ulMarker === 'icon') {
-         const ul = document.createElement('ul');
+      if (listState === 'icon') {
+         const list = document.createElement('listType');
          const li = document.createElement('li');
          li.innerHTML = '<br>';
-         li.className = 'editable item-ul';
-         ul.append(li);
-         commentRef.current.append(ul);
+         li.className = `editable item-${listType}`;
+         list.append(li);
+         commentRef.current.append(list);
          setCurrent(li);
-         setFocus(ul);
-         setUl('activeicon');
-         setOl('icon');
+         setFocus(list);
          setBold('icon');
          setItalic('icon');
          setCode('icon');
-      } else if (ulMarker === 'activeicon') {
+         listType === 'ul' ? setOl('icon') : setUl('icon');
+         listType === 'ul' ? setUl('activeicon') : setOl('activeicon');
+      } else if (listState === 'activeicon') {
          const p = document.createElement('p');
          const elem = commentRef.current;
          p.className = 'editable';
@@ -224,36 +181,6 @@ export default function CommentForm({
          setCode('icon');
          setUl('icon');
          setOl('icon');
-      }
-   };
-   const olListHandler = () => {
-      if (!commentRef.current) return;
-      if (olMarker === 'icon' && commentRef.current) {
-         const ol = document.createElement('ol');
-         const li = document.createElement('li');
-         li.innerHTML = '<br>';
-         li.className = 'editable item';
-         ol.append(li);
-         commentRef.current.append(ol);
-         setCurrent(li);
-         setFocus(ol);
-         setOl('activeicon');
-         setUl('icon');
-         setBold('icon');
-         setItalic('icon');
-         setCode('icon');
-      } else if (olMarker === 'activeicon') {
-         const p = document.createElement('p');
-         const elem = commentRef.current;
-         p.className = 'editable';
-         p.innerHTML += '<br>';
-         elem.append(p);
-         setFocus(p);
-         setBold('icon');
-         setItalic('icon');
-         setCode('icon');
-         setOl('icon');
-         setUl('icon');
       }
    };
 
@@ -264,8 +191,19 @@ export default function CommentForm({
    };
 
    const focusHandler = (e: FocusEvent<HTMLDivElement, Element>) => {
-      if (e.target.innerHTML === '<p class="editable">Описание</p>') {
+      if (e.target.innerHTML === '<p class="editable placeholder">Описание</p>') {
          e.target.innerHTML = '<p class="editable"><br></p>';
+         const child = e.target.lastChild;
+         if (child instanceof HTMLElement) {
+            setCurrent(child);
+            setFocus(child);
+         }
+      }
+   };
+
+   const blurHandler = (e: FocusEvent<HTMLDivElement, Element>) => {
+      if (e.target.innerHTML === '<p class="editable"><br></p>') {
+         e.target.innerHTML = '<p class="editable placeholder">Описание</p>';
          const child = e.target.lastChild;
          child instanceof HTMLElement && setCurrent(child);
       }
@@ -278,25 +216,16 @@ export default function CommentForm({
       }
    };
 
-   useEffect(() => {
-      if (commentRef.current?.lastChild instanceof HTMLParagraphElement) {
-         setCurrent(commentRef.current?.lastChild);
-      }
-      if (commentRef.current?.lastChild?.lastChild instanceof HTMLLIElement) {
-         setCurrent(commentRef.current?.lastChild?.lastChild);
-      }
-   }, [commentRef.current?.lastChild, commentRef.current?.lastChild?.lastChild]);
-
    return (
       <form onSubmit={(e) => submitHandler(e)}>
          <div className={styles.comments}>
             <h3 className={styles.commtitle}>Комментарии</h3>
             <div className={styles.commstyler}>
-               <Bold className={styles[bold]} onClick={boldHandler} />
-               <Italic className={styles[italic]} onClick={italicHandler} />
-               <Code className={styles[code]} onClick={codeHandler} />
-               <OlMarker className={styles[olMarker]} onClick={olListHandler} />
-               <UlMarker className={styles[ulMarker]} onClick={ulListHandler} />
+               <Bold className={styles[bold]} onClick={() => textStyleHandler(bold, 'strong', setBold)} />
+               <Italic className={styles[italic]} onClick={() => textStyleHandler(italic, 'em', setItalic)} />
+               <Code className={styles[code]} onClick={() => textStyleHandler(code, 'code', setCode)} />
+               <OlMarker className={styles[olMarker]} onClick={() => listTypeHandler('ol', olMarker)} />
+               <UlMarker className={styles[ulMarker]} onClick={() => listTypeHandler('ul', ulMarker)} />
             </div>
             <div
                ref={commentRef}
@@ -304,6 +233,7 @@ export default function CommentForm({
                className={styles.texterea}
                contentEditable={true}
                onInput={(e) => inputHandler(e)}
+               onBlur={(e) => blurHandler(e)}
                onFocus={(e) => focusHandler(e)}
                onKeyDown={(e) => keyDownHandler(e)}
             ></div>

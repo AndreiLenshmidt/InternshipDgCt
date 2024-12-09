@@ -47,7 +47,10 @@ export default function TaskContent({
       if (task?.files) {
          setFiles(task?.files);
       }
-   }, [task?.stage?.name, task?.files]);
+      if (task?.comments) {
+         setComments(task?.comments);
+      }
+   }, [task?.stage?.name, task?.files, task?.comments]);
 
    return (
       <>

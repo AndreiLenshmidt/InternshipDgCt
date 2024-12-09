@@ -1,4 +1,4 @@
-import { ResponseFile } from '@/api/data.types';
+import { ResponseFile, User, Comment } from '@/api/data.types';
 
 const addFile = (inputFile: ResponseFile, fileList: ResponseFile[], addFilesTOState: CallableFunction) => {
    addFilesTOState([inputFile, ...fileList]);
@@ -31,4 +31,31 @@ const sendFiles = async (
    }
 };
 
-export { addFile, sendFiles };
+const dateFormatter = (date: string | undefined) => {
+   if (!date) return date;
+   const formatted = new Intl.DateTimeFormat('ru-RU', {
+      day: 'numeric',
+      month: 'short',
+      year: 'numeric',
+   }).format(new Date(date));
+
+   return formatted;
+};
+
+const commentFormatter = (value: string, activeUser: User | undefined, fileList: ResponseFile[]): Comment => {
+   const date = new Intl.DateTimeFormat('ru-RU', {
+      day: 'numeric',
+      month: 'short',
+      year: 'numeric',
+   }).format(new Date(Date.now()));
+   return {
+      id: Date.now() + Math.floor(Math.random() * 10000),
+      content: value,
+      files: fileList,
+      user: activeUser,
+      created_at: date,
+      updated_at: date,
+   };
+};
+
+export { addFile, sendFiles, dateFormatter, commentFormatter };

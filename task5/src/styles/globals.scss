@@ -320,17 +320,20 @@ h6 {
    color: inherit;
 }
 // Стили для редактора комментариев
+.editable.placeholder {
+   color: #a6a6a6;
+}
 .editable.strong {
    font-weight: 700;
 }
-.editable.italic {
+.editable.em {
    font-style: italic;
 }
 .editable.code {
    font-style: italic;
    font-size: 12px;
 }
-.editable.item {
+.editable.item-ol {
    list-style-type: auto;
    list-style-position: inside;
 }

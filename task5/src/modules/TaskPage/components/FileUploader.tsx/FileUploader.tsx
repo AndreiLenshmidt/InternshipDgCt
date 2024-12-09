@@ -1,7 +1,7 @@
 import { useAddFilesToCommemtMutation, useAddFilesToTaskMutation, useSendFilesMutation } from '@/api/appApi';
 import styles from './uploader.module.scss';
 import { ResponseFile } from '@/api/data.types';
-import { sendFiles } from '@/utils/taskfiles';
+import { sendFiles } from '@/utils/taskUtils';
 import { useRef } from 'react';
 import { useRouter } from 'next/router';
 

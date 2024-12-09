@@ -6,6 +6,7 @@ import Cart from '@public/icons/task-delete.svg';
 import { BASE_URL } from '@/consts';
 import { useDelFilesFromTaskMutation } from '@/api/appApi';
 import { useRouter } from 'next/router';
+import { dateFormatter } from '@/utils/taskUtils';
 
 export default function FilePriview({
    file,
@@ -60,7 +61,7 @@ export default function FilePriview({
                />
             </figure>
             <p className={styles.file_name}>{file?.original_name}</p>
-            <p className={styles.file_date}>{file?.updated_at || file?.created_at}</p>
+            <p className={styles.file_date}>{dateFormatter(file?.updated_at) || dateFormatter(file?.created_at)}</p>
             <Cart className={styles.file_carticon} onClick={() => deleteFileFromTask(files, file, delFile)} />
          </div>
       );

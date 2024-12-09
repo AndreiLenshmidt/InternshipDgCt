@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { getCookie } from '@/utils/cookies';
-import { TaskSingle, TaskMultiple, User, ResponseFile } from '@/api/data.types';
+import { TaskSingle, TaskMultiple, User, ResponseFile, Comment } from '@/api/data.types';
 import { BASE_URL } from '@/consts';
 
 const token = getCookie('token-auth');
@@ -78,55 +78,6 @@ export const appApi = createApi({
             },
          }),
       }),
-      // getTaskComments: build.query<{ data: TaskSingle }, number>({
-      //    query: (id: number | undefined) => ({
-      //       url: `/task/${id}/comment`,
-      //       headers: {
-      //          Authorization: `Bearer ${token}`,
-      //          accept: 'application/json',
-      //       },
-      //    }),
-      // }),
-      createComment: build.mutation<{ data: TaskSingle }, number>({
-         query: (id: number | undefined) => ({
-            url: `/task/${id}/comment`,
-            method: 'POST',
-            headers: {
-               accept: 'application/json',
-               'Content-Type': 'application/json',
-               Authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify({
-               content: 'string',
-               files: [0],
-            }),
-         }),
-      }),
-      // patchUSerComment: build.mutation<{ data: TaskSingle }, number>({
-      //    query: (id: number | undefined) => ({
-      //       url: `/task/${id}/comment`,
-      //       method: 'PATCH',
-      //       headers: {
-      //          accept: 'application/json',
-      //          'Content-Type': 'application/json',
-      //          Authorization: `Bearer ${token}`,
-      //       },
-      //       body: JSON.stringify({
-      //          content: 'string',
-      //          files: [0],
-      //       }),
-      //    }),
-      // }),
-      // deleteUSerComment: build.mutation<{ data: TaskSingle }, number>({
-      //    query: (id: number | undefined) => ({
-      //       url: `/task/${id}/comment`,
-      //       method: 'DELETE',
-      //       headers: {
-      //          accept: 'application/json',
-      //          Authorization: `Bearer ${token}`,
-      //       },
-      //    }),
-      // }),
       getAllTasks: build.query<TaskMultiple, string>({
          query: (slug: string) => ({
             url: `/project/${slug}/task`,
@@ -196,6 +147,54 @@ export const appApi = createApi({
             },
          }),
       }),
+      createComment: build.mutation<{ data: Comment }, { id: number; content: string; files: number[] }>({
+         query: ({ id, content, files }) => ({
+            url: `/task/${id}/comment`,
+            method: 'POST',
+            headers: {
+               accept: 'application/json',
+               Authorization: `Bearer ${token}`,
+            },
+            body: {
+               content: content,
+               files: files,
+            },
+         }),
+      }),
+      patchComment: build.mutation<{ data: Comment }, { id: number; content: string; files: number[] }>({
+         query: ({ id, content, files }) => ({
+            url: `/comment/${id}`,
+            method: 'PATCH',
+            headers: {
+               accept: 'application/json',
+               'Content-Type': 'application/json',
+               Authorization: `Bearer ${token}`,
+            },
+            body: {
+               content: content,
+               files: files,
+            },
+         }),
+      }),
+      deleteComment: build.mutation<{ data: Comment }, number>({
+         query: (id: number) => ({
+            url: `/comment/${id}`,
+            method: 'DELETE',
+            headers: {
+               accept: 'application/json',
+               Authorization: `Bearer ${token}`,
+            },
+         }),
+      }),
+      getTaskComments: build.mutation<{ data: Comment[] }, number>({
+         query: (id: number) => ({
+            url: `/task/${id}/comment`,
+            headers: {
+               Authorization: `Bearer ${token}`,
+               accept: 'application/json',
+            },
+         }),
+      }),
    }),
 });
 
@@ -206,10 +205,7 @@ export const {
    useDeleteTaskMutation,
    useGetTasksQuery,
    useGetUsersQuery,
-   // useGetTaskCommentsQuery,
-   // useSendUSerCommentMutation,
-   // usePatchUSerCommentMutation,
-   // useDeleteUSerCommentMutation,
+   useGetTaskCommentsMutation,
    useGetAllTasksQuery,
    useGetCurrentUserQuery,
    useSendFilesMutation,
@@ -217,4 +213,7 @@ export const {
    useDelFilesFromTaskMutation,
    useAddFilesToCommemtMutation,
    useDelFilesFromCommentMutation,
+   useCreateCommentMutation,
+   usePatchCommentMutation,
+   useDeleteCommentMutation,
 } = appApi;

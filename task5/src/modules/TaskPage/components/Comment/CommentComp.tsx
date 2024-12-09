@@ -1,4 +1,4 @@
-import { Comment, User } from '@/api/data.types';
+import { Comment, TaskSingle, User } from '@/api/data.types';
 import styles from './comment.module.scss';
 import Edit from '@public/icons/task-edit.svg';
 import Delete from '@public/icons/task-delete.svg';
@@ -8,6 +8,8 @@ import { useEffect, useRef, useState } from 'react';
 import FilePriview from '../FilePreveiw/FilePreview';
 import CommentForm from '../CommentForm/CommentForm';
 import parse from 'html-react-parser';
+import { useDeleteCommentMutation } from '@/api/appApi';
+import { dateFormatter } from '@/utils/taskUtils';
 
 export default function CommentComp({
    comment,
@@ -23,10 +25,15 @@ export default function CommentComp({
    const [editMode, setEditMode] = useState(false);
    const [commentFiles, setCommentFiles] = useState(comment?.files || []);
 
-   const deleteCommentHandler = () => {
+   const [deleteComment, {}] = useDeleteCommentMutation();
+
+   const deleteCommentHandler = async () => {
       // console.log('delete');
+      if (comment?.id) {
+         const deletedComment = await deleteComment(comment?.id);
+         console.log(deletedComment);
+      }
       setComments(allComments.filter((comm) => comm.id !== comment?.id));
-      // fetcher delete comment
    };
 
    const escapeEditComment = () => {
@@ -36,8 +43,7 @@ export default function CommentComp({
 
    // const preref = useRef(null);
 
-   useEffect(() => {}, [comment?.files]);
-   useEffect(() => {}, []);
+   useEffect(() => {}, [comment?.files, comment?.content]);
 
    return (
       <div className={styles.comment}>
@@ -48,7 +54,9 @@ export default function CommentComp({
                </figure>
                <div>
                   <p className={styles.username}>{comment?.user?.name}</p>
-                  <p className={styles.userdate}>{comment?.updated_at || comment?.updated_at}</p>
+                  <p className={styles.userdate}>
+                     {dateFormatter(comment?.updated_at) || dateFormatter(comment?.updated_at)}
+                  </p>
                </div>
             </div>
             {editMode ? (
@@ -77,8 +85,10 @@ export default function CommentComp({
                editableComment={comment}
                submitType={'edit'}
                activeUser={activeUser}
+               comments={allComments}
                fileList={commentFiles || []}
                changeFilesInState={setCommentFiles}
+               setComments={setComments}
                closeEdit={setEditMode}
             />
          ) : (
