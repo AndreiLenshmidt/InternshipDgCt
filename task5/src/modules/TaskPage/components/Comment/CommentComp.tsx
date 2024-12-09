@@ -1,10 +1,10 @@
-import { Comment, TaskSingle, User } from '@/api/data.types';
+import { Comment, User } from '@/api/data.types';
 import styles from './comment.module.scss';
 import Edit from '@public/icons/task-edit.svg';
 import Delete from '@public/icons/task-delete.svg';
 import Copy from '@public/icons/copy-comment.svg';
 import Close from '@public/icons/close.svg';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import FilePriview from '../FilePreveiw/FilePreview';
 import CommentForm from '../CommentForm/CommentForm';
 import parse from 'html-react-parser';
@@ -28,10 +28,9 @@ export default function CommentComp({
    const [deleteComment, {}] = useDeleteCommentMutation();
 
    const deleteCommentHandler = async () => {
-      // console.log('delete');
       if (comment?.id) {
          const deletedComment = await deleteComment(comment?.id);
-         console.log(deletedComment);
+         // console.log(deletedComment);
       }
       setComments(allComments.filter((comm) => comm.id !== comment?.id));
    };
@@ -40,8 +39,6 @@ export default function CommentComp({
       setEditMode(!editMode);
       setCommentFiles(comment?.files || []);
    };
-
-   // const preref = useRef(null);
 
    useEffect(() => {}, [comment?.files, comment?.content]);
 

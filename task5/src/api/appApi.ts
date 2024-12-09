@@ -186,15 +186,15 @@ export const appApi = createApi({
             },
          }),
       }),
-      getTaskComments: build.mutation<{ data: Comment[] }, number>({
-         query: (id: number) => ({
-            url: `/task/${id}/comment`,
-            headers: {
-               Authorization: `Bearer ${token}`,
-               accept: 'application/json',
-            },
-         }),
-      }),
+      // getTaskComments: build.mutation<{ data: Comment[] }, number>({
+      //    query: (id: number) => ({
+      //       url: `/task/${id}/comment`,
+      //       headers: {
+      //          Authorization: `Bearer ${token}`,
+      //          accept: 'application/json',
+      //       },
+      //    }),
+      // }),
    }),
 });
 
@@ -205,7 +205,7 @@ export const {
    useDeleteTaskMutation,
    useGetTasksQuery,
    useGetUsersQuery,
-   useGetTaskCommentsMutation,
+   // useGetTaskCommentsMutation,
    useGetAllTasksQuery,
    useGetCurrentUserQuery,
    useSendFilesMutation,

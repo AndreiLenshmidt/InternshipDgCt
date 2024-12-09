@@ -129,8 +129,8 @@ export default function CommentForm({
       if (!commentRef.current) return;
       if (!commentRef.current.lastElementChild) return;
       if (elState === 'icon') {
-         const element = document.createElement('tagName');
-         element.className = `editable ${tagName}`;
+         const element = document.createElement(tagName);
+         element.className = `editable ${tagName}`.toLowerCase();
          element.innerHTML = '&nbsp;';
          currentEl?.append(element);
          setCurrent(element);
@@ -153,13 +153,13 @@ export default function CommentForm({
       }
    };
 
-   const listTypeHandler = (listType: 'ol' | 'ul', listState: string) => {
+   const listTypeHandler = (listType: 'OL' | 'UL', listState: string) => {
       if (!commentRef.current) return;
       if (listState === 'icon') {
-         const list = document.createElement('listType');
+         const list = document.createElement(listType);
          const li = document.createElement('li');
          li.innerHTML = '<br>';
-         li.className = `editable item-${listType}`;
+         li.className = `editable item-${listType}`.toLowerCase();
          list.append(li);
          commentRef.current.append(list);
          setCurrent(li);
@@ -167,8 +167,8 @@ export default function CommentForm({
          setBold('icon');
          setItalic('icon');
          setCode('icon');
-         listType === 'ul' ? setOl('icon') : setUl('icon');
-         listType === 'ul' ? setUl('activeicon') : setOl('activeicon');
+         listType === 'UL' ? setOl('icon') : setUl('icon');
+         listType === 'UL' ? setUl('activeicon') : setOl('activeicon');
       } else if (listState === 'activeicon') {
          const p = document.createElement('p');
          const elem = commentRef.current;
@@ -221,11 +221,11 @@ export default function CommentForm({
          <div className={styles.comments}>
             <h3 className={styles.commtitle}>Комментарии</h3>
             <div className={styles.commstyler}>
-               <Bold className={styles[bold]} onClick={() => textStyleHandler(bold, 'strong', setBold)} />
-               <Italic className={styles[italic]} onClick={() => textStyleHandler(italic, 'em', setItalic)} />
-               <Code className={styles[code]} onClick={() => textStyleHandler(code, 'code', setCode)} />
-               <OlMarker className={styles[olMarker]} onClick={() => listTypeHandler('ol', olMarker)} />
-               <UlMarker className={styles[ulMarker]} onClick={() => listTypeHandler('ul', ulMarker)} />
+               <Bold className={styles[bold]} onClick={() => textStyleHandler(bold, 'STRONG', setBold)} />
+               <Italic className={styles[italic]} onClick={() => textStyleHandler(italic, 'EM', setItalic)} />
+               <Code className={styles[code]} onClick={() => textStyleHandler(code, 'CODE', setCode)} />
+               <OlMarker className={styles[olMarker]} onClick={() => listTypeHandler('OL', olMarker)} />
+               <UlMarker className={styles[ulMarker]} onClick={() => listTypeHandler('UL', ulMarker)} />
             </div>
             <div
                ref={commentRef}

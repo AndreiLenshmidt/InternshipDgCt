@@ -10,7 +10,7 @@ export default function ModalTask({ id }: { id: number }) {
    console.log(user?.data);
 
    if (isLoading) {
-      return;
+      return <div className="loader" style={{ margin: '36% auto' }}></div>;
    } else {
       return (
          <div className={styles.layout_modal}>

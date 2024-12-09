@@ -17,6 +17,8 @@ export default function MainPage() {
    const LogInLogOutButton = ({ inOut }: { inOut: boolean }) => {
       const logOut = () => {
          removeCookie('token-auth');
+         globalThis.document.cookie = '';
+         location.reload();
          setInOut(false);
       };
       if (inOut) {

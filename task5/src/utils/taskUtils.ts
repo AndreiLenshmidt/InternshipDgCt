@@ -25,7 +25,9 @@ const sendFiles = async (
                ? { comment: id, file: responseFile?.id || -1 }
                : { task: id, file: responseFile?.id || -1 };
             const response = await addFiles(queries);
-            addFile(responseFile, fileList, addFilesTOState);
+            if (response.data) {
+               addFile(responseFile, fileList, addFilesTOState);
+            }
          }
       }
    }
@@ -43,11 +45,7 @@ const dateFormatter = (date: string | undefined) => {
 };
 
 const commentFormatter = (value: string, activeUser: User | undefined, fileList: ResponseFile[]): Comment => {
-   const date = new Intl.DateTimeFormat('ru-RU', {
-      day: 'numeric',
-      month: 'short',
-      year: 'numeric',
-   }).format(new Date(Date.now()));
+   const date = new Date(Date.now()).toDateString();
    return {
       id: Date.now() + Math.floor(Math.random() * 10000),
       content: value,

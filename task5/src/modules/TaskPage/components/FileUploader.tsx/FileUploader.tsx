@@ -2,8 +2,10 @@ import { useAddFilesToCommemtMutation, useAddFilesToTaskMutation, useSendFilesMu
 import styles from './uploader.module.scss';
 import { ResponseFile } from '@/api/data.types';
 import { sendFiles } from '@/utils/taskUtils';
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { useRouter } from 'next/router';
+import { useModalInfo } from '@/hooks/useModalInfo';
+import InfoModal from '../InfoModal/InfoModal';
 
 export default function FileUploader({
    inForm,
@@ -18,45 +20,66 @@ export default function FileUploader({
 }) {
    const upload = useRef(null);
    // обработать isLoading, isError
-   const [sendler, { isLoading, isError }] = useSendFilesMutation();
+   const [sendler, { isLoading, isError: sendError }] = useSendFilesMutation();
 
-   const [addFilesToTask, { isLoading: addedLoading, isError: errorAdded }] = useAddFilesToTaskMutation();
+   const [addFilesToTask, { isLoading: addedLoading, isError: errorAdded, status: addedStatus }] =
+      useAddFilesToTaskMutation();
    const [addFileToComments, {}] = useAddFilesToCommemtMutation();
+   const { modal, modalInfo, modalTitle, modalType, setCloseModal, setModalInfo, setModalTitle, setModalType } =
+      useModalInfo();
 
    const router = useRouter();
    const taskID = Number(router.query['slug']);
 
+   useEffect(() => {
+      if (sendError) {
+         setModalTitle('Ошибка');
+         setModalInfo('Файлы не отправлены');
+         setModalType('error');
+         setCloseModal(true);
+      }
+      if (errorAdded) {
+         setModalTitle('Ошибка');
+         setModalInfo('Не удалось добавить файлы к задаче');
+         setModalType('error');
+         setCloseModal(true);
+      }
+   }, [sendError, errorAdded]);
+
    return (
-      <label
-         className={styles.upload}
-         onDragOver={(e) => {
-            e.stopPropagation();
-            e.preventDefault();
-         }}
-         onDrop={(e) => {
-            e.preventDefault();
-            if (e.dataTransfer.files) {
-               const mutation = inForm ? addFileToComments : addFilesToTask;
-               const id = inForm && commentId ? commentId : taskID;
-               return sendFiles(e.dataTransfer, addFilesTOState, fileList, sendler, mutation, id, inForm);
-            }
-         }}
-      >
-         <p className={styles.upload_text}>Выбери файлы или перетащи их сюда</p>
-         <input
-            ref={upload}
-            onChange={() => {
-               if (upload.current) {
+      <>
+         <label
+            className={styles.upload}
+            onDragOver={(e) => {
+               e.stopPropagation();
+               e.preventDefault();
+            }}
+            onDrop={(e) => {
+               e.preventDefault();
+               if (e.dataTransfer.files) {
                   const mutation = inForm ? addFileToComments : addFilesToTask;
                   const id = inForm && commentId ? commentId : taskID;
-                  return sendFiles(upload.current, addFilesTOState, fileList, sendler, mutation, id, inForm);
+                  return sendFiles(e.dataTransfer, addFilesTOState, fileList, sendler, mutation, id, inForm);
                }
             }}
-            className={styles.upload_input}
-            name="avatar"
-            type="file"
-            multiple
-         />
-      </label>
+         >
+            <p className={styles.upload_text}>Выбери файлы или перетащи их сюда</p>
+            <input
+               ref={upload}
+               onChange={() => {
+                  if (upload.current) {
+                     const mutation = inForm ? addFileToComments : addFilesToTask;
+                     const id = inForm && commentId ? commentId : taskID;
+                     return sendFiles(upload.current, addFilesTOState, fileList, sendler, mutation, id, inForm);
+                  }
+               }}
+               className={styles.upload_input}
+               name="avatar"
+               type="file"
+               multiple
+            />
+         </label>
+         {modal ? <InfoModal type={modalType} title={modalTitle} info={modalInfo} setClose={setCloseModal} /> : <></>}
+      </>
    );
 }

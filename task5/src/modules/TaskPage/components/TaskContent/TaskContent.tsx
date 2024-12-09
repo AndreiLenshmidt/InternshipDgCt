@@ -15,6 +15,8 @@ import { useEffect, useState } from 'react';
 import FileUploader from '../FileUploader.tsx/FileUploader';
 import FilePriview from '../FilePreveiw/FilePreview';
 import Link from 'next/link';
+import InfoModal from '../InfoModal/InfoModal';
+import { useModalInfo } from '@/hooks/useModalInfo';
 
 export default function TaskContent({
    task,
@@ -24,8 +26,6 @@ export default function TaskContent({
    activeUser: User | undefined;
 }) {
    const isAdmin = activeUser?.is_admin;
-   // const isOpen = 'none';
-   // const [value, setValue] = useState('');
    const [selectedOptionComp, setSelectedOptionComp] = useState<string | (string | undefined)[] | undefined>(
       task?.stage?.name || 'не установлено'
    );
@@ -33,6 +33,7 @@ export default function TaskContent({
    const [filesComments, setFIlesComments] = useState<ResponseFile[]>([]);
    const [comments, setComments] = useState<Comment[]>(task?.comments || []);
    const [selectOptions, setSelectOptions] = useState<(string | (string | undefined)[] | undefined)[]>([]);
+   const modalInfo = useModalInfo();
 
    useEffect(() => {
       if (task?.possibleTaskNextStages) {
@@ -52,15 +53,34 @@ export default function TaskContent({
       }
    }, [task?.stage?.name, task?.files, task?.comments]);
 
+   useEffect(() => {
+      if (task?.dev_link) {
+         modalInfo.setCloseModal(true);
+         modalInfo.setModalTitle('Успешно');
+         modalInfo.setModalInfo('Статус задачи успешно изменен');
+      } else if (task?.stage?.name !== selectedOptionComp) {
+         modalInfo.setCloseModal(true);
+         modalInfo.setModalTitle('Ошибка');
+         modalInfo.setModalType('error');
+         modalInfo.setModalInfo('Сначала добавьте Dev Link в меню редактирования задачи');
+         task?.stage?.name && setSelectedOptionComp(task?.stage?.name);
+      }
+   }, [selectedOptionComp]);
+
+   const copyLinkHandler = async () => {
+      await navigator.clipboard.writeText(window.location.href);
+      modalInfo.setCloseModal(true);
+      modalInfo.setModalTitle('Успешно');
+      modalInfo.setModalType('info');
+      modalInfo.setModalInfo('Ссылка успешно скопирована');
+   };
+
    return (
       <>
          <div className={styles.content}>
             <div className={styles.flex}>
                <h2 className={styles.content_title}>{task?.name || 'Название задачи'}</h2>
-               <CopyLink
-                  className={styles.content_copy}
-                  onClick={async () => await navigator.clipboard.writeText(window.location.href)}
-               />
+               <CopyLink className={styles.content_copy} onClick={copyLinkHandler} />
             </div>
             <div className={styles.content_desc}>{parse(task?.description || '<p>Описание задачи</p>')}</div>
             <FileUploader
@@ -222,6 +242,16 @@ export default function TaskContent({
                   </p>
                </div>
             </div>
+            {modalInfo.modal ? (
+               <InfoModal
+                  type={modalInfo.modalType}
+                  title={modalInfo.modalTitle}
+                  info={modalInfo.modalInfo}
+                  setClose={modalInfo.setCloseModal}
+               />
+            ) : (
+               <></>
+            )}
          </div>
       </>
    );
