@@ -8,7 +8,7 @@ import style from './projects-page.module.css';
 import { useResize } from '@/hooks/resize';
 import { useMemo, useCallback } from 'react';
 import { useGetProjectsQuery } from './api/api';
-import TaskModalCreationEditing from '../TaskModalCreationEditing/page';
+import TaskModalCreationEditing from '../TaskModalCreationEditing/page_main-fixis_main-fix';
 
 export function ProjectPage() {
    //

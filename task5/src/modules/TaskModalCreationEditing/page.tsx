@@ -13,7 +13,6 @@ import FileUpload from '@/components/file_upload/FileUpload';
 import { useGetProjectsQuery } from '../ProjectsPage/api/api';
 import {
    useGetTaskByTaskIdQuery,
-   useCreateTaskMutation,
    useGetTasksQuery,
    useGetUsersQuery,
    useGetComponentsQuery,
@@ -21,7 +20,8 @@ import {
    useGetTaskTypesQuery,
    useSendFilesTaskMutation,
    useDeleteFileTaskMutation,
-   // useUpdateTaskMutation,
+   useCreateTaskMutation,
+   useUpdateTaskMutation,
 } from '@/modules/TaskModalCreationEditing/api/taskApiActions';
 import { useGetOAuthTokenMutation } from '../AuthPage/api/authApi';
 // import { useGetTaskByTaskIdQuery } from '../TaskPage/api/taskApi';
@@ -34,6 +34,7 @@ import { typesTasksOptions, compOptions, priorOptions, usersOptions } from '@/mo
 import { useUpdateTaskMain } from '@/modules/TaskModalCreationEditing/hook/useUpdateTaskMain';
 import { useCreateTaskMain } from '@/modules/TaskModalCreationEditing/hook/useCreateTaskMain';
 import { useFileUploader } from '@/modules/TaskModalCreationEditing/utils/useFileUploader';
+import { transformToServerData } from '@/modules/TaskModalCreationEditing/utils/transformToServerData.ts';
 
 import { getCookie } from '@/utils/cookies';
 // export interface ExtendedFile {
@@ -65,18 +66,18 @@ import { getCookie } from '@/utils/cookies';
 //    end?: string;
 // }
 
-type ResponseFileWithObject = ResponseFile & {
+export type ResponseFileWithObject = ResponseFile & {
    fileObject: File;
 };
 
-interface TaskModalCreationEditingProps {
+export interface TaskModalCreationEditingProps {
    isOpen: boolean;
    onClose: () => void;
    slug: string;
    taskId?: number; // Если передан, значит редактируем задачу
 }
 
-interface FormData {
+export interface FormData {
    /** Заголовок задачи */
    name?: string; // title: string;
    stage_id: number;
@@ -116,7 +117,7 @@ interface FormData {
    };
 
    description?: string; // description?: string;
-   fileLinks?: ResponseFile[] | undefined; // files?: ResponseFile[];  => can_attach_file?: boolean; !!!
+   fileLinks?: ResponseFileWithObject[] | [] | undefined; // files?: ResponseFile[];  => can_attach_file?: boolean; !!!
    layoutLink?: string; // layout_link?: string | null;
    markupLink?: string; // markup_link?: string | null;
    devLink?: string; // dev_link?: string | null;
@@ -125,8 +126,10 @@ interface FormData {
 }
 
 export default function TaskModalCreationEditing({ isOpen, onClose, slug, taskId }: TaskModalCreationEditingProps) {
-   const [name, setName] = useState('');
    // const [taskType, setTaskType] = useState(taskTypes);
+   // const [component, setComponent] = useState('');
+
+   const [name, setName] = useState('');
    const [taskData, setTaskData] = useState<TaskSingle>();
    const [selectedOptionTasks, setSelectedOptionTasks] = useState<TaskType | undefined>(undefined);
    const [selectedOptionComp, setSelectedOptionComp] = useState<Component | undefined>(undefined);
@@ -135,8 +138,6 @@ export default function TaskModalCreationEditing({ isOpen, onClose, slug, taskId
    const [selectedOptionsCheckbox, setSelectedOptionsCheckbox] = useState<string[]>([]);
 
    const [files, setFiles] = useState<ResponseFile[]>([]);
-
-   // const [component, setComponent] = useState('');
 
    const [taskTypesOptions, setTaskTypesOptions] = useState(typesTasksOptions);
    const [componentsOptions, setComponentsOptions] = useState(compOptions);
@@ -149,12 +150,13 @@ export default function TaskModalCreationEditing({ isOpen, onClose, slug, taskId
    const [startDate, setStartDate] = useState('');
    const [endDate, setEndDate] = useState('');
    const [description, setDescription] = useState('');
-   const [fileLinks, setFileLinks] = useState<string[]>([]);
+   // const [fileLinks, setFileLinks] = useState<string[]>([]);
 
    const [availableAssignees, setAvailableAssignees] = useState<string[]>([]);
    // const [priorities, setPriorities] = useState([]);
 
    const isEditMode = Boolean(taskId);
+   const [idTaskMain, setIdTaskMain] = useState(taskId);
 
    // const [errors, setErrors] = useState('');
    // const [error, setError] = useState('');
@@ -169,7 +171,7 @@ export default function TaskModalCreationEditing({ isOpen, onClose, slug, taskId
    const [selectedUsers, setSelectedUsers] = useState<User[]>([]);
 
    // !!! ===================================================================================
-   const { sendFiles } = useFileUploader();
+
    const [sendFilesTaskMutation] = useSendFilesTaskMutation();
    // Получаем данные
    const { data: getComponents } = useGetComponentsQuery();
@@ -204,35 +206,82 @@ export default function TaskModalCreationEditing({ isOpen, onClose, slug, taskId
    const { data: projects = [] } = useGetProjectsQuery();
    // console.log(projects, '------------- projects ,isLoading----------');
 
-   // const { updateTaskMain, isLoading: isUpdateLoading, error: updateError } = useUpdateTaskMain();
-   // const { createTaskMain, isLoading: isCreateLoading, error: createError } = useCreateTaskMain();
+   const [createTaskMutation, { isLoading: isCreateLoading, isSuccess: createIsSuccess, error: createError }] =
+      useCreateTaskMutation();
+   const [updateTaskMutation, { isLoading: isUpdateLoading, isSuccess: updateIsSuccess, error: updateError }] =
+      useUpdateTaskMutation();
 
    const { data: taskById = {}, isLoading: isGetTaskByTaskIdLoading } = useGetTaskByTaskIdQuery(27);
    console.log(taskById, '******** taskById ,isLoading useGetTaskByTaskIdQuery ******');
 
-   // Редактировать (обновить) задачу -------------------------------------------
-   const {
-      updateTaskMain,
-      isLoading: isUpdateLoading,
-      isSuccess: updateIsSuccess,
-      error: updateError,
-   } = useUpdateTaskMain();
-
-   const handleUpdateTask = () => {
-      updateTaskMain(8, { date_start: '31.12.2024' });
-   };
-   // Добавить (создать) задачу -------------------------------------------
-   const [createTask, { isLoading: isCreateLoading, isSuccess: createIsSuccess, error: createError }] =
-      useCreateTaskMutation();
-
-   const handleCreateTask = async (slugName: string, taskData: FormData) => {
-      const taskDataTransform = transformToServerData(taskData);
-
+   // Привязываем файлы к задаче
+   const handleFileTaskLinked = async (taskId: number, filesTask: ResponseFileWithObject[]) => {
       try {
-         const response = await createTask({ slug: slugName, body: taskDataTransform }).unwrap();
-         console.log('Задача успешно создана:', response);
-      } catch (err) {
-         console.error('Ошибка при создании задачи:', err);
+         console.log(`Файл ${filesTask} успешно привязан к задаче:`, taskId, filesTask);
+
+         for (const file of filesTask) {
+            const response = await sendFilesTaskMutation({
+               taskId: taskId,
+               fileId: file.id, // id файла
+            }).unwrap();
+
+            console.log(`Файл ${file.original_name} успешно привязан к задаче:`, response);
+         }
+      } catch (error) {
+         console.error('Ошибка при привязке файла:', error);
+      }
+   };
+
+   // Редактировать (обновить) задачу -------------------------------------------
+   const handleUpdateTask = async (idTask, taskDataUpd: TaskData, filesTask: ResponseFileWithObject[]) => {
+      try {
+         const response = await updateTaskMutation({ id: idTask, body: taskDataUpd }).unwrap(); // Запрос на обновление задачи
+         const taskId = response.data.id; // Получение id задачи
+         console.log('Задача обновлена taskId:', taskId);
+         console.log('Задача обновлена taskData.files:', taskData.files);
+
+         if (filesTask.length > 0) {
+            // Исключаем дублирование
+            const uniqueFilesTask = filesTask.filter(
+               (newFile) =>
+                  !taskData.files?.some(
+                     (existingFile) =>
+                        existingFile.id === newFile.id ||
+                        existingFile.original_name === newFile.original_name ||
+                        existingFile.link === newFile.link
+                  )
+            );
+
+            console.log('Задача обновлена uniqueFilesTask:', uniqueFilesTask);
+
+            if (uniqueFilesTask.length > 0) {
+               await handleFileTaskLinked(taskId, uniqueFilesTask); // Привязка только уникальных файлов к задаче
+            }
+         }
+      } catch (error) {
+         console.error('Ошибка при обновлении задачи:', error);
+      }
+   };
+
+   // Добавить (создать) задачу -------------------------------------------
+
+   const handleCreateTask = async (slugName: string, taskData: TaskData, files: ResponseFileWithObject[]) => {
+      try {
+         console.log('slug: slugName, body: taskData', slugName, taskData);
+
+         const response = await createTaskMutation({ slug: slugName, body: taskData }).unwrap(); // Запрос на создание задачи
+         console.log('Задача создана response:', response);
+
+         const taskId = response.data.id; // Получение id задачи
+         console.log('Задача создана:', taskId);
+
+         if (files.length > 0) {
+            const createdFiles = files.map((file, index) => ({
+               // await handleFileTaskLinked(taskId, file.fileObject); // Привязка файлов к задаче
+            }));
+         }
+      } catch (error) {
+         console.error('Ошибка при создании задачи:', error);
       }
    };
 
@@ -249,32 +298,35 @@ export default function TaskModalCreationEditing({ isOpen, onClose, slug, taskId
       setUsersOptions(getUsers?.data);
    }, [getComponents, getPriorities, getTaskTypes, getUsers]);
 
+   console.log(tasks, 'tasks-------------++++++++++++++');
    useEffect(() => {
-      console.log(tasks, 'tasks-------------++++++++++++++');
       if (taskById) setTaskData(taskById?.data);
-   }, [taskById]);
+   }, [taskById, tasks]);
 
-   // Привязываем файлы к задаче
-   const handleFileTaskLinked = async (taskId: number, files: ResponseFileWithObject[]) => {
-      try {
-         console.log('Привязаны файлы', taskId, files);
+   // // Отправляем файлы если есть
+   // const handleFileUpload = async (files: ResponseFileWithObject[]) => {
+   //    if (!files.length) return;
 
-         const response = await sendFilesTaskMutation({ taskId: taskId, fileId: files.fileObject.id }).unwrap();
-         console.log('Файл успешно привязан к задаче:', response);
-      } catch (error) {
-         console.error('Ошибка при привязке файла:', error);
-      }
-   };
+   //    try {
+   //       const uploadedFiles = await sendFiles(files); // записывает файл на сервер
+   //       console.log('Отправлены файлы', uploadedFiles);
 
-   // Отправляем файлы если есть
-   const handleFileUpload = async (files: ResponseFileWithObject[]) => {
-      if (!files.length) return;
-      console.log('Отправлены файлы', files);
-      // Отправляем файлы
-      // sendFiles(files); // записывает файл на сервер
-   };
+   //       // Если загруженные файлы вернули `id`, обновляем локальный state
+   //       const updatedFiles = files.map((file, index) => ({
+   //          ...file,
+   //          id: uploadedFiles[index]?.id, // Присваиваем серверный `id` каждому файлу
+   //       }));
+   //    } catch (error) {
+   //       console.error('Ошибка при загрузке файлов:', error);
+   //    }
+   // };
+
+   useEffect(() => {
+      // console.log(tasks, 'tasks-------------++++++++++++++');
+   }, []);
+
    // !!! ===================================================================================
-   // схема валидации Zod  // .min(1, 'Тип задачи обязателен'),
+   // схема валидации Zod
    const formSchema = z.object({
       name: z.string().min(3, 'Ошибка'),
       selectedOptionTasks: z
@@ -333,28 +385,35 @@ export default function TaskModalCreationEditing({ isOpen, onClose, slug, taskId
       fileLinks: z
          .array(
             z.object({
+               id: z.number().optional(),
                created_at: z.string(),
                updated_at: z.string(),
                original_name: z.string(),
-               link: z.string().url('Введите корректный URL'),
+               link: z.string().optional(),
+               fileObject: z.instanceof(File).optional(),
             })
          )
          .optional(),
-      layoutLink: z.string().optional(),
-      // .url('Введите корректный URL')
-      // .refine((value) => value.startsWith('http'), 'Ссылка должна начинаться с http')
+      layoutLink: z
+         .string()
+         // .url('Введите корректный URL')
+         // .refine((value) => value.startsWith('http'), 'Ссылка должна начинаться с http')
+         .optional(),
 
-      markupLink: z.string().optional(),
-      // .url('Введите корректный URL')
-      // .refine((value) => value.startsWith('http'), 'Ссылка должна начинаться с http')
+      markupLink: z
+         .string()
+         // .url('Введите корректный URL')
+         // .refine((value) => value.startsWith('http'), 'Ссылка должна начинаться с http')
+         .optional(),
 
-      devLink: z.string().optional(),
-      // .url('Введите корректный URL')
-      // .refine((value) => value.startsWith('http'), 'Ссылка должна начинаться с http')
+      devLink: z
+         .string()
+         // .url('Введите корректный URL')
+         // .refine((value) => value.startsWith('http'), 'Ссылка должна начинаться с http')
+         .optional(),
    });
 
    //
-   console.log(taskData, '*************** taskData');
    const {
       register,
       handleSubmit,
@@ -383,47 +442,20 @@ export default function TaskModalCreationEditing({ isOpen, onClose, slug, taskId
          estimate: taskData?.estimate_worker || '',
          date: { startDate: taskData?.date_start || null, endDate: taskData?.date_end || null },
          description: taskData?.description || '',
-         fileLinks: null,
+         fileLinks: taskData?.files || [],
          layoutLink: taskData?.layout_link || '',
          markupLink: taskData?.markup_link || '',
          devLink: taskData?.dev_link || '',
       },
    });
-   console.log(errors, 'errors '); //!!!
+   console.log(errors, '!!! --- errors --- !!!'); //!!!
 
    // !!! ===================================================================================
-   const transformToServerData = (formData: FormData) => {
-      const selectedIds = formData.selectedOptionsCheckbox?.map((option) => option.id) || [];
-      const temporaryId = parseInt(Math.random() * 100); // !!!
-
-      return {
-         name: formData.name || '', // Название задачи (обязательно)
-         description: formData.description || '', // Описание задачи
-         stage_id: formData.stage_id || 2, // ID стадии (обязательно) приоритет ??? !!!
-         task_type_id: formData.selectedOptionTasks?.id || 0, // ID типа задачи (обязательно)
-         component_id: formData.selectedOptionComp?.id || 0, // ID компонента задачи (обязательно)
-         priority_id: formData.selectedOptionPriority?.id || 0, // ID приоритета задачи (обязательно)
-         block_id: formData.block_id || 0, // ID задачи, которая блокирует текущую (по умолчанию 0)
-
-         // epic_id: formData?.epic_id ?? 0, //  ID эпика
-         // release_id: formData.release_id || null, //  ID релиза, к которому привязана задача
-
-         related_id: formData.related_id || 0, // ID связанной задачи
-         estimate_cost: formData.estimate_cost || 0, // Оценка стоимости задачи
-         estimate_worker: formData.estimateMinutes || 0, // Оценка времени для работы
-         layout_link: formData.layoutLink || '', // Ссылка на макет
-         markup_link: formData.markupLink || '', // Ссылка на вёрстку
-         dev_link: formData.devLink || '', // Ссылка на сборку
-         executors: selectedIds.length > 0 ? selectedIds : [0], // Исполнители задачи
-         begin: formData.date?.startDate || '', // Дата начала работы
-         end: formData.date?.endDate || '', // Дата окончания работы
-      };
-   };
 
    // отправляем данные формы -------------------------------------------------
    const onSubmit = (data: FormData) => {
       console.log('*************** onSubmit ***************');
-      console.log('data', data);
+      console.log('***** data *****', data);
 
       const serverData = transformToServerData(data);
 
@@ -433,15 +465,17 @@ export default function TaskModalCreationEditing({ isOpen, onClose, slug, taskId
 
       //if (serverData) handleUpdateTask(); // если редактировать задачу
 
-      if (data.fileLinks.length > 0) {
-         handleFileUpload(data.fileLinks); // если есть файлы для загрузки
-         handleFileTaskLinked(123, data.fileLinks); // Привязка файла к задаче
-      }
-   };
+      console.log('data.fileLinks', data.fileLinks);
 
-   useEffect(() => {
-      console.log('fileLinks updated:', watch('fileLinks'));
-   }, [watch('fileLinks')]);
+      // handleCreateTask('project4', serverData, data.fileLinks);
+
+      handleUpdateTask(idTaskMain, serverData, data.fileLinks);
+
+      // if (data.fileLinks?.length > 0) {
+      //    handleFileUpload(data.fileLinks); // если есть файлы для загрузки
+      //    handleFileTaskLinked(27, 61); // Привязка файла к задаче
+      // }
+   };
 
    // Маска – число + подстановка буквы. Пример, ввод 90 и отображается 90м
    // Опционально - ввод 90 и парсится на 1ч 30м
@@ -498,7 +532,7 @@ export default function TaskModalCreationEditing({ isOpen, onClose, slug, taskId
    };
 
    // Обработчик изменения Исполнитель
-   const handleUsersChange = (value: Users[] | User) => {
+   const handleUsersChange = (value: Users[]) => {
       setValue('selectedOptionsCheckbox', value);
       setSelectedOptionUsers(value);
    };
@@ -526,20 +560,26 @@ export default function TaskModalCreationEditing({ isOpen, onClose, slug, taskId
    };
 
    // Обработчик изменения Файлы
-   const handleFilesChange = (newFiles: ResponseFile[]) => {
-      const updatedFiles = newFiles.map((file) => ({
-         ...file,
-         id: file.id || Math.floor(Math.random() * 1000),
-      }));
-      console.log(updatedFiles, '+++++++++++++++updatedFiles');
+   const handleFilesChange = (newFiles: ResponseFileWithObject[]) => {
+      console.log(newFiles, '+++++++++++++++ newFiles handleFilesChange');
 
-      setValue('fileLinks', updatedFiles);
-      setFiles(updatedFiles);
+      setValue('fileLinks', newFiles);
+      setFiles(newFiles);
    };
+
+   useEffect(() => {
+      setIdTaskMain(27);
+      console.log(taskData?.files, 'taskData?.files   ---+');
+      if (taskData?.files) setFiles(taskData.files);
+   }, [taskData?.files]);
 
    if (!isOpen) return null;
    if (isGetTasksIdLoading) return <div>Loading task...</div>;
    if (!taskData) return <div>Task not found</div>;
+
+   console.log(taskData, '*************** taskData WRAPPER');
+   console.log(files, 'files-------------++++++++++++++');
+   console.log(watch('fileLinks'), 'watch(fileLink)-------------++++++++++++++');
 
    return (
       <div className={style['modal-creation-editing']} onClick={handleOverlayClick}>
@@ -678,6 +718,7 @@ export default function TaskModalCreationEditing({ isOpen, onClose, slug, taskId
                      control={control}
                      render={({ field: { value, onChange }, fieldState: { error } }) => (
                         <FileUpload
+                           taskId={idTaskMain}
                            files={files || []}
                            onFilesChange={(newFiles) => {
                               onChange(newFiles);

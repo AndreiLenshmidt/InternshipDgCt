@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import style from '@/components/file_upload/file-upload.module.scss';
 import Clipper from '@public/icons/clipper.svg';
+import { BASE_URL, BASE_API_URL } from '@/consts';
 import { ResponseFile } from '@/api/data.types';
 import { useFileUploader } from '@/modules/TaskModalCreationEditing/utils/useFileUploader';
 import {
@@ -12,19 +13,45 @@ type ResponseFileWithObject = ResponseFile & {
    fileObject: File;
 };
 interface FileUploadProps {
-   files: ResponseFile[];
+   taskId: number;
+   files: ResponseFileWithObject[];
    onFilesChange: ((files: ResponseFileWithObject[]) => void) | undefined;
    error?: string;
 }
 
-export default function FileUpload({ files, onFilesChange, error }: FileUploadProps) {
+export default function FileUpload({ taskId, files, onFilesChange, error }: FileUploadProps) {
    const [isDragging, setIsDragging] = useState(false);
    const [permissions, setPermissions] = useState(false);
+   const [fileLocal, setFileLocal] = useState([]);
+   const [respDtLocal, setRespDtLocal] = useState({});
    const [deleteFileTaskMutation] = useDeleteFileTaskMutation();
+   const { sendFiles } = useFileUploader();
 
    // Проверка на дубликаты
-   const isDuplicateFile = (newFile: ResponseFile): boolean => {
-      return files.some((file) => file?.original_name === newFile?.original_name || file?.link === newFile?.link);
+   const isDuplicateFile = (newFile: ResponseFileWithObject): boolean => {
+      return fileLocal.some((file) => file?.original_name === newFile?.original_name || file?.link === newFile?.link);
+   };
+
+   // Отправляем файлы если есть
+   const handleFileUpload = async (files: ResponseFileWithObject[]) => {
+      if (!files.length) return;
+
+      const filterFileId = files.filter((file) => file.id === undefined);
+      const filesId = files.filter((file) => file.id !== undefined);
+
+      try {
+         let newFiles = [];
+         const uploadedFiles = await sendFiles(filterFileId); // записывает файл на сервер
+
+         if (filesId.length > 0) newFiles = [...filesId, ...uploadedFiles];
+         if (filesId.length === 0) newFiles = uploadedFiles;
+
+         if (onFilesChange) {
+            onFilesChange(newFiles);
+         }
+      } catch (error) {
+         console.error('Ошибка при загрузке файлов:', error);
+      }
    };
 
    // Обработчик изменения файла
@@ -32,11 +59,11 @@ export default function FileUpload({ files, onFilesChange, error }: FileUploadPr
       const newFiles = event.target.files;
       if (!newFiles) return;
 
-      const updatedFiles = [...files];
+      const updatedFiles: ResponseFileWithObject[] = [...fileLocal];
 
       for (const file of Array.from(newFiles)) {
          const newFile: ResponseFileWithObject = {
-            id: Math.floor(Math.random() * 1000),
+            // id: 0,
             original_name: file.name,
             link: URL.createObjectURL(file),
             created_at: new Date().toISOString(),
@@ -51,9 +78,10 @@ export default function FileUpload({ files, onFilesChange, error }: FileUploadPr
          }
       }
 
-      if (onFilesChange) {
+      if (updatedFiles) {
          setPermissions(false);
-         onFilesChange(updatedFiles);
+         setFileLocal(updatedFiles);
+         handleFileUpload(updatedFiles);
       } else {
          setPermissions(true);
       }
@@ -76,14 +104,19 @@ export default function FileUpload({ files, onFilesChange, error }: FileUploadPr
       setIsDragging(false);
 
       const droppedFiles = event.dataTransfer.files;
-      const updatedFiles: ResponseFile[] = [...files];
+      const updatedFiles: ResponseFileWithObject[] = [...fileLocal];
+
       for (const file of Array.from(droppedFiles)) {
          if (!file) continue;
 
-         const newFile: ResponseFile = {
+         const newFile: ResponseFileWithObject = {
+            // id: 0, //  Math.floor(Math.random() * 1000)
             original_name: file.name,
             link: URL.createObjectURL(file),
             created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString(),
+
+            fileObject: file,
          };
 
          if (!isDuplicateFile(newFile)) {
@@ -91,26 +124,44 @@ export default function FileUpload({ files, onFilesChange, error }: FileUploadPr
          }
       }
 
-      onFilesChange(updatedFiles);
+      if (updatedFiles) {
+         setPermissions(false);
+         setFileLocal(updatedFiles);
+         handleFileUpload(updatedFiles);
+      } else {
+         setPermissions(true);
+      }
    };
 
    // Удаляем файлы к задаче(файлы остаются в базе)
-   const handleDeleteFile = async (taskId: number, files: ResponseFileWithObject[]) => {
+   const handleDeleteFile = async (taskId: number, file: ResponseFileWithObject[]) => {
       try {
-         const response = await deleteFileTaskMutation({ taskId: taskId, fileId: files.id }).unwrap();
-         console.log('Файл успешно удалён из задачи');
+         console.log(taskId, file, 'taskId, ---- file delete');
+         let response;
+         if (file[0]?.id) {
+            response = await deleteFileTaskMutation({ taskId: taskId, fileId: file[0]?.id }).unwrap();
+         }
+         if (onFilesChange) onFilesChange(response?.data?.files);
+         setRespDtLocal(response?.data);
+         console.log('Файл успешно удалён из задачи:', response?.data?.files);
       } catch (error) {
          console.error('Ошибка при удалении файла:', error);
       }
    };
 
    // Удаление файла
-   const handleRemoveFile = (file: ResponseFile) => {
-      const updatedFiles: ResponseFile[] | undefined = files.filter((f) => f?.link !== file?.link);
-      onFilesChange(updatedFiles);
+   const handleRemoveFile = (file: ResponseFileWithObject) => {
+      const updatedFiles: ResponseFileWithObject[] | undefined = fileLocal?.filter(
+         (f) => f?.original_name !== file?.original_name
+      );
 
-      console.log(file, 'file delete');
-      // handleDeleteFile(taskId: 27, files:file)
+      setFileLocal(updatedFiles);
+
+      const deletedFile: ResponseFileWithObject[] | undefined = fileLocal?.filter(
+         (f) => f?.original_name === file?.original_name
+      );
+
+      handleDeleteFile(taskId, deletedFile);
    };
 
    // Проверка, является ли файл изображением
@@ -120,16 +171,34 @@ export default function FileUpload({ files, onFilesChange, error }: FileUploadPr
       return imageExtensions.includes(ext || '');
    };
 
+   useEffect(() => {
+      if (files?.length > 0 && fileLocal.length === 0) {
+         const updatedFiles = files
+            .filter((file) => file.id !== undefined)
+            .map((file) => ({
+               ...file,
+               link: BASE_URL + file.link, // Добавляем префикс к свойству link; // Учитываем только файлы с id
+            }));
+         setFileLocal(updatedFiles);
+      }
+   }, [files]);
+
+   // console.log(files, '-=-=-= files');
+   // console.log(fileLocal, '-=-=-= fileLocal');
+
    return (
       <div className={style['files-upload']}>
          {/* Предпросмотр загруженных файлов */}
          <div className={style['files-prev']}>
-            {files.length > 0 && (
+            {fileLocal.length > 0 && (
                <ul className={style['list']}>
-                  {files.map((file, index) => (
+                  {fileLocal.map((file, index) => (
                      <li className={style['item']} key={index}>
-                        {isImageFile(file?.original_name || '') ? (
-                           <img src={file.link} alt={file.original_name} className={style['preview-image']} />
+                        {isImageFile(file?.original_name) ? (
+                           <div>
+                              <img src={file.link} alt={file.original_name} className={style['preview-image']} />
+                              <p>{file?.original_name || 'Без имени'}</p>
+                           </div>
                         ) : (
                            <a href={file?.link} target="_blank" rel="noopener noreferrer">
                               {file?.original_name || 'Без имени'}
@@ -157,7 +226,7 @@ export default function FileUpload({ files, onFilesChange, error }: FileUploadPr
                </div>
                <span>Выбери файлы или перетащи их сюда</span>
             </label>
-            <input className={style['input']} id="file-upload" type="file" multiple onChange={handleFileChange} />
+            <input className={style['input']} id="file-upload" type="file" onChange={handleFileChange} />
          </div>
 
          {/* Ошибка (если есть) */}

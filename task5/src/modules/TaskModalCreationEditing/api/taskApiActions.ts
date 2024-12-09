@@ -113,17 +113,17 @@ export const taskApiActions = createApi({
             },
          }),
       }),
-      sendFilesTask: build.mutation<ResponseFile, { taskId: number; fileId: number }>({
-         query: ({ taskId, formFile }) => ({
+      sendFilesTask: build.mutation<ResponseFile, { taskId: number; fileId: number | undefined }>({
+         query: ({ taskId, fileId }) => ({
             url: `/task/${taskId}/file/${fileId}`,
-            method: 'POST',
+            method: 'PATCH',
             headers: {
                accept: 'application/json',
                Authorization: `Bearer ${token}`,
             },
          }),
       }),
-      deleteFileTask: build.mutation<void, { taskId: number; fileId: number }>({
+      deleteFileTask: build.mutation<void, { taskId: number; fileId: number | undefined }>({
          query: ({ taskId, fileId }) => ({
             url: `/task/${taskId}/file/${fileId}`,
             method: 'DELETE',

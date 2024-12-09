@@ -16,17 +16,15 @@ export const useFileUploader = () => {
 
       const form = new FormData();
 
-      console.log(files, 'files');
-
       Array.from(files).forEach((file) => {
          form.append('file[]', file.fileObject);
       });
 
       try {
          const response = await sendler(form);
-         console.log('Файлы успешно загружены:', response);
+         console.log('Файлы успешно загружены:', response.data.data);
 
-         return response;
+         return response?.data?.data;
       } catch (error) {
          console.error('Ошибка при загрузке файлов:', error);
          return [];
