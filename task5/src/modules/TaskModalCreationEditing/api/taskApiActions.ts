@@ -1,4 +1,4 @@
-import { TaskSingle, User, Component, Priority, TaskType, ResponseFile, ResponseFile } from '@/api/data.types';
+import { TaskSingle, User, Component, Priority, TaskType, ResponseFile } from '@/api/data.types';
 import { BASE_URL, BASE_API_URL } from '@/consts';
 import { getCookie } from '@/utils/cookies';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';

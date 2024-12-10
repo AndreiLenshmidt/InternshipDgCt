@@ -1,6 +1,6 @@
-import { TaskSingle, TaskType, Component, Stage, Priority, User } from '@/api/data.types';
+import {  TaskType, Component, Stage, Priority, User } from '@/api/data.types';
 
-export const typesTasksOptions: TaskType[] = [
+export const typesTasksOptions: TaskType[] | undefined = [
    { id: 1, name: 'Баг' },
    { id: 2, name: 'Задача' },
    { id: 3, name: 'Улучшение' },
@@ -10,7 +10,7 @@ export const typesTasksOptions: TaskType[] = [
    { id: 7, name: 'Бэклог' },
 ];
 
-export const compOptions: Component[] = [
+export const compOptions: Component[] | undefined = [
    { id: 1, name: 'Дизайн', color: '#EA5471' },
    { id: 2, name: 'Вёрстка', color: '#FFA826' },
    { id: 3, name: 'Разработка', color: '#3787EB' },
@@ -23,19 +23,19 @@ export const compOptions: Component[] = [
    { id: 10, name: 'Копирайт', color: '#13B4ED' },
 ];
 
-export const priorOptions: Priority[] = [
+export const priorOptions: Priority[] | undefined = [
    { id: 1, name: 'Низкий' },
    { id: 2, name: 'Средний' },
    { id: 3, name: 'Высокий' },
 ];
 
-export const usersOptions: User[] = [
+export const usersOptions: User[] | undefined = [
    { id: 1, name: 'Иван', surname: 'Иванов', email: 'ivanov@mail.com' },
    { id: 2, name: 'Мария', surname: 'Петрова', email: 'petrova@mail.com' },
    { id: 3, name: 'Анна', surname: 'Сидорова', email: 'sidorova@mail.com' },
 ];
 
-export const stagesOptions: Stage[] = [
+export const stagesOptions: Stage[] | undefined = [
    { id: 1, name: 'Разработка', color: '#3787eb' },
    { id: 2, name: 'Дизайн', color: '#ea5471' },
    { id: 3, name: 'Верстка', color: '#ffa826' },

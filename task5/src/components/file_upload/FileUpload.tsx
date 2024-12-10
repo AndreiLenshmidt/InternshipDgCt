@@ -1,13 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import style from '@/components/file_upload/file-upload.module.scss';
 import Clipper from '@public/icons/clipper.svg';
-import { BASE_URL, BASE_API_URL } from '@/consts';
+import { BASE_URL } from '@/consts';
 import { ResponseFile } from '@/api/data.types';
 import { useFileUploader } from '@/modules/TaskModalCreationEditing/utils/useFileUploader';
-import {
-   useSendFilesTaskMutation,
-   useDeleteFileTaskMutation,
-} from '@/modules/TaskModalCreationEditing/api/taskApiActions';
+import { useDeleteFileTaskMutation } from '@/modules/TaskModalCreationEditing/api/taskApiActions';
 
 type ResponseFileWithObject = ResponseFile & {
    fileObject: File;
@@ -192,7 +189,7 @@ export default function FileUpload({ taskId, files, onFilesChange, error }: File
          <div className={style['files-prev']}>
             {fileLocal.length > 0 && (
                <ul className={style['list']}>
-                  {fileLocal.map((file, index) => (
+                  {fileLocal.map((file: ResponseFileWithObject, index: number) => (
                      <li className={style['item']} key={index}>
                         {isImageFile(file?.original_name) ? (
                            <div>

@@ -12,59 +12,27 @@ import TextAreaWithToolbar from '@/components/text_area_with_toolbar/TextAreaWit
 import FileUpload from '@/components/file_upload/FileUpload';
 import { useGetProjectsQuery } from '../ProjectsPage/api/api';
 import {
-   useGetTaskByTaskIdQuery,
    useGetTasksQuery,
-   useGetUsersQuery,
    useGetComponentsQuery,
    useGetPrioritiesQuery,
    useGetTaskTypesQuery,
    useSendFilesTaskMutation,
-   useDeleteFileTaskMutation,
-   useCreateTaskMutation,
-   useUpdateTaskMutation,
+   // useGetTaskByTaskIdQuery,
+   // useGetUsersQuery,
+   // useDeleteFileTaskMutation,
+   // useCreateTaskMutation,
+   // useUpdateTaskMutation,
 } from '@/modules/TaskModalCreationEditing/api/taskApiActions';
-import { useGetOAuthTokenMutation } from '../AuthPage/api/authApi';
-// import { useGetTaskByTaskIdQuery } from '../TaskPage/api/taskApi';
-import { useOptimisticDeleteTask } from '@/modules/TaskModalCreationEditing/utils/useOptimisticDeleteTask';
-import { useOptimisticCreateTask } from '@/modules/TaskModalCreationEditing/utils/useOptimisticCreateTask';
-import { useOptimisticUpdateTask } from '@/modules/TaskModalCreationEditing/utils/useOptimisticUpdateTask';
+import { useGetTaskByTaskIdQuery, useGetUsersQuery, useCreateTaskMutation, useUpdateTaskMutation } from '@/api/appApi';
+
 import { Priority, Stage, TaskSingle, TaskType, User, ResponseFile } from '@/api/data.types';
 import { mapTaskType } from './utils/transformTaskSingle';
 import { typesTasksOptions, compOptions, priorOptions, usersOptions } from '@/modules/TaskModalCreationEditing/variors';
 import { useUpdateTaskMain } from '@/modules/TaskModalCreationEditing/hook/useUpdateTaskMain';
 import { useCreateTaskMain } from '@/modules/TaskModalCreationEditing/hook/useCreateTaskMain';
 import { useFileUploader } from '@/modules/TaskModalCreationEditing/utils/useFileUploader';
-import { transformToServerData } from '@/modules/TaskModalCreationEditing/utils/transformToServerData.ts';
-
-import { getCookie } from '@/utils/cookies';
-// export interface ExtendedFile {
-//    id?: number;
-//    original_name?: string;
-//    link?: string;
-//    created_at: string;
-//    updated_at?: string;
-// }
-
-// interface TaskCreateRequest {
-//    name: string;
-//    description?: string | null;
-//    stage_id: number;
-//    task_type_id: number;
-//    component_id?: number;
-//    priority_id: number;
-//    block_id?: number | null;
-//    release_id?: number | null;
-//    related_id?: number | null;
-//    epic_id?: number | null;
-//    estimate_cost?: number | null;
-//    estimate_worker?: number | null;
-//    layout_link?: string | null;
-//    markup_link?: string | null;
-//    dev_link?: string | null;
-//    executors?: number[];
-//    begin?: string;
-//    end?: string;
-// }
+import { transformToServerData } from '@/modules/TaskModalCreationEditing/utils/transformToServerData';
+import { parseEstimate } from '@/modules/TaskModalCreationEditing/utils/parseEstimate';
 
 export type ResponseFileWithObject = ResponseFile & {
    fileObject: File;
@@ -97,22 +65,12 @@ export interface FormData {
    selectedOptionsCheckbox?: User[]; // users?: User[];
    /** Приоритет задачи */
    selectedOptionPriority?: Priority; // priority?: Priority; !!!
-   // priority: string; // priority?: Priority;
-   // /**
-   //  * Оценка разработчика
-   //  * @min 0
-   //  */
+
    estimateMinutes?: string | undefined; // estimate_worker?: number;
    estimate?: string | undefined; // ------------------!!!
 
    date: {
-      //  * Дата начала работ
-      //  * @example "2022-11-30T08:48:00.000000Z"
-      //  */
       startDate: string; //   date_start?: string;
-      //  * Дата окончания работ
-      //  * @example "2022-12-31T16:48:00.000000Z"
-      //  */
       endDate: string; // end?: string;
    };
 
@@ -126,9 +84,6 @@ export interface FormData {
 }
 
 export default function TaskModalCreationEditing({ isOpen, onClose, slug, taskId }: TaskModalCreationEditingProps) {
-   // const [taskType, setTaskType] = useState(taskTypes);
-   // const [component, setComponent] = useState('');
-
    const [name, setName] = useState('');
    const [taskData, setTaskData] = useState<TaskSingle>();
    const [selectedOptionTasks, setSelectedOptionTasks] = useState<TaskType | undefined>(undefined);
@@ -139,37 +94,37 @@ export default function TaskModalCreationEditing({ isOpen, onClose, slug, taskId
 
    const [files, setFiles] = useState<ResponseFile[]>([]);
 
+   // variors
    const [taskTypesOptions, setTaskTypesOptions] = useState(typesTasksOptions);
    const [componentsOptions, setComponentsOptions] = useState(compOptions);
    const [priorityOptions, setPriorityOptions] = useState(priorOptions);
-
-   const [users, setUsersOptions] = useState<User | (() => User | undefined) | undefined>(usersOptions);
+   const [users, setUsersOptions] = useState(usersOptions);
 
    const [assignees, setAssignees] = useState<string[]>([]);
    const [estimate, setEstimate] = useState('');
    const [startDate, setStartDate] = useState('');
    const [endDate, setEndDate] = useState('');
    const [description, setDescription] = useState('');
-   // const [fileLinks, setFileLinks] = useState<string[]>([]);
 
    const [availableAssignees, setAvailableAssignees] = useState<string[]>([]);
-   // const [priorities, setPriorities] = useState([]);
 
    const isEditMode = Boolean(taskId);
    const [idTaskMain, setIdTaskMain] = useState(taskId);
 
-   // const [errors, setErrors] = useState('');
-   // const [error, setError] = useState('');
-
    const [titleSelect, setTitleSelect] = useState('Задача');
    const [itemsOptions, setItemsOptions] = useState([]);
-
-   // const [valueMain, setValueMain] = useState(null);
 
    const [isTouched, setIsTouched] = useState(false);
    const [isModalOpen, setModalOpen] = useState(false);
    const [selectedUsers, setSelectedUsers] = useState<User[]>([]);
 
+   // const [errors, setErrors] = useState('');
+   // const [error, setError] = useState('');
+   // const [priorities, setPriorities] = useState([]);
+   // const [valueMain, setValueMain] = useState(null);
+   // const [taskType, setTaskType] = useState(taskTypes);
+   // const [component, setComponent] = useState('');
+   // const [fileLinks, setFileLinks] = useState<string[]>([]);
    // !!! ===================================================================================
 
    const [sendFilesTaskMutation] = useSendFilesTaskMutation();
@@ -177,7 +132,7 @@ export default function TaskModalCreationEditing({ isOpen, onClose, slug, taskId
    const { data: getComponents } = useGetComponentsQuery();
    const { data: getPriorities } = useGetPrioritiesQuery();
    const { data: getTaskTypes } = useGetTaskTypesQuery();
-   const { data: getUsers } = useGetUsersQuery('project3');
+   const { data: getUsers } = useGetUsersQuery('project4');
    const {
       data: tasks = [],
       isLoading: isGetTasksIdLoading,
@@ -192,7 +147,7 @@ export default function TaskModalCreationEditing({ isOpen, onClose, slug, taskId
    //    error: tasksError,
    // } = useGetTasksQuery({
    //    slug: 'project3',
-   //    filters: {},
+   //    filters: {id=[27]},
    // });
 
    // console.log(
@@ -233,7 +188,7 @@ export default function TaskModalCreationEditing({ isOpen, onClose, slug, taskId
    };
 
    // Редактировать (обновить) задачу -------------------------------------------
-   const handleUpdateTask = async (idTask, taskDataUpd: TaskData, filesTask: ResponseFileWithObject[]) => {
+   const handleUpdateTask = async (idTask: string, taskDataUpd: TaskData, filesTask: ResponseFileWithObject[]) => {
       try {
          const response = await updateTaskMutation({ id: idTask, body: taskDataUpd }).unwrap(); // Запрос на обновление задачи
          const taskId = response.data.id; // Получение id задачи
@@ -264,18 +219,17 @@ export default function TaskModalCreationEditing({ isOpen, onClose, slug, taskId
    };
 
    // Добавить (создать) задачу -------------------------------------------
-
    const handleCreateTask = async (slugName: string, taskData: TaskData, files: ResponseFileWithObject[]) => {
       try {
          console.log('slug: slugName, body: taskData', slugName, taskData);
 
-         const response = await createTaskMutation({ slug: slugName, body: taskData }).unwrap(); // Запрос на создание задачи
+         const response = await createTaskMutation({ slug: slugName, body: taskData }).unwrap();
          console.log('Задача создана response:', response);
 
          const taskId = response.data.id; // Получение id задачи
          console.log('Задача создана:', taskId);
 
-         if (files.length > 0) {
+         if (files.length > 0 && taskId) {
             const createdFiles = files.map((file, index) => ({
                // await handleFileTaskLinked(taskId, file.fileObject); // Привязка файлов к задаче
             }));
@@ -288,42 +242,6 @@ export default function TaskModalCreationEditing({ isOpen, onClose, slug, taskId
    // Общие состояния
    const isLoading = isUpdateLoading || isCreateLoading; //|| isGetTaskByTaskIdLoading
    const error = updateError || createError;
-
-   // Получаем данные
-   useEffect(() => {
-      setComponentsOptions(getComponents?.data || []);
-
-      setPriorityOptions(getPriorities?.data);
-      setTaskTypesOptions(getTaskTypes?.data);
-      setUsersOptions(getUsers?.data);
-   }, [getComponents, getPriorities, getTaskTypes, getUsers]);
-
-   console.log(tasks, 'tasks-------------++++++++++++++');
-   useEffect(() => {
-      if (taskById) setTaskData(taskById?.data);
-   }, [taskById, tasks]);
-
-   // // Отправляем файлы если есть
-   // const handleFileUpload = async (files: ResponseFileWithObject[]) => {
-   //    if (!files.length) return;
-
-   //    try {
-   //       const uploadedFiles = await sendFiles(files); // записывает файл на сервер
-   //       console.log('Отправлены файлы', uploadedFiles);
-
-   //       // Если загруженные файлы вернули `id`, обновляем локальный state
-   //       const updatedFiles = files.map((file, index) => ({
-   //          ...file,
-   //          id: uploadedFiles[index]?.id, // Присваиваем серверный `id` каждому файлу
-   //       }));
-   //    } catch (error) {
-   //       console.error('Ошибка при загрузке файлов:', error);
-   //    }
-   // };
-
-   useEffect(() => {
-      // console.log(tasks, 'tasks-------------++++++++++++++');
-   }, []);
 
    // !!! ===================================================================================
    // схема валидации Zod
@@ -449,54 +367,15 @@ export default function TaskModalCreationEditing({ isOpen, onClose, slug, taskId
       },
    });
    console.log(errors, '!!! --- errors --- !!!'); //!!!
-
    // !!! ===================================================================================
-
-   // отправляем данные формы -------------------------------------------------
-   const onSubmit = (data: FormData) => {
-      console.log('*************** onSubmit ***************');
-      console.log('***** data *****', data);
-
-      const serverData = transformToServerData(data);
-
-      console.log('serverData', serverData);
-
-      // if (serverData) handleCreateTask('project4', data); // создать задачу
-
-      //if (serverData) handleUpdateTask(); // если редактировать задачу
-
-      console.log('data.fileLinks', data.fileLinks);
-
-      // handleCreateTask('project4', serverData, data.fileLinks);
-
-      handleUpdateTask(idTaskMain, serverData, data.fileLinks);
-
-      // if (data.fileLinks?.length > 0) {
-      //    handleFileUpload(data.fileLinks); // если есть файлы для загрузки
-      //    handleFileTaskLinked(27, 61); // Привязка файла к задаче
-      // }
-   };
-
-   // Маска – число + подстановка буквы. Пример, ввод 90 и отображается 90м
-   // Опционально - ввод 90 и парсится на 1ч 30м
-   const parseEstimate = (value: string | number): string => {
-      if (!value) return '';
-      if (/^\d+$/.test(value)) {
-         const minutes = parseInt(value, 10);
-         const hours = Math.floor(minutes / 60);
-         const remainingMinutes = minutes % 60;
-         return `${hours > 0 ? `${hours}ч ` : ''}${remainingMinutes}м`.trim();
-      }
-      return value;
-   };
 
    // модалка "Закрыть окно?"
    const handleCloseModal = () => {
       setModalOpen(false); // закрыть  модалку
    };
 
+   // закрыть окно и модалку
    const handleConfirm = () => {
-      // закрыть окно и модалку
       setModalOpen(false);
       onClose();
    };
@@ -508,31 +387,20 @@ export default function TaskModalCreationEditing({ isOpen, onClose, slug, taskId
       }
    };
 
-   // Обработчик изменения Название
-   // const handleChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
-   //    const inputValue = e.target.value;
-   //    setValueMain(inputValue);
-   //    setName(inputValue);
-   //    if (isTouched) {
-   //       // setError(validate(inputValue));
-   //    }
-   // };
-
    // Обработчик изменения Тип Задачи
-   const handleTaskTypeChange = (value: TaskType) => {
+   const handleTaskTypeChange = (value: TaskType[]) => {
       setValue('selectedOptionTasks', value);
-
       setSelectedOptionTasks(value);
    };
 
    // Обработчик изменения Компонент
-   const handleComponentChange = (value: Component) => {
+   const handleComponentChange = (value: Component[]) => {
       setValue('selectedOptionComp', value);
       setSelectedOptionComp(value);
    };
 
    // Обработчик изменения Исполнитель
-   const handleUsersChange = (value: Users[]) => {
+   const handleUsersChange = (value: User[]) => {
       setValue('selectedOptionsCheckbox', value);
       setSelectedOptionUsers(value);
    };
@@ -541,15 +409,14 @@ export default function TaskModalCreationEditing({ isOpen, onClose, slug, taskId
    const handlePriorityChange = (value: Priority) => {
       setSelectedPriority(value);
       setValue('selectedOptionPriority', value);
-
       clearErrors('selectedOptionPriority'); // Очищаем ошибку при изменении
    };
 
    // Обработчик изменения Оценка
-   const handleEstimateChange = (e: ChangeEvent<HTMLInputElement>) => {
-      const value = e.target.value;
-      setEstimate(value.match(/^\d+$/) ? `${value}м` : value);
-   };
+   // const handleEstimateChange = (e: ChangeEvent<HTMLInputElement>) => {
+   //    const value = e.target.value;
+   //    setEstimate(value.match(/^\d+$/) ? `${value}м` : value);
+   // };
 
    // Обработчик изменения Оценка
    const onBlurFilesChange = (e: React.FocusEvent<HTMLInputElement>) => {
@@ -566,6 +433,43 @@ export default function TaskModalCreationEditing({ isOpen, onClose, slug, taskId
       setValue('fileLinks', newFiles);
       setFiles(newFiles);
    };
+   // !!! ------------------------------------------------------------------------------
+   // отправляем данные формы -------------------------------------------------
+   const onSubmit = (data: FormData) => {
+      console.log('*************** onSubmit ***************');
+      console.log('***** data *****', data);
+
+      const serverData = transformToServerData(data);
+
+      console.log('serverData ,isEditMode', serverData, isEditMode);
+
+      console.log('data.fileLinks', data.fileLinks);
+      //if (serverData && !isEditMode) handleCreateTask('project4', serverData, data.fileLinks); // создать задачу
+
+      if (serverData && isEditMode) handleUpdateTask(idTaskMain, serverData, data.fileLinks); // если редактировать задачу
+
+      // if (data.fileLinks?.length > 0) {
+      //    handleFileUpload(data.fileLinks); // если есть файлы для загрузки
+      //    handleFileTaskLinked(27, 61); // Привязка файла к задаче
+      // }
+   };
+
+   // Получаем данные
+   useEffect(() => {
+      setComponentsOptions(getComponents?.data || []);
+      setPriorityOptions(getPriorities?.data);
+      setTaskTypesOptions(getTaskTypes?.data);
+      setUsersOptions(getUsers?.data);
+   }, [getComponents, getPriorities, getTaskTypes, getUsers]);
+
+   console.log(tasks, 'tasks-------------++++++++++++++');
+   useEffect(() => {
+      if (taskById) setTaskData(taskById?.data);
+   }, [taskById, tasks]);
+
+   useEffect(() => {
+      // console.log(tasks, 'tasks-------------++++++++++++++');
+   }, []);
 
    useEffect(() => {
       setIdTaskMain(27);
@@ -579,7 +483,6 @@ export default function TaskModalCreationEditing({ isOpen, onClose, slug, taskId
 
    console.log(taskData, '*************** taskData WRAPPER');
    console.log(files, 'files-------------++++++++++++++');
-   console.log(watch('fileLinks'), 'watch(fileLink)-------------++++++++++++++');
 
    return (
       <div className={style['modal-creation-editing']} onClick={handleOverlayClick}>
@@ -595,6 +498,7 @@ export default function TaskModalCreationEditing({ isOpen, onClose, slug, taskId
                   <Close />
                </button>
             </div>
+
             <form onSubmit={handleSubmit(onSubmit)} className={style.form}>
                {/* Название */}
                <div className={`${style['form-title']} ${errors.name ? style['error-title'] : ''}`}>
