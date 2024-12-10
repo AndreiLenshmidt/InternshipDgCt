@@ -1,17 +1,19 @@
 import { useEffect, useState } from "react";
 
-export const useResize = (skip: boolean = true) => {
+export const useResize = () => {
    const [width, setWidth] = useState(globalThis.innerWidth);  //
-   
+   const [height, setHeight] = useState(globalThis.innerHeight);
+
    useEffect(() => {
 
-      if (typeof window === 'undefined') {
-         setWidth(0);
-      }
-      else if (!skip){
+      if (typeof window === 'undefined') { setWidth(0); }
+      else {
 
-         // debugger
-         const handleResize = (e: UIEvent) => setWidth((e.target as Window).innerWidth);
+         const handleResize = (e: UIEvent) => {
+            setWidth((e.target as Window).innerWidth)
+            setHeight((e.target as Window).innerHeight)
+         };
+
          window.addEventListener('resize', handleResize);
 
          return () => {
@@ -19,7 +21,7 @@ export const useResize = (skip: boolean = true) => {
          };
       }
 
-   }, [skip]);
+   }, []);
 
-   return { width };
+   return { width, height };
 };

@@ -128,7 +128,8 @@
       .tasks {
          padding: .6rem;
          background-color: #F4F6F8;
-         height: 10rem;
+         height: 50rem;
+         /* height: 85%; */
          min-width: 256px;
          border-radius: .75rem;
          transition: .5s;
