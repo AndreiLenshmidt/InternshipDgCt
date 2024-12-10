@@ -98,7 +98,7 @@ export default function TaskContent({
    };
 
    return (
-      <div className={styles.wrapper}>
+      <>
          <div className={styles.content}>
             <div className={styles.flex}>
                <h2 className={styles.content_title}>{task?.name || 'Название задачи'}</h2>
@@ -297,6 +297,6 @@ export default function TaskContent({
                taskId={taskIdEditTask}
             />
          )}
-      </div>
+      </>
    );
 }
