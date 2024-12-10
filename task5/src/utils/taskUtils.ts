@@ -1,9 +1,5 @@
 import { ResponseFile, User, Comment } from '@/api/data.types';
 
-const addFile = (inputFile: ResponseFile, fileList: ResponseFile[], addFilesTOState: CallableFunction) => {
-   addFilesTOState([inputFile, ...fileList]);
-};
-
 const sendFiles = async (
    objWithFiles: HTMLInputElement | DataTransfer,
    addFilesTOState: CallableFunction,
@@ -11,7 +7,8 @@ const sendFiles = async (
    sendler: CallableFunction,
    addFiles: CallableFunction,
    id: number,
-   inForm: boolean
+   inForm: boolean,
+   isEdit: boolean
 ) => {
    const form = new FormData();
    if (objWithFiles.files) {
@@ -19,17 +16,29 @@ const sendFiles = async (
          form.append('file[]', file);
       }
       const paylord = await sendler(form);
-      if (paylord.data) {
-         for (const responseFile of paylord.data.data) {
-            const queries = inForm
-               ? { comment: id, file: responseFile?.id || -1 }
-               : { task: id, file: responseFile?.id || -1 };
-            const response = await addFiles(queries);
-            if (response.data) {
-               addFile(responseFile, fileList, addFilesTOState);
-            }
-         }
+      if (paylord.data && isEdit) {
+         addFilesToServer(paylord.data.data, fileList, inForm, id, addFiles, addFilesTOState);
       }
+      if (!isEdit) {
+         addFilesTOState([...paylord.data.data, ...fileList]);
+      }
+   }
+};
+
+const addFilesToServer = async (
+   files: ResponseFile[],
+   fileList: ResponseFile[],
+   inForm: boolean,
+   id: number,
+   addFiles: CallableFunction,
+   addFilesTOState: CallableFunction
+) => {
+   for (const responseFile of files) {
+      const queries = inForm
+         ? { comment: id, file: responseFile?.id || -1 }
+         : { task: id, file: responseFile?.id || -1 };
+      const response = await addFiles(queries);
+      addFilesTOState([responseFile, ...fileList]);
    }
 };
 
@@ -44,10 +53,15 @@ const dateFormatter = (date: string | undefined) => {
    return formatted;
 };
 
-const commentFormatter = (value: string, activeUser: User | undefined, fileList: ResponseFile[]): Comment => {
+const commentFormatter = (
+   value: string,
+   activeUser: User | undefined,
+   fileList: ResponseFile[],
+   id?: number
+): Comment => {
    const date = new Date(Date.now()).toDateString();
    return {
-      id: Date.now() + Math.floor(Math.random() * 10000),
+      id: id,
       content: value,
       files: fileList,
       user: activeUser,
@@ -56,4 +70,4 @@ const commentFormatter = (value: string, activeUser: User | undefined, fileList:
    };
 };
 
-export { addFile, sendFiles, dateFormatter, commentFormatter };
+export { sendFiles, dateFormatter, commentFormatter };

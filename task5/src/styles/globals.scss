@@ -312,16 +312,12 @@ h6 {
    min-height: 100vh;
 }
 
-.editor-paragraph {
-   font-family: inherit;
-   font-weight: inherit;
-   font-size: inherit;
-   line-height: inherit;
-   color: inherit;
-}
 // Стили для редактора комментариев
 .editable.placeholder {
    color: #a6a6a6;
+   position: absolute;
+   top: 12px;
+   left: 18px;
 }
 .editable.strong {
    font-weight: 700;

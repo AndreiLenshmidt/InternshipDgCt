@@ -9,21 +9,22 @@ import InfoModal from '../InfoModal/InfoModal';
 
 export default function FileUploader({
    inForm,
+   isEdit,
    addFilesTOState,
    fileList,
    commentId,
 }: {
    inForm: boolean;
+   isEdit: boolean;
    addFilesTOState: CallableFunction;
    fileList: ResponseFile[];
    commentId?: number;
 }) {
    const upload = useRef(null);
    // обработать isLoading, isError
-   const [sendler, { isLoading, isError: sendError }] = useSendFilesMutation();
+   const [sendler, { isError: sendError }] = useSendFilesMutation();
 
-   const [addFilesToTask, { isLoading: addedLoading, isError: errorAdded, status: addedStatus }] =
-      useAddFilesToTaskMutation();
+   const [addFilesToTask, { isError: errorAdded }] = useAddFilesToTaskMutation();
    const [addFileToComments, {}] = useAddFilesToCommemtMutation();
    const { modal, modalInfo, modalTitle, modalType, setCloseModal, setModalInfo, setModalTitle, setModalType } =
       useModalInfo();
@@ -59,7 +60,7 @@ export default function FileUploader({
                if (e.dataTransfer.files) {
                   const mutation = inForm ? addFileToComments : addFilesToTask;
                   const id = inForm && commentId ? commentId : taskID;
-                  return sendFiles(e.dataTransfer, addFilesTOState, fileList, sendler, mutation, id, inForm);
+                  return sendFiles(e.dataTransfer, addFilesTOState, fileList, sendler, mutation, id, inForm, isEdit);
                }
             }}
          >
@@ -70,7 +71,19 @@ export default function FileUploader({
                   if (upload.current) {
                      const mutation = inForm ? addFileToComments : addFilesToTask;
                      const id = inForm && commentId ? commentId : taskID;
-                     return sendFiles(upload.current, addFilesTOState, fileList, sendler, mutation, id, inForm);
+                     if (id) {
+                        return sendFiles(
+                           upload.current,
+                           addFilesTOState,
+                           fileList,
+                           sendler,
+                           mutation,
+                           id,
+                           inForm,
+                           isEdit
+                        );
+                     } else {
+                     }
                   }
                }}
                className={styles.upload_input}

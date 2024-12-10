@@ -10,6 +10,8 @@ import { FormEvent, useEffect, useRef, useState, FocusEvent, KeyboardEvent } fro
 import FilePriview from '../FilePreveiw/FilePreview';
 import { useCreateCommentMutation, usePatchCommentMutation } from '@/api/appApi';
 import { commentFormatter } from '@/utils/taskUtils';
+import InfoModal from '../InfoModal/InfoModal';
+import { useModalInfo } from '@/hooks/useModalInfo';
 
 export default function CommentForm({
    task,
@@ -39,10 +41,14 @@ export default function CommentForm({
    const [olMarker, setOl] = useState('icon');
    const [ulMarker, setUl] = useState('icon');
    const [currentEl, setCurrent] = useState<HTMLElement>();
+   const [placeholder, setPlaceholder] = useState<string>('block');
    const commentRef = useRef<HTMLDivElement>(null);
 
-   const [createComment, {}] = useCreateCommentMutation();
-   const [patchComment, {}] = usePatchCommentMutation();
+   const { modal, modalInfo, modalTitle, modalType, setModalInfo, setModalTitle, setModalType, setCloseModal } =
+      useModalInfo();
+
+   const [createComment, { isError: createCommentError }] = useCreateCommentMutation();
+   const [patchComment, { isError: patchCommentError }] = usePatchCommentMutation();
 
    useEffect(() => {
       if (submitType === 'edit' && editableComment?.content && commentRef.current) {
@@ -50,8 +56,8 @@ export default function CommentForm({
       }
       if (submitType === 'create') {
          const p = document.createElement('p');
-         p.className = 'editable placeholder';
-         p.textContent = 'Описание';
+         p.className = 'editable';
+         p.innerHTML = '<br>';
          if (!commentRef.current) return;
          commentRef.current.append(p);
       }
@@ -66,20 +72,42 @@ export default function CommentForm({
       }
    }, [commentRef.current?.lastChild, commentRef.current?.lastChild?.lastChild]);
 
+   useEffect(() => {
+      if (createCommentError) {
+         setModalType('error');
+         setModalTitle('Ошибка');
+         setModalInfo('Не удалось создать комментарий');
+         setCloseModal(true);
+      }
+      if (patchCommentError) {
+         setModalType('error');
+         setModalTitle('Ошибка');
+         setModalInfo('Не удалось изменить комментарий');
+         setCloseModal(true);
+      }
+   }, [createCommentError, patchCommentError]);
+
    const submitHandler = async (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-      if (value.length === 0) return;
+      if (value.length === 0) {
+         setModalType('error');
+         setModalTitle('Предупреждение');
+         setModalInfo('Для отправки комментария необходимо добавить описание');
+         setCloseModal(true);
+         return;
+      }
       if (comments && setComments && submitType === 'create') {
          const comment = commentFormatter(value, activeUser, fileList);
          const sendFilesIds = comment.files?.map((file) => (typeof file?.id === 'number' ? file?.id : -1));
          if (task?.id && comment.content && sendFilesIds) {
             const paylord = await createComment({ id: task?.id, content: comment.content, files: sendFilesIds });
-            console.log(paylord.data);
+            // console.log(paylord.data?.data);
+            comment.id = paylord.data?.data.id;
+            setComments([comment, ...comments]);
+            resetCommentFields();
          }
-         setComments([comment, ...comments]); // если успешно
-         resetCommentFields();
       } else if (submitType === 'edit') {
-         if (!editableComment?.id || !comments || !setComments) return; // файл не загружен
+         if (!editableComment?.id || !comments || !setComments) return;
          const sendFilesIds = fileList.map((file) => (typeof file?.id === 'number' ? file.id : -1));
          const paylord = await patchComment({ id: editableComment?.id, content: value, files: sendFilesIds });
          console.log(paylord.data?.data);
@@ -91,20 +119,16 @@ export default function CommentForm({
             created_at: editableComment.created_at,
             updated_at: new Date(Date.now()).toDateString(),
          };
-         // console.log(comm);
          const res = [comm, ...comments.filter((item) => item.id !== editableComment.id)];
          setComments(res);
-         // console.log(res);
-         // console.log(comments);
-
-         // console.log(editableComment, comments, index);
          closeEdit && closeEdit(false);
       }
    };
 
    const resetCommentFields = () => {
       if (!commentRef.current) return;
-      commentRef.current.innerHTML = '<p class="editable placeholder">Описание</p>';
+      commentRef.current.innerHTML = '<p class="editable"><br></p>';
+      setPlaceholder('block');
       setBold('icon');
       setItalic('icon');
       setCode('icon');
@@ -190,23 +214,8 @@ export default function CommentForm({
       }
    };
 
-   const focusHandler = (e: FocusEvent<HTMLDivElement, Element>) => {
-      if (e.target.innerHTML === '<p class="editable placeholder">Описание</p>') {
-         e.target.innerHTML = '<p class="editable"><br></p>';
-         const child = e.target.lastChild;
-         if (child instanceof HTMLElement) {
-            setCurrent(child);
-            setFocus(child);
-         }
-      }
-   };
-
-   const blurHandler = (e: FocusEvent<HTMLDivElement, Element>) => {
-      if (e.target.innerHTML === '<p class="editable"><br></p>') {
-         e.target.innerHTML = '<p class="editable placeholder">Описание</p>';
-         const child = e.target.lastChild;
-         child instanceof HTMLElement && setCurrent(child);
-      }
+   const focusHandler = () => {
+      setPlaceholder('none');
    };
 
    const keyDownHandler = (e: KeyboardEvent<HTMLDivElement>) => {
@@ -217,47 +226,60 @@ export default function CommentForm({
    };
 
    return (
-      <form onSubmit={(e) => submitHandler(e)}>
-         <div className={styles.comments}>
-            <h3 className={styles.commtitle}>Комментарии</h3>
-            <div className={styles.commstyler}>
-               <Bold className={styles[bold]} onClick={() => textStyleHandler(bold, 'STRONG', setBold)} />
-               <Italic className={styles[italic]} onClick={() => textStyleHandler(italic, 'EM', setItalic)} />
-               <Code className={styles[code]} onClick={() => textStyleHandler(code, 'CODE', setCode)} />
-               <OlMarker className={styles[olMarker]} onClick={() => listTypeHandler('OL', olMarker)} />
-               <UlMarker className={styles[ulMarker]} onClick={() => listTypeHandler('UL', ulMarker)} />
+      <>
+         <form onSubmit={(e) => submitHandler(e)}>
+            <div className={styles.comments}>
+               <h3 className={styles.commtitle}>Комментарии</h3>
+               <div className={styles.commstyler}>
+                  <Bold className={styles[bold]} onClick={() => textStyleHandler(bold, 'STRONG', setBold)} />
+                  <Italic className={styles[italic]} onClick={() => textStyleHandler(italic, 'EM', setItalic)} />
+                  <Code className={styles[code]} onClick={() => textStyleHandler(code, 'CODE', setCode)} />
+                  <OlMarker className={styles[olMarker]} onClick={() => listTypeHandler('OL', olMarker)} />
+                  <UlMarker className={styles[ulMarker]} onClick={() => listTypeHandler('UL', ulMarker)} />
+               </div>
+               <div>
+                  <div
+                     ref={commentRef}
+                     spellCheck="true"
+                     className={styles.texterea}
+                     contentEditable={true}
+                     onInput={(e) => inputHandler(e)}
+                     onFocus={focusHandler}
+                     onKeyDown={(e) => keyDownHandler(e)}
+                  ></div>
+                  <p className="editable placeholder" style={{ display: placeholder }}>
+                     Описание
+                  </p>
+               </div>
             </div>
-            <div
-               ref={commentRef}
-               spellCheck="true"
-               className={styles.texterea}
-               contentEditable={true}
-               onInput={(e) => inputHandler(e)}
-               onBlur={(e) => blurHandler(e)}
-               onFocus={(e) => focusHandler(e)}
-               onKeyDown={(e) => keyDownHandler(e)}
-            ></div>
-         </div>
-         <FileUploader inForm={true} addFilesTOState={changeFilesInState} fileList={fileList} />
-         <div className={styles.preveiw_box}>
-            {fileList ? (
-               fileList.map((item, index) => (
-                  <FilePriview
-                     editMode={true}
-                     files={fileList}
-                     deleteFile={changeFilesInState}
-                     inComment={true}
-                     file={item}
-                     key={index}
-                  />
-               ))
-            ) : (
-               <></>
-            )}
-         </div>
-         <button className={styles.submitter} type="submit">
-            Отправить
-         </button>
-      </form>
+            <FileUploader
+               isEdit={submitType === 'edit'}
+               inForm={true}
+               addFilesTOState={changeFilesInState}
+               fileList={fileList}
+               commentId={editableComment?.id}
+            />
+            <div className={styles.preveiw_box}>
+               {fileList ? (
+                  fileList.map((item, index) => (
+                     <FilePriview
+                        editMode={true}
+                        files={fileList}
+                        deleteFile={changeFilesInState}
+                        inComment={true}
+                        file={item}
+                        key={index}
+                     />
+                  ))
+               ) : (
+                  <></>
+               )}
+            </div>
+            <button className={styles.submitter} type="submit">
+               Отправить
+            </button>
+         </form>
+         {modal ? <InfoModal type={modalType} title={modalTitle} info={modalInfo} setClose={setCloseModal} /> : <></>}
+      </>
    );
 }

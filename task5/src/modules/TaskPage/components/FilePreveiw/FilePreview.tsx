@@ -21,7 +21,6 @@ export default function FilePriview({
    files: ResponseFile[];
    editMode: boolean;
 }) {
-   // isLoader isError
    const [delFile, {}] = useDelFilesFromTaskMutation();
    const router = useRouter();
    const taskId = Number(router.query['slug']);

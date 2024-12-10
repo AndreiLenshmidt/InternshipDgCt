@@ -84,6 +84,7 @@ export default function TaskContent({
             </div>
             <div className={styles.content_desc}>{parse(task?.description || '<p>Описание задачи</p>')}</div>
             <FileUploader
+               isEdit={true}
                inForm={false}
                addFilesTOState={task?.can_attach_file ? setFiles : () => {}}
                fileList={files}
@@ -165,13 +166,12 @@ export default function TaskContent({
             <div className={styles.aside_infobox}>
                <div>
                   <p className={`${styles.aside_text} ${styles.pb8}`}>Эпик</p>
-                  <Link
-                     href={`/projects/task/${task?.epic?.id}`}
-                     className={styles.aside_text}
-                     style={{ color: '#3787eb' }}
-                  >
-                     #{task?.epic?.id} {task?.epic?.name}
-                  </Link>
+                  <p className={`${styles.aside_text} ${styles.pb8}`} style={{ color: '#3787eb' }}>
+                     <span># </span>
+                     <Link href={`/projects/task/${task?.epic?.id}`}>
+                        {task?.epic?.id} {task?.epic?.name}
+                     </Link>
+                  </p>
                </div>
             </div>
             <div className={styles.aside_infobox}>
@@ -222,7 +222,11 @@ export default function TaskContent({
                <div>
                   <p className={`${styles.aside_text} ${styles.pb8}`}>Layout Link</p>
                   <p className={styles.aside_text} style={{ color: '#3787eb' }}>
-                     <Link href={`${task?.layout_link}`}>{task?.layout_link || 'нет'}</Link>
+                     {task?.layout_link ? (
+                        <Link href={`${task?.layout_link}`}>{task?.layout_link}</Link>
+                     ) : (
+                        <span>layout link отсутсвует</span>
+                     )}
                   </p>
                </div>
             </div>
@@ -230,7 +234,11 @@ export default function TaskContent({
                <div>
                   <p className={`${styles.aside_text} ${styles.pb8}`}>Dev Link</p>
                   <p className={styles.aside_text} style={{ color: '#3787eb' }}>
-                     <Link href={`${task?.dev_link}`}>{task?.dev_link || 'нет'}</Link>
+                     {task?.dev_link ? (
+                        <Link href={`${task?.dev_link}`}>{task?.dev_link}</Link>
+                     ) : (
+                        <span>dev link отсутсвует</span>
+                     )}
                   </p>
                </div>
             </div>
@@ -238,7 +246,11 @@ export default function TaskContent({
                <div>
                   <p className={`${styles.aside_text} ${styles.pb8}`}>Markup Link</p>
                   <p className={styles.aside_text} style={{ color: '#3787eb' }}>
-                     <Link href={`${task?.markup_link}`}>{task?.markup_link || 'нет'}</Link>
+                     {task?.markup_link ? (
+                        <Link href={`${task?.markup_link}`}>{task?.markup_link}</Link>
+                     ) : (
+                        <span>markup link отсутсвует</span>
+                     )}
                   </p>
                </div>
             </div>
