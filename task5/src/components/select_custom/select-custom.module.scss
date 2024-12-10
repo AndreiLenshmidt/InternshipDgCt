@@ -70,14 +70,13 @@ $height-select: 40px;
    display: flex;
    justify-content: space-between;
    align-items: center;
-
+   border: 1px solid transparent;
    font-weight: 400;
    font-size: 14px;
    line-height: 143%;
    color: $text-color;
    border-radius: 8px;
    padding: 10px 20px;
-
    background-color: $background-color;
 
    &.open {
