@@ -101,7 +101,6 @@ export default function CommentForm({
          const sendFilesIds = comment.files?.map((file) => (typeof file?.id === 'number' ? file?.id : -1));
          if (task?.id && comment.content && sendFilesIds) {
             const paylord = await createComment({ id: task?.id, content: comment.content, files: sendFilesIds });
-            // console.log(paylord.data?.data);
             comment.id = paylord.data?.data.id;
             setComments([comment, ...comments]);
             resetCommentFields();

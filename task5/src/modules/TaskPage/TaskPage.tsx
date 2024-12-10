@@ -1,7 +1,7 @@
 import { BreadCrumbs } from '@components/bread_crumbs/BreadCrumbs';
 import { AsidePanel } from '@components/left_menu/AsidePanel';
 import styles from './task-page.module.scss';
-import { useGetCurrentUserQuery, useGetTaskByTaskIdQuery, useGetUsersQuery } from '@/api/appApi';
+import { useGetCurrentUserQuery, useGetTaskByTaskIdQuery } from '@/api/appApi';
 import { useRouter } from 'next/router';
 import TaskContent from './components/TaskContent/TaskContent';
 

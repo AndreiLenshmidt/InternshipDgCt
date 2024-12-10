@@ -1,4 +1,3 @@
-// import Image from 'next/image';
 import { ResponseFile } from '@/api/data.types';
 import styles from './file.module.scss';
 import Close from '@public/icons/close.svg';
