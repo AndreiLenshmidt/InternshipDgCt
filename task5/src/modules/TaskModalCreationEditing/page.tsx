@@ -718,7 +718,6 @@ export default function TaskModalCreationEditing({ isOpen, onClose, slug, taskId
 
                {/* Кнопки */}
                <div className={style['actions']}>
-                  {/*  */}
                   <button type="submit" className={style['btn_blue']} onClick={() => onSubmit}>
                      {isEditMode ? 'Сохранить' : 'Добавить'}
                   </button>
