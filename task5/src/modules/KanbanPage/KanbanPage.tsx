@@ -54,7 +54,7 @@ export function KanbanPage() {
    useEffect(() => {
       height;
 
-      debugger
+      // debugger
       console.log(wrapper.current?.offsetWidth);
       // $0.getBoundingClientRect().y
    }, [wrapper]);
@@ -70,7 +70,7 @@ export function KanbanPage() {
    // }
 
    return (
-      <>
+      <div className={style.base} style={{display: 'flex', flexDirection: 'column', height: 'calc(100vh - 4rem)'}}>
          <BreadCrumbs
             crumbs={[
                { text: 'Главная', url: '/' },
@@ -160,6 +160,6 @@ export function KanbanPage() {
          </Scrollbar>
 
          <TaskModalCreationEditing isOpen={true} onClose={() => true} slug="xxxx" taskId={7} />
-      </>
+      </div>
    );
 }
