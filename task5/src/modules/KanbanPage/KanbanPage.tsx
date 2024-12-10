@@ -5,7 +5,6 @@ import { useDrag } from 'react-dnd';
 import { TaskCard } from './components/task-card/TaskCard';
 import style from './kanban-page.module.css';
 import { TasksColumn } from './components/tasks-column/TaskColumn';
-import { DndContext, useDroppable } from '@dnd-kit/core';
 import TaskModalCreationEditing from '../TaskModalCreationEditing/page';
 import { useGetAllTasksQuery, useGetTaskPrioritiesQuery, useGetTaskTagsQuery } from '@/api/tasks/tasks.api';
 import { useGetProjectQuery } from '../ProjectsPage/api/api';
@@ -13,14 +12,14 @@ import { JSXElementConstructor, useEffect, useMemo, useRef } from 'react';
 import { groupBy, groupByObject } from '@/utils/core';
 import { projectsUrl, projectUrl } from '@/consts';
 import { Stage, TaskMultiple } from '@/api/data.types';
-import { ScrollbarProps, Scrollbars } from 'react-custom-scrollbars';
+// import { ScrollbarProps, Scrollbars } from 'react-custom-scrollbars';
 import { Scrollbar } from 'react-scrollbars-custom';
 import { useResize } from '@/hooks/resize';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { DndProvider } from 'react-dnd';
 // import task from '@/pages/projects/kanban/task';
 
-const ScrollBar = Scrollbars as unknown as JSXElementConstructor<ScrollbarProps>;
+// const ScrollBar = Scrollbars as unknown as JSXElementConstructor<ScrollbarProps>;
 
 export function KanbanPage() {
    //
@@ -60,11 +59,11 @@ export function KanbanPage() {
       // $0.getBoundingClientRect().y
    }, [wrapper]);
 
-   const { isOver, setNodeRef } = useDroppable({
-      id: 'droppable',
-   });
+   // const { isOver, setNodeRef } = useDroppable({
+   //    id: 'droppable',
+   // });
 
-   const dropstyle = { color: isOver ? 'green' : undefined };
+   // const dropstyle = { color: isOver ? 'green' : undefined };
 
    // interface Scrollbars {
    //    refs: Record<string, any>;
