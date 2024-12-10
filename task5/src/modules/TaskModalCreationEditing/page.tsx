@@ -16,14 +16,20 @@ import {
    useGetComponentsQuery,
    useGetPrioritiesQuery,
    useGetTaskTypesQuery,
-   useSendFilesTaskMutation,
+   // useSendFilesTaskMutation,
    // useGetTaskByTaskIdQuery,
    // useGetUsersQuery,
    // useDeleteFileTaskMutation,
    // useCreateTaskMutation,
    // useUpdateTaskMutation,
 } from '@/modules/TaskModalCreationEditing/api/taskApiActions';
-import { useGetTaskByTaskIdQuery, useGetUsersQuery, useCreateTaskMutation, useUpdateTaskMutation } from '@/api/appApi';
+import {
+   useGetTaskByTaskIdQuery,
+   useGetUsersQuery,
+   useCreateTaskMutation,
+   useUpdateTaskMutation,
+   useAddFilesToTaskMutation,
+} from '@/api/appApi';
 
 import { Priority, Stage, TaskSingle, TaskType, User, ResponseFile } from '@/api/data.types';
 import { mapTaskType } from './utils/transformTaskSingle';
@@ -127,7 +133,7 @@ export default function TaskModalCreationEditing({ isOpen, onClose, slug, taskId
    // const [fileLinks, setFileLinks] = useState<string[]>([]);
    // !!! ===================================================================================
 
-   const [sendFilesTaskMutation] = useSendFilesTaskMutation();
+   const [sendFilesTaskMutation] = useAddFilesToTaskMutation();
    // Получаем данные
    const { data: getComponents } = useGetComponentsQuery();
    const { data: getPriorities } = useGetPrioritiesQuery();
@@ -163,6 +169,7 @@ export default function TaskModalCreationEditing({ isOpen, onClose, slug, taskId
 
    const [createTaskMutation, { isLoading: isCreateLoading, isSuccess: createIsSuccess, error: createError }] =
       useCreateTaskMutation();
+
    const [updateTaskMutation, { isLoading: isUpdateLoading, isSuccess: updateIsSuccess, error: updateError }] =
       useUpdateTaskMutation();
 
@@ -172,15 +179,22 @@ export default function TaskModalCreationEditing({ isOpen, onClose, slug, taskId
    // Привязываем файлы к задаче
    const handleFileTaskLinked = async (taskId: number, filesTask: ResponseFileWithObject[]) => {
       try {
-         console.log(`Файл ${filesTask} успешно привязан к задаче:`, taskId, filesTask);
+         console.log(`Файл ${filesTask} к задаче:`, taskId, filesTask);
 
          for (const file of filesTask) {
+            console.log(`Файл ${file}  задаче:`, taskId, file);
+
             const response = await sendFilesTaskMutation({
-               taskId: taskId,
-               fileId: file.id, // id файла
+               task: taskId,
+               file: file,
             }).unwrap();
 
-            console.log(`Файл ${file.original_name} успешно привязан к задаче:`, response);
+            if (response.data) {
+               setTaskData(response.data); //  Обновляем данные
+               if (response?.data?.files?.length > 0) setFiles(response.data.files); //  Обновляем данные
+
+               console.log(`Файл ${file.original_name} успешно привязан к задаче:`, response.data);
+            }
          }
       } catch (error) {
          console.error('Ошибка при привязке файла:', error);
@@ -190,13 +204,21 @@ export default function TaskModalCreationEditing({ isOpen, onClose, slug, taskId
    // Редактировать (обновить) задачу -------------------------------------------
    const handleUpdateTask = async (idTask: string, taskDataUpd: TaskData, filesTask: ResponseFileWithObject[]) => {
       try {
-         const response = await updateTaskMutation({ id: idTask, body: taskDataUpd }).unwrap(); // Запрос на обновление задачи
-         const taskId = response.data.id; // Получение id задачи
-         console.log('Задача обновлена taskId:', taskId);
+         const response = await updateTaskMutation({ id: idTask, body: taskDataUpd }).unwrap();
+
+         if (response.data) {
+            setTaskData(response.data); //  Обновляем данные
+            if (response?.data?.files?.length > 0) setFiles(response.data.files); //  Обновляем данные
+
+            const taskId = response.data.id; // Получение id задачи
+         }
+         console.log('Задача обновлена response, taskId:', response, taskId);
          console.log('Задача обновлена taskData.files:', taskData.files);
 
-         if (filesTask.length > 0) {
+         if (filesTask?.length > 0) {
             // Исключаем дублирование
+            console.log('Задача обновлена filesTask:', filesTask);
+
             const uniqueFilesTask = filesTask.filter(
                (newFile) =>
                   !taskData.files?.some(
@@ -224,15 +246,22 @@ export default function TaskModalCreationEditing({ isOpen, onClose, slug, taskId
          console.log('slug: slugName, body: taskData', slugName, taskData);
 
          const response = await createTaskMutation({ slug: slugName, body: taskData }).unwrap();
+
          console.log('Задача создана response:', response);
 
-         const taskId = response.data.id; // Получение id задачи
-         console.log('Задача создана:', taskId);
+         if (response.data) {
+            setTaskData(response.data); //  Обновляем данные
+            if (response?.data?.files?.length > 0) setFiles(response.data.files); //  Обновляем данные
 
-         if (files.length > 0 && taskId) {
-            const createdFiles = files.map((file, index) => ({
-               // await handleFileTaskLinked(taskId, file.fileObject); // Привязка файлов к задаче
-            }));
+            const taskId = response.data.id; // Получение id задачи
+            console.log('Задача создана response, , taskId:', response, taskId);
+         }
+
+         if (files?.length > 0 && taskId) {
+            await handleFileTaskLinked(taskId, files);
+            // const createdFiles = files.map((file, index) => {
+            // await handleFileTaskLinked(taskId, file.fileObject);  //!! Привязка файлов к задаче
+            // });
          }
       } catch (error) {
          console.error('Ошибка при создании задачи:', error);
@@ -371,6 +400,7 @@ export default function TaskModalCreationEditing({ isOpen, onClose, slug, taskId
 
    // модалка "Закрыть окно?"
    const handleCloseModal = () => {
+      onClose(false);
       setModalOpen(false); // закрыть  модалку
    };
 
@@ -428,8 +458,6 @@ export default function TaskModalCreationEditing({ isOpen, onClose, slug, taskId
 
    // Обработчик изменения Файлы
    const handleFilesChange = (newFiles: ResponseFileWithObject[]) => {
-      console.log(newFiles, '+++++++++++++++ newFiles handleFilesChange');
-
       setValue('fileLinks', newFiles);
       setFiles(newFiles);
    };
@@ -447,11 +475,6 @@ export default function TaskModalCreationEditing({ isOpen, onClose, slug, taskId
       //if (serverData && !isEditMode) handleCreateTask('project4', serverData, data.fileLinks); // создать задачу
 
       if (serverData && isEditMode) handleUpdateTask(idTaskMain, serverData, data.fileLinks); // если редактировать задачу
-
-      // if (data.fileLinks?.length > 0) {
-      //    handleFileUpload(data.fileLinks); // если есть файлы для загрузки
-      //    handleFileTaskLinked(27, 61); // Привязка файла к задаче
-      // }
    };
 
    // Получаем данные
@@ -462,27 +485,25 @@ export default function TaskModalCreationEditing({ isOpen, onClose, slug, taskId
       setUsersOptions(getUsers?.data);
    }, [getComponents, getPriorities, getTaskTypes, getUsers]);
 
-   console.log(tasks, 'tasks-------------++++++++++++++');
    useEffect(() => {
       if (taskById) setTaskData(taskById?.data);
    }, [taskById, tasks]);
 
    useEffect(() => {
-      // console.log(tasks, 'tasks-------------++++++++++++++');
-   }, []);
-
-   useEffect(() => {
       setIdTaskMain(27);
+
       console.log(taskData?.files, 'taskData?.files   ---+');
       if (taskData?.files) setFiles(taskData.files);
-   }, [taskData?.files]);
+   }, [taskData?.files, isOpen]);
 
    if (!isOpen) return null;
    if (isGetTasksIdLoading) return <div>Loading task...</div>;
    if (!taskData) return <div>Task not found</div>;
 
    console.log(taskData, '*************** taskData WRAPPER');
-   console.log(files, 'files-------------++++++++++++++');
+   console.log(files, 'files *************** files WRAPPER');
+   console.log(tasks, 'tasks *************** tasks WRAPPER');
+   console.log(watch('date'), 'watch(date) *************** watch(date) WRAPPER');
 
    return (
       <div className={style['modal-creation-editing']} onClick={handleOverlayClick}>
@@ -701,7 +722,7 @@ export default function TaskModalCreationEditing({ isOpen, onClose, slug, taskId
                   <button type="submit" className={style['btn_blue']} onClick={() => onSubmit}>
                      {isEditMode ? 'Сохранить' : 'Добавить'}
                   </button>
-                  <button className={style['btn']} type="button" onClick={onClose}>
+                  <button className={style['btn']} type="button" onClick={() => onClose(false)}>
                      Отменить
                   </button>
                </div>

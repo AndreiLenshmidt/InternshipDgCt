@@ -10,29 +10,38 @@ import Clock from '@public/icons/clock.svg';
 import Calendar from '@public/icons/calendar.svg';
 import parse from 'html-react-parser';
 import MarkersTask from '../Markers/Markers';
-import SelectCustom from '@/components/SelectCustom';
+import SelectCustom from '@/components/select_custom/SelectCustom';
 import { useEffect, useState } from 'react';
 import FileUploader from '../FileUploader.tsx/FileUploader';
 import FilePriview from '../FilePreveiw/FilePreview';
 import Link from 'next/link';
+import InfoModal from '../InfoModal/InfoModal';
+import { useModalInfo } from '@/hooks/useModalInfo';
+import TaskModalCreationEditing from '@/modules/TaskModalCreationEditing/page';
 
 export default function TaskContent({
+   slag,
    task,
    activeUser,
 }: {
+   slag: string | undefined;
    task: TaskSingle | undefined;
    activeUser: User | undefined;
 }) {
    const isAdmin = activeUser?.is_admin;
-   // const isOpen = 'none';
-   // const [value, setValue] = useState('');
    const [selectedOptionComp, setSelectedOptionComp] = useState<string | (string | undefined)[] | undefined>(
       task?.stage?.name || 'не установлено'
    );
+   // Для открытия окна создания/ редактирования задачи
+   const [projectSlag, setProjectSlag] = useState<string>('');
+   const [taskIdEditTask, setTaskIdEditTask] = useState<number | undefined>();
+   const [isOpenCreateTask, setIsOpenCreateTask] = useState(false);
+   // ------------------------------------------------
    const [files, setFiles] = useState<ResponseFile[]>(task?.files || []);
    const [filesComments, setFIlesComments] = useState<ResponseFile[]>([]);
    const [comments, setComments] = useState<Comment[]>(task?.comments || []);
    const [selectOptions, setSelectOptions] = useState<(string | (string | undefined)[] | undefined)[]>([]);
+   const modalInfo = useModalInfo();
 
    useEffect(() => {
       if (task?.possibleTaskNextStages) {
@@ -44,20 +53,64 @@ export default function TaskContent({
       if (task?.stage?.name) {
          setSelectedOptionComp(task?.stage?.name);
       }
-   }, [task?.stage?.name]);
+      if (task?.files) {
+         setFiles(task?.files);
+      }
+      if (task?.comments) {
+         setComments(task?.comments);
+      }
+   }, [task?.stage?.name, task?.files, task?.comments]);
+
+   useEffect(() => {
+      if (task?.dev_link) {
+         modalInfo.setCloseModal(true);
+         modalInfo.setModalTitle('Успешно');
+         modalInfo.setModalInfo('Статус задачи успешно изменен');
+      } else if (task?.stage?.name !== selectedOptionComp) {
+         modalInfo.setCloseModal(true);
+         modalInfo.setModalTitle('Ошибка');
+         modalInfo.setModalType('error');
+         modalInfo.setModalInfo('Сначала добавьте Dev Link в меню редактирования задачи');
+         task?.stage?.name && setSelectedOptionComp(task?.stage?.name);
+      }
+   }, [selectedOptionComp]);
+
+   const copyLinkHandler = async () => {
+      await navigator.clipboard.writeText(window.location.href);
+      modalInfo.setCloseModal(true);
+      modalInfo.setModalTitle('Успешно');
+      modalInfo.setModalType('info');
+      modalInfo.setModalInfo('Ссылка успешно скопирована');
+   };
+
+   const handlerNewTask = () => {
+      setTaskIdEditTask(undefined);
+      setProjectSlag('project4'); //!!! поменять на slag
+      setIsOpenCreateTask(!isOpenCreateTask);
+   };
+
+   const handlerEditTask = () => {
+      // if (task?.id) {
+      setTaskIdEditTask(27); //!!! поменять на task?.id
+      setProjectSlag('project4'); //!!! поменять на slag
+      setIsOpenCreateTask(!isOpenCreateTask);
+      // }
+   };
 
    return (
-      <>
+      <div className={styles.wrapper}>
          <div className={styles.content}>
             <div className={styles.flex}>
                <h2 className={styles.content_title}>{task?.name || 'Название задачи'}</h2>
-               <CopyLink
-                  className={styles.content_copy}
-                  onClick={async () => await navigator.clipboard.writeText(window.location.href)}
-               />
+               <CopyLink className={styles.content_copy} onClick={copyLinkHandler} />
             </div>
             <div className={styles.content_desc}>{parse(task?.description || '<p>Описание задачи</p>')}</div>
-            <FileUploader addFilesTOState={task?.can_attach_file ? setFiles : () => {}} fileList={files} />
+            <FileUploader
+               isEdit={true}
+               inForm={false}
+               addFilesTOState={task?.can_attach_file ? setFiles : () => {}}
+               fileList={files}
+            />
             <div className={styles.content_preveiw}>
                {files.map((item, index) => (
                   <FilePriview
@@ -95,9 +148,11 @@ export default function TaskContent({
             <div className={`${styles.flex} ${styles.aside_box}`}>
                <p className="id">id: {task?.id}</p>
                <div>
-                  <Edit className={styles.aside_icon} />
-                  {isAdmin ? <Delete className={styles.aside_icon} /> : <></>}
-                  {isAdmin ? <Create className={styles.aside_icon} /> : <></>}
+                  <button onClick={handlerEditTask}>
+                     <Edit className={styles.aside_icon} />
+                  </button>
+                  <button>{isAdmin ? <Delete className={styles.aside_icon} /> : <></>}</button>
+                  <button onClick={handlerNewTask}>{isAdmin ? <Create className={styles.aside_icon} /> : <></>}</button>
                </div>
             </div>
             <SelectCustom
@@ -135,13 +190,12 @@ export default function TaskContent({
             <div className={styles.aside_infobox}>
                <div>
                   <p className={`${styles.aside_text} ${styles.pb8}`}>Эпик</p>
-                  <Link
-                     href={`/projects/task/${task?.epic?.id}`}
-                     className={styles.aside_text}
-                     style={{ color: '#3787eb' }}
-                  >
-                     #{task?.epic?.id} {task?.epic?.name}
-                  </Link>
+                  <p className={`${styles.aside_text} ${styles.pb8}`} style={{ color: '#3787eb' }}>
+                     <span># </span>
+                     <Link href={`/projects/task/${task?.epic?.id}`}>
+                        {task?.epic?.id} {task?.epic?.name}
+                     </Link>
+                  </p>
                </div>
             </div>
             <div className={styles.aside_infobox}>
@@ -192,7 +246,11 @@ export default function TaskContent({
                <div>
                   <p className={`${styles.aside_text} ${styles.pb8}`}>Layout Link</p>
                   <p className={styles.aside_text} style={{ color: '#3787eb' }}>
-                     <Link href={`${task?.layout_link}`}>{task?.layout_link || 'нет'}</Link>
+                     {task?.layout_link ? (
+                        <Link href={`${task?.layout_link}`}>{task?.layout_link}</Link>
+                     ) : (
+                        <span>layout link отсутсвует</span>
+                     )}
                   </p>
                </div>
             </div>
@@ -200,7 +258,11 @@ export default function TaskContent({
                <div>
                   <p className={`${styles.aside_text} ${styles.pb8}`}>Dev Link</p>
                   <p className={styles.aside_text} style={{ color: '#3787eb' }}>
-                     <Link href={`${task?.dev_link}`}>{task?.dev_link || 'нет'}</Link>
+                     {task?.dev_link ? (
+                        <Link href={`${task?.dev_link}`}>{task?.dev_link}</Link>
+                     ) : (
+                        <span>dev link отсутсвует</span>
+                     )}
                   </p>
                </div>
             </div>
@@ -208,11 +270,33 @@ export default function TaskContent({
                <div>
                   <p className={`${styles.aside_text} ${styles.pb8}`}>Markup Link</p>
                   <p className={styles.aside_text} style={{ color: '#3787eb' }}>
-                     <Link href={`${task?.markup_link}`}>{task?.markup_link || 'нет'}</Link>
+                     {task?.markup_link ? (
+                        <Link href={`${task?.markup_link}`}>{task?.markup_link}</Link>
+                     ) : (
+                        <span>markup link отсутсвует</span>
+                     )}
                   </p>
                </div>
             </div>
+            {modalInfo.modal ? (
+               <InfoModal
+                  type={modalInfo.modalType}
+                  title={modalInfo.modalTitle}
+                  info={modalInfo.modalInfo}
+                  setClose={modalInfo.setCloseModal}
+               />
+            ) : (
+               <></>
+            )}
          </div>
-      </>
+         {isOpenCreateTask && (
+            <TaskModalCreationEditing
+               isOpen={isOpenCreateTask}
+               onClose={() => setIsOpenCreateTask(false)}
+               slug={projectSlag}
+               taskId={taskIdEditTask}
+            />
+         )}
+      </div>
    );
 }

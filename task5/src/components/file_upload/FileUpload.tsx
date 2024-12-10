@@ -4,7 +4,7 @@ import Clipper from '@public/icons/clipper.svg';
 import { BASE_URL } from '@/consts';
 import { ResponseFile } from '@/api/data.types';
 import { useFileUploader } from '@/modules/TaskModalCreationEditing/utils/useFileUploader';
-import { useDeleteFileTaskMutation } from '@/modules/TaskModalCreationEditing/api/taskApiActions';
+import { useDelFilesFromTaskMutation } from '@/api/appApi.ts';
 
 type ResponseFileWithObject = ResponseFile & {
    fileObject: File;
@@ -21,12 +21,63 @@ export default function FileUpload({ taskId, files, onFilesChange, error }: File
    const [permissions, setPermissions] = useState(false);
    const [fileLocal, setFileLocal] = useState([]);
    const [respDtLocal, setRespDtLocal] = useState({});
-   const [deleteFileTaskMutation] = useDeleteFileTaskMutation();
+   const [deleteFileTaskMutation] = useDelFilesFromTaskMutation();
    const { sendFiles } = useFileUploader();
+
+   // Проверка, является ли файл изображением
+   const isImageFile = (fileName: string): boolean => {
+      const imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'bmp', 'svg'];
+      const ext = fileName.split('.').pop()?.toLowerCase();
+      return imageExtensions.includes(ext || '');
+   };
 
    // Проверка на дубликаты
    const isDuplicateFile = (newFile: ResponseFileWithObject): boolean => {
       return fileLocal.some((file) => file?.original_name === newFile?.original_name || file?.link === newFile?.link);
+   };
+
+   // Обработчики Drag and Drop
+   const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
+      event.preventDefault();
+      setIsDragging(true);
+   };
+
+   const handleDragLeave = () => {
+      setIsDragging(false);
+   };
+
+   const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
+      event.preventDefault();
+      setIsDragging(false);
+
+      const droppedFiles = event.dataTransfer.files;
+      const updatedFiles: ResponseFileWithObject[] = [...fileLocal];
+
+      for (const file of Array.from(droppedFiles)) {
+         if (!file) continue;
+
+         const newFile: ResponseFileWithObject = {
+            // id: 0, //  Math.floor(Math.random() * 1000)
+            original_name: file.name,
+            link: URL.createObjectURL(file),
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString(),
+
+            fileObject: file,
+         };
+
+         if (!isDuplicateFile(newFile)) {
+            updatedFiles.push(newFile);
+         }
+      }
+
+      if (updatedFiles) {
+         setPermissions(false);
+         setFileLocal(updatedFiles);
+         handleFileUpload(updatedFiles);
+      } else {
+         setPermissions(true);
+      }
    };
 
    // Отправляем файлы если есть
@@ -86,57 +137,12 @@ export default function FileUpload({ taskId, files, onFilesChange, error }: File
       event.target.value = ''; // Сброс поля ввода
    };
 
-   // Обработчики Drag and Drop
-   const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
-      event.preventDefault();
-      setIsDragging(true);
-   };
-
-   const handleDragLeave = () => {
-      setIsDragging(false);
-   };
-
-   const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
-      event.preventDefault();
-      setIsDragging(false);
-
-      const droppedFiles = event.dataTransfer.files;
-      const updatedFiles: ResponseFileWithObject[] = [...fileLocal];
-
-      for (const file of Array.from(droppedFiles)) {
-         if (!file) continue;
-
-         const newFile: ResponseFileWithObject = {
-            // id: 0, //  Math.floor(Math.random() * 1000)
-            original_name: file.name,
-            link: URL.createObjectURL(file),
-            created_at: new Date().toISOString(),
-            updated_at: new Date().toISOString(),
-
-            fileObject: file,
-         };
-
-         if (!isDuplicateFile(newFile)) {
-            updatedFiles.push(newFile);
-         }
-      }
-
-      if (updatedFiles) {
-         setPermissions(false);
-         setFileLocal(updatedFiles);
-         handleFileUpload(updatedFiles);
-      } else {
-         setPermissions(true);
-      }
-   };
-
    // Удаляем файлы к задаче(файлы остаются в базе)
    const handleDeleteFile = async (taskId: number, file: ResponseFileWithObject[]) => {
       try {
-         console.log(taskId, file, 'taskId, ---- file delete');
          let response;
          if (file[0]?.id) {
-            response = await deleteFileTaskMutation({ taskId: taskId, fileId: file[0]?.id }).unwrap();
+            response = await deleteFileTaskMutation({ task: taskId, file: file[0]?.id }).unwrap();
          }
          if (onFilesChange) onFilesChange(response?.data?.files);
          setRespDtLocal(response?.data);
@@ -159,13 +165,6 @@ export default function FileUpload({ taskId, files, onFilesChange, error }: File
       );
 
       handleDeleteFile(taskId, deletedFile);
-   };
-
-   // Проверка, является ли файл изображением
-   const isImageFile = (fileName: string): boolean => {
-      const imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'bmp', 'svg'];
-      const ext = fileName.split('.').pop()?.toLowerCase();
-      return imageExtensions.includes(ext || '');
    };
 
    useEffect(() => {

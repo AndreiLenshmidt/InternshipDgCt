@@ -312,10 +312,47 @@ h6 {
    min-height: 100vh;
 }
 
-.editor-paragraph {
-   font-family: inherit;
-   font-weight: inherit;
-   font-size: inherit;
-   line-height: inherit;
-   color: inherit;
+// Стили для редактора комментариев
+.editable.placeholder {
+   color: #a6a6a6;
+   position: absolute;
+   top: 12px;
+   left: 18px;
+}
+.editable.strong {
+   font-weight: 700;
+}
+.editable.em {
+   font-style: italic;
+}
+.editable.code {
+   font-style: italic;
+   font-size: 12px;
+}
+.editable.item-ol {
+   list-style-type: auto;
+   list-style-position: inside;
+}
+.editable.item-ul {
+   list-style-type: circle;
+   list-style-position: inside;
+}
+.loader {
+   border: 16px solid #f3f3f3; /* Light grey */
+   border-top: 16px solid #3498db; /* Blue */
+   border-radius: 50%;
+   width: 70px;
+   height: 70px;
+   position: absolute;
+   left: calc(50% - 51px);
+   animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+   0% {
+      transform: rotate(0deg);
+   }
+   100% {
+      transform: rotate(360deg);
+   }
 }

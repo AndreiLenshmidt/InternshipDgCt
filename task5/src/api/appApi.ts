@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { getCookie } from '@/utils/cookies';
-import { TaskSingle, TaskMultiple, User, ResponseFile } from '@/api/data.types';
+import { TaskSingle, TaskMultiple, User, ResponseFile, Comment } from '@/api/data.types';
 import { BASE_URL } from '@/consts';
 
 const token = getCookie('token-auth');
@@ -78,55 +78,6 @@ export const appApi = createApi({
             },
          }),
       }),
-      // getTaskComments: build.query<{ data: TaskSingle }, number>({
-      //    query: (id: number | undefined) => ({
-      //       url: `/task/${id}/comment`,
-      //       headers: {
-      //          Authorization: `Bearer ${token}`,
-      //          accept: 'application/json',
-      //       },
-      //    }),
-      // }),
-      createComment: build.mutation<{ data: TaskSingle }, number>({
-         query: (id: number | undefined) => ({
-            url: `/task/${id}/comment`,
-            method: 'POST',
-            headers: {
-               accept: 'application/json',
-               'Content-Type': 'application/json',
-               Authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify({
-               content: 'string',
-               files: [0],
-            }),
-         }),
-      }),
-      // patchUSerComment: build.mutation<{ data: TaskSingle }, number>({
-      //    query: (id: number | undefined) => ({
-      //       url: `/task/${id}/comment`,
-      //       method: 'PATCH',
-      //       headers: {
-      //          accept: 'application/json',
-      //          'Content-Type': 'application/json',
-      //          Authorization: `Bearer ${token}`,
-      //       },
-      //       body: JSON.stringify({
-      //          content: 'string',
-      //          files: [0],
-      //       }),
-      //    }),
-      // }),
-      // deleteUSerComment: build.mutation<{ data: TaskSingle }, number>({
-      //    query: (id: number | undefined) => ({
-      //       url: `/task/${id}/comment`,
-      //       method: 'DELETE',
-      //       headers: {
-      //          accept: 'application/json',
-      //          Authorization: `Bearer ${token}`,
-      //       },
-      //    }),
-      // }),
       getAllTasks: build.query<TaskMultiple, string>({
          query: (slug: string) => ({
             url: `/project/${slug}/task`,
@@ -145,7 +96,7 @@ export const appApi = createApi({
             },
          }),
       }),
-      sendFiles: build.mutation<ResponseFile, FormData>({
+      sendFiles: build.mutation<{ data: ResponseFile[] }, FormData>({
          query: (form: FormData) => ({
             url: '/file',
             method: 'POST',
@@ -154,6 +105,85 @@ export const appApi = createApi({
                Authorization: `Bearer ${token}`,
             },
             body: form,
+         }),
+      }),
+      addFilesToTask: build.mutation<{ data: TaskSingle }, { task: number; file: number }>({
+         query: ({ task, file }) => ({
+            url: `/task/${task}/file/${file}`,
+            method: 'PATCH',
+            headers: {
+               accept: 'application/json',
+               Authorization: `Bearer ${token}`,
+            },
+         }),
+      }),
+      delFilesFromTask: build.mutation<{ data: TaskSingle }, { task: number; file: number }>({
+         query: ({ task, file }) => ({
+            url: `/task/${task}/file/${file}`,
+            method: 'DELETE',
+            headers: {
+               accept: 'application/json',
+               Authorization: `Bearer ${token}`,
+            },
+         }),
+      }),
+      addFilesToCommemt: build.mutation<{ data: Comment }, { comment: number; file: number }>({
+         query: ({ comment, file }) => ({
+            url: `/comment/${comment}/file/${file}`,
+            method: 'PATCH',
+            headers: {
+               accept: 'application/json',
+               Authorization: `Bearer ${token}`,
+            },
+         }),
+      }),
+      delFilesFromComment: build.mutation<{ data: Comment }, { comment: number; file: number }>({
+         query: ({ comment, file }) => ({
+            url: `/comment/${comment}/file/${file}`,
+            method: 'DELETE',
+            headers: {
+               accept: 'application/json',
+               Authorization: `Bearer ${token}`,
+            },
+         }),
+      }),
+      createComment: build.mutation<{ data: Comment }, { id: number; content: string; files: number[] }>({
+         query: ({ id, content, files }) => ({
+            url: `/task/${id}/comment`,
+            method: 'POST',
+            headers: {
+               accept: 'application/json',
+               Authorization: `Bearer ${token}`,
+            },
+            body: {
+               content: content,
+               files: files,
+            },
+         }),
+      }),
+      patchComment: build.mutation<{ data: Comment }, { id: number; content: string; files: number[] }>({
+         query: ({ id, content, files }) => ({
+            url: `/comment/${id}`,
+            method: 'PATCH',
+            headers: {
+               accept: 'application/json',
+               'Content-Type': 'application/json',
+               Authorization: `Bearer ${token}`,
+            },
+            body: {
+               content: content,
+               files: files,
+            },
+         }),
+      }),
+      deleteComment: build.mutation<{ data: Comment }, number>({
+         query: (id: number) => ({
+            url: `/comment/${id}`,
+            method: 'DELETE',
+            headers: {
+               accept: 'application/json',
+               Authorization: `Bearer ${token}`,
+            },
          }),
       }),
    }),
@@ -166,11 +196,14 @@ export const {
    useDeleteTaskMutation,
    useGetTasksQuery,
    useGetUsersQuery,
-   // useGetTaskCommentsQuery,
-   // useSendUSerCommentMutation,
-   // usePatchUSerCommentMutation,
-   // useDeleteUSerCommentMutation,
    useGetAllTasksQuery,
    useGetCurrentUserQuery,
    useSendFilesMutation,
+   useAddFilesToTaskMutation,
+   useDelFilesFromTaskMutation,
+   useAddFilesToCommemtMutation,
+   useDelFilesFromCommentMutation,
+   useCreateCommentMutation,
+   usePatchCommentMutation,
+   useDeleteCommentMutation,
 } = appApi;

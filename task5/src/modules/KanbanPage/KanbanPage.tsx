@@ -6,7 +6,6 @@ import { TaskCard } from './components/task-card/TaskCard';
 import style from './kanban-page.module.css';
 import { TasksColumn } from './components/tasks-column/TaskColumn';
 import { DndContext, useDroppable } from '@dnd-kit/core';
-import TaskModalCreationEditing from '@/modules/TaskModalCreationEditing/page.tsx';
 import task from '@/pages/projects/kanban/task';
 
 const projectUrl = 'projects';
@@ -101,8 +100,6 @@ export function KanbanPage() {
                </div>
             </DndContext>
          </div>
-
-         <TaskModalCreationEditing isOpen={true} onClose={() => true} slug="xxxx" taskId={7} />
       </>
    );
 }

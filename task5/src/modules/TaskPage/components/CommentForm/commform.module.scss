@@ -27,6 +27,14 @@
    border-top-right-radius: 8px;
    gap: 9px;
 }
+.icon {
+   &:hover > path {
+      fill: #3787eb;
+   }
+}
+.activeicon {
+   background-color: #bbbbbb;
+}
 .texterea {
    background-color: #f4f6f8;
    padding: 12px 20px;
@@ -35,10 +43,11 @@
    resize: vertical;
    border-bottom-left-radius: 8px;
    border-bottom-right-radius: 8px;
+   position: relative;
 }
-.texterea::-webkit-resizer {
-   background: transparent;
-}
+// .texterea::-webkit-resizer {
+//    background: transparent;
+// }
 .submitter {
    border-radius: 6px;
    font-weight: 400;
