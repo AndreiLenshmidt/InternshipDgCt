@@ -26,13 +26,14 @@ export function KanbanPage() {
    //
    //
    const router = useRouter();
-   const { width } = useResize();
-
+   
    const wrapper = useRef<HTMLDivElement>(null);
-
+   
    const route = useMemo(() => router.query['task-slug'] as string, [router.query['task-slug']]);
    const loaded = useMemo(() => ({ skip: !router.query['task-slug'] }), [router.query['task-slug']]);
+   
 
+   const { width } = useResize(!!loaded);
    const { data: { data: project } = { data: null }, error } = useGetProjectQuery(route, loaded);
    const { data: { data: priorities } = { data: null } } = useGetTaskPrioritiesQuery(undefined, loaded);
 
@@ -52,7 +53,11 @@ export function KanbanPage() {
    }, [tasks, project?.flow?.possibleProjectStages]);
 
    useEffect(() => {
+
+      width;
+      debugger
       console.log(wrapper.current?.offsetWidth);
+      
    }, [wrapper]);
 
    const { isOver, setNodeRef } = useDroppable({
@@ -121,7 +126,7 @@ export function KanbanPage() {
          <Scrollbar
             noScrollY
             style={{
-               width: width - 336, // TODO (reTODO) with s/m
+               // width: (width || 0) - 336, // TODO (reTODO) with s/m
                height: 800, // TODO
             }}
          >
