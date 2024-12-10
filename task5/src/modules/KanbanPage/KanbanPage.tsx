@@ -5,7 +5,6 @@ import { useDrag } from 'react-dnd';
 import { TaskCard } from './components/task-card/TaskCard';
 import style from './kanban-page.module.css';
 import { TasksColumn } from './components/tasks-column/TaskColumn';
-import { DndContext, useDroppable } from '@dnd-kit/core';
 import TaskModalCreationEditing from '../TaskModalCreationEditing/page';
 import { useGetAllTasksQuery, useGetTaskPrioritiesQuery, useGetTaskTagsQuery } from '@/api/tasks/tasks.api';
 import { useGetProjectQuery } from '../ProjectsPage/api/api';
@@ -44,11 +43,11 @@ export function KanbanPage() {
       );
    }, [tasks, project?.flow?.possibleProjectStages]);
 
-   const { isOver, setNodeRef } = useDroppable({
-      id: 'droppable',
-   });
+   // const { isOver, setNodeRef } = useDroppable({
+   //    id: 'droppable',
+   // });
 
-   const dropstyle = { color: isOver ? 'green' : undefined };
+   // const dropstyle = { color: isOver ? 'green' : undefined };
 
    return (
       <>
@@ -103,7 +102,7 @@ export function KanbanPage() {
          </div>
 
          <div className={style.kanban_container}>
-            <DndContext id={'11'} onDragEnd={(e) => console.log('dropped', e.active.id, e.over?.id)}>
+            {/* <DndContext id={'11'} onDragEnd={(e) => console.log('dropped', e.active.id, e.over?.id)}> */}
                <div className={style.kanban}>
                   {project?.flow?.possibleProjectStages?.map((stage) => {
                      if (stage.id) {
@@ -122,7 +121,7 @@ export function KanbanPage() {
                      return null;
                   })}
                </div>
-            </DndContext>
+            {/* </DndContext> */}
 
             {/* <DndContext id={'111'} onDragEnd={(e) => console.log('dropped', e.active.id, e.over?.id)}>
                <div className={style.kanban}>
