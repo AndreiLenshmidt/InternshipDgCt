@@ -1,5 +1,5 @@
 import { Stage } from '@/api/data.types';
-import { useDroppable } from '@dnd-kit/core';
+// import { useDroppable } from '@dnd-kit/core';
 import { LegacyRef, PropsWithChildren } from 'react';
 import { useDrop } from 'react-dnd';
 import style from '../../kanban-page.module.css';
