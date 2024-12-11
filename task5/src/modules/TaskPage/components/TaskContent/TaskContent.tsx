@@ -1,4 +1,4 @@
-import { ResponseFile, TaskSingle, User, Comment, Stage, TaskType, Priority } from '@/api/data.types';
+import { ResponseFile, TaskSingle, User, Comment, Stage } from '@/api/data.types';
 import styles from './task-modal.module.scss';
 import CopyLink from '@public/icons/copy-task-link.svg';
 import CommentComp from '../Comment/CommentComp';
@@ -11,13 +11,16 @@ import Calendar from '@public/icons/calendar.svg';
 import parse from 'html-react-parser';
 import MarkersTask from '../Markers/Markers';
 import SelectCustom from '@/components/select_custom/SelectCustom';
-import { Component, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import FileUploader from '../FileUploader.tsx/FileUploader';
 import FilePriview from '../FilePreveiw/FilePreview';
 import Link from 'next/link';
 import InfoModal from '../InfoModal/InfoModal';
 import { useModalInfo } from '@/hooks/useModalInfo';
 import TaskModalCreationEditing from '@/modules/TaskModalCreationEditing/page';
+import ModalClose from '@/components/modal_close/ModalClose';
+import { useDeleteTaskMutation, useUpdateTaskMutation } from '@/api/appApi';
+import { useRouter } from 'next/router';
 
 export default function TaskContent({
    slag,
@@ -30,6 +33,8 @@ export default function TaskContent({
 }) {
    const isAdmin = activeUser?.is_admin;
    const [selectedOptionComp, setSelectedOptionComp] = useState<Stage | undefined>(task?.stage);
+   const [deleteTask, { data: deleteData, isError: deleteError }] = useDeleteTaskMutation();
+   const [updateTask, { data: updatedTask }] = useUpdateTaskMutation();
    // Для открытия окна создания/ редактирования задачи
    const [projectSlag, setProjectSlag] = useState<string>('');
    const [taskIdEditTask, setTaskIdEditTask] = useState<number | undefined>();
@@ -39,7 +44,9 @@ export default function TaskContent({
    const [filesComments, setFIlesComments] = useState<ResponseFile[]>([]);
    const [comments, setComments] = useState<Comment[]>(task?.comments || []);
    const [selectOptions, setSelectOptions] = useState<Stage[] | undefined>();
+   const [isDeleteTaskModal, setDelTaskModal] = useState<boolean>(false);
    const modalInfo = useModalInfo();
+   const router = useRouter();
 
    useEffect(() => {
       if (task?.possibleTaskNextStages) {
@@ -60,7 +67,8 @@ export default function TaskContent({
    }, [task?.stage?.name, task?.files, task?.comments]);
 
    useEffect(() => {
-      if (task?.dev_link) {
+      if (task?.dev_link && task?.stage !== selectedOptionComp && selectedOptionComp) {
+         updateTaskHandler(selectedOptionComp, task);
          modalInfo.setCloseModal(true);
          modalInfo.setModalTitle('Успешно');
          modalInfo.setModalInfo('Статус задачи успешно изменен');
@@ -71,7 +79,13 @@ export default function TaskContent({
          modalInfo.setModalInfo('Сначала добавьте Dev Link в меню редактирования задачи');
          task?.stage && setSelectedOptionComp(task?.stage);
       }
-   }, [selectedOptionComp]);
+      if (deleteError) {
+         modalInfo.setCloseModal(true);
+         modalInfo.setModalTitle('Ошибка');
+         modalInfo.setModalType('error');
+         modalInfo.setModalInfo('Не удалось удалить задачу');
+      }
+   }, [selectedOptionComp, deleteError]);
 
    const copyLinkHandler = async () => {
       await navigator.clipboard.writeText(window.location.href);
@@ -93,6 +107,43 @@ export default function TaskContent({
       setProjectSlag('project4'); //!!! поменять на slag
       setIsOpenCreateTask(!isOpenCreateTask);
       // }
+   };
+
+   const deleteTaskHandler = async () => {
+      if (task?.id) {
+         const taskDel = await deleteTask(task?.id);
+         console.log(taskDel);
+         router.replace('/projects');
+         setDelTaskModal(false);
+      }
+   };
+
+   const updateTaskHandler = async (stage: Stage, task: TaskSingle) => {
+      const taskBody = {
+         name: task.name,
+         description: task.description,
+         stage_id: stage.id,
+         task_type_id: task.task_type?.id,
+         component_id: task.component?.id,
+         priority_id: task.priority?.id,
+         block_id: task.block,
+         release_id: task.release?.id,
+         related_id: task.related,
+         epic_id: task.epic?.id,
+         estimate_cost: task.estimate_cost,
+         estimate_worker: task.estimate_worker,
+         layout_link: task.layout_link,
+         markup_link: task.markup_link,
+         dev_link: task.dev_link,
+         executors: task.users?.map((user) => user.id),
+         begin: task.begin,
+         end: task.end,
+      };
+      if (task?.id) {
+         const result = await updateTask({ id: task.id, body: taskBody });
+         console.log(result.data.data);
+         console.log(stage);
+      }
    };
 
    return (
@@ -149,7 +200,9 @@ export default function TaskContent({
                   <button onClick={handlerEditTask}>
                      <Edit className={styles.aside_icon} />
                   </button>
-                  <button>{isAdmin ? <Delete className={styles.aside_icon} /> : <></>}</button>
+                  <button onClick={() => setDelTaskModal(true)}>
+                     {isAdmin ? <Delete className={styles.aside_icon} /> : <></>}
+                  </button>
                   <button onClick={handlerNewTask}>{isAdmin ? <Create className={styles.aside_icon} /> : <></>}</button>
                </div>
             </div>
@@ -287,15 +340,25 @@ export default function TaskContent({
             ) : (
                <></>
             )}
+            {isOpenCreateTask && (
+               <TaskModalCreationEditing
+                  isOpen={isOpenCreateTask}
+                  onClose={() => setIsOpenCreateTask(false)}
+                  slug={projectSlag}
+                  taskId={taskIdEditTask}
+               />
+            )}
+            {isDeleteTaskModal && (
+               <ModalClose
+                  title="Удалить задачу"
+                  isOpen={isDeleteTaskModal}
+                  onConfirm={deleteTaskHandler}
+                  onClose={() => {
+                     setDelTaskModal(false);
+                  }}
+               />
+            )}
          </div>
-         {isOpenCreateTask && (
-            <TaskModalCreationEditing
-               isOpen={isOpenCreateTask}
-               onClose={() => setIsOpenCreateTask(false)}
-               slug={projectSlag}
-               taskId={taskIdEditTask}
-            />
-         )}
       </>
    );
 }
