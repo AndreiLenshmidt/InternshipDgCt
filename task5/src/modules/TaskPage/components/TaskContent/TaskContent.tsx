@@ -17,7 +17,7 @@ import FilePriview from '../FilePreveiw/FilePreview';
 import Link from 'next/link';
 import InfoModal from '../InfoModal/InfoModal';
 import { useModalInfo } from '@/hooks/useModalInfo';
-import TaskModalCreationEditing from '@/modules/TaskModalCreationEditing/page';
+import { TaskModalCreationEditing } from '@/modules/TaskModalCreationEditing/page';
 import ModalClose from '@/components/modal_close/ModalClose';
 import { useDeleteTaskMutation, useUpdateTaskMutation } from '@/api/appApi';
 import { useRouter } from 'next/router';
@@ -42,6 +42,7 @@ export default function TaskContent({
    const [taskIdEditTask, setTaskIdEditTask] = useState<number | undefined>();
    const [isOpenCreateTask, setIsOpenCreateTask] = useState(false);
    const [newTaskId, setNewTaskId] = useState<number | undefined>();
+   const [newTaskFlag, setNewTaskFlag] = useState(false);
    // ------------------------------------------------
    const [files, setFiles] = useState<ResponseFile[]>(task?.files || []);
    const [filesComments, setFIlesComments] = useState<ResponseFile[]>([]);
@@ -99,7 +100,8 @@ export default function TaskContent({
    };
 
    const handlerNewTask = () => {
-      setTaskIdEditTask(undefined);
+      setNewTaskFlag(true);
+      setTaskIdEditTask(27); //!!! поменять на task?.id
       setProjectSlag('project4'); //!!! поменять на slag
       setIsOpenCreateTask(!isOpenCreateTask);
    };
@@ -355,6 +357,7 @@ export default function TaskContent({
                   taskId={taskIdEditTask}
                   newTaskId={newTaskId}
                   onNewTaskId={handleNewTaskId}
+                  newTaskFlag={newTaskFlag}
                />
             )}
             {isDeleteTaskModal && (

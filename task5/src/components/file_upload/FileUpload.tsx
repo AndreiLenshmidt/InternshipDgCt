@@ -4,28 +4,29 @@ import Clipper from '@public/icons/clipper.svg';
 import { BASE_URL } from '@/consts';
 import { ResponseFile } from '@/api/data.types';
 import { useFileUploader } from '@/modules/TaskModalCreationEditing/utils/useFileUploader';
-import { useDelFilesFromTaskMutation } from '@/api/appApi.ts';
+import { useDelFilesFromTaskMutation } from '@/api/appApi';
 
 type ResponseFileWithObject = ResponseFile & {
    fileObject: File;
 };
 interface FileUploadProps {
    taskId: number | undefined;
-   files: ResponseFileWithObject[];
-   onFilesChange: ((files: ResponseFileWithObject[]) => void) | undefined;
+   files: ResponseFileWithObject[] | undefined;
+   onFilesChange: (newFiles: FileUploadProps['files']) => void;
    error?: string;
+   disabled?: boolean;
 }
 
 export default function FileUpload({ taskId, files, onFilesChange, error }: FileUploadProps) {
    const [isDragging, setIsDragging] = useState(false);
    const [permissions, setPermissions] = useState(false);
-   const [fileLocal, setFileLocal] = useState([]);
+   const [fileLocal, setFileLocal] = useState<ResponseFileWithObject[]>([]);
    const [respDtLocal, setRespDtLocal] = useState({});
    const [deleteFileTaskMutation] = useDelFilesFromTaskMutation();
    const { sendFiles } = useFileUploader();
 
    // Проверка, является ли файл изображением
-   const isImageFile = (fileName: string): boolean => {
+   const isImageFile = (fileName: string | undefined): boolean => {
       const imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'bmp', 'svg'];
       const ext = fileName.split('.').pop()?.toLowerCase();
       return imageExtensions.includes(ext || '');
@@ -88,10 +89,13 @@ export default function FileUpload({ taskId, files, onFilesChange, error }: File
       const filesId = files.filter((file) => file.id !== undefined);
 
       try {
-         let newFiles: ResponseFile[] | undefined = [];
+         let newFiles: ResponseFileWithObject[] | ResponseFile[] | undefined = [];
          const uploadedFiles = await sendFiles(filterFileId); // записывает файл на сервер
 
-         if (filesId.length > 0) newFiles = [...filesId, ...uploadedFiles];
+         if (filesId?.length > 0) {
+            newFiles = [...(filesId || []), ...(uploadedFiles || [])];
+         }
+
          if (filesId.length === 0) newFiles = uploadedFiles;
 
          if (onFilesChange) {

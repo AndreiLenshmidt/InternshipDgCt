@@ -1,5 +1,7 @@
+import { useEffect, useState } from 'react';
 import { BreadCrumbs } from '@components/bread_crumbs/BreadCrumbs';
 import { Switch } from '@components/switch/Switch';
+// import { TaskModalCreationEditing } from '@/modules/TaskModalCreationEditing/page';
 import { useRouter } from 'next/router';
 import { useDrag } from 'react-dnd';
 import { TaskCard } from './components/task-card/TaskCard';
@@ -14,12 +16,27 @@ export function KanbanPage() {
    //
    const router = useRouter();
 
+   // Для открытия окна создания/ редактирования задачи
+   const [projectSlag, setProjectSlag] = useState<string>('');
+   const [taskIdEditTask, setTaskIdEditTask] = useState<number | undefined>();
+   const [isOpenCreateTask, setIsOpenCreateTask] = useState(false);
+   const [newTaskId, setNewTaskId] = useState<number | undefined>();
+   const [newTaskFlag, setNewTaskFlag] = useState(false);
+   // ------------------------------------------------
+
    const { isOver, setNodeRef } = useDroppable({
       id: 'droppable',
    });
 
    const dropstyle = {
       color: isOver ? 'green' : undefined,
+   };
+
+   const handlerNewTask = () => {
+      setNewTaskFlag(true);
+      setTaskIdEditTask();
+      setProjectSlag('project4'); //!!! поменять на slag
+      setIsOpenCreateTask(!isOpenCreateTask);
    };
 
    // console.log(router.query['task-slug'], 'router.query[task-slug]');
@@ -40,7 +57,7 @@ export function KanbanPage() {
             <Switch onChange={(v) => v} checked={false} />
             <h6>Только мои</h6>
 
-            <button>
+            <button onClick={handlerNewTask}>
                <span>+</span>
                Добавить задачу
             </button>
@@ -100,6 +117,17 @@ export function KanbanPage() {
                </div>
             </DndContext>
          </div>
+         {isOpenCreateTask && (
+            <TaskModalCreationEditing
+               isOpen={isOpenCreateTask}
+               onClose={() => setIsOpenCreateTask(false)}
+               slugName={projectSlag}
+               taskId={taskIdEditTask}
+               newTaskId={newTaskId}
+               onNewTaskId={handleNewTaskId}
+               newTaskFlag={newTaskFlag}
+            />
+         )}
       </>
    );
 }

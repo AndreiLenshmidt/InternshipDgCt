@@ -19,7 +19,7 @@ export const appApi = createApi({
             },
          }),
       }),
-      updateTask: build.mutation<void, { id: number; body: Partial<TaskSingle> }>({
+      updateTask: build.mutation<{ data: TaskSingle }, { id: number; body: Partial<TaskSingle> }>({
          query: ({ id, body }) => ({
             url: `/task/${id}`,
             method: 'PATCH',
@@ -29,7 +29,7 @@ export const appApi = createApi({
             },
          }),
       }),
-      createTask: build.mutation<TaskSingle, { slug: string; body: Partial<TaskSingle> }>({
+      createTask: build.mutation<{ data: TaskSingle }, { slug: string; body: Partial<TaskSingle> }>({
          query: ({ slug, body }) => ({
             url: `/project/${slug}/task`,
             method: 'POST',
