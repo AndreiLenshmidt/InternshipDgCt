@@ -47,8 +47,8 @@ interface TaskModalCreationEditingProps {
    onClose: () => void;
    slugName: string;
    taskId?: number; // Если передан, значит редактируем задачу
-   newTaskId: number | undefined;
-   onNewTaskId: (taskId: number) => void;
+   newTaskId?: number | undefined;
+   onNewTaskId?: (taskId: number) => void;
 }
 
 export interface CustomFormData {

@@ -25,14 +25,14 @@ export function KanbanPage() {
    //
    //
    const router = useRouter();
-   
+
    const wrapper = useRef<HTMLDivElement>(null);
-   
+
    const route = useMemo(() => router.query['task-slug'] as string, [router.query['task-slug']]);
    const loaded = useMemo(() => ({ skip: !router.query['task-slug'] }), [router.query['task-slug']]);
-   
+
    const { height } = useResize();
-   
+
    const { data: { data: project } = { data: null }, error } = useGetProjectQuery(route, loaded);
    const { data: { data: priorities } = { data: null } } = useGetTaskPrioritiesQuery(undefined, loaded);
 
@@ -70,7 +70,7 @@ export function KanbanPage() {
    // }
 
    return (
-      <div className={style.base} style={{display: 'flex', flexDirection: 'column', height: 'calc(100vh - 4rem)'}}>
+      <div className={style.base} style={{ display: 'flex', flexDirection: 'column', height: 'calc(100vh - 4rem)' }}>
          <BreadCrumbs
             crumbs={[
                { text: 'Главная', url: '/' },
@@ -127,10 +127,10 @@ export function KanbanPage() {
          <Scrollbar
             noScrollY
             style={{
-               height: 300 // height || 0, // TODO
+               height: 300, // height || 0, // TODO
             }}
          >
-            <div ref={wrapper} className={style.kanban_container}>               
+            <div ref={wrapper} className={style.kanban_container}>
                {/* <DndContext id={'11'} onDragStart={(e) => {}} onDragEnd={(e) => console.log('dropped', e.active.id, e.over?.id)}> */}
                <DndProvider backend={HTML5Backend}>
                   <div className={style.kanban}>
@@ -159,7 +159,7 @@ export function KanbanPage() {
             </div>
          </Scrollbar>
 
-         <TaskModalCreationEditing isOpen={true} onClose={() => true} slug="xxxx" taskId={7} />
+         <TaskModalCreationEditing isOpen={true} onClose={() => true} slugName="xxxx" taskId={7} />
       </div>
    );
 }
