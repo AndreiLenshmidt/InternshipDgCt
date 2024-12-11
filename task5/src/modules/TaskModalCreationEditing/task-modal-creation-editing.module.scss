@@ -13,6 +13,13 @@
    margin-top: 6px;
 }
 
+.loading {
+   position: absolute;
+   top: 50%;
+   left: 50%;
+   transform: translate(-50%, -50%);
+}
+
 .modal-creation-editing {
    position: fixed; // !!!
    z-index: 10;

@@ -1,4 +1,4 @@
-import FormData from '@/modules/TaskModalCreationEditing/page.tsx';
+import { FormData } from '@/api/data.types';
 
 export const transformToServerData = (formData: FormData) => {
    const selectedIds = formData.selectedOptionsCheckbox?.map((option) => option.id) || [];

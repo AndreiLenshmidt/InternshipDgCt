@@ -93,6 +93,14 @@ export default function CalendarCustom({ value, onChange }: CalendarCustomProps)
       }
    };
 
+   // Синхронизация состояния с пропсами `value`
+   useEffect(() => {
+      if (value) {
+         setStartDate(value.startDate ? new Date(value.startDate) : null);
+         setEndDate(value.endDate ? new Date(value.endDate) : null);
+      }
+   }, [value]);
+
    useEffect(() => {
       document.addEventListener('mousedown', handleClickOutside);
       return () => {

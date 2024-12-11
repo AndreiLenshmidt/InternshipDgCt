@@ -1,4 +1,4 @@
-import { TaskSingle, TaskType, Component, Stage, Priority, User } from '@/api/data.types';
+import { TaskSingle, TaskType } from '@/api/data.types';
 
 type TaskSingleAPI = {
    task_type: number;

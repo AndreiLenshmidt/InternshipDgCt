@@ -33,12 +33,15 @@ export default function TaskContent({
 }) {
    const isAdmin = activeUser?.is_admin;
    const [selectedOptionComp, setSelectedOptionComp] = useState<Stage | undefined>(task?.stage);
+
    const [deleteTask, { data: deleteData, isError: deleteError }] = useDeleteTaskMutation();
    const [updateTask, { data: updatedTask }] = useUpdateTaskMutation();
+
    // Для открытия окна создания/ редактирования задачи
    const [projectSlag, setProjectSlag] = useState<string>('');
    const [taskIdEditTask, setTaskIdEditTask] = useState<number | undefined>();
    const [isOpenCreateTask, setIsOpenCreateTask] = useState(false);
+   const [newTaskId, setNewTaskId] = useState<number | undefined>();
    // ------------------------------------------------
    const [files, setFiles] = useState<ResponseFile[]>(task?.files || []);
    const [filesComments, setFIlesComments] = useState<ResponseFile[]>([]);
@@ -103,10 +106,14 @@ export default function TaskContent({
 
    const handlerEditTask = () => {
       // if (task?.id) {
-      setTaskIdEditTask(task?.id); //!!! поменять на task?.id
+      setTaskIdEditTask(27); //!!! поменять на task?.id
       setProjectSlag('project4'); //!!! поменять на slag
       setIsOpenCreateTask(!isOpenCreateTask);
       // }
+   };
+   // Функция для получения newTaskId от дочернего компонента
+   const handleNewTaskId = (taskId: number) => {
+      setNewTaskId(taskId);
    };
 
    const deleteTaskHandler = async () => {
@@ -344,8 +351,10 @@ export default function TaskContent({
                <TaskModalCreationEditing
                   isOpen={isOpenCreateTask}
                   onClose={() => setIsOpenCreateTask(false)}
-                  slug={projectSlag}
+                  slugName={projectSlag}
                   taskId={taskIdEditTask}
+                  newTaskId={newTaskId}
+                  onNewTaskId={handleNewTaskId}
                />
             )}
             {isDeleteTaskModal && (

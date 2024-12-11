@@ -89,7 +89,7 @@ export const taskApiActions = createApi({
             url: `/component`,
             method: 'GET',
             headers: {
-               Authorization: `Bearer ${token}`, // Если нужен токен
+               Authorization: `Bearer ${token}`,
             },
          }),
       }),
@@ -99,7 +99,7 @@ export const taskApiActions = createApi({
             url: `/priority`,
             method: 'GET',
             headers: {
-               Authorization: `Bearer ${token}`, // Если нужен токен
+               Authorization: `Bearer ${token}`,
             },
          }),
       }),
@@ -109,7 +109,7 @@ export const taskApiActions = createApi({
             url: `/task_type`,
             method: 'GET',
             headers: {
-               Authorization: `Bearer ${token}`, // Если требуется авторизация
+               Authorization: `Bearer ${token}`,
             },
          }),
       }),

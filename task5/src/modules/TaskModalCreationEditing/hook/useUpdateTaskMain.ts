@@ -1,4 +1,4 @@
-import { useUpdateTaskMutation } from '@/modules/TaskModalCreationEditing/api/taskApiActions.ts';
+import { useUpdateTaskMutation } from '@/modules/TaskModalCreationEditing/api/taskApiActions';
 
 export const useUpdateTaskMain = () => {
    const [updateTask, { isLoading, isSuccess, error }] = useUpdateTaskMutation();

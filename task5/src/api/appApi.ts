@@ -29,10 +29,11 @@ export const appApi = createApi({
             },
          }),
       }),
-      createTask: build.mutation<TaskSingle, Partial<TaskSingle>>({
-         query: (slug) => ({
+      createTask: build.mutation<TaskSingle, { slug: string; body: Partial<TaskSingle> }>({
+         query: ({ slug, body }) => ({
             url: `/project/${slug}/task`,
             method: 'POST',
+            body,
             headers: {
                Authorization: `Bearer ${token}`,
             },

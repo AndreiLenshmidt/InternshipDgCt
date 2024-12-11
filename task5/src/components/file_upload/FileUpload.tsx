@@ -10,7 +10,7 @@ type ResponseFileWithObject = ResponseFile & {
    fileObject: File;
 };
 interface FileUploadProps {
-   taskId: number;
+   taskId: number | undefined;
    files: ResponseFileWithObject[];
    onFilesChange: ((files: ResponseFileWithObject[]) => void) | undefined;
    error?: string;
@@ -88,7 +88,7 @@ export default function FileUpload({ taskId, files, onFilesChange, error }: File
       const filesId = files.filter((file) => file.id !== undefined);
 
       try {
-         let newFiles = [];
+         let newFiles: ResponseFile[] | undefined = [];
          const uploadedFiles = await sendFiles(filterFileId); // записывает файл на сервер
 
          if (filesId.length > 0) newFiles = [...filesId, ...uploadedFiles];
