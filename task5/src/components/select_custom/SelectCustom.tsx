@@ -13,6 +13,7 @@ type SelectCustomProps<T> = {
    errors?: string; // Сообщение об ошибке
    isLoading?: boolean; // Флаг загрузки
    fetchError?: string; // Сообщение об ошибке при загрузке
+   maxWidth?: number | string;
    optionRenderer?: (option: TaskType | Stage | Priority | Component | undefined) => React.ReactNode; // Позволяет кастомизировать отображение опций
 };
 
@@ -27,6 +28,7 @@ export default function SelectCustom<T>({
    isLoading,
    fetchError,
    optionRenderer,
+   maxWidth,
 }: SelectCustomProps<T>) {
    const [isOpen, setIsOpen] = useState(false);
    const dropdownRef = useRef<HTMLDivElement>(null);
@@ -49,7 +51,7 @@ export default function SelectCustom<T>({
    }, [isOpen]);
 
    return (
-      <div className={style['select-custom']} ref={dropdownRef}>
+      <div className={style['select-custom']} ref={dropdownRef} style={{ maxWidth: maxWidth }}>
          {label && (
             <label className={style.label} htmlFor="select-custom">
                {label} {required && <span>*</span>}
@@ -65,8 +67,8 @@ export default function SelectCustom<T>({
                   className={`${style['select']} ${isOpen ? style['open'] : ''}`}
                   onClick={() => setIsOpen((prev) => !prev)}
                >
-                  <span className={`${style['select-title']} ${value.name ? style.selected : ''}`}>
-                     {value.name ? (optionRenderer ? optionRenderer(value.name) : String(value.name)) : titleSelect}
+                  <span className={`${style['select-title']} ${value?.name ? style.selected : ''}`}>
+                     {value?.name ? (optionRenderer ? optionRenderer(value) : String(value.name)) : titleSelect}
                   </span>
                </div>
 

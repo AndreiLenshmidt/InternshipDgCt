@@ -1,4 +1,4 @@
-import { ResponseFile, TaskSingle, User, Comment } from '@/api/data.types';
+import { ResponseFile, TaskSingle, User, Comment, Stage, TaskType, Priority } from '@/api/data.types';
 import styles from './task-modal.module.scss';
 import CopyLink from '@public/icons/copy-task-link.svg';
 import CommentComp from '../Comment/CommentComp';
@@ -11,7 +11,7 @@ import Calendar from '@public/icons/calendar.svg';
 import parse from 'html-react-parser';
 import MarkersTask from '../Markers/Markers';
 import SelectCustom from '@/components/select_custom/SelectCustom';
-import { useEffect, useState } from 'react';
+import { Component, useEffect, useState } from 'react';
 import FileUploader from '../FileUploader.tsx/FileUploader';
 import FilePriview from '../FilePreveiw/FilePreview';
 import Link from 'next/link';
@@ -24,14 +24,12 @@ export default function TaskContent({
    task,
    activeUser,
 }: {
-   slag: string | undefined;
+   slag?: string | undefined;
    task: TaskSingle | undefined;
    activeUser: User | undefined;
 }) {
    const isAdmin = activeUser?.is_admin;
-   const [selectedOptionComp, setSelectedOptionComp] = useState<string | (string | undefined)[] | undefined>(
-      task?.stage?.name || 'не установлено'
-   );
+   const [selectedOptionComp, setSelectedOptionComp] = useState<Stage | undefined>(task?.stage);
    // Для открытия окна создания/ редактирования задачи
    const [projectSlag, setProjectSlag] = useState<string>('');
    const [taskIdEditTask, setTaskIdEditTask] = useState<number | undefined>();
@@ -40,18 +38,18 @@ export default function TaskContent({
    const [files, setFiles] = useState<ResponseFile[]>(task?.files || []);
    const [filesComments, setFIlesComments] = useState<ResponseFile[]>([]);
    const [comments, setComments] = useState<Comment[]>(task?.comments || []);
-   const [selectOptions, setSelectOptions] = useState<(string | (string | undefined)[] | undefined)[]>([]);
+   const [selectOptions, setSelectOptions] = useState<Stage[] | undefined>();
    const modalInfo = useModalInfo();
 
    useEffect(() => {
       if (task?.possibleTaskNextStages) {
-         setSelectOptions(task?.possibleTaskNextStages?.map((stage) => stage.name));
+         setSelectOptions(task?.possibleTaskNextStages);
       }
    }, [task?.possibleTaskNextStages]);
 
    useEffect(() => {
       if (task?.stage?.name) {
-         setSelectedOptionComp(task?.stage?.name);
+         setSelectedOptionComp(task?.stage);
       }
       if (task?.files) {
          setFiles(task?.files);
@@ -66,12 +64,12 @@ export default function TaskContent({
          modalInfo.setCloseModal(true);
          modalInfo.setModalTitle('Успешно');
          modalInfo.setModalInfo('Статус задачи успешно изменен');
-      } else if (task?.stage?.name !== selectedOptionComp) {
+      } else if (task?.stage !== selectedOptionComp) {
          modalInfo.setCloseModal(true);
          modalInfo.setModalTitle('Ошибка');
          modalInfo.setModalType('error');
          modalInfo.setModalInfo('Сначала добавьте Dev Link в меню редактирования задачи');
-         task?.stage?.name && setSelectedOptionComp(task?.stage?.name);
+         task?.stage && setSelectedOptionComp(task?.stage);
       }
    }, [selectedOptionComp]);
 
@@ -91,7 +89,7 @@ export default function TaskContent({
 
    const handlerEditTask = () => {
       // if (task?.id) {
-      setTaskIdEditTask(27); //!!! поменять на task?.id
+      setTaskIdEditTask(task?.id); //!!! поменять на task?.id
       setProjectSlag('project4'); //!!! поменять на slag
       setIsOpenCreateTask(!isOpenCreateTask);
       // }
@@ -156,6 +154,7 @@ export default function TaskContent({
                </div>
             </div>
             <SelectCustom
+               maxWidth={'100%'}
                value={selectedOptionComp}
                onChange={(value) => setSelectedOptionComp(value)}
                titleSelect={`${selectedOptionComp}`}
