@@ -16,6 +16,14 @@ export const tasksApi = createApi({
       getTaskPriorities: build.query<{ data: Array<Priority> }, void>({ query: () => `/priority` }),
       getAllTasks: build.query<{ data: Array<TaskMultiple> }, string>({ query: (slug: string) => `/project/${slug}/task` }),
 
+      updateTask: build.mutation<TaskMultiple, Partial<TaskMultiple> & Pick<TaskMultiple, 'id'>>({
+         query: ({ id, ...patch }) => ({
+            url: `/task/${id}`,
+            method: 'PATCH',
+            body: patch,
+         }),
+         // transformResponse: (response: { data: TaskMultiple }, meta, arg) => response.data,
+      })
       // getTaskStages: build.query<{ data: Array<Stage> }, void>({ query: () => `/stage` }),
    }),
 });
@@ -26,6 +34,7 @@ export const {
    useGetTaskTagsQuery,
    useGetTaskTypesQuery,
    
+   useUpdateTaskMutation
    // useLazyGetTaskPrioritiesQuery,
    // useGetTaskStagesQuery
 } = tasksApi;
