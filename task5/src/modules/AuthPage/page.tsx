@@ -8,7 +8,7 @@ import { useActions } from '@/store/hooks/useActions';
 import { useCookies } from 'react-cookie';
 import { ChangeEvent, FocusEvent, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import LoaderIcon from '@public/icons/mainPageBtnLoader.svg';
+import LoaderIcon from '@public/icons/auth-loader.svg';
 
 const schema: ZodType<FormDataType> = z
    .object({
@@ -30,14 +30,11 @@ export default function AuthPage() {
    });
 
    const [login, { isLoading, isError, isSuccess }] = useGetOAuthTokenMutation();
-
-   const { setAuthToken } = useActions();
    const [_, setCookie] = useCookies(['token-auth']);
    const router = useRouter();
 
    const onSubmit = async (formData: LoginRequest) => {
       const paylord = await login(formData);
-      setAuthToken(paylord.data);
       setCookie('token-auth', paylord.data?.token);
 
       setTimeout(() => router.replace('/projects', { scroll: false }), 2000);

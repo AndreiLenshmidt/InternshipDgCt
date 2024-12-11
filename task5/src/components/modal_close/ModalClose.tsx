@@ -38,16 +38,16 @@ export default function ModalClose({ title, isOpen, onClose, onConfirm }: ModalP
          <div className={styles.modal}>
             <div className={styles.header}>
                <h2 className={styles.title}>{title}</h2>
-               <button className={styles['close-button']} type="button" onClick={onClose}>
+               <button className={styles['close-button']} type="button" onClick={onConfirm}>
                   <Close />
                </button>
             </div>
 
             <div className={styles.footer}>
-               <button className={styles.button} type="button" onClick={onConfirm}>
+               <button className={styles.button} type="button" onClick={onClose}>
                   Да
                </button>
-               <button className={styles.button} type="button" onClick={onClose}>
+               <button className={styles.button} type="button" onClick={onConfirm}>
                   Нет
                </button>
             </div>

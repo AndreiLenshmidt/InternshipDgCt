@@ -11,186 +11,291 @@ import CalendarCustom from '@/components/calendar_custom/CalendarCustom';
 import TextAreaWithToolbar from '@/components/text_area_with_toolbar/TextAreaWithToolbar';
 import FileUpload from '@/components/file_upload/FileUpload';
 import { useGetProjectsQuery } from '../ProjectsPage/api/api';
-import { useCreateTaskMutation, useGetTasksQuery, useGetUsersQuery, useUpdateTaskMutation } from './api/taskApiActions';
-import { useGetOAuthTokenMutation } from '../AuthPage/api/authApi';
-import { useGetTaskByTaskIdQuery } from '../TaskPage/api/taskApi';
-import { useOptimisticDeleteTask } from './utils/useOptimisticDeleteTask';
-import { useOptimisticCreateTask } from './utils/useOptimisticCreateTask';
-import { useOptimisticUpdateTask } from './utils/useOptimisticUpdateTask';
-import { Priority, Stage, TaskSingle, TaskType, User } from '@/api/data.types';
-import { mapTaskType, taskTypes } from './utils/transformTaskSingle';
-import { File } from '@/api/data.types';
+import {
+   useGetTasksQuery,
+   useGetComponentsQuery,
+   useGetPrioritiesQuery,
+   useGetTaskTypesQuery,
+   // useSendFilesTaskMutation,
+   // useGetTaskByTaskIdQuery,
+   // useGetUsersQuery,
+   // useDeleteFileTaskMutation,
+   // useCreateTaskMutation,
+   // useUpdateTaskMutation,
+} from '@/modules/TaskModalCreationEditing/api/taskApiActions';
+import {
+   useGetTaskByTaskIdQuery,
+   useGetUsersQuery,
+   useCreateTaskMutation,
+   useUpdateTaskMutation,
+   useAddFilesToTaskMutation,
+} from '@/api/appApi';
+import { Priority, Stage, TaskSingle, TaskType, User, ResponseFile } from '@/api/data.types';
+import { typesTasksOptions, compOptions, priorOptions, usersOptions } from '@/modules/TaskModalCreationEditing/variors';
+import { transformToServerData } from '@/modules/TaskModalCreationEditing/utils/transformToServerData';
+import { parseEstimate } from '@/modules/TaskModalCreationEditing/utils/parseEstimate';
+import { useUpdateTaskMain } from '@/modules/TaskModalCreationEditing/hook/useUpdateTaskMain';
+import { useCreateTaskMain } from '@/modules/TaskModalCreationEditing/hook/useCreateTaskMain';
+import { mapTaskType } from './utils/transformTaskSingle';
 
-export interface ExtendedFile {
-   id?: number;
-   original_name: string;
-   link: string;
-   created_at: string;
-   updated_at?: string;
-}
-export interface Component {
-   /** Идентификатор компонента */
-   id?: number;
-   /** Название компонента */
-   name?: string;
-}
+type ResponseFileWithObject = ResponseFile & {
+   fileObject: File;
+};
 
-/** Стадия (колонка) задачи */
-export interface Stage {
-   /** Идентификатор стадии */
-   id?: number;
-   /** Название стадии */
-   name?: string;
-}
-
-/** Приоритет задачи */
-export interface Priority {
-   /** Идентификатор приоритета */
-   id?: number;
-   /** Название приоритета */
-   name?: string;
-}
-
-/** Тип задачи */
-export interface TaskType {
-   /** Идентификатор типа задачи */
-   id?: number;
-   /** Название типа задачи */
-   name?: string;
-}
 interface TaskModalCreationEditingProps {
    isOpen: boolean;
    onClose: () => void;
-   slug: string;
+   slugName: string;
    taskId?: number; // Если передан, значит редактируем задачу
+   newTaskId: number | undefined;
+   onNewTaskId: (taskId: number) => void;
 }
 
-type FormData = {
+export interface CustomFormData {
    /** Заголовок задачи */
    name?: string; // title: string;
+   stage_id: number;
+   component_id: number;
+   block_id: number;
+
+   epic_id: number;
+   release_id: number;
+
+   related_id: number; // ID связанной задачи
+   estimate_cost: number;
+
    /** Тип задачи */
-   selectedOptionTasks?: TaskType[]; // task_type?: TaskType;
+   selectedOptionTasks?: TaskType; // task_type?: TaskType;
    /** Стадий, на которые можно перевести эту задачу */
-   selectedOptionComp?: Component[]; // component?: Component;
+   selectedOptionComp?: Component; // component?: Component;
    selectedOptionsCheckbox?: User[]; // users?: User[];
    /** Приоритет задачи */
-   selectedOptionPriority?: Priority[]; // priority?: Priority; !!!
-   // priority: string; // priority?: Priority;
-   // /**
-   //  * Оценка разработчика
-   //  * @min 0
-   //  */
-   estimateMinutes?: number; // estimate_worker?: number;
-   estimate?: string; // ------------------!!!
+   selectedOptionPriority?: Priority; // priority?: Priority; !!!
+
+   estimateMinutes?: string | undefined; // estimate_worker?: number;
+   estimate?: string | undefined; // ------------------!!!
 
    date: {
-      //  * Дата начала работ
-      //  * @example "2022-11-30T08:48:00.000000Z"
-      //  */
-      startDate: string; //  begin?: string;
-      //  * Дата окончания работ
-      //  * @example "2022-12-31T16:48:00.000000Z"
-      //  */
+      startDate: string; //   date_start?: string;
       endDate: string; // end?: string;
    };
 
    description?: string; // description?: string;
-   fileLinks?: File[] | undefined; // files?: File[];  => can_attach_file?: boolean; !!!
+   fileLinks?: ResponseFileWithObject[] | [] | undefined; // files?: ResponseFile[];  => can_attach_file?: boolean; !!!
    layoutLink?: string; // layout_link?: string | null;
    markupLink?: string; // markup_link?: string | null;
    devLink?: string; // dev_link?: string | null;
 
    handleSubmit: () => void;
-};
+}
 
-export default function TaskModalCreationEditing({ isOpen, onClose, slug, taskId }: TaskModalCreationEditingProps) {
-   const [name, setName] = useState('');
-   // const [taskType, setTaskType] = useState(taskTypes);
-   const [task, setTask] = useState<TaskSingle>({});
-   const [selectedOptionTasks, setSelectedOptionTasks] = useState([]);
-   const [selectedOptionComp, setSelectedOptionComp] = useState('');
-   const [selectedOptionUsers, setSelectedOptionUsers] = useState('');
-   const [priority, setPriority] = useState([
-      { id: 1, name: 'Низкий' },
-      { id: 2, name: 'Средний' },
-      { id: 3, name: 'Высокий' },
-   ]);
-
-   const [selectedOptionsCheckbox, setSelectedOptionsCheckbox] = useState<string[]>([]);
-   const [component, setComponent] = useState('');
-   const [assignees, setAssignees] = useState<string[]>([]);
-   const [estimate, setEstimate] = useState('');
-   const [startDate, setStartDate] = useState('');
-   const [endDate, setEndDate] = useState('');
-   const [description, setDescription] = useState('');
-   const [fileLinks, setFileLinks] = useState<string[]>([]);
-
-   const [taskTypesOptions, setTaskTypesOptions] = useState(taskTypes);
-   const [components, setComponents] = useState<string[]>([]);
-   const [availableAssignees, setAvailableAssignees] = useState<string[]>([]);
-   const [priorities, setPriorities] = useState<string[]>([]);
-
+export default function TaskModalCreationEditing({
+   isOpen,
+   onClose,
+   slugName,
+   taskId,
+   newTaskId,
+   onNewTaskId,
+}: TaskModalCreationEditingProps) {
    const isEditMode = Boolean(taskId);
 
-   // const [errors, setErrors] = useState('');
-   const [titleSelect, setTitleSelect] = useState('Задача');
-   const [itemsOptions, setItemsOptions] = useState([]);
+   const [taskData, setTaskData] = useState<TaskSingle>();
+   const [selectedOptionTasks, setSelectedOptionTasks] = useState<TaskType | undefined>(undefined);
+   const [selectedOptionComp, setSelectedOptionComp] = useState<Component | undefined>(undefined);
+   const [selectedPriority, setSelectedPriority] = useState<Priority | undefined>(undefined);
+   const [selectedOptionUsers, setSelectedOptionUsers] = useState<User | undefined>(undefined);
+   const [selectedOptionsCheckbox, setSelectedOptionsCheckbox] = useState<string[]>([]);
 
-   const [valueMain, setValueMain] = useState('');
-   // const [error, setError] = useState('');
-   const [isTouched, setIsTouched] = useState(false);
-
+   const [files, setFiles] = useState<ResponseFile[]>([]);
+   const [idTaskMain, setIdTaskMain] = useState(taskId);
    const [isModalOpen, setModalOpen] = useState(false);
 
-   /// !!!
-   const users: User[] = [
-      { id: 1, name: 'Иван', surname: 'Иванов', email: 'ivanov@mail.com' },
-      { id: 2, name: 'Мария', surname: 'Петрова', email: 'petrova@mail.com' },
-      { id: 3, name: 'Анна', surname: 'Сидорова', email: 'sidorova@mail.com' },
-   ];
+   // variors
+   const [taskTypesOptions, setTaskTypesOptions] = useState(typesTasksOptions);
+   const [componentsOptions, setComponentsOptions] = useState(compOptions);
+   const [priorityOptions, setPriorityOptions] = useState(priorOptions);
+   const [users, setUsersOptions] = useState(usersOptions);
 
-   const [selectedUsers, setSelectedUsers] = useState<User[]>([]);
-   const [files, setFiles] = useState<File[]>([]);
+   // const [name, setName] = useState('');
+   // const [assignees, setAssignees] = useState<string[]>([]);
+   // const [estimate, setEstimate] = useState('');
+   // const [startDate, setStartDate] = useState('');
+   // const [endDate, setEndDate] = useState('');
+   // const [description, setDescription] = useState('');
 
-   const handleFilesChange = (newFiles: File[]) => {
-      setFiles(newFiles);
-   };
+   // const [availableAssignees, setAvailableAssignees] = useState<string[]>([]);
 
-   // Получаем данные
-   const { data: projects = [], isLoading } = useGetProjectsQuery();
-   // console.log(projects, '------------- projects ,isLoading----------');
+   // const [titleSelect, setTitleSelect] = useState('Задача');
+   // const [itemsOptions, setItemsOptions] = useState([]);
 
-   // const { data: tasks = [] } = useGetTasksQuery({ slug: 'project1', filters: { id: [2] } });
-   const { data: tasks = [] } = useGetTasksQuery({
-      slug: 'project3',
-      filters: { type_id: [] },
-   });
-   // console.log(tasks, '------------- tasks filter,  ----------');
+   // const [isTouched, setIsTouched] = useState(false);
+   // const [selectedUsers, setSelectedUsers] = useState<User[]>([]);
 
-   const { data: projectUsers, error } = useGetUsersQuery('project2');
-   // console.log(projectUsers, '------------- projectUsers,  ----------');
-
+   // const [errors, setErrors] = useState('');
+   // const [error, setError] = useState('');
+   // const [priorities, setPriorities] = useState([]);
+   // const [valueMain, setValueMain] = useState(null);
+   // const [taskType, setTaskType] = useState(taskTypes);
+   // const [component, setComponent] = useState('');
+   // const [fileLinks, setFileLinks] = useState<string[]>([]);
    // !!! ===================================================================================
 
+   const [sendFilesTaskMutation] = useAddFilesToTaskMutation();
+   // Получаем данные
+   const { data: getComponents } = useGetComponentsQuery();
+   const { data: getPriorities } = useGetPrioritiesQuery();
+   const { data: getTaskTypes } = useGetTaskTypesQuery({
+      skip: taskId || isOpen, // Пропускаем запрос, если taskId есть
+   });
+   const { data: getUsers } = useGetUsersQuery(slugName); // !!! slug
+   const {
+      data: tasks = [],
+      isLoading: isGetTasksIdLoading,
+      isSuccess: tasksIsSuccess,
+      error: tasksError,
+   } = useGetTasksQuery({ slug: slugName });
+
+   // const { data: projects = [] } = useGetProjectsQuery();
+   // console.log(projects, '------------- projects ,isLoading----------');
+
+   const [createTaskMutation, { isLoading: isCreateLoading, isSuccess: createIsSuccess, error: createError }] =
+      useCreateTaskMutation();
+
+   const [updateTaskMutation, { isLoading: isUpdateLoading, isSuccess: updateIsSuccess, error: updateError }] =
+      useUpdateTaskMutation();
+
+   const { data: taskById = {}, isLoading: isGetTaskByTaskIdLoading } = useGetTaskByTaskIdQuery(idTaskMain, {
+      refetchOnMountOrArgChange: true, // Автоматически обновлять данные при изменении taskId
+      skip: !taskId || !isOpen, // Пропускаем запрос, если taskId нет или окно закрыто
+   });
+   console.log(taskById, '******** taskById ,isLoading useGetTaskByTaskIdQuery ******');
+
+   // Привязываем файлы к задаче
+   const handleFileTaskLinked = async (idTask: number | undefined, filesTask: ResponseFileWithObject[]) => {
+      try {
+         console.log(`Привязываем файлы к задаче Файл ${filesTask} к задаче:`, idTask, filesTask);
+
+         for (const file of filesTask) {
+            const response = await sendFilesTaskMutation({
+               task: idTask,
+               file: file.id,
+            }).unwrap();
+
+            if (response.data) {
+               setTaskData(response.data); //  Обновляем данные
+               if (response?.data?.files?.length > 0) setFiles(response.data.files); //  Обновляем данные
+
+               console.log(`Файл ${file.original_name} успешно привязан к задаче:`, response.data);
+            }
+         }
+      } catch (error) {
+         console.error('Ошибка при привязке файла:', error);
+      }
+   };
+
+   // Редактировать (обновить) задачу -------------------------------------------
+   const handleUpdateTask = async (
+      idTask: number | undefined,
+      taskDataUpd: TaskSingle,
+      filesTask: ResponseFileWithObject[]
+   ) => {
+      try {
+         const response = await updateTaskMutation({ id: idTask, body: taskDataUpd }).unwrap();
+
+         if (response?.data) {
+            setTaskData((prev) => ({
+               ...prev,
+               ...response.data,
+            })); //  Обновляем данные
+
+            if (response?.data?.files?.length > 0) setFiles(response.data.files); //  Обновляем данные
+
+            const taskId: number = response.data.id; // Получение id задачи
+
+            console.log('Задача обновлена response, taskId:', response, taskId);
+
+            if (filesTask?.length > 0) {
+               // Исключаем дублирование
+               const uniqueFilesTask = filesTask.filter(
+                  (newFile) =>
+                     !taskData.files?.some(
+                        (existingFile: ResponseFile) =>
+                           existingFile.id === newFile.id ||
+                           existingFile.original_name === newFile.original_name ||
+                           existingFile.link === newFile.link
+                     )
+               );
+
+               if (uniqueFilesTask.length > 0) {
+                  await handleFileTaskLinked(taskId, uniqueFilesTask); // Привязка только уникальных файлов к задаче
+               }
+            }
+         }
+
+         if (response) {
+            onClose();
+         }
+      } catch (error) {
+         console.error('Ошибка при обновлении задачи:', error);
+      }
+   };
+
+   // Добавить (создать) задачу -------------------------------------------
+   const handleCreateTask = async (slugName: string, taskData: TaskSingle, files: ResponseFileWithObject[]) => {
+      try {
+         const response = await createTaskMutation({ slug: slugName, body: taskData }).unwrap();
+
+         console.log('************** Задача создана response:', response.data);
+
+         if (response.data) {
+            setTaskData(response.data); //  Обновляем данные
+            if (response?.data?.files?.length > 0) setFiles(response.data.files); //  Обновляем данные
+            onNewTaskId(response.data.id);
+            setIdTaskMain(response.data.id);
+
+            const idTask = response.data?.id; // Получение id задачи
+
+            if (files?.length > 0 && (idTask || idTaskMain) && response.data.can_attach_file) {
+               await handleFileTaskLinked(idTask, files);
+               // const createdFiles = files.map((file, index) => {
+               // await handleFileTaskLinked(idTask, file.fileObject);  //!! Привязка файлов к задаче
+               // });
+            }
+         }
+
+         if (response) {
+            onClose();
+         }
+      } catch (error) {
+         console.error('Ошибка при создании задачи:', error);
+      }
+   };
+
+   // Общие состояния
+   const isLoading = isUpdateLoading || isCreateLoading || isGetTaskByTaskIdLoading;
+   const error = updateError || createError;
+
+   // !!! ===================================================================================
    // схема валидации Zod
    const formSchema = z.object({
       name: z.string().min(3, 'Ошибка'),
       selectedOptionTasks: z
-         .array(
-            z.object({
-               id: z.number().optional(),
-               name: z.string().optional(),
-            })
-         )
-         .min(1, 'Тип задачи обязателен'),
+         .object({
+            id: z.number().optional(),
+            name: z.string().optional(),
+         })
+         .refine((value) => value.id !== 0 && value.name !== '', {
+            message: 'Тип задачи обязателен',
+         }),
       selectedOptionComp: z
-         .array(
-            z.object({
-               id: z.number().optional(),
-               name: z.string().optional(),
-            })
-         )
-         .min(1, 'Компонент обязателен'),
+         .object({
+            id: z.number().optional(),
+            name: z.string().optional(),
+            color: z.string().optional(),
+         })
+         .refine((value) => value.id !== 0 && value.name !== '', {
+            message: 'Компонент обязателен',
+         }),
       selectedOptionsCheckbox: z
          .array(
             z.object({
@@ -202,55 +307,79 @@ export default function TaskModalCreationEditing({ isOpen, onClose, slug, taskId
          )
          .min(1, 'Выберите хотя бы одного исполнителя'),
       selectedOptionPriority: z
-         .array(
-            z.object({
-               id: z.number().optional(),
-               name: z.string().optional(),
-            })
-         )
-         .min(1, 'Приоритет обязателен'),
+         .object({
+            id: z.number().optional(),
+            name: z.string().optional(),
+         })
+         .refine((value) => value.id !== 0 && value.name !== '', {
+            message: 'Приоритет обязателен',
+         }),
       estimateMinutes: z
          .string()
-         .optional()
          .refine((value) => value === '' || /^\d+$/.test(value), {
             message: 'Оценка должна быть числом',
-         }),
+         })
+         .transform((value) => (value === '' ? undefined : parseInt(value, 10)))
+         .optional(),
+
       estimate: z.string().optional(),
-      date: z.object({
-         startDate: z.string().optional(),
-         endDate: z.string().optional(),
-      }),
+      date: z
+         .object({
+            startDate: z
+               .string()
+               .nullable()
+               .transform((value) => (value ? new Date(value).toISOString() : null)),
+            endDate: z
+               .string()
+               .nullable()
+               .transform((value) => (value ? new Date(value).toISOString() : null)),
+         })
+         .refine(
+            (value) => {
+               // Проверка: либо обе даты заданы, либо обе отсутствуют
+               const bothDatesEmpty = !value.startDate && !value.endDate;
+               const bothDatesPresent = value.startDate && value.endDate;
+               return bothDatesEmpty || bothDatesPresent;
+            },
+            {
+               message: 'Заполните обе даты или оставьте их пустыми',
+            }
+         ),
       description: z.string().min(10, 'Описание должно содержать не менее 10 символов'),
       fileLinks: z
          .array(
             z.object({
+               id: z.number().optional(),
                created_at: z.string(),
                updated_at: z.string(),
                original_name: z.string(),
-               link: z.string().url('Введите корректный URL'),
+               link: z.string().optional(),
+               fileObject: z.instanceof(File).optional(),
             })
          )
          .optional(),
       layoutLink: z
          .string()
-         .url('Введите корректный URL')
-         .refine((value) => value.startsWith('http'), 'Ссылка должна начинаться с http')
+         // .url('Введите корректный URL')
+         // .refine((value) => value.startsWith('http'), 'Ссылка должна начинаться с http')
          .optional(),
+
       markupLink: z
          .string()
-         .url('Введите корректный URL')
-         .refine((value) => value.startsWith('http'), 'Ссылка должна начинаться с http')
+         // .url('Введите корректный URL')
+         // .refine((value) => value.startsWith('http'), 'Ссылка должна начинаться с http')
          .optional(),
+
       devLink: z
          .string()
-         .url('Введите корректный URL')
-         .refine((value) => value.startsWith('http'), 'Ссылка должна начинаться с http')
+         // .url('Введите корректный URL')
+         // .refine((value) => value.startsWith('http'), 'Ссылка должна начинаться с http')
          .optional(),
    });
 
-   //
    const {
       register,
+      reset,
       handleSubmit,
       control,
       setValue,
@@ -260,27 +389,34 @@ export default function TaskModalCreationEditing({ isOpen, onClose, slug, taskId
    } = useForm<FormData>({
       resolver: zodResolver(formSchema),
       defaultValues: {
-         name: '',
-         selectedOptionTasks: [{ id: 0, name: '' }],
-         selectedOptionComp: [{ id: 0, name: '' }],
-         selectedOptionsCheckbox: [],
-         selectedOptionPriority: [{ id: 0, name: '' }],
-         // priority: '',
-         estimateMinutes: 0,
-         estimate: '',
-         date: { startDate: '', endDate: '' },
-         description: '',
+         name: taskData?.name || '',
+         selectedOptionTasks: taskData?.task_type || { id: 0, name: '' },
+         selectedOptionComp: taskData?.component || { id: 0, name: '', color: '' },
+         selectedOptionsCheckbox: taskData?.users || [],
+         selectedOptionPriority: taskData?.priority || { id: 0, name: '' },
+
+         stage_id: 0,
+         component_id: 0,
+         block_id: 0,
+
+         epic_id: 0,
+         release_id: 0,
+
+         estimateMinutes: '',
+         estimate: taskData?.estimate_worker || '',
+         date: {
+            startDate: taskData?.begin ? new Date(taskData.begin) : undefined,
+            endDate: taskData?.end ? new Date(taskData.end) : undefined,
+         },
+         description: taskData?.description || '',
          fileLinks: [],
-         layoutLink: '',
-         markupLink: '',
-         devLink: '',
+         layoutLink: taskData?.layout_link || '',
+         markupLink: taskData?.markup_link || '',
+         devLink: taskData?.dev_link || '',
       },
    });
-   // console.log(errors, 'errors '); //!!!
-
+   console.log(errors, '!!! --- errors --- !!!'); //!!!
    // !!! ===================================================================================
-   // Создать задачу -------------------------------------------------
-   const handleCreate = useOptimisticCreateTask();
 
    // Редактировать (обновить) задачу -------------------------------------------
    // console.log('======= files', files, 'files =======');
@@ -302,87 +438,15 @@ export default function TaskModalCreationEditing({ isOpen, onClose, slug, taskId
          }
       });
    };
-
-   const transformToServerData = (formData: FormData): TaskSingle => ({
-      name: formData.name,
-      task_type: formData.selectedOptionTasks.id,
-
-      possibleTaskNextStages: formData.selectedOptionComp,
-      users: formData.selectedOptionsCheckbox,
-      priority: { name: formData.selectedOptionPriority.name },
-      estimate_worker: parseInt(formData.estimateMinutes, 10),
-      begin: formData.date.startDate,
-      end: formData.date.endDate,
-      files: transformFiles(formData.fileLinks),
-      layout_link: formData.layoutLink || null,
-      markup_link: formData.markupLink || null,
-      dev_link: formData.devLink || null, // Преобразование в null, если пусто
-   });
-
-   const handleUpdate = useOptimisticUpdateTask();
-   //    const [taskName, setTaskName] = useState('');
-
-   const handleSave = () => {
-      // handleUpdate(slug, taskId, { name: taskName... TaskSingle  });
-   };
-
-   // отправляем данные формы -------------------------------------------------
-   const onSubmit = (data: FormData) => {
-      console.log('------------ onSubmit ----------');
-      console.log('data', data);
-
-      const serverData = transformToServerData(data);
-
-      console.log('serverData', serverData);
-   };
-
-   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      const inputValue = e.target.value;
-      setValueMain(inputValue);
-      setName(inputValue);
-      if (isTouched) {
-         // setError(validate(inputValue));
-      }
-   };
-
-   // Загрузка данных из API ----------------------------- !!!
-   useEffect(() => {
-      // console.log(tasks?.data?.[1]?.task_type, '------------- tasks.data[0].task_type  ----------');
-
-      // console.log(mapTaskType(5), 'mapTaskType(3)');
-
-      const selectedOptionTasks = watch('selectedOptionTasks');
-
-      // console.log('*********selectedOptionTasks', selectedOptionTasks);
-   }, [selectedOptionTasks]);
-
-   const handleEstimateChange = (e: ChangeEvent<HTMLInputElement>) => {
-      const value = e.target.value;
-      setEstimate(value.match(/^\d+$/) ? `${value}м` : value);
-   };
-
-   // Маска – число + подстановка буквы. Пример, ввод 90 и отображается 90м
-   // Опционально - ввод 90 и парсится на 1ч 30м
-   const parseEstimate = (value: string | number): string => {
-      if (!value) return '';
-      if (/^\d+$/.test(value)) {
-         const minutes = parseInt(value, 10);
-         const hours = Math.floor(minutes / 60);
-         const remainingMinutes = minutes % 60;
-         return `${hours > 0 ? `${hours}ч ` : ''}${remainingMinutes}м`.trim();
-      }
-      return value;
-   };
-
    // модалка "Закрыть окно?"
    const handleCloseModal = () => {
+      onClose();
       setModalOpen(false); // закрыть  модалку
    };
 
+   // НЕ закрыть окно и закрыть модалку
    const handleConfirm = () => {
-      // закрыть окно и модалку
       setModalOpen(false);
-      onClose();
    };
 
    // При клике вне его области открывается модалка "Закрыть окно?"
@@ -392,15 +456,144 @@ export default function TaskModalCreationEditing({ isOpen, onClose, slug, taskId
       }
    };
 
-   // Обработчик изменения приоритета
+   // Обработчик изменения Тип Задачи
+   const handleTaskTypeChange = (value: TaskType[]) => {
+      setValue('selectedOptionTasks', value);
+      setSelectedOptionTasks(value);
+   };
+
+   // Обработчик изменения Компонент
+   const handleComponentChange = (value: Component[]) => {
+      setValue('selectedOptionComp', value);
+      setSelectedOptionComp(value);
+   };
+
+   // Обработчик изменения Исполнитель
+   const handleUsersChange = (value: User[]) => {
+      setValue('selectedOptionsCheckbox', value);
+      setSelectedOptionUsers(value);
+   };
+
+   // Обработчик изменения Приоритета
    const handlePriorityChange = (value: Priority) => {
-      setValue('selectedOptionPriority', value.id);
+      setSelectedPriority(value);
+      setValue('selectedOptionPriority', value);
       clearErrors('selectedOptionPriority'); // Очищаем ошибку при изменении
    };
 
+   // Обработчик изменения Оценка
+   // const handleEstimateChange = (e: ChangeEvent<HTMLInputElement>) => {
+   //    const value = e.target.value;
+   //    setEstimate(value.match(/^\d+$/) ? `${value}м` : value);
+   // };
+
+   // Обработчик изменения Оценка
+   const onBlurFilesChange = (e: React.FocusEvent<HTMLInputElement>) => {
+      const rawValue = e.target.value;
+      const parsed = parseEstimate(rawValue);
+      setValue('estimate', parsed, { shouldValidate: false });
+      setValue('estimateMinutes', rawValue, { shouldValidate: true });
+   };
+
+   // Обработчик изменения Файлы
+   const handleFilesChange = (newFiles: File[]): void => {
+      setValue('fileLinks', newFiles);
+
+      console.log(newFiles, 'newFiles ++++++++++');
+      setFiles(newFiles);
+   };
+   // !!! ------------------------------------------------------------------------------
+   // отправляем данные формы -------------------------------------------------
+   const onSubmit = (data: CustomFormData) => {
+      console.log('*************** onSubmit ***************');
+      console.log('***** data *****', data);
+
+      const serverData = transformToServerData(data);
+
+      console.log('serverData ,isEditMode', serverData, isEditMode);
+      // console.log('*********** data.fileLinks, !isEditMode ***********', data.fileLinks, !isEditMode);
+
+      // создать задачу
+      if (serverData && !isEditMode) handleCreateTask(slugName, serverData, data.fileLinks);
+
+      // редактировать задачу
+      if (serverData && isEditMode) handleUpdateTask(idTaskMain, serverData, data.fileLinks);
+   };
+
+   // Получаем данные
+   useEffect(() => {
+      setComponentsOptions(getComponents?.data || []);
+      setPriorityOptions(getPriorities?.data);
+
+      if (taskId) setTaskTypesOptions(taskData?.possibleTaskNextStages);
+      if (!taskId || getTaskTypes?.data) {
+         setTaskTypesOptions(getTaskTypes?.data);
+      }
+      if (!taskId || !getTaskTypes?.data) {
+         setTaskTypesOptions(typesTasksOptions);
+      }
+
+      setUsersOptions(getUsers?.data);
+   }, [getTaskTypes, getComponents, getPriorities, getUsers, taskData]);
+
+   useEffect(() => {
+      if (taskById?.data) {
+         setTaskData(taskById?.data);
+         setFiles(taskById?.data?.files || []);
+      }
+   }, [taskById?.data]);
+
+   useEffect(() => {
+      if (taskId) setIdTaskMain(taskId);
+      if (taskId && taskById) setTaskData(taskById?.data);
+      if (taskData?.files) setFiles(taskData.files);
+   }, [isOpen, taskId, taskById, taskData?.files]);
+
+   // Установка значений формы после загрузки данных
+   useEffect(() => {
+      if (taskData) {
+         const updatedFiles = taskData?.files || [];
+         setFiles(updatedFiles);
+
+         if (taskData) {
+            reset({
+               ...taskData,
+               name: taskData.name || '',
+               selectedOptionTasks: taskData.task_type || { id: 0, name: '' },
+               selectedOptionComp: taskData.component || { id: 0, name: '', color: '' },
+               selectedOptionsCheckbox: taskData.users || [],
+               selectedOptionPriority: taskData.priority || { id: 0, name: '' },
+
+               stage_id: 0,
+               component_id: 0,
+               block_id: 0,
+
+               epic_id: 0,
+               release_id: 0,
+
+               estimateMinutes: '',
+               estimate: taskData?.estimate_worker || '',
+               date: {
+                  startDate: taskData.begin ? new Date(taskData.begin).toISOString() : null,
+                  endDate: taskData.end ? new Date(taskData.end).toISOString() : null,
+               },
+               description: taskData.description || '',
+               fileLinks: updatedFiles, // Принудительно создаём новый массив
+               layoutLink: taskData.layout_link || '',
+               markupLink: taskData.markup_link || '',
+               devLink: taskData.dev_link || '',
+            });
+         }
+      }
+   }, [taskData, reset, taskData?.files]);
+
    if (!isOpen) return null;
-   if (isLoading) return <div>Loading task...</div>;
-   if (!task) return <div>Task not found</div>;
+   if (isGetTasksIdLoading) return <div className={style.loading}>Загрузка...</div>;
+
+   console.log(taskData, '*************** taskData WRAPPER');
+   // console.log(files, 'files *************** files WRAPPER');
+   // console.log(tasks, 'tasks *************** tasks WRAPPER');
+   // console.log(watch('date'), 'watch(date) *************** watch(date) WRAPPER');
 
    return (
       <div className={style['modal-creation-editing']} onClick={handleOverlayClick}>
@@ -416,6 +609,7 @@ export default function TaskModalCreationEditing({ isOpen, onClose, slug, taskId
                   <Close />
                </button>
             </div>
+
             <form onSubmit={handleSubmit(onSubmit)} className={style.form}>
                {/* Название */}
                <div className={`${style['form-title']} ${errors.name ? style['error-title'] : ''}`}>
@@ -428,35 +622,37 @@ export default function TaskModalCreationEditing({ isOpen, onClose, slug, taskId
 
                {/* Selects */}
                <div className={style['form-selects']}>
+                  {/* Тип задачи */}
                   <div className={style['form-select']}>
                      <SelectCustom<TaskType>
                         value={watch('selectedOptionTasks')}
-                        onChange={(value) => {
-                           setValue('selectedOptionTasks', value);
-                           // console.log('@@@Selected Option Comp:', value);
-                        }}
-                        options={taskTypes}
+                        onChange={handleTaskTypeChange}
+                        options={taskTypesOptions}
                         label="Тип задачи"
-                        titleSelect="Задачи"
+                        titleSelect="Задача"
                         required
                      />
                      {errors.selectedOptionTasks && <p className={style.error}>{errors.selectedOptionTasks.message}</p>}
                   </div>
+
+                  {/* Компонент */}
                   <div className={style['form-select']}>
                      <SelectCustom<Stage>
                         value={watch('selectedOptionComp')}
-                        onChange={(value) => setValue('selectedOptionComp', value)}
-                        options={taskTypesOptions}
+                        onChange={handleComponentChange}
+                        options={componentsOptions}
                         label="Компонент"
                         titleSelect="Не выбран"
                         required
                      />
                      {errors.selectedOptionComp && <p className={style.error}>{errors.selectedOptionComp.message}</p>}
                   </div>
+
+                  {/* Исполнитель */}
                   <div className={style['form-select']}>
                      <SelectCustomCheckbox
                         value={watch('selectedOptionsCheckbox')}
-                        onChange={(value) => setValue('selectedOptionsCheckbox', value)}
+                        onChange={handleUsersChange}
                         options={users}
                         label="Исполнитель"
                         titleSelect="Исполнитель"
@@ -473,8 +669,8 @@ export default function TaskModalCreationEditing({ isOpen, onClose, slug, taskId
                   <div className={style['form-select']}>
                      <SelectCustom<Priority>
                         value={watch('selectedOptionPriority')}
-                        onChange={(value) => handlePriorityChange(value)}
-                        options={priority}
+                        onChange={handlePriorityChange}
+                        options={priorityOptions}
                         label="Приоритет"
                         titleSelect="Приоритет"
                         required
@@ -490,14 +686,7 @@ export default function TaskModalCreationEditing({ isOpen, onClose, slug, taskId
                      <label>Оценка</label>
                      <input
                         {...register('estimate')}
-                        onBlur={(e) => {
-                           const rawValue = e.target.value;
-                           const parsed = parseEstimate(rawValue);
-                           setValue('estimate', parsed, { shouldValidate: false });
-                           setValue('estimateMinutes', rawValue, {
-                              shouldValidate: true,
-                           });
-                        }}
+                        onBlur={onBlurFilesChange}
                         className={style['form-input']}
                         type="text"
                         placeholder="Оценка"
@@ -514,7 +703,7 @@ export default function TaskModalCreationEditing({ isOpen, onClose, slug, taskId
                      render={({ field }) => <CalendarCustom value={field.value} onChange={field.onChange} />}
                   />
 
-                  {errors.date && <p>{errors.date.message}</p>}
+                  {errors.date && <p className={style.error}>{errors.date.message}</p>}
                </div>
 
                {/* <div className={style['form-date-end']}></div> */}
@@ -524,7 +713,6 @@ export default function TaskModalCreationEditing({ isOpen, onClose, slug, taskId
                   <Controller
                      name="description"
                      control={control}
-                     defaultValue=""
                      render={({ field }) => (
                         <TextAreaWithToolbar
                            value={field.value}
@@ -544,9 +732,16 @@ export default function TaskModalCreationEditing({ isOpen, onClose, slug, taskId
                      control={control}
                      render={({ field: { value, onChange }, fieldState: { error } }) => (
                         <FileUpload
+                           taskId={idTaskMain}
                            files={files || []}
-                           onFilesChange={handleFilesChange} // разрешение на загрузку файлов task.can_attach_file // as unknown as (files: File[]) => void
-                           // onFilesChange={task.can_attach_file ? handleFilesChange : null} //!!!!!!!
+                           onFilesChange={(newFiles) => {
+                              onChange(newFiles);
+
+                              if (handleFilesChange) {
+                                 handleFilesChange(newFiles);
+                              }
+                           }}
+                           disabled={!taskData?.can_attach_file} // Разрешение на загрузку файлов // taskData.can_attach_file
                            error={error?.message}
                         />
                      )}
@@ -612,11 +807,10 @@ export default function TaskModalCreationEditing({ isOpen, onClose, slug, taskId
 
                {/* Кнопки */}
                <div className={style['actions']}>
-                  {/*  */}
                   <button type="submit" className={style['btn_blue']} onClick={() => onSubmit}>
                      {isEditMode ? 'Сохранить' : 'Добавить'}
                   </button>
-                  <button className={style['btn']} type="button" onClick={onClose}>
+                  <button className={style['btn']} type="button" onClick={() => onClose(false)}>
                      Отменить
                   </button>
                </div>

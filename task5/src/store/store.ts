@@ -2,10 +2,11 @@ import { configureStore } from '@reduxjs/toolkit';
 import { authApi } from '../modules/AuthPage/api/authApi';
 import authReduser from '@/modules/AuthPage/authSlicer';
 import { projectsApi } from '@/modules/ProjectsPage/api/api';
-import { taskApi } from '@/modules/TaskPage/api/taskApi';
 import { taskApiActions } from '@/modules/TaskModalCreationEditing/api/taskApiActions';
 import { tasksApi } from '@/api/tasks/tasks.api';
 import { userApi } from '@/api/user/user.api';
+import { appApi } from '@/api/appApi';
+
 // import { setupListeners } from "@reduxjs/toolkit/query";
 
 export const store = configureStore({
@@ -14,9 +15,10 @@ export const store = configureStore({
       auth: authReduser,
       [userApi.reducerPath]: userApi.reducer,
       [projectsApi.reducerPath]: projectsApi.reducer,
-      [taskApi.reducerPath]: taskApi.reducer,
+      // [taskApi.reducerPath]: taskApi.reducer,
       [tasksApi.reducerPath]: tasksApi.reducer,
       tasks: tasksApi.reducer,
+      [appApi.reducerPath]: appApi.reducer,
       [taskApiActions.reducerPath]: taskApiActions.reducer,
    },
    middleware: (getDefaultMiddleware) =>
@@ -24,8 +26,9 @@ export const store = configureStore({
          .concat(authApi.middleware)
          .concat(userApi.middleware)
          .concat(projectsApi.middleware)
-         .concat(taskApi.middleware)
+      //    .concat(taskApi.middleware)
          .concat(tasksApi.middleware)
+         .concat(appApi.middleware)
          .concat(taskApiActions.middleware),
 });
 

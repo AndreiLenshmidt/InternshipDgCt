@@ -6,19 +6,19 @@ import { useEffect, useState } from 'react';
 
 export default function MainPage() {
    const [inOut, setInOut] = useState(false);
-   const [cookies, setCookie] = useCookies(['userIsAuth']);
    const [token, _, removeCookie] = useCookies(['token-auth']);
 
    useEffect(() => {
-      if (cookies.userIsAuth) {
+      if (token['token-auth']) {
          setInOut(true);
       }
    });
 
    const LogInLogOutButton = ({ inOut }: { inOut: boolean }) => {
       const logOut = () => {
-         setCookie('userIsAuth', false);
          removeCookie('token-auth');
+         globalThis.document.cookie = '';
+         location.reload();
          setInOut(false);
       };
       if (inOut) {
@@ -45,6 +45,9 @@ export default function MainPage() {
          <main className={styles.main}>
             <Link className={styles.link} href="/projects">
                Перейти к проектам
+            </Link>
+            <Link className={styles.link} href="/projects/kanban/task">
+               Перейти к задаче
             </Link>
          </main>
          <footer className={styles.footer}>

@@ -15,7 +15,6 @@ type TileDisabledParams = {
 export default function CalendarCustom({ value, onChange }: CalendarCustomProps) {
    const [startDate, setStartDate] = useState<Date | null>(value?.startDate ? new Date(value.startDate) : null);
    const [endDate, setEndDate] = useState<Date | null>(value?.endDate ? new Date(value.endDate) : null);
-   const [errorsShow, setErrorsShow] = useState<string | null>(null);
    const [showStartCalendar, setShowStartCalendar] = useState<boolean>(false); // Состояние для показа календаря начала
    const [showEndCalendar, setShowEndCalendar] = useState<boolean>(false); // Состояние для показа календаря завершения
    const calendarRef = useRef<HTMLDivElement | null>(null);
@@ -32,22 +31,6 @@ export default function CalendarCustom({ value, onChange }: CalendarCustomProps)
          setShowEndCalendar(false);
       }
    };
-
-   // Обработчик клика вне области календаря
-   const handleClickOutside = (event: MouseEvent) => {
-      if (calendarRef.current && !calendarRef.current.contains(event.target as Node)) {
-         setShowStartCalendar(false);
-         setShowEndCalendar(false);
-      }
-   };
-
-   useEffect(() => {
-      const handle = (event: MouseEvent) => handleClickOutside(event);
-      document.addEventListener('mousedown', handle);
-      return () => {
-         document.removeEventListener('mousedown', handle);
-      };
-   }, []);
 
    // Добавление классов для ячеек
    const tileClassName = ({ date }: TileDisabledParams) => {
@@ -76,17 +59,57 @@ export default function CalendarCustom({ value, onChange }: CalendarCustomProps)
 
    // Переключение календарей
    const handleStartDateClick = () => {
-      setShowStartCalendar(!showStartCalendar);
-      setShowEndCalendar(false);
+      if (!showStartCalendar && !showEndCalendar) {
+         setShowStartCalendar(true);
+         setShowEndCalendar(false);
+         return;
+      }
    };
 
    const handleEndDateClick = () => {
-      setShowEndCalendar(!showEndCalendar);
-      setShowStartCalendar(false);
+      if (!showStartCalendar && !showEndCalendar) {
+         setShowStartCalendar(false);
+         setShowEndCalendar(true);
+         return;
+      }
    };
 
+   // Обработчик клика вне области календаря
+   const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+
+      // Игнорируем клики по кнопкам навигации календаря (следующие и предыдущие стрелки)
+      if (
+         target.classList.contains('react-calendar__navigation__arrow') ||
+         target.closest('.react-calendar__navigation') // если клик на родительский элемент навигации
+      ) {
+         return;
+      }
+
+      // Закрываем календарь, если клик был вне календаря
+      if (calendarRef.current && !calendarRef.current.contains(target)) {
+         setShowStartCalendar(false);
+         setShowEndCalendar(false);
+      }
+   };
+
+   // Синхронизация состояния с пропсами `value`
+   useEffect(() => {
+      if (value) {
+         setStartDate(value.startDate ? new Date(value.startDate) : null);
+         setEndDate(value.endDate ? new Date(value.endDate) : null);
+      }
+   }, [value]);
+
+   useEffect(() => {
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => {
+         document.removeEventListener('mousedown', handleClickOutside);
+      };
+   }, []);
+
    return (
-      <div className={style['date-range-picker']} ref={calendarRef}>
+      <div className={style['date-range-picker']}>
          <div className={style['inputs-date']}>
             {/* Дата начала */}
             <div className={style['input-wrp']} onClick={handleStartDateClick}>
@@ -103,7 +126,7 @@ export default function CalendarCustom({ value, onChange }: CalendarCustomProps)
                   </span>
 
                   {showStartCalendar && (
-                     <div className="calendar-wrapper">
+                     <div className="calendar-wrapper" ref={calendarRef}>
                         <Calendar
                            locale="ru"
                            className="custom-calendar"
@@ -135,7 +158,7 @@ export default function CalendarCustom({ value, onChange }: CalendarCustomProps)
                   </span>
 
                   {showEndCalendar && (
-                     <div className="calendar-wrapper">
+                     <div className="calendar-wrapper" ref={calendarRef}>
                         <Calendar
                            locale="ru"
                            className="custom-calendar"
