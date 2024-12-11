@@ -139,15 +139,23 @@ export function KanbanPage() {
                            const [stageTasks, stageInfo] = stagedTasks[stage.id] || [];
 
                            return (
-                              <TasksColumn key={stage.id} stage={stage} tasksAmount={stageTasks?.length || 0}>
-                                 <Scrollbar noScrollX style={{ height: 800, width: 250 }}>
-                                    {stageTasks?.map((task) => {
-                                       return <TaskCard task={task} key={task.id} />;
-                                    })}
-                                 </Scrollbar>
-                                 {/* ScrollbarsCustom-Scroller, ScrollbarsCustom-Wrapper, ScrollbarsCustom-Scroller? -> display: contents; */}
-                                 {/* ScrollbarsCustom-Scroller, ScrollbarsCustom-Wrapper -> overflow: null; */}
-                              </TasksColumn>
+                              tasks as (Record<PropertyKey, unknown> & TaskMultiple)[],
+                              (
+                                 <TasksColumn
+                                    key={stage.id}
+                                    stage={stage}
+                                    tasksAmount={stageTasks?.length || 0}
+                                    tasks={tasks}
+                                 >
+                                    <Scrollbar noScrollX style={{ height: 800, width: 250 }}>
+                                       {stageTasks?.map((task) => {
+                                          return <TaskCard task={task} key={task.id} />;
+                                       })}
+                                    </Scrollbar>
+                                    {/* ScrollbarsCustom-Scroller, ScrollbarsCustom-Wrapper, ScrollbarsCustom-Scroller? -> display: contents; */}
+                                    {/* ScrollbarsCustom-Scroller, ScrollbarsCustom-Wrapper -> overflow: null; */}
+                                 </TasksColumn>
+                              )
                            );
                         }
 
