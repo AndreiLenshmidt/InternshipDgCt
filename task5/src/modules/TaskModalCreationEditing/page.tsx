@@ -40,11 +40,11 @@ import { useFileUploader } from '@/modules/TaskModalCreationEditing/utils/useFil
 import { transformToServerData } from '@/modules/TaskModalCreationEditing/utils/transformToServerData';
 import { parseEstimate } from '@/modules/TaskModalCreationEditing/utils/parseEstimate';
 
-export type ResponseFileWithObject = ResponseFile & {
+type ResponseFileWithObject = ResponseFile & {
    fileObject: File;
 };
 
-export interface TaskModalCreationEditingProps {
+interface TaskModalCreationEditingProps {
    isOpen: boolean;
    onClose: () => void;
    slug: string;

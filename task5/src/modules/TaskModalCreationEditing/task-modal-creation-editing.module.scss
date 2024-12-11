@@ -182,7 +182,11 @@
    top: 0;
    left: 0;
    flex: 1 1 285px;
+   width: 100%;
 
+   @media (max-width: 768px) {
+      flex: 1 1 100%;
+   }
    @media (max-width: 1050px) {
       flex-wrap: wrap;
       justify-content: center;
