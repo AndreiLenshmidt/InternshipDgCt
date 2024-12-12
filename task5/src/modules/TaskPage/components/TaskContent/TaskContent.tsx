@@ -101,14 +101,15 @@ export default function TaskContent({
 
    const handlerNewTask = () => {
       setNewTaskFlag(true);
-      setTaskIdEditTask(27); //!!! поменять на task?.id
+      setTaskIdEditTask(15); //!!! поменять на task?.id
       setProjectSlag('project4'); //!!! поменять на slag
       setIsOpenCreateTask(!isOpenCreateTask);
    };
 
    const handlerEditTask = () => {
       // if (task?.id) {
-      setTaskIdEditTask(27); //!!! поменять на task?.id
+      setNewTaskFlag(false);
+      setTaskIdEditTask(15); //!!! поменять на task?.id
       setProjectSlag('project4'); //!!! поменять на slag
       setIsOpenCreateTask(!isOpenCreateTask);
       // }

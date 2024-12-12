@@ -11,7 +11,7 @@ export const appApi = createApi({
    baseQuery: fetchBaseQuery({ baseUrl: BASE_URL_API, credentials: 'same-origin' }),
    endpoints: (build) => ({
       getTaskByTaskId: build.query<{ data: TaskSingle }, number>({
-         query: (id: number | undefined) => ({
+         query: (id: number) => ({
             url: `/task/${id}`,
             headers: {
                Authorization: `Bearer ${token}`,
@@ -19,7 +19,7 @@ export const appApi = createApi({
             },
          }),
       }),
-      updateTask: build.mutation<{ data: TaskSingle }, { id: number; body: Partial<TaskSingle> }>({
+      updateTask: build.mutation<{ data: TaskSingle }, { id: number; body: Partial<TaskMultiple> }>({
          query: ({ id, body }) => ({
             url: `/task/${id}`,
             method: 'PATCH',
@@ -29,7 +29,7 @@ export const appApi = createApi({
             },
          }),
       }),
-      createTask: build.mutation<{ data: TaskSingle }, { slug: string; body: Partial<TaskSingle> }>({
+      createTask: build.mutation<{ data: TaskSingle }, { slug: string; body: Partial<TaskMultiple> }>({
          query: ({ slug, body }) => ({
             url: `/project/${slug}/task`,
             method: 'POST',
@@ -70,7 +70,7 @@ export const appApi = createApi({
             };
          },
       }),
-      getUsers: build.query<User[], string>({
+      getUsers: build.query<{ data: User[] }, string>({
          query: (slug) => ({
             url: `/project/${slug}/user`,
             method: 'GET',
