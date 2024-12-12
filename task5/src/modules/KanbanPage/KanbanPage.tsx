@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { BreadCrumbs } from '@components/bread_crumbs/BreadCrumbs';
 import { Switch } from '@components/switch/Switch';
-// import { TaskModalCreationEditing } from '@/modules/TaskModalCreationEditing/page';
+import { TaskModalCreationEditing } from '@/modules/TaskModalCreationEditing/page';
 import { useRouter } from 'next/router';
 import { useDrag } from 'react-dnd';
 import { TaskCard } from './components/task-card/TaskCard';
@@ -32,9 +32,14 @@ export function KanbanPage() {
       color: isOver ? 'green' : undefined,
    };
 
+   // Функция для получения newTaskId от дочернего компонента
+   const handleNewTaskId = (taskId: number) => {
+      setNewTaskId(taskId);
+   };
+
    const handlerNewTask = () => {
       setNewTaskFlag(true);
-      setTaskIdEditTask();
+      setTaskIdEditTask(undefined);
       setProjectSlag('project4'); //!!! поменять на slag
       setIsOpenCreateTask(!isOpenCreateTask);
    };
