@@ -612,6 +612,7 @@ export type UserProjectRole = {
 
 /** Файл */
 export type ResponseFile = {
+   fileObject: File;
    /** Идентификатор файла */
    id?: number;
    /** Оригинальное название файла */
@@ -1859,4 +1860,18 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
             ...params,
          }),
    };
+}
+
+export type FormDataType = {
+   email: string;
+   password: string;
+};
+
+export interface ServerResponse {
+   token: string | undefined;
+}
+
+export interface LoginRequest {
+   email: string;
+   password: string;
 }

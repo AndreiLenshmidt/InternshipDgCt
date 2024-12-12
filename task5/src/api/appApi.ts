@@ -2,6 +2,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { getCookie } from '@/utils/cookies';
 import { TaskSingle, TaskMultiple, User, ResponseFile, Comment } from '@/api/data.types';
 import { BASE_URL } from '@/consts';
+import { LoginRequest, ServerResponse } from './data.types';
 
 const token = getCookie('token-auth');
 export const BASE_URL_API = BASE_URL + 'api';
@@ -187,6 +188,12 @@ export const appApi = createApi({
             },
          }),
       }),
+      getOAuthToken: build.mutation<ServerResponse, LoginRequest>({
+         query: ({ email, password }) => ({
+            url: `/auth/token?email=${email}&password=${password}`,
+            method: 'POST',
+         }),
+      }),
    }),
 });
 
@@ -207,4 +214,5 @@ export const {
    useCreateCommentMutation,
    usePatchCommentMutation,
    useDeleteCommentMutation,
+   useGetOAuthTokenMutation,
 } = appApi;

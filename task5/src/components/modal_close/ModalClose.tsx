@@ -13,7 +13,7 @@ export default function ModalClose({ title, isOpen, onClose, onConfirm }: ModalP
    // Закрытие модального окна при клике вне его области
    const handleOutsideClick = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
-      if (target.classList.contains(styles.overlay)) {
+      if (target.classList.contains(styles.overlay) && onClose) {
          onClose();
       }
    };
