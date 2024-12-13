@@ -21,6 +21,7 @@ import { TaskModalCreationEditing } from '@/modules/TaskModalCreationEditing/pag
 import ModalClose from '@/components/modal_close/ModalClose';
 import { useDeleteTaskMutation, useUpdateTaskMutation } from '@/api/appApi';
 import { useRouter } from 'next/router';
+import { log } from 'console';
 
 export default function TaskContent({
    projectSlug,
@@ -104,17 +105,17 @@ export default function TaskContent({
 
    const handlerNewTask = () => {
       setNewTaskFlag(true);
-      setTaskIdEditTask(task?.id); //!!! поменять на task?.id
-      setProjectSlag(projectSlug); //!!! поменять на slag
+      setTaskIdEditTask(task?.id);
+      setProjectSlag(projectSlug);
       setIsOpenCreateTask(!isOpenCreateTask);
    };
 
    const handlerEditTask = () => {
       setNewTaskFlag(false);
-      setTaskIdEditTask(task?.id); //!!! поменять на task?.id
-      setProjectSlag(projectSlug); //!!! поменять на slag
-      setIsOpenCreateTask(!isOpenCreateTask);
+      setTaskIdEditTask(task?.id);
+      setProjectSlag(projectSlug);
    };
+
    // Функция для получения newTaskId созданной задачи от дочернего компонента
    const handleNewTaskId = (taskId: number) => {
       setNewTaskId(taskId);
@@ -125,10 +126,15 @@ export default function TaskContent({
    };
 
    const deleteTaskHandler = async () => {
+      console.log('task', task);
+      console.log('task', task);
+
       if (task?.id) {
          const taskDel = await deleteTask(task?.id);
          console.log(taskDel);
-         router.replace('/projects');
+
+         router.replace(`/projects/${projectSlug}`);
+         modalInfo.setCloseModal(true);
          setDelTaskModal(false);
       }
    };

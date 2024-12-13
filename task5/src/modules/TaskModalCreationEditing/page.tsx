@@ -11,7 +11,6 @@ import { formSchema } from '@/modules/TaskModalCreationEditing/utils/validationS
 import CalendarCustom from '@/components/calendar_custom/CalendarCustom';
 import TextAreaWithToolbar from '@/components/text_area_with_toolbar/TextAreaWithToolbar';
 import FileUpload from '@/components/file_upload/FileUpload';
-import { useGetProjectsQuery } from '../ProjectsPage/api/api';
 import {
    // useCreateTaskMutation,
    // useGetPrioritiesQuery,
@@ -19,6 +18,8 @@ import {
    useGetComponentsQuery,
    useGetTasksQuery,
 } from '@/modules/TaskModalCreationEditing/api/taskApiActions';
+
+import { useGetProjectsQuery } from '@/modules/ProjectsPage/api/api';
 
 // import { useGetCurrentUserQuery } from '@/api/user/user.api';
 import {
@@ -39,15 +40,6 @@ import { Priority, TaskMultiple, TaskSingle, TaskType, User, ResponseFile, Compo
 import { typesTasksOptions, compOptions, priorOptions, usersOptions } from '@/modules/TaskModalCreationEditing/variors';
 import { transformToServerData } from '@/modules/TaskModalCreationEditing/utils/transformToServerData';
 import { parseEstimate } from '@/modules/TaskModalCreationEditing/utils/parseEstimate';
-
-// type ResponseFileWithObject = {
-//    id?: number;
-//    original_name?: string;
-//    link?: string;
-//    created_at?: string;
-//    updated_at?: string;
-//    fileObject: File;
-// };
 
 interface TaskModalCreationEditingProps {
    isOpen: boolean;
@@ -122,8 +114,12 @@ export function TaskModalCreationEditing({
 
    const { data: getUsers } = useGetUsersQuery(slugName);
 
+   //isLoading, isSuccess, isError, error
+   const { data: { data: projects } = { data: [] } } = useGetProjectsQuery();
+   // console.log('projects', projects);
+
    const { data } = useGetTasksQuery({ slug: slugName });
-   // console.log('slugName,tasks', 'project2', data);
+   console.log('slugName,tasks', 'project2', data);
 
    const [createTaskMutation, { isLoading: isCreateLoading, isSuccess: createIsSuccess, error: createError }] =
       useCreateTaskMutation();
