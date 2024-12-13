@@ -32,7 +32,7 @@ export default function ModalTask({
             <div className="loader" style={{ margin: '36% auto' }}></div>
          ) : (
             <div className={styles.layout_modalbox}>
-               <TaskContent task={task?.data} activeUser={user?.data} projectSlug={projectSlug} />
+               <TaskContent task={task?.data} activeUser={user?.data} projectSlug={projectSlug} onClose={onClose} />
             </div>
          )}
       </div>,

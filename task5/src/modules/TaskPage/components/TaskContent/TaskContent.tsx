@@ -27,10 +27,12 @@ export default function TaskContent({
    projectSlug,
    task,
    activeUser,
+   onClose,
 }: {
    projectSlug: string;
    task: TaskSingle | undefined;
    activeUser: User | undefined;
+   onClose: CallableFunction;
 }) {
    const isAdmin = activeUser?.is_admin;
    const [selectedOptionComp, setSelectedOptionComp] = useState<Stage | undefined>(task?.stage);
@@ -136,6 +138,8 @@ export default function TaskContent({
 
          setDelTaskModal(false);
          modalInfo.setCloseModal(true);
+
+         // onClose(false); //!!! как вариант, раскоменть посмотри. По мне лучше без onClose(false)
       } else {
          setDelTaskModal(false);
          modalInfo.setCloseModal(true);

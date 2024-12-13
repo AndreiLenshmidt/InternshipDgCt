@@ -83,7 +83,7 @@ export function KanbanPage() {
       setOpenTask(true);
    };
 
-   // console.log(router.query['task-slug'], 'router.query[task-slug]');
+   // console.log(router.query['task-slug'], 'router.query[task-slug]'); //, isCloseModal: boolean
 
    return (
       <>
