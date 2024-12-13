@@ -116,6 +116,7 @@ export default function TaskContent({
       setNewTaskFlag(false);
       setTaskIdEditTask(task?.id);
       setProjectSlag(projectSlug);
+      setIsOpenCreateTask(!isOpenCreateTask);
    };
 
    // Функция для получения newTaskId созданной задачи от дочернего компонента
@@ -181,9 +182,8 @@ export default function TaskContent({
             modalInfo.setModalInfo('Не удалось изменить статус задачи');
             task?.stage && setSelectedOptionComp(task?.stage);
          }
-         console.log(result.data);
-
-         console.log(stage);
+         // console.log(result.data);
+         // console.log(stage);
       }
    };
 
@@ -236,7 +236,7 @@ export default function TaskContent({
          </div>
          <div className={styles.aside}>
             <div className={`${styles.flex} ${styles.aside_box}`}>
-               <p className="id">id: {task?.id}</p>
+               <p className="id">id: {task?.id || 'отсутсвует'}</p>
                <div>
                   <button onClick={handlerEditTask}>
                      <Edit className={styles.aside_icon} />
@@ -251,7 +251,7 @@ export default function TaskContent({
                maxWidth={'100%'}
                value={selectedOptionComp}
                onChange={(value) => setSelectedOptionComp(value)}
-               titleSelect={`${selectedOptionComp}`}
+               titleSelect={`${selectedOptionComp || 'не задано'}`}
                options={selectOptions}
             />
             <div className={`${styles.flex} ${styles.aside_tabbox}`}>
@@ -260,7 +260,7 @@ export default function TaskContent({
             <div className={styles.flexcentre}>
                <span className={styles.aside_text}>Оценка</span>
                <div className={styles.flexcentre}>
-                  <span className={styles.aside__textblack}>{task?.bugs_tracked_time}ч</span>
+                  <span className={styles.aside__textblack}>{task?.bugs_tracked_time || 0}ч</span>
                   <Clock className={styles.aside_clock} />
                </div>
             </div>
@@ -294,7 +294,7 @@ export default function TaskContent({
             <div className={styles.aside_infobox}>
                <div>
                   <p className={`${styles.aside_text} ${styles.pb8}`}>Исполнитель</p>
-                  {task?.users ? (
+                  {task?.users &&
                      task.users.map((user, index) => (
                         <div key={index} className={styles.pb8} style={{ display: 'flex' }}>
                            <figure className={styles.avatarbox}>
@@ -308,31 +308,30 @@ export default function TaskContent({
                               {user.surname} {user.name} {user.patronymic}
                            </p>
                         </div>
-                     ))
-                  ) : (
-                     <></>
-                  )}
+                     ))}
                </div>
             </div>
             <div className={`${styles.aside_infobox} ${styles.pt16}`}>
                <div>
                   <p className={`${styles.aside_text} ${styles.pb8}`}>Постановщик</p>
-                  <div className={styles.pb8} style={{ display: 'flex' }}>
-                     <figure className={styles.avatarbox}>
-                        {task?.created_by?.avatar?.link ? (
-                           <img
-                              height={32}
-                              src={`https://trainee-academy.devds.ru${task?.created_by?.avatar?.link}`}
-                              alt={task?.created_by?.name}
-                           />
-                        ) : (
-                           <></>
-                        )}
-                     </figure>
-                     <p style={{ paddingLeft: 8, flexBasis: '80%' }}>
-                        {task?.created_by?.surname} {task?.created_by?.name} {task?.created_by?.patronymic}
-                     </p>
-                  </div>
+                  {task?.created_by && (
+                     <div className={styles.pb8} style={{ display: 'flex' }}>
+                        <figure className={styles.avatarbox}>
+                           {task?.created_by?.avatar?.link ? (
+                              <img
+                                 height={32}
+                                 src={`https://trainee-academy.devds.ru${task?.created_by?.avatar?.link}`}
+                                 alt={task?.created_by?.name}
+                              />
+                           ) : (
+                              <></>
+                           )}
+                        </figure>
+                        <p style={{ paddingLeft: 8, flexBasis: '80%' }}>
+                           {task?.created_by?.surname} {task?.created_by?.name} {task?.created_by?.patronymic}
+                        </p>
+                     </div>
+                  )}
                </div>
             </div>
             <div className={`${styles.aside_infobox} ${styles.pt16}`}>
@@ -342,7 +341,7 @@ export default function TaskContent({
                      {task?.layout_link ? (
                         <Link href={`${task?.layout_link}`}>{task?.layout_link}</Link>
                      ) : (
-                        <span>layout link отсутсвует</span>
+                        <span>отсутсвует</span>
                      )}
                   </p>
                </div>
@@ -354,7 +353,7 @@ export default function TaskContent({
                      {task?.dev_link ? (
                         <Link href={`${task?.dev_link}`}>{task?.dev_link}</Link>
                      ) : (
-                        <span>dev link отсутсвует</span>
+                        <span>отсутсвует</span>
                      )}
                   </p>
                </div>
@@ -366,7 +365,7 @@ export default function TaskContent({
                      {task?.markup_link ? (
                         <Link href={`${task?.markup_link}`}>{task?.markup_link}</Link>
                      ) : (
-                        <span>markup link отсутсвует</span>
+                        <span>отсутсвует</span>
                      )}
                   </p>
                </div>
