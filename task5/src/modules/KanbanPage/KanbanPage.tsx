@@ -55,6 +55,7 @@ export function KanbanPage() {
    // });
 
    // const dropstyle = { color: isOver ? 'green' : undefined };
+
    // Функция для получения newTaskId от дочернего компонента
    const handleNewTaskId = (taskId: number) => {
       setNewTaskId(taskId);

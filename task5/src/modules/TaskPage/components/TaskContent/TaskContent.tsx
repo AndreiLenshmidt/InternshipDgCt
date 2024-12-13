@@ -110,16 +110,18 @@ export default function TaskContent({
    };
 
    const handlerEditTask = () => {
-      // if (task?.id) {
       setNewTaskFlag(false);
       setTaskIdEditTask(task?.id); //!!! поменять на task?.id
       setProjectSlag(projectSlug); //!!! поменять на slag
       setIsOpenCreateTask(!isOpenCreateTask);
-      // }
    };
-   // Функция для получения newTaskId от дочернего компонента
+   // Функция для получения newTaskId созданной задачи от дочернего компонента
    const handleNewTaskId = (taskId: number) => {
       setNewTaskId(taskId);
+   };
+
+   const onConfirmHandlerModal = () => {
+      setDelTaskModal(false);
    };
 
    const deleteTaskHandler = async () => {
@@ -154,6 +156,7 @@ export default function TaskContent({
       };
       if (task?.id) {
          const result = await updateTask({ id: task.id, body: taskBody });
+
          if (result.data) {
             modalInfo.setModalTitle('Успешно');
             modalInfo.setModalInfo('Статус задачи успешно изменен');
@@ -163,6 +166,7 @@ export default function TaskContent({
             task?.stage && setSelectedOptionComp(task?.stage);
          }
          console.log(result.data);
+
          console.log(stage);
       }
    };
@@ -376,10 +380,8 @@ export default function TaskContent({
                <ModalClose
                   title="Удалить задачу"
                   isOpen={isDeleteTaskModal}
-                  onConfirm={deleteTaskHandler}
-                  onClose={() => {
-                     setDelTaskModal(false);
-                  }}
+                  onConfirm={onConfirmHandlerModal}
+                  onClose={deleteTaskHandler}
                />
             )}
          </div>
