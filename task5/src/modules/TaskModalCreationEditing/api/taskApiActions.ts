@@ -19,38 +19,6 @@ export const taskApiActions = createApi({
          }),
       }),
 
-      updateTask: build.mutation<{ data: TaskSingle }, { id: number; body: Partial<TaskSingle> }>({
-         query: ({ id, body }) => ({
-            url: `/task/${id}`,
-            method: 'PATCH',
-            body: body,
-            headers: {
-               Authorization: `Bearer ${token}`,
-            },
-         }),
-      }),
-
-      createTask: build.mutation<{ data: TaskSingle }, { slug: string; body: Partial<TaskSingle> }>({
-         query: ({ slug, body }) => ({
-            url: `/project/${slug}/task`,
-            method: 'POST',
-            body,
-            headers: {
-               Authorization: `Bearer ${token}`,
-            },
-         }),
-      }),
-
-      deleteTask: build.mutation<void, number>({
-         query: (id) => ({
-            url: `/task/${id}`,
-            method: 'DELETE',
-            headers: {
-               Authorization: `Bearer ${token}`,
-            },
-         }),
-      }),
-
       getTasks: build.query<TaskMultiple, { slug: string; filters?: Record<string, string | number | number[]> }>({
          query: ({ slug, filters }) => {
             const searchParams = new URLSearchParams();
@@ -113,6 +81,39 @@ export const taskApiActions = createApi({
             },
          }),
       }),
+
+      updateTask: build.mutation<{ data: TaskSingle }, { id: number; body: Partial<TaskSingle> }>({
+         query: ({ id, body }) => ({
+            url: `/task/${id}`,
+            method: 'PATCH',
+            body: body,
+            headers: {
+               Authorization: `Bearer ${token}`,
+            },
+         }),
+      }),
+
+      createTask: build.mutation<{ data: TaskSingle }, { slug: string; body: Partial<TaskSingle> }>({
+         query: ({ slug, body }) => ({
+            url: `/project/${slug}/task`,
+            method: 'POST',
+            body,
+            headers: {
+               Authorization: `Bearer ${token}`,
+            },
+         }),
+      }),
+
+      deleteTask: build.mutation<void, number>({
+         query: (id) => ({
+            url: `/task/${id}`,
+            method: 'DELETE',
+            headers: {
+               Authorization: `Bearer ${token}`,
+            },
+         }),
+      }),
+
       sendFilesTask: build.mutation<ResponseFile, { taskId: number; fileId: number | undefined }>({
          query: ({ taskId, fileId }) => ({
             url: `/task/${taskId}/file/${fileId}`,
@@ -138,14 +139,14 @@ export const taskApiActions = createApi({
 
 export const {
    useGetTaskByTaskIdQuery,
-   useUpdateTaskMutation,
-   useCreateTaskMutation,
-   useDeleteTaskMutation,
    useGetTasksQuery,
    useGetUsersQuery,
    useGetComponentsQuery,
    useGetPrioritiesQuery,
    useGetTaskTypesQuery,
+   useUpdateTaskMutation,
+   useCreateTaskMutation,
+   useDeleteTaskMutation,
    useSendFilesTaskMutation,
    useDeleteFileTaskMutation,
 } = taskApiActions;

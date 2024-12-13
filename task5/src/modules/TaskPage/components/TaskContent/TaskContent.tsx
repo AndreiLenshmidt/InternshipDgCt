@@ -101,7 +101,7 @@ export default function TaskContent({
 
    const handlerNewTask = () => {
       setNewTaskFlag(true);
-      setTaskIdEditTask(27); //!!! поменять на task?.id
+      setTaskIdEditTask(35); //!!! поменять на task?.id
       setProjectSlag('project4'); //!!! поменять на slag
       setIsOpenCreateTask(!isOpenCreateTask);
    };
@@ -109,7 +109,7 @@ export default function TaskContent({
    const handlerEditTask = () => {
       // if (task?.id) {
       setNewTaskFlag(false);
-      setTaskIdEditTask(27); //!!! поменять на task?.id
+      setTaskIdEditTask(33); //!!! поменять на task?.id
       setProjectSlag('project4'); //!!! поменять на slag
       setIsOpenCreateTask(!isOpenCreateTask);
       // }
@@ -117,6 +117,10 @@ export default function TaskContent({
    // Функция для получения newTaskId созданной задачи от дочернего компонента
    const handleNewTaskId = (taskId: number) => {
       setNewTaskId(taskId);
+   };
+
+   const onConfirmHandlerModal = () => {
+      setDelTaskModal(false);
    };
 
    const deleteTaskHandler = async () => {
@@ -151,7 +155,7 @@ export default function TaskContent({
       };
       if (task?.id) {
          const result = await updateTask({ id: task.id, body: taskBody });
-         console.log(result.data.data);
+         console.log(result?.data?.data);
          console.log(stage);
       }
    };
@@ -365,10 +369,8 @@ export default function TaskContent({
                <ModalClose
                   title="Удалить задачу"
                   isOpen={isDeleteTaskModal}
-                  onConfirm={deleteTaskHandler}
-                  onClose={() => {
-                     setDelTaskModal(false);
-                  }}
+                  onConfirm={onConfirmHandlerModal}
+                  onClose={deleteTaskHandler}
                />
             )}
          </div>

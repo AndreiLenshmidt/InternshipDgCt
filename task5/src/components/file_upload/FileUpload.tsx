@@ -194,7 +194,7 @@ export default function FileUpload({ taskId, files, onFilesChange, error }: File
       }
    }, [files]);
 
-   console.log('filesLocal', fileLocal);
+   // console.log('filesLocal', fileLocal);
 
    return (
       <div className={style['files-upload']}>
