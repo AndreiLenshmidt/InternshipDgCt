@@ -101,7 +101,7 @@ export default function TaskContent({
 
    const handlerNewTask = () => {
       setNewTaskFlag(true);
-      setTaskIdEditTask(15); //!!! поменять на task?.id
+      setTaskIdEditTask(27); //!!! поменять на task?.id
       setProjectSlag('project4'); //!!! поменять на slag
       setIsOpenCreateTask(!isOpenCreateTask);
    };
@@ -109,12 +109,12 @@ export default function TaskContent({
    const handlerEditTask = () => {
       // if (task?.id) {
       setNewTaskFlag(false);
-      setTaskIdEditTask(15); //!!! поменять на task?.id
+      setTaskIdEditTask(27); //!!! поменять на task?.id
       setProjectSlag('project4'); //!!! поменять на slag
       setIsOpenCreateTask(!isOpenCreateTask);
       // }
    };
-   // Функция для получения newTaskId от дочернего компонента
+   // Функция для получения newTaskId созданной задачи от дочернего компонента
    const handleNewTaskId = (taskId: number) => {
       setNewTaskId(taskId);
    };

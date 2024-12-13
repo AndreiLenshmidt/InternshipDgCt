@@ -135,7 +135,7 @@ export function TaskModalCreationEditing({
    console.log(idTaskMain);
 
    const { data: taskById, isLoading: isGetTaskByTaskIdLoading } = useGetTaskByTaskIdQuery(
-      idTaskMain !== undefined ? idTaskMain : 0,
+      idTaskMain !== undefined ? idTaskMain : 27,
       {
          refetchOnMountOrArgChange: true,
          skip: !taskId || !isOpen,

@@ -28,15 +28,6 @@ function isResponseFileWithObject(file: any): file is ResponseFileWithObject {
    return file && typeof file === 'object' && 'fileObject' in file;
 }
 
-function isResponseFile(file: any): file is ResponseFile {
-   return file && typeof file === 'object' && 'original_name' in file && 'link' in file;
-}
-
-// Преобразование файлов
-const convertFilesToResponseFilesWithObject = (files: (ResponseFile | null)[]): ResponseFileWithObject[] => {
-   return files.filter((file): file is ResponseFileWithObject => file !== null && isResponseFileWithObject(file));
-};
-
 export default function FileUpload({ taskId, files, onFilesChange, error }: FileUploadProps) {
    const [isDragging, setIsDragging] = useState(false);
    const [permissions, setPermissions] = useState(false);
@@ -147,7 +138,7 @@ export default function FileUpload({ taskId, files, onFilesChange, error }: File
          setPermissions(true);
       }
 
-      event.target.value = ''; // Сброс поля ввода
+      event.target.value = '';
    };
 
    const handleDeleteFile = async (taskId: number, file: ResponseFile[]) => {
@@ -164,7 +155,7 @@ export default function FileUpload({ taskId, files, onFilesChange, error }: File
                console.log('filesResponse', filesResponse);
 
                if (onFilesChange) {
-                  onFilesChange(filesResponse.files); // Файлы из response.data
+                  onFilesChange(filesResponse.files);
                }
             }
          }
@@ -184,23 +175,22 @@ export default function FileUpload({ taskId, files, onFilesChange, error }: File
    };
 
    useEffect(() => {
-      if (files?.length > 0 && fileLocal.length === 0) {
-         const updatedFiles: ResponseFileWithObject[] = files
-            .filter((file) => file !== null && file?.id !== undefined)
-            .map((file) => {
-               if (file) {
-                  const correctedLink = file?.link ? BASE_URL + file.link.substring(1) : '';
-
-                  const fileObject = file?.fileObject || new File([], file.original_name || '');
+      if (files) {
+         if (files.length > 0 && fileLocal.length === 0) {
+            const updatedFiles: ResponseFileWithObject[] = files
+               .filter((file): file is ResponseFile => file !== null && file?.id !== undefined)
+               .map((file) => {
+                  const correctedLink = file !== null && file.link ? BASE_URL + file.link.substring(1) : '';
+                  const fileObject = new File([], (file !== null && file.original_name) || '');
 
                   return {
                      ...file,
                      link: correctedLink,
                      fileObject,
                   };
-               }
-            });
-         setFileLocal(updatedFiles);
+               });
+            setFileLocal(updatedFiles);
+         }
       }
    }, [files]);
 
