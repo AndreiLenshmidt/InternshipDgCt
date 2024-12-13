@@ -71,8 +71,8 @@ export default function SelectCustomCheckbox({
          >
             <div className={style['dropdown-header-wrp']}>
                <div className={style['dropdown-header']}>
-                  {value.length > 0
-                     ? value.map((user) => (
+                  {value?.length > 0
+                     ? value?.map((user) => (
                           <span className={style['dropdown-item-header']} key={user.id}>
                              {user.name} {user.surname}
                              {/* Крестик для удаления */}
@@ -104,7 +104,7 @@ export default function SelectCustomCheckbox({
                      <label className={style['checkbox-label']}>
                         <input
                            type="checkbox"
-                           checked={value.some((v) => v.id === user.id)}
+                           checked={value?.some((v) => v.id === user.id)}
                            onChange={() => toggleOption(user)}
                            className={style['checkbox-input']}
                         />

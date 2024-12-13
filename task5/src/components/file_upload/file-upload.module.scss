@@ -1,3 +1,7 @@
+.error {
+   color: #eb597b;
+}
+
 .files-upload {
    width: 100%;
    margin-bottom: 32px;
@@ -82,4 +86,13 @@
       background-color: #f4f6f8;
       border-radius: 8px;
    }
+}
+
+.preview-image {
+   max-width: 70px;
+   max-height: 70px;
+   object-fit: cover;
+   border: 1px solid #ddd;
+   border-radius: 4px;
+   margin-right: 10px;
 }

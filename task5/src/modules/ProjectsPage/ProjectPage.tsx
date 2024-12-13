@@ -10,7 +10,6 @@ import { useMemo, useCallback } from 'react';
 import { useGetProjectsQuery } from './api/api';
 import { projectsUrl } from '@/consts';
 
-
 export function ProjectPage() {
    //
    const { width } = useResize();

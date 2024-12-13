@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Snow from '@public/media/snow.svg';
 import Link from 'next/link';
 import styles from './Home.module.scss';
 import { useCookies } from 'react-cookie';
@@ -6,19 +7,19 @@ import { useEffect, useState } from 'react';
 
 export default function MainPage() {
    const [inOut, setInOut] = useState(false);
-   const [cookies, setCookie] = useCookies(['userIsAuth']);
    const [token, _, removeCookie] = useCookies(['token-auth']);
 
    useEffect(() => {
-      if (cookies.userIsAuth) {
+      if (token['token-auth']) {
          setInOut(true);
       }
    });
 
    const LogInLogOutButton = ({ inOut }: { inOut: boolean }) => {
       const logOut = () => {
-         setCookie('userIsAuth', false);
          removeCookie('token-auth');
+         globalThis.document.cookie = '';
+         location.reload();
          setInOut(false);
       };
       if (inOut) {
@@ -37,15 +38,26 @@ export default function MainPage() {
    };
 
    return (
-      <div className="wrapped">
+      <div className={`wrapped ${styles.bkg}`}>
+         <Snow className={styles.snow} />
          <header className={styles.header}>
             <Image src="/mainlogo.svg" alt="logo" width={159} height={43} priority={true} />
             <LogInLogOutButton inOut={inOut} />
          </header>
          <main className={styles.main}>
-            <Link className={styles.link} href="/projects">
-               Перейти к проектам
-            </Link>
+            <div className={styles.main_box}>
+               <p className={styles.main_info}>Добро пожаловать на главную страницу планировщика задач Kanban!</p>
+               <p className={styles.main_info}>
+                  Чтобы начать работать в Kanban доске нажмите на кнопку "войти" и введите свой логин и пароль если еще
+                  этого не сделали.
+               </p>
+               <p className={styles.main_info}>
+                  Если вы уже зарегистрированы, то можете начать работу, нажав на кнопку "перейти к пректам".
+               </p>
+               <Link className={styles.link} href="/projects">
+                  Перейти к проектам
+               </Link>
+            </div>
          </main>
          <footer className={styles.footer}>
             <p className="developer">Андрей Леншмидт</p>

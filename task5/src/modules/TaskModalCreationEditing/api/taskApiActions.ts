@@ -1,4 +1,4 @@
-import { TaskSingle, User } from '@/api/data.types';
+import { TaskSingle, User, Component, Priority, TaskType, ResponseFile, TaskMultiple } from '@/api/data.types';
 import { BASE_API_URL } from '@/consts';
 import { getCookie } from '@/utils/cookies';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
@@ -10,17 +10,16 @@ export const taskApiActions = createApi({
    reducerPath: 'api/single_task_actions',
    baseQuery: fetchBaseQuery({ baseUrl: BASE_API_URL }),
    endpoints: (build) => ({
-      getTaskByTaskId: build.query<TaskSingle, number>({
+      getTaskByTaskId: build.query<{ data: TaskSingle }, number>({
          query: (id: number) => ({
             url: `/task/${id}`,
-            method: 'GET',
             headers: {
                Authorization: `Bearer ${token}`,
             },
          }),
       }),
 
-      updateTask: build.mutation<void, { id: number; body: Partial<TaskSingle> }>({
+      updateTask: build.mutation<{ data: TaskSingle }, { id: number; body: Partial<TaskSingle> }>({
          query: ({ id, body }) => ({
             url: `/task/${id}`,
             method: 'PATCH',
@@ -31,10 +30,11 @@ export const taskApiActions = createApi({
          }),
       }),
 
-      createTask: build.mutation<TaskSingle, Partial<TaskSingle>>({
-         query: (slug) => ({
+      createTask: build.mutation<{ data: TaskSingle }, { slug: string; body: Partial<TaskSingle> }>({
+         query: ({ slug, body }) => ({
             url: `/project/${slug}/task`,
             method: 'POST',
+            body,
             headers: {
                Authorization: `Bearer ${token}`,
             },
@@ -51,7 +51,7 @@ export const taskApiActions = createApi({
          }),
       }),
 
-      getTasks: build.query<TaskSingle[], { slug: string; filters?: Record<string, string | number | number[]> }>({
+      getTasks: build.query<TaskMultiple, { slug: string; filters?: Record<string, string | number | number[]> }>({
          query: ({ slug, filters }) => {
             const searchParams = new URLSearchParams();
             if (filters) {
@@ -83,6 +83,56 @@ export const taskApiActions = createApi({
             },
          }),
       }),
+
+      getComponents: build.query<{ data: Component[] }, void>({
+         query: () => ({
+            url: `/component`,
+            method: 'GET',
+            headers: {
+               Authorization: `Bearer ${token}`,
+            },
+         }),
+      }),
+
+      getPriorities: build.query<{ data: Priority[] }, void>({
+         query: () => ({
+            url: `/priority`,
+            method: 'GET',
+            headers: {
+               Authorization: `Bearer ${token}`,
+            },
+         }),
+      }),
+
+      getTaskTypes: build.query<{ data: TaskType[] }, void>({
+         query: () => ({
+            url: `/task_type`,
+            method: 'GET',
+            headers: {
+               Authorization: `Bearer ${token}`,
+            },
+         }),
+      }),
+      sendFilesTask: build.mutation<ResponseFile, { taskId: number; fileId: number | undefined }>({
+         query: ({ taskId, fileId }) => ({
+            url: `/task/${taskId}/file/${fileId}`,
+            method: 'PATCH',
+            headers: {
+               accept: 'application/json',
+               Authorization: `Bearer ${token}`,
+            },
+         }),
+      }),
+      deleteFileTask: build.mutation<void, { taskId: number; fileId: number | undefined }>({
+         query: ({ taskId, fileId }) => ({
+            url: `/task/${taskId}/file/${fileId}`,
+            method: 'DELETE',
+            headers: {
+               accept: 'application/json',
+               Authorization: `Bearer ${token}`,
+            },
+         }),
+      }),
    }),
 });
 
@@ -93,31 +143,9 @@ export const {
    useDeleteTaskMutation,
    useGetTasksQuery,
    useGetUsersQuery,
+   useGetComponentsQuery,
+   useGetPrioritiesQuery,
+   useGetTaskTypesQuery,
+   useSendFilesTaskMutation,
+   useDeleteFileTaskMutation,
 } = taskApiActions;
-
-// Использование фильтрации
-// const { data, error, isLoading } = useGetTasksQuery({
-//    slug: 'my-project',
-//    filters: { type_id: [1]},
-// });
-
-// const { data: tasks = [], error } = useGetTasksQuery({
-//    slug: 'project1',
-//    filters: { id: [5, 10, 15] }, // Несколько id
-// });
-
-// const { data, error, isLoading } = useGetTasksQuery({
-//    slug: 'my-project',
-//    filters: { type_id: []}, // Все значения
-// });
-
-// Это выполнит запрос с фильтрацией:
-//GET /project/my-project/task?filter[type_id]=1&filter[name]=Example%20Task
-
-// Без фильтрации
-// const {data: tasks = [],isLoading, error,} = useGetTasksQuery({
-//    slug: 'project1', // указываем только slug
-// });
-
-//getUsers
-//const { data: users, error, isLoading } = useGetUsersQuery('project2');

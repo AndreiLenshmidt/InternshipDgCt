@@ -1,19 +1,17 @@
+import { useEffect, useState, useMemo } from 'react';
 import { BreadCrumbs } from '@components/bread_crumbs/BreadCrumbs';
 import { Switch } from '@components/switch/Switch';
+import { TaskModalCreationEditing } from '@/modules/TaskModalCreationEditing/page';
 import { useRouter } from 'next/router';
 import { useDrag } from 'react-dnd';
 import { TaskCard } from './components/task-card/TaskCard';
 import style from './kanban-page.module.css';
 import { TasksColumn } from './components/tasks-column/TaskColumn';
-import TaskModalCreationEditing from '../TaskModalCreationEditing/page';
 import { useGetAllTasksQuery, useGetTaskPrioritiesQuery, useGetTaskTagsQuery } from '@/api/tasks/tasks.api';
 import { useGetProjectQuery } from '../ProjectsPage/api/api';
-import { useEffect, useMemo } from 'react';
 import { groupBy, groupByObject } from '@/utils/core';
 import { projectsUrl, projectUrl } from '@/consts';
 import { Stage, TaskMultiple } from '@/api/data.types';
-import { Scrollbars } from 'react-custom-scrollbars';
-
 
 // import task from '@/pages/projects/kanban/task';
 
@@ -24,16 +22,23 @@ export function KanbanPage() {
 
    const route = useMemo(() => router.query['task-slug'] as string, [router.query['task-slug']]);
    const loaded = useMemo(() => ({ skip: !router.query['task-slug'] }), [router.query['task-slug']]);
+   // Для открытия окна создания/ редактирования задачи
+   const [projectSlag, setProjectSlag] = useState<string>('');
+   const [taskIdEditTask, setTaskIdEditTask] = useState<number | undefined>();
+   const [isOpenCreateTask, setIsOpenCreateTask] = useState(false);
+   const [newTaskId, setNewTaskId] = useState<number | undefined>();
+   const [newTaskFlag, setNewTaskFlag] = useState(false);
+   // ------------------------------------------------
 
    const { data: { data: project } = { data: null }, error } = useGetProjectQuery(route, loaded);
-   const { data: { data: priorities } = { data: null } } = useGetTaskPrioritiesQuery(undefined, loaded);   
-   
+   const { data: { data: priorities } = { data: null } } = useGetTaskPrioritiesQuery(undefined, loaded);
+
    const {
       data: { data: tasks } = { data: [] },
       isLoading,
       isSuccess,
       isError,
-   } = useGetAllTasksQuery(route, { skip: !router.query['task-slug'] || !(project && priorities) });  //  || !taskStages?.length
+   } = useGetAllTasksQuery(route, { skip: !router.query['task-slug'] || !(project && priorities) }); //  || !taskStages?.length
 
    const stagedTasks = useMemo(() => {
       return groupByObject(
@@ -48,6 +53,19 @@ export function KanbanPage() {
    // });
 
    // const dropstyle = { color: isOver ? 'green' : undefined };
+   // Функция для получения newTaskId от дочернего компонента
+   const handleNewTaskId = (taskId: number) => {
+      setNewTaskId(taskId);
+   };
+
+   const handlerNewTask = () => {
+      setNewTaskFlag(true);
+      setTaskIdEditTask(undefined);
+      setProjectSlag('project4'); //!!! поменять на slag
+      setIsOpenCreateTask(!isOpenCreateTask);
+   };
+
+   // console.log(router.query['task-slug'], 'router.query[task-slug]');
 
    return (
       <>
@@ -67,7 +85,7 @@ export function KanbanPage() {
             <Switch onChange={(v) => v} checked={false} />
             <h6>Только мои</h6>
 
-            <button>
+            <button onClick={handlerNewTask}>
                <span>+</span>
                Добавить задачу
             </button>
@@ -103,24 +121,23 @@ export function KanbanPage() {
 
          <div className={style.kanban_container}>
             {/* <DndContext id={'11'} onDragEnd={(e) => console.log('dropped', e.active.id, e.over?.id)}> */}
-               <div className={style.kanban}>
-                  {project?.flow?.possibleProjectStages?.map((stage) => {
-                     if (stage.id) {
+            <div className={style.kanban}>
+               {project?.flow?.possibleProjectStages?.map((stage) => {
+                  if (stage.id) {
+                     const [stageTasks, stageInfo] = stagedTasks[stage.id] || [];
 
-                        const [stageTasks, stageInfo] = stagedTasks[stage.id] || [];
+                     return (
+                        <TasksColumn key={stage.id} stage={stage} tasksAmount={stageTasks?.length || 0}>
+                           {stageTasks?.map((task) => {
+                              return <TaskCard task={task} key={task.id} />;
+                           })}
+                        </TasksColumn>
+                     );
+                  }
 
-                        return (
-                           <TasksColumn key={stage.id} stage={stage} tasksAmount={stageTasks?.length || 0}>
-                              {stageTasks?.map((task) => {
-                                 return <TaskCard task={task} key={task.id} />;
-                              })}
-                           </TasksColumn>
-                        );
-                     }
-
-                     return null;
-                  })}
-               </div>
+                  return null;
+               })}
+            </div>
             {/* </DndContext> */}
 
             {/* <DndContext id={'111'} onDragEnd={(e) => console.log('dropped', e.active.id, e.over?.id)}>
@@ -148,8 +165,17 @@ export function KanbanPage() {
                </div>
             </DndContext> */}
          </div>
-
-         <TaskModalCreationEditing isOpen={true} onClose={() => true} slug="xxxx" taskId={7} />
+         {isOpenCreateTask && (
+            <TaskModalCreationEditing
+               isOpen={isOpenCreateTask}
+               onClose={() => setIsOpenCreateTask(false)}
+               slugName={projectSlag}
+               taskId={taskIdEditTask}
+               newTaskId={newTaskId}
+               onNewTaskId={handleNewTaskId}
+               newTaskFlag={newTaskFlag}
+            />
+         )}
       </>
    );
 }
