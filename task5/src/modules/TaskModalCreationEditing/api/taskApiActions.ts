@@ -1,4 +1,4 @@
-import { TaskSingle, User, Component, Priority, TaskType, ResponseFile } from '@/api/data.types';
+import { TaskSingle, User, Component, Priority, TaskType, ResponseFile, TaskMultiple } from '@/api/data.types';
 import { BASE_URL, BASE_API_URL } from '@/consts';
 import { getCookie } from '@/utils/cookies';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
@@ -19,39 +19,7 @@ export const taskApiActions = createApi({
          }),
       }),
 
-      updateTask: build.mutation<void, { id: number; body: Partial<TaskSingle> }>({
-         query: ({ id, body }) => ({
-            url: `/task/${id}`,
-            method: 'PATCH',
-            body: body,
-            headers: {
-               Authorization: `Bearer ${token}`,
-            },
-         }),
-      }),
-
-      createTask: build.mutation<TaskSingle, { slug: string; body: Partial<TaskSingle> }>({
-         query: ({ slug, body }) => ({
-            url: `/project/${slug}/task`,
-            method: 'POST',
-            body,
-            headers: {
-               Authorization: `Bearer ${token}`,
-            },
-         }),
-      }),
-
-      deleteTask: build.mutation<void, number>({
-         query: (id) => ({
-            url: `/task/${id}`,
-            method: 'DELETE',
-            headers: {
-               Authorization: `Bearer ${token}`,
-            },
-         }),
-      }),
-
-      getTasks: build.query<TaskSingle[], { slug: string; filters?: Record<string, string | number | number[]> }>({
+      getTasks: build.query<TaskMultiple, { slug: string; filters?: Record<string, string | number | number[]> }>({
          query: ({ slug, filters }) => {
             const searchParams = new URLSearchParams();
             if (filters) {
@@ -94,7 +62,7 @@ export const taskApiActions = createApi({
          }),
       }),
 
-      getPriorities: build.query<Priority[], void>({
+      getPriorities: build.query<{ data: Priority[] }, void>({
          query: () => ({
             url: `/priority`,
             method: 'GET',
@@ -104,7 +72,7 @@ export const taskApiActions = createApi({
          }),
       }),
 
-      getTaskTypes: build.query<TaskType[], void>({
+      getTaskTypes: build.query<{ data: TaskType[] }, void>({
          query: () => ({
             url: `/task_type`,
             method: 'GET',
@@ -113,6 +81,39 @@ export const taskApiActions = createApi({
             },
          }),
       }),
+
+      updateTask: build.mutation<{ data: TaskSingle }, { id: number; body: Partial<TaskSingle> }>({
+         query: ({ id, body }) => ({
+            url: `/task/${id}`,
+            method: 'PATCH',
+            body: body,
+            headers: {
+               Authorization: `Bearer ${token}`,
+            },
+         }),
+      }),
+
+      createTask: build.mutation<{ data: TaskSingle }, { slug: string; body: Partial<TaskSingle> }>({
+         query: ({ slug, body }) => ({
+            url: `/project/${slug}/task`,
+            method: 'POST',
+            body,
+            headers: {
+               Authorization: `Bearer ${token}`,
+            },
+         }),
+      }),
+
+      deleteTask: build.mutation<void, number>({
+         query: (id) => ({
+            url: `/task/${id}`,
+            method: 'DELETE',
+            headers: {
+               Authorization: `Bearer ${token}`,
+            },
+         }),
+      }),
+
       sendFilesTask: build.mutation<ResponseFile, { taskId: number; fileId: number | undefined }>({
          query: ({ taskId, fileId }) => ({
             url: `/task/${taskId}/file/${fileId}`,
@@ -138,41 +139,14 @@ export const taskApiActions = createApi({
 
 export const {
    useGetTaskByTaskIdQuery,
-   useUpdateTaskMutation,
-   useCreateTaskMutation,
-   useDeleteTaskMutation,
    useGetTasksQuery,
    useGetUsersQuery,
    useGetComponentsQuery,
    useGetPrioritiesQuery,
    useGetTaskTypesQuery,
+   useUpdateTaskMutation,
+   useCreateTaskMutation,
+   useDeleteTaskMutation,
    useSendFilesTaskMutation,
    useDeleteFileTaskMutation,
 } = taskApiActions;
-
-// Использование фильтрации
-// const { data, error, isLoading } = useGetTasksQuery({
-//    slug: 'my-project',
-//    filters: { type_id: [1]},
-// });
-
-// const { data: tasks = [], error } = useGetTasksQuery({
-//    slug: 'project1',
-//    filters: { id: [5, 10, 15] }, // Несколько id
-// });
-
-// const { data, error, isLoading } = useGetTasksQuery({
-//    slug: 'my-project',
-//    filters: { type_id: []}, // Все значения
-// });
-
-// Это выполнит запрос с фильтрацией:
-//GET /project/my-project/task?filter[type_id]=1&filter[name]=Example%20Task
-
-// Без фильтрации
-// const {data: tasks = [],isLoading, error,} = useGetTasksQuery({
-//    slug: 'project1', // указываем только slug
-// });
-
-//getUsers
-//const { data: users, error, isLoading } = useGetUsersQuery('project2');

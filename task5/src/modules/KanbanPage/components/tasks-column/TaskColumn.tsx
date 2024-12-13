@@ -29,9 +29,9 @@ export function TasksColumn({
     */
    const [isOver, setOver] = useState(false);
 
-   const dropstyle = {
-      backgroundColor: isOver ? 'lightgray' : 'red',
-   };
+   // const dropstyle = {
+   //    backgroundColor: isOver ? 'lightgray' : 'red',
+   // };
 
    const [collectedProps, drop] = useDrop(() => ({
       accept: 'text',

@@ -1,7 +1,8 @@
-import { FormData } from '@/api/data.types';
+import { CustomFormData } from '@/modules/TaskModalCreationEditing/page';
+import { User } from '@/api/data.types';
 
-export const transformToServerData = (formData: FormData) => {
-   const selectedIds = formData.selectedOptionsCheckbox?.map((option) => option.id) || [];
+export const transformToServerData = (formData: CustomFormData) => {
+   const selectedIds = formData.selectedOptionsCheckbox?.map((option: User) => option.id) || [];
 
    return {
       name: formData.name || '', // Название задачи (обязательно)
@@ -12,11 +13,11 @@ export const transformToServerData = (formData: FormData) => {
       priority_id: formData.selectedOptionPriority?.id || 0, // ID приоритета задачи (обязательно)
       block_id: formData.block_id || 0, // ID задачи, которая блокирует текущую (по умолчанию 0)
 
-      // epic_id: formData?.epic_id ?? 0, //  ID эпика
-      // release_id: formData.release_id || null, //  ID релиза, к которому привязана задача
+      // epic_id: formData?.epic_id || 0, //  ID эпика
+      // release_id: formData.release_id || 0, //  ID релиза, к которому привязана задача
 
       related_id: formData.related_id || 0, // ID связанной задачи
-      estimate_cost: formData.estimate_cost || 0, // Оценка стоимости задачи
+      estimate_cost: formData.estimateMinutes || 0, // Оценка времени задачи
       estimate_worker: formData.estimateMinutes || 0, // Оценка времени для работы
       layout_link: formData.layoutLink || '', // Ссылка на макет
       markup_link: formData.markupLink || '', // Ссылка на вёрстку

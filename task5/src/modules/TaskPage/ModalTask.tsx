@@ -1,23 +1,43 @@
 import styles from './task-page.module.scss';
 import TaskContent from './components/TaskContent/TaskContent';
 import { useGetCurrentUserQuery, useGetTaskByTaskIdQuery } from '@/api/appApi';
+import { MouseEvent } from 'react';
+import { createPortal } from 'react-dom';
 
-export default function ModalTask({ id }: { id: number }) {
-   const { data, isLoading } = useGetTaskByTaskIdQuery(id);
-   console.log(data?.data);
+export default function ModalTask({
+   id,
+   projectSlug,
+   onClose,
+}: {
+   id: number;
+   projectSlug: string;
+   onClose: CallableFunction;
+}) {
+   const { data: task, isLoading } = useGetTaskByTaskIdQuery(id);
+   console.log(task?.data);
 
    const { data: user } = useGetCurrentUserQuery();
    console.log(user?.data);
 
-   if (isLoading) {
-      return <div className="loader" style={{ margin: '36% auto' }}></div>;
-   } else {
-      return (
-         <div className={styles.layout_modal}>
+   const modalCloseHandler = (e: MouseEvent<HTMLDivElement, globalThis.MouseEvent>) => {
+      const target = e.target as HTMLElement;
+      if (target.classList.contains(styles.layout_modal)) {
+         onClose(false);
+      }
+   };
+
+   const modal = createPortal(
+      <div className={styles.layout_modal} onClick={(e) => modalCloseHandler(e)}>
+         {isLoading ? (
+            <div className="loader" style={{ margin: '36% auto' }}></div>
+         ) : (
             <div className={styles.layout_modalbox}>
-               <TaskContent task={data?.data} activeUser={user?.data} />
+               <TaskContent task={task?.data} activeUser={user?.data} projectSlug={projectSlug} onClose={onClose} />
             </div>
-         </div>
-      );
-   }
+         )}
+      </div>,
+      document.body
+   );
+
+   return modal;
 }

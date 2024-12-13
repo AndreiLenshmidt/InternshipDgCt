@@ -1,23 +1,26 @@
 import { BreadCrumbs } from '@components/bread_crumbs/BreadCrumbs';
 import { Switch } from '@components/switch/Switch';
+import { TaskModalCreationEditing } from '@/modules/TaskModalCreationEditing/page';
 import { useRouter } from 'next/router';
 import { useDrag } from 'react-dnd';
 import { TaskCard } from './components/task-card/TaskCard';
 import style from './kanban-page.module.css';
 import { TasksColumn } from './components/tasks-column/TaskColumn';
-import TaskModalCreationEditing from '../TaskModalCreationEditing/page';
 import { useGetAllTasksQuery, useGetTaskPrioritiesQuery, useGetTaskTagsQuery } from '@/api/tasks/tasks.api';
 import { useGetProjectQuery } from '../ProjectsPage/api/api';
-import { JSXElementConstructor, useEffect, useMemo, useRef } from 'react';
+import { JSXElementConstructor, useEffect, useMemo, useState, useRef } from 'react';
 import { groupBy, groupByObject } from '@/utils/core';
 import { projectsUrl, projectUrl } from '@/consts';
 import { Stage, TaskMultiple } from '@/api/data.types';
-// import { ScrollbarProps, Scrollbars } from 'react-custom-scrollbars';
 import { Scrollbar } from 'react-scrollbars-custom';
 import { useResize } from '@/hooks/resize';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { DndProvider } from 'react-dnd';
+import ModalTask from '../TaskPage/ModalTask';
+
+// import { ScrollbarProps, Scrollbars } from 'react-custom-scrollbars';
 // import task from '@/pages/projects/kanban/task';
+
 
 // const ScrollBar = Scrollbars as unknown as JSXElementConstructor<ScrollbarProps>;
 
@@ -30,6 +33,14 @@ export function KanbanPage() {
 
    const route = useMemo(() => router.query['task-slug'] as string, [router.query['task-slug']]);
    const loaded = useMemo(() => ({ skip: !router.query['task-slug'] }), [router.query['task-slug']]);
+   // Для открытия окна создания/ редактирования задачи
+   const [projectSlag, setProjectSlag] = useState<string>('');
+   const [taskIdEditTask, setTaskIdEditTask] = useState<number | undefined>();
+   const [isOpenCreateTask, setIsOpenCreateTask] = useState(false);
+   const [newTaskId, setNewTaskId] = useState<number | undefined>();
+   const [newTaskFlag, setNewTaskFlag] = useState(false);
+   // ------------------------------------------------
+   const [isOpenTask, setOpenTask] = useState<boolean>(false);
 
    const { height } = useResize();
 
@@ -68,6 +79,40 @@ export function KanbanPage() {
    // interface Scrollbars {
    //    refs: Record<string, any>;
    // }
+   // const { isOver, setNodeRef } = useDroppable({
+   //    id: 'droppable',
+   // });
+
+   // const dropstyle = { color: isOver ? 'green' : undefined };
+
+   // Функция для получения newTaskId от дочернего компонента
+   const handleNewTaskId = (taskId: number) => {
+      setNewTaskId(taskId);
+   };
+
+   const handlerNewTask = () => {
+      setNewTaskFlag(true);
+      setTaskIdEditTask(undefined);
+
+      const taskSlug = router.query['task-slug'];
+      if (Array.isArray(taskSlug)) {
+         setProjectSlag(taskSlug[0]);
+      } else if (typeof taskSlug === 'string') {
+         setProjectSlag(taskSlug);
+      } else {
+         setProjectSlag('');
+      }
+
+      setIsOpenCreateTask(!isOpenCreateTask);
+   };
+
+   const handleOpenTask = (id: number | undefined) => {
+      setTaskIdEditTask(id);
+      setProjectSlag(route);
+      setOpenTask(true);
+   };
+
+   // console.log(router.query['task-slug'], 'router.query[task-slug]'); //, isCloseModal: boolean
 
    return (
       <div className={style.base} style={{ display: 'flex', flexDirection: 'column', height: 'calc(100vh - 4rem)' }}>
@@ -87,7 +132,7 @@ export function KanbanPage() {
             <Switch onChange={(v) => v} checked={false} />
             <h6>Только мои</h6>
 
-            <button>
+            <button onClick={handlerNewTask}>
                <span>+</span>
                Добавить задачу
             </button>
@@ -149,7 +194,13 @@ export function KanbanPage() {
                                  >
                                     <Scrollbar noScrollX style={{ height: 800, width: 250 }}>
                                        {stageTasks?.map((task) => {
-                                          return <TaskCard task={task} key={task.id} />;
+                                          return (
+                                             <TaskCard
+                                                task={task}
+                                                key={task.id}
+                                                openTask={() => handleOpenTask(task?.id)}
+                                             />
+                                          );
                                        })}
                                     </Scrollbar>
                                     {/* ScrollbarsCustom-Scroller, ScrollbarsCustom-Wrapper, ScrollbarsCustom-Scroller? -> display: contents; */}
@@ -167,7 +218,20 @@ export function KanbanPage() {
             </div>
          </Scrollbar>
 
-         <TaskModalCreationEditing isOpen={true} onClose={() => true} slugName="xxxx" taskId={7} />
+         {isOpenCreateTask && (
+            <TaskModalCreationEditing
+               isOpen={isOpenCreateTask}
+               onClose={() => setIsOpenCreateTask(false)}
+               slugName={projectSlag}
+               taskId={taskIdEditTask}
+               newTaskId={newTaskId}
+               onNewTaskId={handleNewTaskId}
+               newTaskFlag={newTaskFlag}
+            />
+         )}
+         {isOpenTask && taskIdEditTask && (
+            <ModalTask id={taskIdEditTask} projectSlug={projectSlag} onClose={setOpenTask} />
+         )}         
       </div>
    );
 }

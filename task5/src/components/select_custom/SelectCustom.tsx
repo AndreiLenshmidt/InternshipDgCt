@@ -4,15 +4,15 @@ import ArrowDown from '@public/icons/arrow-down-select.svg';
 import { Component, Priority, Stage, TaskType } from '@/api/data.types';
 
 type SelectCustomProps<T> = {
-   value: TaskType | Stage | Priority | Component | undefined;
-   onChange: (value: TaskType | Stage | Priority | Component | undefined) => void;
-   options: TaskType[] | Stage[] | Priority[] | Component[] | undefined;
+   value: T | undefined;
+   onChange: (value: T | undefined) => void;
+   options: T[] | undefined;
    titleSelect: string;
    label?: string;
    required?: boolean;
-   errors?: string; // Сообщение об ошибке
-   isLoading?: boolean; // Флаг загрузки
-   fetchError?: string; // Сообщение об ошибке при загрузке
+   errors?: string;
+   isLoading?: boolean;
+   fetchError?: string;
    maxWidth?: number | string;
    optionRenderer?: (option: TaskType | Stage | Priority | Component | undefined) => React.ReactNode; // Позволяет кастомизировать отображение опций
 };
@@ -33,14 +33,14 @@ export default function SelectCustom<T>({
    const [isOpen, setIsOpen] = useState(false);
    const dropdownRef = useRef<HTMLDivElement>(null);
 
+   const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+         setIsOpen(false);
+      }
+   };
+
    // Закрытие при клике вне компонента
    useEffect(() => {
-      const handleClickOutside = (event: MouseEvent) => {
-         if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-            setIsOpen(false);
-         }
-      };
-
       if (isOpen) {
          document.addEventListener('mousedown', handleClickOutside);
       }
@@ -72,23 +72,22 @@ export default function SelectCustom<T>({
                   </span>
                </div>
 
-               {isOpen && (
+               {isOpen && options && (
                   <ul className={style['dropdown-list']}>
-                     {options &&
-                        options.map((option, index) => (
-                           <li
-                              className={style['dropdown-item']}
-                              key={index}
-                              onClick={() => {
-                                 onChange(option);
-                                 setIsOpen(false);
-                              }}
-                           >
-                              <span style={{ backgroundColor: option.color ? option.color : '' }}>
-                                 {optionRenderer ? optionRenderer(option) : option.name}
-                              </span>
-                           </li>
-                        ))}
+                     {options.map((option, index) => (
+                        <li
+                           className={style['dropdown-item']}
+                           key={index}
+                           onClick={() => {
+                              onChange(option);
+                              setIsOpen(false);
+                           }}
+                        >
+                           <span style={{ backgroundColor: option.color ? option.color : '' }}>
+                              {optionRenderer ? optionRenderer(option) : option.name}
+                           </span>
+                        </li>
+                     ))}
                   </ul>
                )}
                <span className={`${style['dropdown-arrow']} ${isOpen ? style['open'] : ''}`}>
@@ -96,22 +95,6 @@ export default function SelectCustom<T>({
                </span>
             </div>
          )}
-
-         {errors && <p className={style.error}>{errors}</p>}
       </div>
    );
-}
-
-// Использование
-{
-   /* <SelectCustom<TaskType>
-   value={watch('selectedOptionTasks')}
-   onChange={(value) => {
-      setValue('selectedOptionTasks', value);
-   }}
-   options={taskTypes}
-   label="Тип задачи"
-   titleSelect="Задача"
-   required
-/>; */
 }

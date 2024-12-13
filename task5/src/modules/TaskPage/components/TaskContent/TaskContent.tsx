@@ -17,31 +17,35 @@ import FilePriview from '../FilePreveiw/FilePreview';
 import Link from 'next/link';
 import InfoModal from '../InfoModal/InfoModal';
 import { useModalInfo } from '@/hooks/useModalInfo';
-import TaskModalCreationEditing from '@/modules/TaskModalCreationEditing/page';
+import { TaskModalCreationEditing } from '@/modules/TaskModalCreationEditing/page';
 import ModalClose from '@/components/modal_close/ModalClose';
 import { useDeleteTaskMutation, useUpdateTaskMutation } from '@/api/appApi';
 import { useRouter } from 'next/router';
+import { log } from 'console';
 
 export default function TaskContent({
-   slag,
+   projectSlug,
    task,
    activeUser,
+   onClose,
 }: {
-   slag?: string | undefined;
+   projectSlug: string;
    task: TaskSingle | undefined;
    activeUser: User | undefined;
+   onClose: CallableFunction;
 }) {
    const isAdmin = activeUser?.is_admin;
    const [selectedOptionComp, setSelectedOptionComp] = useState<Stage | undefined>(task?.stage);
 
    const [deleteTask, { data: deleteData, isError: deleteError }] = useDeleteTaskMutation();
-   const [updateTask, { data: updatedTask }] = useUpdateTaskMutation();
+   const [updateTask, {}] = useUpdateTaskMutation();
 
    // Для открытия окна создания/ редактирования задачи
    const [projectSlag, setProjectSlag] = useState<string>('');
    const [taskIdEditTask, setTaskIdEditTask] = useState<number | undefined>();
    const [isOpenCreateTask, setIsOpenCreateTask] = useState(false);
    const [newTaskId, setNewTaskId] = useState<number | undefined>();
+   const [newTaskFlag, setNewTaskFlag] = useState(false);
    // ------------------------------------------------
    const [files, setFiles] = useState<ResponseFile[]>(task?.files || []);
    const [filesComments, setFIlesComments] = useState<ResponseFile[]>([]);
@@ -73,8 +77,6 @@ export default function TaskContent({
       if (task?.dev_link && task?.stage !== selectedOptionComp && selectedOptionComp) {
          updateTaskHandler(selectedOptionComp, task);
          modalInfo.setCloseModal(true);
-         modalInfo.setModalTitle('Успешно');
-         modalInfo.setModalInfo('Статус задачи успешно изменен');
       } else if (task?.stage !== selectedOptionComp) {
          modalInfo.setCloseModal(true);
          modalInfo.setModalTitle('Ошибка');
@@ -91,7 +93,12 @@ export default function TaskContent({
    }, [selectedOptionComp, deleteError]);
 
    const copyLinkHandler = async () => {
-      await navigator.clipboard.writeText(window.location.href);
+      const link = window.location.href;
+      if (window.location.pathname.split('/').length === 3) {
+         await navigator.clipboard.writeText(window.location.href + '/' + task?.id);
+      } else {
+         await navigator.clipboard.writeText(window.location.href);
+      }
       modalInfo.setCloseModal(true);
       modalInfo.setModalTitle('Успешно');
       modalInfo.setModalType('info');
@@ -99,29 +106,46 @@ export default function TaskContent({
    };
 
    const handlerNewTask = () => {
-      setTaskIdEditTask(undefined);
-      setProjectSlag('project4'); //!!! поменять на slag
+      setNewTaskFlag(true);
+      setTaskIdEditTask(task?.id);
+      setProjectSlag(projectSlug);
       setIsOpenCreateTask(!isOpenCreateTask);
    };
 
    const handlerEditTask = () => {
-      // if (task?.id) {
-      setTaskIdEditTask(27); //!!! поменять на task?.id
-      setProjectSlag('project4'); //!!! поменять на slag
-      setIsOpenCreateTask(!isOpenCreateTask);
-      // }
+      setNewTaskFlag(false);
+      setTaskIdEditTask(task?.id);
+      setProjectSlag(projectSlug);
    };
-   // Функция для получения newTaskId от дочернего компонента
+
+   // Функция для получения newTaskId созданной задачи от дочернего компонента
    const handleNewTaskId = (taskId: number) => {
       setNewTaskId(taskId);
    };
 
+   const onConfirmHandlerModal = () => {
+      setDelTaskModal(false);
+   };
+
    const deleteTaskHandler = async () => {
+      console.log('task, projectSlug', task, projectSlug);
+
       if (task?.id) {
          const taskDel = await deleteTask(task?.id);
          console.log(taskDel);
-         router.replace('/projects');
+
+         // router.replace(`/projects/${projectSlug}`);
+
          setDelTaskModal(false);
+         modalInfo.setCloseModal(true);
+
+         // onClose(false); //!!! как вариант, раскоменть посмотри. По мне лучше без onClose(false)
+      } else {
+         setDelTaskModal(false);
+         modalInfo.setCloseModal(true);
+         modalInfo.setModalTitle('Ошибка');
+         modalInfo.setModalType('error');
+         modalInfo.setModalInfo('Задача не найдена');
       }
    };
 
@@ -148,7 +172,17 @@ export default function TaskContent({
       };
       if (task?.id) {
          const result = await updateTask({ id: task.id, body: taskBody });
-         console.log(result.data.data);
+
+         if (result.data) {
+            modalInfo.setModalTitle('Успешно');
+            modalInfo.setModalInfo('Статус задачи успешно изменен');
+         } else {
+            modalInfo.setModalType('error');
+            modalInfo.setModalInfo('Не удалось изменить статус задачи');
+            task?.stage && setSelectedOptionComp(task?.stage);
+         }
+         console.log(result.data);
+
          console.log(stage);
       }
    };
@@ -355,16 +389,15 @@ export default function TaskContent({
                   taskId={taskIdEditTask}
                   newTaskId={newTaskId}
                   onNewTaskId={handleNewTaskId}
+                  newTaskFlag={newTaskFlag}
                />
             )}
             {isDeleteTaskModal && (
                <ModalClose
                   title="Удалить задачу"
                   isOpen={isDeleteTaskModal}
-                  onConfirm={deleteTaskHandler}
-                  onClose={() => {
-                     setDelTaskModal(false);
-                  }}
+                  onConfirm={onConfirmHandlerModal}
+                  onClose={deleteTaskHandler}
                />
             )}
          </div>

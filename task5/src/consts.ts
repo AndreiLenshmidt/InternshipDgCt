@@ -6,18 +6,20 @@ export const projectUrl = 'project';
 
 export const projectsUrl = '/projects';
 
-
 export const colorSchema = {
    priorities: [
       /** @description - высокий */ {
-         color: '#FF5A4F', backgroundColor: '#FFF1F0'
+         color: '#FF5A4F',
+         backgroundColor: '#FFF1F0',
       },
       /** @description - средний */ {
-         color: '#FFA826', backgroundColor: '#FFF8EC'
+         color: '#FFA826',
+         backgroundColor: '#FFF8EC',
       },
       /** @description - низкий */ {
-         color: '#32C997', backgroundColor: '#F1FBF8'
-      }
+         color: '#32C997',
+         backgroundColor: '#F1FBF8',
+      },
    ],
    taskTypes: [
       /** @description - баг */ { color: '#FF5A4F', backgroundColor: '#FFF1F0' },
@@ -29,6 +31,8 @@ export const colorSchema = {
       /** @description - гарантия */ { color: '#ABBED1', backgroundColor: '##F4F6F8' },
    ]
 }
+
+
 export const BYTES_IN_MB = 1048576;
 
 export const MAX_FILE_SIZE = 10;

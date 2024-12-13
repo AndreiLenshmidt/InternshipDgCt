@@ -2,6 +2,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { getCookie } from '@/utils/cookies';
 import { TaskSingle, TaskMultiple, User, ResponseFile, Comment } from '@/api/data.types';
 import { BASE_URL } from '@/consts';
+import { LoginRequest, ServerResponse } from './data.types';
 
 const token = getCookie('token-auth');
 export const BASE_URL_API = BASE_URL + 'api';
@@ -11,7 +12,7 @@ export const appApi = createApi({
    baseQuery: fetchBaseQuery({ baseUrl: BASE_URL_API, credentials: 'same-origin' }),
    endpoints: (build) => ({
       getTaskByTaskId: build.query<{ data: TaskSingle }, number>({
-         query: (id: number | undefined) => ({
+         query: (id: number) => ({
             url: `/task/${id}`,
             headers: {
                Authorization: `Bearer ${token}`,
@@ -19,7 +20,7 @@ export const appApi = createApi({
             },
          }),
       }),
-      updateTask: build.mutation<void, { id: number; body: Partial<TaskSingle> }>({
+      updateTask: build.mutation<{ data: TaskSingle }, { id: number; body: Partial<TaskMultiple> }>({
          query: ({ id, body }) => ({
             url: `/task/${id}`,
             method: 'PATCH',
@@ -29,7 +30,7 @@ export const appApi = createApi({
             },
          }),
       }),
-      createTask: build.mutation<TaskSingle, { slug: string; body: Partial<TaskSingle> }>({
+      createTask: build.mutation<{ data: TaskSingle }, { slug: string; body: Partial<TaskMultiple> }>({
          query: ({ slug, body }) => ({
             url: `/project/${slug}/task`,
             method: 'POST',
@@ -70,7 +71,7 @@ export const appApi = createApi({
             };
          },
       }),
-      getUsers: build.query<User[], string>({
+      getUsers: build.query<{ data: User[] }, string>({
          query: (slug) => ({
             url: `/project/${slug}/user`,
             method: 'GET',
@@ -187,6 +188,12 @@ export const appApi = createApi({
             },
          }),
       }),
+      getOAuthToken: build.mutation<ServerResponse, LoginRequest>({
+         query: ({ email, password }) => ({
+            url: `/auth/token?email=${email}&password=${password}`,
+            method: 'POST',
+         }),
+      }),
    }),
 });
 
@@ -207,4 +214,5 @@ export const {
    useCreateCommentMutation,
    usePatchCommentMutation,
    useDeleteCommentMutation,
+   useGetOAuthTokenMutation,
 } = appApi;

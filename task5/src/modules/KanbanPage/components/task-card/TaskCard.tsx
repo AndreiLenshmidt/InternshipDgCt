@@ -17,7 +17,7 @@ import { colorSchema } from '@/consts';
 
 // (getState() as RootState).auth.token
 
-export function TaskCard({ task }: { task: TaskMultiple }) {
+export function TaskCard({ task, openTask }: { task: TaskMultiple; openTask: CallableFunction }) {
    // const [{ opacity }, dragRef] = useDrag(
    //    () => ({
    //       type: 'image',
@@ -53,7 +53,7 @@ export function TaskCard({ task }: { task: TaskMultiple }) {
    const tasktype = useMemo(() => tasktypesInfo?.find((v) => v.id === task.task_type), [tasktypesInfo]);
 
    useEffect(() => {
-      console.log(tasktypesInfo);
+      // console.log(tasktypesInfo);
    }, [tasktypesInfo]);
 
   const [{ opacity }, dragRef] = useDrag(

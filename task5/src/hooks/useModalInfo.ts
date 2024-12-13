@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { string } from 'zod';
 
 export const useModalInfo = () => {
    const [modalType, setModalType] = useState<'info' | 'error'>('info');
