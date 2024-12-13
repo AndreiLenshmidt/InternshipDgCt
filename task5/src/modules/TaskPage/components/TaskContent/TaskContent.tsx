@@ -126,15 +126,22 @@ export default function TaskContent({
    };
 
    const deleteTaskHandler = async () => {
-      console.log('task', task);
+      console.log('task, projectSlug', task, projectSlug);
 
       if (task?.id) {
          const taskDel = await deleteTask(task?.id);
          console.log(taskDel);
 
          // router.replace(`/projects/${projectSlug}`);
+
          setDelTaskModal(false);
          modalInfo.setCloseModal(true);
+      } else {
+         setDelTaskModal(false);
+         modalInfo.setCloseModal(true);
+         modalInfo.setModalTitle('Ошибка');
+         modalInfo.setModalType('error');
+         modalInfo.setModalInfo('Задача не найдена');
       }
    };
 

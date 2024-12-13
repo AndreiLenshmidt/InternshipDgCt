@@ -366,6 +366,12 @@ export function TaskModalCreationEditing({
       setFiles(newFiles as ResponseFile[]);
    };
 
+   const extractTextFromHtml = (html: string): string => {
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(html, 'text/html');
+      return doc.body.textContent || '';
+   };
+
    const onSubmit = (data: CustomFormData) => {
       const serverData: TaskMultiple = transformToServerData(data);
 
@@ -425,6 +431,8 @@ export function TaskModalCreationEditing({
          setFiles(updatedFiles as ResponseFile[]);
 
          if (taskData) {
+            const descriptionText = taskData.description ? extractTextFromHtml(taskData.description) : '';
+
             reset({
                ...taskData,
                name: taskData.name || '',
@@ -453,7 +461,7 @@ export function TaskModalCreationEditing({
                   startDate: taskData.begin ? new Date(taskData.begin).toISOString() : null,
                   endDate: taskData.end ? new Date(taskData.end).toISOString() : null,
                },
-               description: taskData.description || '',
+               description: descriptionText,
                fileLinks: updatedFiles,
                layoutLink: taskData.layout_link || '',
                markupLink: taskData.markup_link || '',

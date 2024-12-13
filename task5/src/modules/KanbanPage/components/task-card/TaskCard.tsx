@@ -53,7 +53,7 @@ export function TaskCard({ task, openTask }: { task: TaskMultiple; openTask: Cal
    const tasktype = useMemo(() => tasktypesInfo?.find((v) => v.id === task.task_type), [tasktypesInfo]);
 
    useEffect(() => {
-      console.log(tasktypesInfo);
+      // console.log(tasktypesInfo);
    }, [tasktypesInfo]);
 
    // const { attributes, listeners, setNodeRef, transform } = useDraggable({
