@@ -23,11 +23,11 @@ import { useDeleteTaskMutation, useUpdateTaskMutation } from '@/api/appApi';
 import { useRouter } from 'next/router';
 
 export default function TaskContent({
-   slag,
+   projectSlug,
    task,
    activeUser,
 }: {
-   slag?: string | undefined;
+   projectSlug: string;
    task: TaskSingle | undefined;
    activeUser: User | undefined;
 }) {
@@ -35,7 +35,7 @@ export default function TaskContent({
    const [selectedOptionComp, setSelectedOptionComp] = useState<Stage | undefined>(task?.stage);
 
    const [deleteTask, { data: deleteData, isError: deleteError }] = useDeleteTaskMutation();
-   const [updateTask, { data: updatedTask }] = useUpdateTaskMutation();
+   const [updateTask, {}] = useUpdateTaskMutation();
 
    // Для открытия окна создания/ редактирования задачи
    const [projectSlag, setProjectSlag] = useState<string>('');
@@ -74,8 +74,6 @@ export default function TaskContent({
       if (task?.dev_link && task?.stage !== selectedOptionComp && selectedOptionComp) {
          updateTaskHandler(selectedOptionComp, task);
          modalInfo.setCloseModal(true);
-         modalInfo.setModalTitle('Успешно');
-         modalInfo.setModalInfo('Статус задачи успешно изменен');
       } else if (task?.stage !== selectedOptionComp) {
          modalInfo.setCloseModal(true);
          modalInfo.setModalTitle('Ошибка');
@@ -92,7 +90,12 @@ export default function TaskContent({
    }, [selectedOptionComp, deleteError]);
 
    const copyLinkHandler = async () => {
-      await navigator.clipboard.writeText(window.location.href);
+      const link = window.location.href;
+      if (window.location.pathname.split('/').length === 3) {
+         await navigator.clipboard.writeText(window.location.href + '/' + task?.id);
+      } else {
+         await navigator.clipboard.writeText(window.location.href);
+      }
       modalInfo.setCloseModal(true);
       modalInfo.setModalTitle('Успешно');
       modalInfo.setModalType('info');
@@ -101,16 +104,16 @@ export default function TaskContent({
 
    const handlerNewTask = () => {
       setNewTaskFlag(true);
-      setTaskIdEditTask(15); //!!! поменять на task?.id
-      setProjectSlag('project4'); //!!! поменять на slag
+      setTaskIdEditTask(task?.id); //!!! поменять на task?.id
+      setProjectSlag(projectSlug); //!!! поменять на slag
       setIsOpenCreateTask(!isOpenCreateTask);
    };
 
    const handlerEditTask = () => {
       // if (task?.id) {
       setNewTaskFlag(false);
-      setTaskIdEditTask(15); //!!! поменять на task?.id
-      setProjectSlag('project4'); //!!! поменять на slag
+      setTaskIdEditTask(task?.id); //!!! поменять на task?.id
+      setProjectSlag(projectSlug); //!!! поменять на slag
       setIsOpenCreateTask(!isOpenCreateTask);
       // }
    };
@@ -151,7 +154,15 @@ export default function TaskContent({
       };
       if (task?.id) {
          const result = await updateTask({ id: task.id, body: taskBody });
-         console.log(result.data.data);
+         if (result.data) {
+            modalInfo.setModalTitle('Успешно');
+            modalInfo.setModalInfo('Статус задачи успешно изменен');
+         } else {
+            modalInfo.setModalType('error');
+            modalInfo.setModalInfo('Не удалось изменить статус задачи');
+            task?.stage && setSelectedOptionComp(task?.stage);
+         }
+         console.log(result.data);
          console.log(stage);
       }
    };

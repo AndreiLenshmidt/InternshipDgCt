@@ -17,7 +17,7 @@ import { colorSchema } from '@/consts';
 
 // (getState() as RootState).auth.token
 
-export function TaskCard({ task }: { task: TaskMultiple }) {
+export function TaskCard({ task, openTask }: { task: TaskMultiple; openTask: CallableFunction }) {
    // const [{ opacity }, dragRef] = useDrag(
    //    () => ({
    //       type: 'image',
@@ -68,7 +68,7 @@ export function TaskCard({ task }: { task: TaskMultiple }) {
 
    return (
       //  ref={setNodeRef} {...listeners} {...attributes} style={dragstyle}
-      <div className={style.card}>
+      <div className={style.card} onClick={() => openTask()}>
          <div className={style.header}>
             <h5>id: {task.id}</h5>
             <div className={style.prioritize} style={colorSchema.priorities[priority?.id || 0 - 1]}>

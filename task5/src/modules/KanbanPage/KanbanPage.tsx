@@ -12,6 +12,7 @@ import { useGetProjectQuery } from '../ProjectsPage/api/api';
 import { groupBy, groupByObject } from '@/utils/core';
 import { projectsUrl, projectUrl } from '@/consts';
 import { Stage, TaskMultiple } from '@/api/data.types';
+import ModalTask from '../TaskPage/ModalTask';
 
 // import task from '@/pages/projects/kanban/task';
 
@@ -29,6 +30,7 @@ export function KanbanPage() {
    const [newTaskId, setNewTaskId] = useState<number | undefined>();
    const [newTaskFlag, setNewTaskFlag] = useState(false);
    // ------------------------------------------------
+   const [isOpenTask, setOpenTask] = useState<boolean>(false);
 
    const { data: { data: project } = { data: null }, error } = useGetProjectQuery(route, loaded);
    const { data: { data: priorities } = { data: null } } = useGetTaskPrioritiesQuery(undefined, loaded);
@@ -63,6 +65,12 @@ export function KanbanPage() {
       setTaskIdEditTask(undefined);
       setProjectSlag('project4'); //!!! поменять на slag
       setIsOpenCreateTask(!isOpenCreateTask);
+   };
+
+   const handleOpenTask = (id: number | undefined) => {
+      setTaskIdEditTask(id);
+      setProjectSlag(route);
+      setOpenTask(true);
    };
 
    // console.log(router.query['task-slug'], 'router.query[task-slug]');
@@ -129,7 +137,7 @@ export function KanbanPage() {
                      return (
                         <TasksColumn key={stage.id} stage={stage} tasksAmount={stageTasks?.length || 0}>
                            {stageTasks?.map((task) => {
-                              return <TaskCard task={task} key={task.id} />;
+                              return <TaskCard task={task} key={task.id} openTask={() => handleOpenTask(task?.id)} />;
                            })}
                         </TasksColumn>
                      );
@@ -175,6 +183,9 @@ export function KanbanPage() {
                onNewTaskId={handleNewTaskId}
                newTaskFlag={newTaskFlag}
             />
+         )}
+         {isOpenTask && taskIdEditTask && (
+            <ModalTask id={taskIdEditTask} projectSlug={projectSlag} onClose={setOpenTask} />
          )}
       </>
    );
