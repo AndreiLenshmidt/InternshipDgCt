@@ -117,7 +117,7 @@ export default function TaskContent({
       setTaskIdEditTask(task?.id);
       setProjectSlag(projectSlug);
 
-      setIsOpenCreateTask(!isOpenCreateTask);
+      // setIsOpenCreateTask(!isOpenCreateTask);
    };
 
    // Функция для получения newTaskId созданной задачи от дочернего компонента
