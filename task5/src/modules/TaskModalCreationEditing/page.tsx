@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
+import { useModalInfo } from '@/hooks/useModalInfo';
 import Close from '@public/icons/close.svg';
 import style from '@/modules/TaskModalCreationEditing/task-modal-creation-editing.module.scss';
 import ModalClose from '@/components/modal_close/ModalClose';
@@ -88,6 +89,7 @@ export function TaskModalCreationEditing({
    newTaskFlag,
 }: TaskModalCreationEditingProps) {
    const router = useRouter();
+   const modalInfo = useModalInfo();
    const isEditMode = Boolean(taskId);
 
    const [taskData, setTaskData] = useState<TaskSingle | undefined>(undefined);
@@ -195,6 +197,10 @@ export function TaskModalCreationEditing({
                ...prev,
                ...taskDataResponse,
             }));
+            modalInfo.setCloseModal(true);
+            modalInfo.setModalTitle('Успешно');
+            modalInfo.setModalType('info');
+            modalInfo.setModalInfo('Задача успешно обновлена');
 
             if (taskDataResponse.files) {
                if (taskDataResponse.files.length > 0) setFiles(taskDataResponse.files);
@@ -240,10 +246,16 @@ export function TaskModalCreationEditing({
 
          const taskDataResponse: TaskSingle = response.data;
 
-         // console.log(' ------------- taskDataResponse NEWs------------', taskDataResponse);
+         console.log(' ------------- taskDataResponse NEWs------------', taskDataResponse);
 
          if (taskDataResponse) {
             setTaskData(taskDataResponse);
+
+            modalInfo.setCloseModal(true);
+            modalInfo.setModalTitle('Успешно');
+            modalInfo.setModalType('info');
+            modalInfo.setModalInfo('Задача успешно добавлена');
+            console.log('modalInfo,modalInfo.modal', modalInfo, modalInfo.modal);
 
             if (taskDataResponse.files) {
                if (taskDataResponse.files.length > 0) setFiles(taskDataResponse.files);

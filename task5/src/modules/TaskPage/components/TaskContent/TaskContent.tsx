@@ -127,15 +127,14 @@ export default function TaskContent({
 
    const deleteTaskHandler = async () => {
       console.log('task', task);
-      console.log('task', task);
 
       if (task?.id) {
          const taskDel = await deleteTask(task?.id);
          console.log(taskDel);
 
-         router.replace(`/projects/${projectSlug}`);
-         modalInfo.setCloseModal(true);
+         // router.replace(`/projects/${projectSlug}`);
          setDelTaskModal(false);
+         modalInfo.setCloseModal(true);
       }
    };
 

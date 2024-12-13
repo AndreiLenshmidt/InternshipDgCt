@@ -64,7 +64,16 @@ export function KanbanPage() {
    const handlerNewTask = () => {
       setNewTaskFlag(true);
       setTaskIdEditTask(undefined);
-      setProjectSlag('project4'); //!!! поменять на slag
+
+      const taskSlug = router.query['task-slug'];
+      if (Array.isArray(taskSlug)) {
+         setProjectSlag(taskSlug[0]);
+      } else if (typeof taskSlug === 'string') {
+         setProjectSlag(taskSlug);
+      } else {
+         setProjectSlag('');
+      }
+
       setIsOpenCreateTask(!isOpenCreateTask);
    };
 
