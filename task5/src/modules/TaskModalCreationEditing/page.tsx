@@ -12,6 +12,7 @@ import TextAreaWithToolbar from '@/components/text_area_with_toolbar/TextAreaWit
 import FileUpload from '@/components/file_upload/FileUpload';
 import { useGetProjectsQuery } from '../ProjectsPage/api/api';
 import {
+   // useCreateTaskMutation,
    // useGetTasksQuery,
    useGetComponentsQuery,
    useGetPrioritiesQuery,
@@ -25,7 +26,7 @@ import {
    useAddFilesToTaskMutation,
    useGetAllTasksQuery,
 } from '@/api/appApi';
-import { Priority, Stage, TaskMultiple, TaskSingle, TaskType, User, ResponseFile, Component } from '@/api/data.types';
+import { Priority, TaskMultiple, TaskSingle, TaskType, User, ResponseFile, Component } from '@/api/data.types';
 import { typesTasksOptions, compOptions, priorOptions, usersOptions } from '@/modules/TaskModalCreationEditing/variors';
 import { transformToServerData } from '@/modules/TaskModalCreationEditing/utils/transformToServerData';
 import { parseEstimate } from '@/modules/TaskModalCreationEditing/utils/parseEstimate';
@@ -125,9 +126,13 @@ export function TaskModalCreationEditing({
 
    const [createTaskMutation, { isLoading: isCreateLoading, isSuccess: createIsSuccess, error: createError }] =
       useCreateTaskMutation();
+   // const [createTaskMutation, { isLoading: isCreateLoading, isSuccess: createIsSuccess, error: createError }] =
+   //    useCreateTaskMutation();
 
    const [updateTaskMutation, { isLoading: isUpdateLoading, isSuccess: updateIsSuccess, error: updateError }] =
       useUpdateTaskMutation();
+
+   console.log(idTaskMain);
 
    const { data: taskById, isLoading: isGetTaskByTaskIdLoading } = useGetTaskByTaskIdQuery(
       idTaskMain !== undefined ? idTaskMain : 0,
