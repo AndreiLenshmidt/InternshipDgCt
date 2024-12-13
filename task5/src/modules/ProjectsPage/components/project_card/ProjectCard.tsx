@@ -12,9 +12,14 @@ type PropsType = {
 };
 
 export function ProjectCard({ project }: PropsType) {
+
+   const switchFavoriteState = (e: React.MouseEvent<HTMLDivElement>) => {
+
+   };
+
    return (
       <Link className={style.card} href={'/projects/' + project?.slug}>
-         <div className={style.favorite_icon}>
+         <div className={style.favorite_icon} onClick={switchFavoriteState}>
             <FavLogo />
          </div>
          <img src={project?.logo?.link ? BASE_URL + project?.logo?.link : '/media/ProjectLogo.svg'} alt="." />
