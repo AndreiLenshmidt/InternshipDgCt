@@ -38,7 +38,7 @@ export function AsidePanel() {
                )}
             </div>
          </div>
-         <button className={style.exit}>Выйти</button>
+         <button className={style.exit} onClick={() => {alert('todo')}}>Выйти</button>
 
          <hr />
 

@@ -62,7 +62,7 @@ export function ProjectPage() {
                {projects
                   .filter((proj) => proj.is_archived)
                   .map((proj) => {
-                     return <ProjectCard key={proj.id} project={proj} />;
+                     return <ProjectCard key={proj.id} project={proj} onChange={(isFavorite) => {proj.is_favorite = isFavorite}} />;
                   })}
             </div>
          ) : (
