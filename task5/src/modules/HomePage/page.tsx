@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 
 export default function MainPage() {
    const [token, _, removeCookie] = useCookies(['token-auth']);
-   
+
    const [inOut, setInOut] = useState(!!token['token-auth']);
 
    useEffect(() => {
@@ -16,26 +16,11 @@ export default function MainPage() {
       }
    });
 
-   const LogInLogOutButton = ({ inOut }: { inOut: boolean }) => {
-      const logOut = () => {
-         removeCookie('token-auth');
-         globalThis.document.cookie = '';
-         location.reload();
-         setInOut(false);
-      };
-      if (inOut) {
-         return (
-            <Link className={styles.link} href="/" onClick={() => logOut()}>
-               Выйти
-            </Link>
-         );
-      } else {
-         return (
-            <Link className={styles.link} href="/auth">
-               Войти
-            </Link>
-         );
-      }
+   const logOut = () => {
+      removeCookie('token-auth');
+      globalThis.document.cookie = '';
+      location.reload();
+      setInOut(false);
    };
 
    return (
@@ -43,7 +28,9 @@ export default function MainPage() {
          <Snow className={styles.snow} />
          <header className={styles.header}>
             <Image src="/mainlogo.svg" alt="logo" width={159} height={43} priority={true} />
-            <LogInLogOutButton inOut={inOut} />
+            <Link className={styles.link} href={!inOut ? '/auth' : '/'} onClick={() => inOut && logOut()}>
+               {!inOut ? 'Войти' : 'Выйти'}
+            </Link>
          </header>
          <main className={styles.main}>
             <div className={styles.main_box}>
@@ -55,8 +42,8 @@ export default function MainPage() {
                <p className={styles.main_info}>
                   Если вы уже зарегистрированы, то можете начать работу, нажав на кнопку "перейти к проектам".
                </p>
-               <Link className={styles.link} href="/projects">
-                  Перейти к проектам
+               <Link className={styles.link} href={inOut ? '/projects' : '/auth'}>
+                  {inOut ? 'Перейти к проектам' : 'Войти'}
                </Link>
             </div>
          </main>
