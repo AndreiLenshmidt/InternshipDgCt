@@ -7,7 +7,8 @@ import ProjectsIcon from '@public/icons/projects.svg';
 import Link from 'next/link';
 import { useReducer, useState } from 'react';
 import { projectsUrl, projectUrl } from '@/consts';
-import { useGetCurrentUserQuery } from '@/api/user/user.api';
+import { useGetCurrentUserQuery } from '@/api/appApi';
+
 
 export function AsidePanel() {
    // 
@@ -38,7 +39,7 @@ export function AsidePanel() {
                )}
             </div>
          </div>
-         <button className={style.exit}>Выйти</button>
+         <button className={style.exit} onClick={() => {alert('todo')}}>Выйти</button>
 
          <hr />
 

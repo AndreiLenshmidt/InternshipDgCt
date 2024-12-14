@@ -1,4 +1,4 @@
-import { Component } from '../data.types';
+import type { Api, Component } from '../data.types';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { getCookie } from '@/utils/cookies';
 import { TaskSingle, TaskMultiple, TaskType, Stage, Priority } from '@/api/data.types';
@@ -6,30 +6,68 @@ import { BASE_API_URL } from '@/consts';
 import { prepareHeaders } from '@/utils/api';
 import { TypeRootState } from '@/store/store';
 
+type TaskUpType = Parameters<Api<unknown>['task']['taskPartialUpdate']>[1]
+
 export const tasksApi = createApi({
+   tagTypes: ['Task', 'Tasks'],
    reducerPath: 'api/tasks',
    baseQuery: fetchBaseQuery({ baseUrl: BASE_API_URL, prepareHeaders }),
    endpoints: (build) => ({
       getTaskTypes: build.query<{ data: Array<TaskType> }, void>({ query: () => `/task_type` }),
       getTaskTags: build.query<{ data: Array<Component & { color?: string }> }, void>({ query: () => `/component` }),
       getTaskPriorities: build.query<{ data: Array<Priority> }, void>({ query: () => `/priority` }),
-      getAllTasks: build.query<{ data: Array<TaskMultiple> }, string>({
-         query: (slug: string) => `/project/${slug}/task`,
-      }),
+      getAllTasks: build.query<{ data: Array<TaskMultiple> }, string>({ query: (slug: string) => `/project/${slug}/task`, providesTags: ['Tasks'], }),
+      getTask: build.query<{ data: TaskSingle }, string>({ query: (id: string) => `/task/${id}`, providesTags: ['Task'], }),
 
+      updateTask: build.mutation<TaskSingle, Partial<TaskUpType> & {id: number, projectslug: string}>({
+         query: (task) => {
+            const { id, ...patch } = task;
+            return {
+               url: `/task/${id}`,
+               method: 'PATCH',
+               body: patch,
+            }
+         },
+         async onQueryStarted({ id, ...patch }, { dispatch, queryFulfilled }) {
+            const patchResult = dispatch(
+               tasksApi.util.updateQueryData('getAllTasks', patch.projectslug, (draft) => {
+                  Object.assign(draft, patch)
+               })
+            )
+            try {
+               await queryFulfilled
+            } catch {
+               patchResult.undo()
+
+               /**
+                * Alternatively, on failure you can invalidate the corresponding cache tags
+                * to trigger a re-fetch:
+                * dispatch(api.util.invalidateTags(['Post']))
+                */
+            }
+         },
+         invalidatesTags: ['Tasks']
+         // transformResponse: (response: { data: TaskMultiple }, meta, arg) => response.data,
+      })
       // getTaskStages: build.query<{ data: Array<Stage> }, void>({ query: () => `/stage` }),
    }),
 });
 
 export const {
-   useGetAllTasksQuery,
+   useGetAllTasksQuery,   
    useGetTaskPrioritiesQuery,
    useGetTaskTagsQuery,
    useGetTaskTypesQuery,
+   useGetTaskQuery,
+   
+   useLazyGetTaskQuery,
+   useLazyGetAllTasksQuery,
 
+   useUpdateTaskMutation
    // useLazyGetTaskPrioritiesQuery,
    // useGetTaskStagesQuery
 } = tasksApi;
+
 
 /**
  * @link { https://stackoverflow.com/questions/76212082/how-to-use-rtk-query-in-combination-with-selectors }

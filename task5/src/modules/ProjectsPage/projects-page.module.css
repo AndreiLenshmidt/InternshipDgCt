@@ -26,6 +26,10 @@
          margin: 1rem 0;
          display: flex;
          gap: 0.5rem;
+
+         input {
+            cursor: pointer;
+         }
       }
 
       h4 {

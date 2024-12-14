@@ -28,7 +28,7 @@ export default function InfoModal({
       setTimeout(() => {
          setCloseAmimation('slide_in_left');
          setTimeout(() => setClose(false), 1000);
-      }, 7000);
+      }, 4000);
    }, []);
 
    return (
