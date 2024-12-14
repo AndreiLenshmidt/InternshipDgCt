@@ -28,12 +28,14 @@ export default function TaskContent({
    activeUser,
    onClose,
    refetch,
+   delTaskFunc,
 }: {
    projectSlug: string;
    task: TaskSingle | undefined;
    activeUser: User | undefined;
-   onClose: CallableFunction;
+   onClose?: CallableFunction;
    refetch?: CallableFunction;
+   delTaskFunc?: (flag: boolean) => void;
 }) {
    const isAdmin = activeUser?.is_admin;
    const [selectedOptionComp, setSelectedOptionComp] = useState<Stage | undefined>(task?.stage);
@@ -130,18 +132,20 @@ export default function TaskContent({
    };
 
    const deleteTaskHandler = async () => {
-      console.log('task, projectSlug', task, projectSlug);
-
       if (task?.id) {
-         const taskDel = await deleteTask(task?.id);
-         console.log(taskDel);
+         const taskDel = await deleteTask(task.id);
+         const response: TaskSingle | undefined = taskDel?.data?.data || undefined;
 
-         // router.replace(`/projects/${projectSlug}`);
+         if (response) {
+            setNewTaskId(undefined);
+            if (delTaskFunc) delTaskFunc(true);
 
-         setDelTaskModal(false);
-         modalInfo.setCloseModal(true);
+            if (onClose) onClose(false);
+            setDelTaskModal(false);
+            modalInfo.setCloseModal(true);
+         }
 
-         // onClose(false); //!!! как вариант, раскоменть посмотри. По мне лучше без onClose(false)
+         // router.replace(`/projects/${projectSlug}`); //!!! -----------  удалить?
       } else {
          setDelTaskModal(false);
          modalInfo.setCloseModal(true);
@@ -257,7 +261,7 @@ export default function TaskContent({
                options={selectOptions}
             />
             <div className={`${styles.flex} ${styles.aside_tabbox}`}>
-               <MarkersTask priority={task?.priority} component={task?.component} stage={task?.stage} />
+               <MarkersTask priority={task?.priority} component={task?.component} type={task?.task_type} />
             </div>
             <div className={styles.flexcentre}>
                <span className={styles.aside_text}>Оценка</span>

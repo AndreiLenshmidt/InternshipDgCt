@@ -125,7 +125,7 @@ export function TaskModalCreationEditing({
    // console.log('projects', projects);
 
    const { data } = useGetTasksQuery({ slug: slugName });
-   console.log('slugName,tasks', 'project2', data);
+   // console.log('slugName,tasks', 'project2', data);
 
    const [createTaskMutation, { isLoading: isCreateLoading, isSuccess: createIsSuccess, error: createError }] =
       useCreateTaskMutation();
@@ -241,7 +241,7 @@ export function TaskModalCreationEditing({
 
    const handleCreateTask = async (slugName: string, taskData: TaskMultiple, files: ResponseFile[]) => {
       try {
-         console.log(' ------------- taskData, slugName NEWs------------', slugName, taskData);
+         // console.log(' ------------- taskData, slugName NEWs------------', slugName, taskData);
 
          const response = await createTaskMutation({
             slug: slugName,
@@ -250,7 +250,7 @@ export function TaskModalCreationEditing({
 
          const taskDataResponse: TaskSingle = response.data;
 
-         console.log(' ------------- taskDataResponse NEWs------------', taskDataResponse);
+         // console.log(' ------------- taskDataResponse NEWs------------', taskDataResponse);
 
          if (taskDataResponse) {
             setTaskData(taskDataResponse);
@@ -503,8 +503,6 @@ export function TaskModalCreationEditing({
    //       router.replace(`/${idTaskMain}`);
    //    }
    // }, [idTaskMain]);
-
-   console.log('newTaskFlag', newTaskFlag);
 
    if (!isOpen) return null;
    if (isGetTaskByTaskIdLoading) return <div className={style.loading}>Загрузка...</div>;

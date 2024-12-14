@@ -13,7 +13,6 @@ import { colorSchema } from '@/consts';
 // (getState() as RootState).auth.token
 
 export function TaskCard({ task, openTask }: { task: TaskMultiple; openTask: CallableFunction }) {
-
    const useStateSelector = useSelector.withTypes<GlobalState>();
    // const count = useStateSelector((state) => state['api/tasks']);
    // const count = useStateSelector((state) => state.tasks.queries);
@@ -30,21 +29,21 @@ export function TaskCard({ task, openTask }: { task: TaskMultiple; openTask: Cal
          ),
       [prioritiesInfo]
    );
-   
+
    const priority = useMemo(() => prioritiesInfo?.find((v) => v.id === task.priority), [prioritiesInfo]);
    const tag = useMemo(() => tagsInfo?.find((v) => v.id === task.component), [tagsInfo]);
    const tasktype = useMemo(() => tasktypesInfo?.find((v) => v.id === task.task_type), [tasktypesInfo]);
 
-  const [{ opacity }, dragRef] = useDrag(
-     () => ({
-        type: 'text',
-        item: { id: task.id },
-        collect: (monitor) => ({
-           opacity: monitor.isDragging() ? 0.5 : 1,
-        }),
-     }),
-     []
-  );
+   const [{ opacity }, dragRef] = useDrag(
+      () => ({
+         type: 'text',
+         item: { id: task.id },
+         collect: (monitor) => ({
+            opacity: monitor.isDragging() ? 0.5 : 1,
+         }),
+      }),
+      []
+   );
 
    // const { attributes, listeners, setNodeRef, transform } = useDraggable({
    //    id: task.id || 'draggable',

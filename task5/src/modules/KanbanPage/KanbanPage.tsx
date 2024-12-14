@@ -33,14 +33,14 @@ export function KanbanPage() {
    const router = useRouter();
    const route = useMemo(() => router.query['task-slug'] as string, [router.query['task-slug']]);
 
-   const { tasks, stagedTasks, tasksRefetch, showJustMine, project } = useStagedTasks(route);
+   const { tasks, stagedTasks, tasksRefetch, showJustMine, project, isSuccess } = useStagedTasks(route);
 
    // const dropstyle = { color: isOver ? 'green' : undefined };
 
    ///
    /// ДЛЯ ОТКРЫТИЯ ОКНА СОЗДАНИЯ/ РЕДАКТИРОВАНИЯ ЗАДАЧИ:
    ///
-   
+
    // Для открытия окна создания/ редактирования задачи
    const modalInfo = useModalInfo();
    const [projectSlag, setProjectSlag] = useState<string>('');
@@ -49,8 +49,44 @@ export function KanbanPage() {
    const [newTaskId, setNewTaskId] = useState<number | undefined>();
    const [newTaskFlag, setNewTaskFlag] = useState(false);
    const [tasksLocal, setTasksLocal] = useState<TaskMultiple[]>([]);
+   const [delTaskFlag, setDelTaskFlag] = useState(false);
+
    // ------------------------------------------------
    const [isOpenTask, setOpenTask] = useState<boolean>(false);
+
+   // const { data: { data: project } = { data: null }, error } = useGetProjectQuery(route, loaded);
+   // const { data: { data: priorities } = { data: null } } = useGetTaskPrioritiesQuery(undefined, loaded);
+
+   // const {
+   //    data: { data: tasks } = { data: [] },
+   //    isLoading,
+   //    isSuccess,
+   //    isError,
+   //    refetch,
+   // } = useGetAllTasksQuery(route, { skip: !router.query['task-slug'] || !(project && priorities) }); //  || !taskStages?.length
+   // const stagedTasks = useMemo(() => {
+   //    return groupByObject(
+   //       project?.flow?.possibleProjectStages as Required<Stage>[],
+   //       tasks as (Record<PropertyKey, unknown> & TaskMultiple)[],
+   //       'stage'
+   //    );
+   // }, [tasks, project?.flow?.possibleProjectStages]);
+
+   useEffect(() => {
+      if (isSuccess) {
+         setTasksLocal(tasks);
+      }
+   }, [isSuccess, tasks]);
+
+   useEffect(() => {
+      if ((newTaskId && isSuccess) || (!delTaskFlag && isSuccess)) {
+         modalInfo.setCloseModal(true);
+         modalInfo.setModalTitle('Успех');
+         modalInfo.setModalType('info');
+         modalInfo.setModalInfo('Задача успешно удалена');
+         tasksRefetch();
+      }
+   }, [newTaskId, tasksRefetch, delTaskFlag]);
 
    // const { isOver, setNodeRef } = useDroppable({
    //    id: 'droppable',
@@ -61,6 +97,10 @@ export function KanbanPage() {
    // Функция для получения newTaskId от дочернего компонента
    const handleNewTaskId = (taskId: number) => {
       setNewTaskId(taskId);
+   };
+
+   const delTaskFunc = (flag: boolean) => {
+      setDelTaskFlag(flag);
    };
 
    const handlerNewTask = () => {
@@ -83,6 +123,7 @@ export function KanbanPage() {
       setTaskIdEditTask(id);
       setProjectSlag(route);
       setOpenTask(true);
+      setDelTaskFlag(false);
    };
 
    /////////////////////////
@@ -149,8 +190,16 @@ export function KanbanPage() {
             </div>
          </div>
 
-         {/* autoHeight autoHeightMin={500} */}
-         {/* // width: (width || 0) - 336, // TODO (reTODO) with s/m */}
+         {modalInfo.modal ? (
+            <InfoModal
+               type={modalInfo.modalType}
+               title={modalInfo.modalTitle}
+               info={modalInfo.modalInfo}
+               setClose={modalInfo.setCloseModal}
+            />
+         ) : (
+            <></>
+         )}
 
          {isOpenCreateTask && (
             <TaskModalCreationEditing
@@ -164,8 +213,17 @@ export function KanbanPage() {
             />
          )}
          {isOpenTask && taskIdEditTask && (
-            <ModalTask id={taskIdEditTask} projectSlug={projectSlag} onClose={setOpenTask} refetch={tasksRefetch} />
+            <ModalTask
+               id={taskIdEditTask}
+               projectSlug={projectSlag}
+               onClose={setOpenTask}
+               refetch={tasksRefetch}
+               delTaskFunc={delTaskFunc}
+            />
          )}
+
+         {/* autoHeight autoHeightMin={500} */}
+         {/* // width: (width || 0) - 336, // TODO (reTODO) with s/m */}
 
          <Scrollbar
             noScrollY

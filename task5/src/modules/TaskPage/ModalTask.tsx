@@ -10,11 +10,13 @@ export default function ModalTask({
    projectSlug,
    onClose,
    refetch,
+   delTaskFunc,
 }: {
    id: number;
    projectSlug: string;
    onClose: CallableFunction;
    refetch: CallableFunction;
+   delTaskFunc?: (flag: boolean) => void;
 }) {
    const { data: task, isLoading } = useGetTaskByTaskIdQuery(id);
    console.log(task?.data);
@@ -44,6 +46,7 @@ export default function ModalTask({
                   projectSlug={projectSlug}
                   onClose={onClose}
                   refetch={refetch}
+                  delTaskFunc={delTaskFunc}
                />
             </div>
          )}

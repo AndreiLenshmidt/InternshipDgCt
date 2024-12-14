@@ -1,9 +1,7 @@
 .container {
-
    display: flex;
 
    .content {
-
       flex-shrink: 0;
       flex-grow: 1;
       flex-basis: calc(100vw - var(--nav-menu-width));
@@ -15,7 +13,7 @@
          justify-content: space-around;
          gap: 1rem;
 
-         &>* {
+         & > * {
             flex-basis: 50%;
 
             input {
@@ -27,8 +25,9 @@
       .archive_checkbox {
          margin: 1rem 0;
          display: flex;
-         gap: .5rem;
-         input{
+         gap: 0.5rem;
+
+         input {
             cursor: pointer;
          }
       }
@@ -36,7 +35,7 @@
       h4 {
          font-size: 18px;
          font-weight: 600;
-         margin-top: 3rem;
+         margin-top: 0.4rem;
       }
 
       .projects,
@@ -53,7 +52,7 @@
       }
 
       .favorite_projects {
-         &>* {
+         & > * {
             height: 151px !important;
          }
       }
@@ -61,7 +60,7 @@
       hr {
          height: 1px;
          /* Neutral 300: */
-         background-color: #EEEEEE;
+         background-color: #eeeeee;
          margin: 2rem 0;
       }
    }
@@ -69,9 +68,9 @@
    input {
       background-color: var(--bread-crumbs-back);
 
-      border-radius: .5rem;
+      border-radius: 0.5rem;
       font-size: 14px;
-      padding: .6rem 0;
+      padding: 0.6rem 0;
       padding-left: 1.2rem;
       color: #333333;
 
@@ -89,7 +88,6 @@
    h6 {
       /* font-size: 14px; */
       color: var(--bread-crumbs-text);
-      margin-bottom: .5rem;
+      margin-bottom: 0.5rem;
    }
-
 }

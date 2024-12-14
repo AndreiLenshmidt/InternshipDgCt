@@ -40,7 +40,7 @@ export const appApi = createApi({
             },
          }),
       }),
-      deleteTask: build.mutation<void, number>({
+      deleteTask: build.mutation<{ data: TaskSingle }, number>({
          query: (id) => ({
             url: `/task/${id}`,
             method: 'DELETE',
