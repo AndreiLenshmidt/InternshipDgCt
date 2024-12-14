@@ -165,7 +165,7 @@ export function KanbanPage() {
             crumbs={[
                { text: 'Главная', url: '/' },
                { text: 'Проекты', url: projectsUrl },
-               { text: project?.name || '', url: `/${projectUrl}/${router.query['task-slug']}` },
+               { text: project?.name || '', url: `/${projectsUrl}/${router.query['task-slug']}` },
             ]}
          />
 

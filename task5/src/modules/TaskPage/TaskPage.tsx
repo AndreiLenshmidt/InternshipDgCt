@@ -10,17 +10,14 @@ export default function TaskPage() {
    const router = useRouter();
    const taskId = Number(router.query['slug']);
    const projectSlug = router.query['task-slug'] as string;
-   const { data, isLoading } = useGetTaskByTaskIdQuery(taskId);
-   console.log(data?.data);
-
+   const { data, isLoading, isError } = useGetTaskByTaskIdQuery(taskId);
    const { data: user } = useGetCurrentUserQuery();
-   console.log(user?.data);
 
    useEffect(() => {
-      if (!data?.data) {
+      if (isError) {
          router.replace('/404');
       }
-   });
+   }, [isError]);
 
    useEffect(() => {
       if (data?.data.project?.slug !== projectSlug && data?.data.project?.slug) {
@@ -40,7 +37,7 @@ export default function TaskPage() {
                      crumbs={[
                         { text: 'Главная', url: '/' },
                         { text: 'Проекты', url: '/projects' },
-                        { text: 'Задачи', url: '/projects/task' },
+                        { text: projectSlug, url: `/projects/${projectSlug}` },
                         {
                            text: `Задачa id: ${taskId}`,
                            url: `/projects/task/${taskId}`,
