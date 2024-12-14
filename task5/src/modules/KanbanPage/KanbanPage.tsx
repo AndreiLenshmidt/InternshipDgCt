@@ -2,25 +2,20 @@ import { BreadCrumbs } from '@components/bread_crumbs/BreadCrumbs';
 import { Switch } from '@components/switch/Switch';
 import { TaskModalCreationEditing } from '@/modules/TaskModalCreationEditing/page';
 import { useRouter } from 'next/router';
-import { useDrag } from 'react-dnd';
 import { TaskCard } from './components/task-card/TaskCard';
-import style from './kanban-page.module.scss';
 import { TasksColumn } from './components/tasks-column/TaskColumn';
-import { useGetAllTasksQuery, useGetTaskPrioritiesQuery, useGetTaskTagsQuery } from '@/api/tasks/tasks.api';
-import { useGetProjectQuery } from '../ProjectsPage/api/api';
-import { JSXElementConstructor, useEffect, useMemo, useState, useRef } from 'react';
-import { groupBy, groupByObject } from '@/utils/core';
+import { useEffect, useMemo, useState } from 'react';
 import { projectsUrl, projectUrl } from '@/consts';
 import { Stage, TaskMultiple, User } from '@/api/data.types';
 import { Scrollbar } from 'react-scrollbars-custom';
-import { useResize } from '@/hooks/resize';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { DndProvider } from 'react-dnd';
 import ModalTask from '../TaskPage/ModalTask';
 import { useStagedTasks } from './hooks/stagedTasks';
-import { useGetCurrentUserQuery } from '@/api/appApi';
 import InfoModal from '@/modules/TaskPage/components/InfoModal/InfoModal';
 import { useModalInfo } from '@/hooks/useModalInfo';
+
+import style from './kanban-page.module.scss';
 
 // import { ScrollbarProps, Scrollbars } from 'react-custom-scrollbars';
 // import task from '@/pages/projects/kanban/task';
@@ -55,14 +50,11 @@ export function KanbanPage() {
    const [isOpenTask, setOpenTask] = useState<boolean>(false);
    const [currentStage, setCurrentStage] = useState<Stage>();
 
-
-
    useEffect(() => {
       if (isSuccess) {
          setTasksLocal(tasks);
       }
    }, [isSuccess, tasks]);
-
 
    // Функция для получения newTaskId от дочернего компонента
    const handleNewTaskId = (taskId: number) => {
@@ -228,27 +220,24 @@ export function KanbanPage() {
                            const [stageTasks, stageInfo] = stagedTasks[stage.id] || [];
 
                            return (
-                              tasks as (Record<PropertyKey, unknown> & TaskMultiple)[],
-                              (
-                                 <TasksColumn
-                                    key={stage.id}
-                                    stage={stage}
-                                    tasksAmount={stageTasks?.length || 0}
-                                    tasks={tasks}
-                                 >
-                                    <Scrollbar noScrollX style={{ height: 800, width: 250 }}>
-                                       {stageTasks?.map((task) => {
-                                          return (
-                                             <TaskCard
-                                                task={task}
-                                                key={task.id}
-                                                openTask={() => handleOpenTask(task?.id, stage)}
-                                             />
-                                          );
-                                       })}
-                                    </Scrollbar>
-                                 </TasksColumn>
-                              )
+                              <TasksColumn
+                                 key={stage.id}
+                                 stage={stage}
+                                 tasksAmount={stageTasks?.length || 0}
+                                 tasks={tasks}
+                              >
+                                 <Scrollbar noScrollX style={{ height: 800, width: 250 }}>
+                                    {stageTasks?.map((task) => {
+                                       return (
+                                          <TaskCard
+                                             task={task}
+                                             key={task.id}
+                                             openTask={() => handleOpenTask(task?.id, stage)}
+                                          />
+                                       );
+                                    })}
+                                 </Scrollbar>
+                              </TasksColumn>
                            );
                         }
 

@@ -86,9 +86,11 @@
       font-weight: bold;
    }
 
-   h6 {
+   h6, label {
       /* font-size: 14px; */
       color: var(--bread-crumbs-text);
       margin-bottom: 0.5rem;
+      display: block;
+      cursor: auto;
    }
 }
