@@ -53,6 +53,7 @@ export function KanbanPage() {
 
    // ------------------------------------------------
    const [isOpenTask, setOpenTask] = useState<boolean>(false);
+   const [currentStage, setCurrentStage] = useState<Stage>();
 
    // const { data: { data: project } = { data: null }, error } = useGetProjectQuery(route, loaded);
    // const { data: { data: priorities } = { data: null } } = useGetTaskPrioritiesQuery(undefined, loaded);
@@ -72,21 +73,13 @@ export function KanbanPage() {
    //    );
    // }, [tasks, project?.flow?.possibleProjectStages]);
 
+   console.log(tasks, 'tasks');
+
    useEffect(() => {
       if (isSuccess) {
          setTasksLocal(tasks);
       }
    }, [isSuccess, tasks]);
-
-   useEffect(() => {
-      if ((newTaskId && isSuccess) || (!delTaskFlag && isSuccess)) {
-         modalInfo.setCloseModal(true);
-         modalInfo.setModalTitle('Успех');
-         modalInfo.setModalType('info');
-         modalInfo.setModalInfo('Задача успешно удалена');
-         tasksRefetch();
-      }
-   }, [newTaskId, tasksRefetch, delTaskFlag]);
 
    // const { isOver, setNodeRef } = useDroppable({
    //    id: 'droppable',
@@ -119,7 +112,8 @@ export function KanbanPage() {
       setIsOpenCreateTask(!isOpenCreateTask);
    };
 
-   const handleOpenTask = (id: number | undefined) => {
+   const handleOpenTask = (id: number | undefined, stage: Stage) => {
+      setCurrentStage(stage);
       setTaskIdEditTask(id);
       setProjectSlag(route);
       setOpenTask(true);
@@ -130,13 +124,34 @@ export function KanbanPage() {
 
    // InfoModal в случае успешного создания задачи
    useEffect(() => {
-      if (newTaskFlag && newTaskId) {
+      if (newTaskFlag && newTaskId && isSuccess) {
          modalInfo.setCloseModal(true);
          modalInfo.setModalTitle('Успех');
          modalInfo.setModalType('info');
          modalInfo.setModalInfo('Задача успешно создана');
+
+         tasksRefetch();
+         setDelTaskFlag(false);
       }
-   }, [newTaskFlag, newTaskId]);
+   }, [newTaskFlag, tasksRefetch, newTaskId]);
+
+   useEffect(() => {
+      if (delTaskFlag && isSuccess) {
+         modalInfo.setCloseModal(true);
+         modalInfo.setModalTitle('Успех');
+         modalInfo.setModalType('info');
+         modalInfo.setModalInfo('Задача успешно удалена');
+
+         tasksRefetch();
+         setDelTaskFlag(false);
+      }
+   }, [delTaskFlag, tasksRefetch]);
+
+   useEffect(() => {
+      if (isSuccess) {
+         tasksRefetch();
+      }
+   }, [isOpenTask]);
 
    return (
       <div className={style.base} style={{ display: 'flex', flexDirection: 'column', height: 'calc(100vh - 4rem)' }}>
@@ -223,6 +238,7 @@ export function KanbanPage() {
                onClose={setOpenTask}
                refetch={tasksRefetch}
                delTaskFunc={delTaskFunc}
+               currentStage={currentStage}
             />
          )}
 
@@ -258,7 +274,7 @@ export function KanbanPage() {
                                              <TaskCard
                                                 task={task}
                                                 key={task.id}
-                                                openTask={() => handleOpenTask(task?.id)}
+                                                openTask={() => handleOpenTask(task?.id, stage)}
                                              />
                                           );
                                        })}

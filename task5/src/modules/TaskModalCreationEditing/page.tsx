@@ -125,7 +125,7 @@ export function TaskModalCreationEditing({
    // console.log('projects', projects);
 
    const { data } = useGetTasksQuery({ slug: slugName });
-   // console.log('slugName,tasks', 'project2', data);
+   console.log('slugName,tasks', 'project2', data);
 
    const [createTaskMutation, { isLoading: isCreateLoading, isSuccess: createIsSuccess, error: createError }] =
       useCreateTaskMutation();
@@ -133,19 +133,22 @@ export function TaskModalCreationEditing({
    const [updateTaskMutation, { isLoading: isUpdateLoading, isSuccess: updateIsSuccess, error: updateError }] =
       useUpdateTaskMutation();
 
-   const { data: taskById, isLoading: isGetTaskByTaskIdLoading } = useGetTaskByTaskIdQuery(
-      idTaskMain !== undefined ? idTaskMain : 27,
-      {
-         refetchOnMountOrArgChange: true,
-         skip: !taskId || !isOpen,
-      }
-   );
+   const {
+      data: taskById,
+      isLoading: isGetTaskByTaskIdLoading,
+      isSuccess: isGetTaskByTaskIdIsSuccess,
+      refetch,
+   } = useGetTaskByTaskIdQuery(idTaskMain !== undefined ? idTaskMain : 27, {
+      refetchOnMountOrArgChange: true,
+      skip: !taskId || !isOpen,
+   });
 
    const isLoading = isUpdateLoading || isCreateLoading;
    const error = updateError || createError;
 
    const handleFileTaskLinked = async (idTask: number | undefined, filesTask: ResponseFile[] | undefined) => {
       if (idTask === undefined) return;
+      refetch();
 
       try {
          if (filesTask && filesTask.length > 0) {
@@ -184,7 +187,7 @@ export function TaskModalCreationEditing({
    ) => {
       if (!idTask) return;
 
-      console.log(' ------------- idTask, taskDataUpd, filesTask UPDATE------------', idTask, taskDataUpd, filesTask);
+      // console.log(' ------------- idTask, taskDataUpd, filesTask UPDATE------------', idTask, taskDataUpd, filesTask);
 
       try {
          const response = await updateTaskMutation({
@@ -194,15 +197,13 @@ export function TaskModalCreationEditing({
 
          const taskDataResponse: TaskSingle = response?.data;
 
-         console.log(' ------------- taskDataResponse UPDATE------------', taskDataResponse);
+         // console.log(' ------------- taskDataResponse UPDATE------------', taskDataResponse);
 
          if (taskDataResponse) {
             setTaskData((prev) => ({
                ...prev,
                ...taskDataResponse,
             }));
-
-            console.log(' ------------- modalInfo.modal UPDATE------------', modalInfo.modal);
 
             if (taskDataResponse.files) {
                if (taskDataResponse.files.length > 0) setFiles(taskDataResponse.files);
@@ -379,13 +380,13 @@ export function TaskModalCreationEditing({
          const fileLinks = data.fileLinks ?? [];
 
          //!!! ----------------------------------------------------
-         console.log(
-            '****** data, serverData, isEditMode, newTaskFlag **********',
-            data,
-            serverData,
-            isEditMode,
-            newTaskFlag
-         );
+         // console.log(
+         //    '****** data, serverData, isEditMode, newTaskFlag **********',
+         //    data,
+         //    serverData,
+         //    isEditMode,
+         //    newTaskFlag
+         // );
 
          if (serverData && newTaskFlag) {
             modalInfo.setCloseModal(false);
@@ -653,6 +654,8 @@ export function TaskModalCreationEditing({
                            }}
                            disabled={!taskData?.can_attach_file}
                            error={error?.message}
+                           isSuccess={isGetTaskByTaskIdIsSuccess}
+                           refetch={refetch}
                         />
                      )}
                   />
