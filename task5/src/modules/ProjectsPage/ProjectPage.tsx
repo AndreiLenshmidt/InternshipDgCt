@@ -27,11 +27,15 @@ export function ProjectPage() {
 
    const {
       register,
+      clearErrors,
       handleSubmit,
       reset,
       // setFocus,
       formState: { isDirty, isSubmitting, errors },
-   } = useForm<FormSchema>({ resolver: zodResolver(projectsFilterFormSchema) });
+   } = useForm<FormSchema>({
+      resolver: zodResolver(projectsFilterFormSchema), defaultValues: {
+         projectName: '',         
+   } });
 
    useMemo(() => {
       const columnsCount = Math.floor((width - 272) / 264); // 208 - on `5/1168`
@@ -39,13 +43,12 @@ export function ProjectPage() {
    }, [width]);
 
    const onSubmit: SubmitHandler<FormSchema> = (data) => {
+      
       // просто выводим данные в консоль
       console.log(data);
       // сбрасываем состояние формы (очищаем поля)
-      reset();
+      reset()
    };
-
-   // const validate
 
    return (
       <>
@@ -61,23 +64,38 @@ export function ProjectPage() {
          <h1>Проекты</h1>
 
          <form className={style.filters} onSubmit={handleSubmit(onSubmit)}>
-            <div>
+            {/* {JSON.stringify(errors)} */}
+
+            <div data-error={errors.projectName?.message}>
                <label htmlFor="projectName" className="label">
                   Название проекта
                </label>
                <input
+                  style={{ backgroundColor: errors.projectName ? '#FFF1F0' : undefined }}
                   type="text"
                   id="projectName"
                   placeholder="Введите название проекта"
                   {...register('projectName')}
                />
             </div>
-            <div>
+            <div data-error={errors.taskId?.message}>
                <label htmlFor="taskId" className="label">
                   Номер задачи
                </label>
-               <input type="text" id="taskId" placeholder="Введите номер задачи" {...register('taskId')} />
+               <input
+                  style={{ backgroundColor: errors.taskId ? '#FFF1F0' : undefined }}
+                  type="text"
+                  id="taskId"
+                  placeholder="Введите номер задачи"
+                  // onInput={(e) => {if ((e.target as HTMLInputElement).value === '') reset(); }}
+                  {...register('taskId', {
+                     setValueAs: (v: string) => v.length ? +v : '',
+                     // valueAsNumber: true,
+                     required: false,
+                  })}
+               />
             </div>
+            <button type="submit" style={{ display: 'none' }}></button>
          </form>
          <div className={style.archive_checkbox}>
             <input type="checkbox" name="" id="" onChange={switchArchiveProjects} />
