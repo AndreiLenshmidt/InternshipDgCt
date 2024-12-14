@@ -10,24 +10,9 @@ import { groupBy } from '../../../../utils/core';
 import { useGetTaskPrioritiesQuery, useGetTaskTagsQuery, useGetTaskTypesQuery } from '@/api/tasks/tasks.api';
 import { colorSchema } from '@/consts';
 
-// const priorities = {
-//    1: 'Низкий',
-//    2: 'Высокий',
-// };
-
 // (getState() as RootState).auth.token
 
 export function TaskCard({ task, openTask }: { task: TaskMultiple; openTask: CallableFunction }) {
-   // const [{ opacity }, dragRef] = useDrag(
-   //    () => ({
-   //       type: 'image',
-   //       item: { id: 11111111 },
-   //       collect: (monitor) => ({
-   //          opacity: monitor.isDragging() ? 0.5 : 1,
-   //       }),
-   //    }),
-   //    []
-   // );
 
    // const useStateSelector = useSelector.withTypes<GlobalState>();
    // const count = useStateSelector((state) => state['api/tasks']);
@@ -47,14 +32,9 @@ export function TaskCard({ task, openTask }: { task: TaskMultiple; openTask: Cal
    );
 
    // const priority = useMemo(() => priorities[task.priority as keyof typeof priorities], [priorities, task]);
-
    const priority = useMemo(() => prioritiesInfo?.find((v) => v.id === task.priority), [prioritiesInfo]);
    const tag = useMemo(() => tagsInfo?.find((v) => v.id === task.component), [tagsInfo]);
    const tasktype = useMemo(() => tasktypesInfo?.find((v) => v.id === task.task_type), [tasktypesInfo]);
-
-   useEffect(() => {
-      // console.log(tasktypesInfo);
-   }, [tasktypesInfo]);
 
   const [{ opacity }, dragRef] = useDrag(
      () => ({
