@@ -19,11 +19,9 @@ export function TasksColumn({
 
    const router = useRouter();
 
-   // const [getTasks, tasks] = useLazyGetAllTasksQuery();
-   
-   const [getTask, droppedTasks] = useLazyGetTaskQuery();
-   
-   const [updateTask, result] = useUpdateTaskMutation({
+   // const [getTasks, tasks] = useLazyGetAllTasksQuery();   
+   const [getTask, _droppedTasks] = useLazyGetTaskQuery();
+   const [updateTask, _result] = useUpdateTaskMutation({
       fixedCacheKey: 'shared-update-task',
    });
 
@@ -42,14 +40,8 @@ export function TasksColumn({
          //   console.log(item, stage.name, monitor.isOver());
          //   setOver(monitor.isOver());
       },
-      drop(item, monitor) {
-         console.warn(item);
-         // const { data } = tasksApi.endpoints.getAllTasks.useQuery('');  // <- raw data
-         // const { data } = tasksApi.useGetAllTasksQuery(router.query['task-slug']);        // -//- via slice object (== via s/m)
-         // const [updatePost, { data }] = api.endpoints.updatePost.useMutation()
-
-         // кэширует ли?                  
-
+      drop(item, monitor) {         
+         // кэширует ли?
          getTask((item as { id: number }).id.toString()).then(({ data: taskInfo }) => {
             const { data: task } = taskInfo || {};
 
@@ -78,3 +70,12 @@ export function TasksColumn({
       </div>
    );
 }
+
+
+
+
+
+
+// const { data } = tasksApi.endpoints.getAllTasks.useQuery('');  // <- raw data
+// const { data } = tasksApi.useGetAllTasksQuery(router.query['task-slug']);        // -//- via slice object (== via s/m)
+// const [updatePost, { data }] = api.endpoints.updatePost.useMutation()

@@ -14,9 +14,9 @@ import { colorSchema } from '@/consts';
 
 export function TaskCard({ task, openTask }: { task: TaskMultiple; openTask: CallableFunction }) {
 
-   // const useStateSelector = useSelector.withTypes<GlobalState>();
+   const useStateSelector = useSelector.withTypes<GlobalState>();
    // const count = useStateSelector((state) => state['api/tasks']);
-   // const count = useStateSelector((state) => state.tasks);
+   // const count = useStateSelector((state) => state.tasks.queries);
 
    const { data: { data: tagsInfo } = { data: null } } = useGetTaskTagsQuery(undefined);
    const { data: { data: prioritiesInfo } = { data: [] } } = useGetTaskPrioritiesQuery(undefined);
@@ -30,8 +30,7 @@ export function TaskCard({ task, openTask }: { task: TaskMultiple; openTask: Cal
          ),
       [prioritiesInfo]
    );
-
-   // const priority = useMemo(() => priorities[task.priority as keyof typeof priorities], [priorities, task]);
+   
    const priority = useMemo(() => prioritiesInfo?.find((v) => v.id === task.priority), [prioritiesInfo]);
    const tag = useMemo(() => tagsInfo?.find((v) => v.id === task.component), [tagsInfo]);
    const tasktype = useMemo(() => tasktypesInfo?.find((v) => v.id === task.task_type), [tasktypesInfo]);

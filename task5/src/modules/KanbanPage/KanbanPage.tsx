@@ -11,12 +11,13 @@ import { useGetProjectQuery } from '../ProjectsPage/api/api';
 import { JSXElementConstructor, useEffect, useMemo, useState, useRef } from 'react';
 import { groupBy, groupByObject } from '@/utils/core';
 import { projectsUrl, projectUrl } from '@/consts';
-import { Stage, TaskMultiple } from '@/api/data.types';
+import { Stage, TaskMultiple, User } from '@/api/data.types';
 import { Scrollbar } from 'react-scrollbars-custom';
 import { useResize } from '@/hooks/resize';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { DndProvider } from 'react-dnd';
 import ModalTask from '../TaskPage/ModalTask';
+import { useStagedTasks } from './hooks/stagedTasks';
 import { useGetCurrentUserQuery } from '@/api/appApi';
 
 // import { ScrollbarProps, Scrollbars } from 'react-custom-scrollbars';
@@ -28,14 +29,16 @@ export function KanbanPage() {
    //
    //
    const router = useRouter();
-
-   const wrapper = useRef<HTMLDivElement>(null);
-   const [justMine, setJustMine] = useState(false);
-
    const route = useMemo(() => router.query['task-slug'] as string, [router.query['task-slug']]);
-   const loaded = useMemo(() => ({ skip: !router.query['task-slug'] }), [router.query['task-slug']]);
 
-   // Для открытия окна создания/ редактирования задачи
+   const {tasks, stagedTasks, project, setJustMine} = useStagedTasks(route);
+
+   // const dropstyle = { color: isOver ? 'green' : undefined };
+
+   ///
+   /// ДЛЯ ОТКРЫТИЯ ОКНА СОЗДАНИЯ/ РЕДАКТИРОВАНИЯ ЗАДАЧИ:
+   ///
+
    const [projectSlag, setProjectSlag] = useState<string>('');
    const [taskIdEditTask, setTaskIdEditTask] = useState<number | undefined>();
    const [isOpenCreateTask, setIsOpenCreateTask] = useState(false);
@@ -43,50 +46,6 @@ export function KanbanPage() {
    const [newTaskFlag, setNewTaskFlag] = useState(false);
    // ------------------------------------------------
    const [isOpenTask, setOpenTask] = useState<boolean>(false);
-
-   const { height } = useResize();
-
-   const { data: { data: user } = { data: null } } = useGetCurrentUserQuery();
-
-   const { data: { data: project } = { data: null }, error } = useGetProjectQuery(route, loaded);
-   const { data: { data: priorities } = { data: null } } = useGetTaskPrioritiesQuery(undefined, loaded);
-
-   const {
-      data: { data: tasks } = { data: [] },
-      isLoading,
-      isSuccess,
-      isError,
-   } = useGetAllTasksQuery(route, { skip: !router.query['task-slug'] || !(project && priorities) }); //  || !taskStages?.length
-
-   const stagedTasks = useMemo(() => {
-      const grouped = groupByObject(
-         project?.flow?.possibleProjectStages as Required<Stage>[],
-         tasks as (Record<PropertyKey, unknown> & TaskMultiple)[],
-         'stage',
-         justMine ? (item) => item.created_by === user?.id : undefined
-      );
-      return grouped;
-   }, [tasks, project?.flow?.possibleProjectStages, justMine]);
-
-   useEffect(() => {
-      console.log(wrapper.current?.offsetWidth);
-      // $0.getBoundingClientRect().y
-   }, [wrapper]);
-
-   // const { isOver, setNodeRef } = useDroppable({
-   //    id: 'droppable',
-   // });
-
-   // const dropstyle = { color: isOver ? 'green' : undefined };
-
-   // interface Scrollbars {
-   //    refs: Record<string, any>;
-   // }
-   // const { isOver, setNodeRef } = useDroppable({
-   //    id: 'droppable',
-   // });
-
-   // const dropstyle = { color: isOver ? 'green' : undefined };
 
    // Функция для получения newTaskId от дочернего компонента
    const handleNewTaskId = (taskId: number) => {
@@ -115,7 +74,7 @@ export function KanbanPage() {
       setOpenTask(true);
    };
 
-   // console.log(router.query['task-slug'], 'router.query[task-slug]'); //, isCloseModal: boolean
+   /////////////////////////
 
    return (
       <div className={style.base} style={{ display: 'flex', flexDirection: 'column', height: 'calc(100vh - 4rem)' }}>
@@ -134,7 +93,7 @@ export function KanbanPage() {
 
             <Switch
                onChange={(v) => {
-                  setJustMine(!justMine);
+                  setJustMine(v => !v);
                   return true;
                }}
                checked={false}
@@ -199,7 +158,7 @@ export function KanbanPage() {
                height: 300, // height || 0, // TODO
             }}
          >
-            <div ref={wrapper} className={style.kanban_container}>
+            <div className={style.kanban_container}>
                {/* <DndContext id={'11'} onDragStart={(e) => {}} onDragEnd={(e) => console.log('dropped', e.active.id, e.over?.id)}> */}
                <DndProvider backend={HTML5Backend}>
                   <div className={style.kanban}>
