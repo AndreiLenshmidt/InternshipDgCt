@@ -120,19 +120,9 @@ export function KanbanPage() {
 
    const handleOpenTask = (id: number | undefined, stage: Stage) => {
       setCurrentStage(stage);
-      // setTaskIdEditTask(id);
-
-      //&& isTaskId?.data === taskIdEditTask //
-      if (id) {
-         setProjectSlag(route);
-         setOpenTask(true);
-         setDelTaskFlag(false);
-      } else {
-         modalInfo.setCloseModal(true);
-         modalInfo.setModalTitle('Неудача');
-         modalInfo.setModalType('error');
-         modalInfo.setModalInfo('Задача не найдена в базе');
-      }
+      setProjectSlag(route);
+      setOpenTask(true);
+      setDelTaskFlag(false);
    };
 
    /////////////////////////
@@ -292,7 +282,7 @@ export function KanbanPage() {
                                                 openTask={() => {
                                                    setTaskIdEditTask(task?.id);
 
-                                                   if (task?.id) handleOpenTask(task?.id, stage);
+                                                   if (task?.id) handleOpenTask(task.id, stage);
                                                 }}
                                              />
                                           );
