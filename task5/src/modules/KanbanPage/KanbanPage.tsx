@@ -18,7 +18,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import { DndProvider } from 'react-dnd';
 import ModalTask from '../TaskPage/ModalTask';
 import { useStagedTasks } from './hooks/stagedTasks';
-import { useGetCurrentUserQuery } from '@/api/appApi';
+import { useGetTaskByTaskIdQuery } from '@/api/appApi';
 import InfoModal from '@/modules/TaskPage/components/InfoModal/InfoModal';
 import { useModalInfo } from '@/hooks/useModalInfo';
 
@@ -50,9 +50,12 @@ export function KanbanPage() {
    const [newTaskFlag, setNewTaskFlag] = useState(false);
    const [tasksLocal, setTasksLocal] = useState<TaskMultiple[]>([]);
    const [delTaskFlag, setDelTaskFlag] = useState(false);
+   const [taskLocal, setTaskLocal] = useState([]);
 
    // ------------------------------------------------
    const [isOpenTask, setOpenTask] = useState<boolean>(false);
+
+   const { data: isTaskId, isSuccess: getIsTaskIdSuccess } = useGetTaskByTaskIdQuery(181);
 
    // const { data: { data: project } = { data: null }, error } = useGetProjectQuery(route, loaded);
    // const { data: { data: priorities } = { data: null } } = useGetTaskPrioritiesQuery(undefined, loaded);
@@ -71,8 +74,6 @@ export function KanbanPage() {
    //       'stage'
    //    );
    // }, [tasks, project?.flow?.possibleProjectStages]);
-
-   console.log(tasks, 'tasks');
 
    useEffect(() => {
       if (isSuccess) {
@@ -112,10 +113,17 @@ export function KanbanPage() {
    };
 
    const handleOpenTask = (id: number | undefined) => {
-      setTaskIdEditTask(id);
-      setProjectSlag(route);
-      setOpenTask(true);
-      setDelTaskFlag(false);
+      if (id && isTaskId?.data) {
+         setTaskIdEditTask(id);
+         setProjectSlag(route);
+         setOpenTask(true);
+         setDelTaskFlag(false);
+      } else {
+         modalInfo.setCloseModal(true);
+         modalInfo.setModalTitle('Неудача');
+         modalInfo.setModalType('error');
+         modalInfo.setModalInfo('Задача не найдена в базе');
+      }
    };
 
    /////////////////////////
@@ -267,7 +275,12 @@ export function KanbanPage() {
                                              <TaskCard
                                                 task={task}
                                                 key={task.id}
-                                                openTask={() => handleOpenTask(task?.id)}
+                                                openTask={() => {
+                                                   if (task?.id) {
+                                                      setTaskLocal(task);
+                                                      handleOpenTask(task.id);
+                                                   }
+                                                }}
                                              />
                                           );
                                        })}

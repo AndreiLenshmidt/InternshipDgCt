@@ -2,7 +2,7 @@ import styles from './task-page.module.scss';
 import Close from '@public/icons/close.svg';
 import TaskContent from './components/TaskContent/TaskContent';
 import { useGetCurrentUserQuery, useGetTaskByTaskIdQuery } from '@/api/appApi';
-import { MouseEvent } from 'react';
+import { MouseEvent, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 
 export default function ModalTask({
@@ -19,10 +19,10 @@ export default function ModalTask({
    delTaskFunc?: (flag: boolean) => void;
 }) {
    const { data: task, isLoading } = useGetTaskByTaskIdQuery(id);
-   console.log(task?.data, 'task?.data');
+   console.log(task?.data, 'task?.data************');
 
    const { data: user } = useGetCurrentUserQuery();
-   console.log(user?.data);
+   // console.log(user?.data);
 
    const modalCloseHandler = (e: MouseEvent<HTMLDivElement, globalThis.MouseEvent>) => {
       const target = e.target as HTMLElement;
