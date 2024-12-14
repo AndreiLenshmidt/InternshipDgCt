@@ -29,6 +29,7 @@ export default function TaskContent({
    onClose,
    refetch,
    delTaskFunc,
+   currentStage,
 }: {
    projectSlug: string;
    task: TaskSingle | undefined;
@@ -36,6 +37,7 @@ export default function TaskContent({
    onClose?: CallableFunction;
    refetch?: CallableFunction;
    delTaskFunc?: (flag: boolean) => void;
+   currentStage?: Stage;
 }) {
    const isAdmin = activeUser?.is_admin;
    const [selectedOptionComp, setSelectedOptionComp] = useState<Stage | undefined>(task?.stage);
@@ -67,6 +69,9 @@ export default function TaskContent({
    useEffect(() => {
       if (task?.stage?.name) {
          setSelectedOptionComp(task?.stage);
+      }
+      if (currentStage && currentStage.id !== task?.stage?.id) {
+         setSelectedOptionComp(currentStage);
       }
       if (task?.files) {
          setFiles(task?.files);

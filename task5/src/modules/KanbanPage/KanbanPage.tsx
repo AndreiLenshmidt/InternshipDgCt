@@ -53,6 +53,7 @@ export function KanbanPage() {
 
    // ------------------------------------------------
    const [isOpenTask, setOpenTask] = useState<boolean>(false);
+   const [currentStage, setCurrentStage] = useState<Stage>();
 
    // const { data: { data: project } = { data: null }, error } = useGetProjectQuery(route, loaded);
    // const { data: { data: priorities } = { data: null } } = useGetTaskPrioritiesQuery(undefined, loaded);
@@ -111,7 +112,8 @@ export function KanbanPage() {
       setIsOpenCreateTask(!isOpenCreateTask);
    };
 
-   const handleOpenTask = (id: number | undefined) => {
+   const handleOpenTask = (id: number | undefined, stage: Stage) => {
+      setCurrentStage(stage);
       setTaskIdEditTask(id);
       setProjectSlag(route);
       setOpenTask(true);
@@ -232,6 +234,7 @@ export function KanbanPage() {
                onClose={setOpenTask}
                refetch={tasksRefetch}
                delTaskFunc={delTaskFunc}
+               currentStage={currentStage}
             />
          )}
 
@@ -267,7 +270,7 @@ export function KanbanPage() {
                                              <TaskCard
                                                 task={task}
                                                 key={task.id}
-                                                openTask={() => handleOpenTask(task?.id)}
+                                                openTask={() => handleOpenTask(task?.id, stage)}
                                              />
                                           );
                                        })}
