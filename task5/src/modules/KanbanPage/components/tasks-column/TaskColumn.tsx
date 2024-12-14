@@ -19,7 +19,7 @@ export function TasksColumn({
 
    const router = useRouter();
 
-   const [getTasks, tasks] = useLazyGetAllTasksQuery();
+   // const [getTasks, tasks] = useLazyGetAllTasksQuery();
    
    const [getTask, droppedTasks] = useLazyGetTaskQuery();
    
@@ -50,22 +50,32 @@ export function TasksColumn({
 
          // кэширует ли?         
          
-         getTasks(router.query['task-slug'] as string).then(({ data: tasks }) => {
-            const { data } = tasks || {};
-            const task = data?.find((task) => task.id === (item as { id: number }).id);
 
-            // getTask((item as { id: number }).id.toString()).then(({ data: taskInfo }) => {
-            //    const { data: task } = taskInfo || {};
+         getTask((item as { id: number }).id.toString()).then(({ data: taskInfo }) => {
+            const { data: task } = taskInfo || {};
 
-            //    debugger;
+            // validate
 
-            // updateTask({ ...task, stage_id: stage.id }).then((e) => {
-            updateTask({ id: item.id, stage_id: stage.id }).then((e) => {
+            updateTask({
+               id: task?.id as number,
+               stage_id: stage.id,
+               projectslug: router.query['task-slug'] as string,
+            }).then((e) => {
                if ('error' in e) {
                   const { data: error } = e.error as { data: ValidationError };
                   console.log(error);
 
                   alert(Object.values(error.errors as Record<string, string[]>)[0] || error.message);
+               } else {                  
+                  tasksApi.util.updateQueryData('getAllTasks', router.query['task-slug'] as string, (tasks) => {
+                     debugger;
+                     const upTask = tasks.data.find((draftTask) => draftTask.id === task?.id);
+                     if (upTask) {
+                        upTask.stage = stage.id;
+
+                        return { ...tasks };
+                     }
+                  });
                }
             });
          });
