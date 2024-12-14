@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 // import { useDroppable } from '@dnd-kit/core';
 import { LegacyRef, PropsWithChildren, useState } from 'react';
 import { useDrop } from 'react-dnd';
-import style from '../../kanban-page.module.css';
+import style from '../../kanban-page.module.scss';
 
 export function TasksColumn({
    children,

@@ -14,6 +14,7 @@ export default function InfoModal({
    setClose: CallableFunction;
    type: 'info' | 'error';
 }) {
+   const [closeAnimation, setCloseAmimation] = useState<string>('');
    const backCloseHandler = (e: MouseEvent<HTMLDivElement>) => {
       if (e.target instanceof HTMLDivElement) {
          if (e.target.className !== styles.modal) {
@@ -29,8 +30,6 @@ export default function InfoModal({
          setTimeout(() => setClose(false), 1000);
       }, 7000);
    }, []);
-
-   const [closeAnimation, setCloseAmimation] = useState<string>('');
 
    return (
       <div onClick={(e) => backCloseHandler(e)}>

@@ -1,4 +1,5 @@
 import styles from './task-page.module.scss';
+import Close from '@public/icons/close.svg';
 import TaskContent from './components/TaskContent/TaskContent';
 import { useGetCurrentUserQuery, useGetTaskByTaskIdQuery } from '@/api/appApi';
 import { MouseEvent } from 'react';
@@ -8,10 +9,12 @@ export default function ModalTask({
    id,
    projectSlug,
    onClose,
+   refetch,
 }: {
    id: number;
    projectSlug: string;
    onClose: CallableFunction;
+   refetch: CallableFunction;
 }) {
    const { data: task, isLoading } = useGetTaskByTaskIdQuery(id);
    console.log(task?.data);
@@ -28,11 +31,20 @@ export default function ModalTask({
 
    const modal = createPortal(
       <div className={styles.layout_modal} onClick={(e) => modalCloseHandler(e)}>
+         <button className={styles['close-button-modal']} type="button" onClick={() => onClose(false)}>
+            <Close />
+         </button>
          {isLoading ? (
             <div className="loader" style={{ margin: '36% auto' }}></div>
          ) : (
             <div className={styles.layout_modalbox}>
-               <TaskContent task={task?.data} activeUser={user?.data} projectSlug={projectSlug} onClose={onClose} />
+               <TaskContent
+                  task={task?.data}
+                  activeUser={user?.data}
+                  projectSlug={projectSlug}
+                  onClose={onClose}
+                  refetch={refetch}
+               />
             </div>
          )}
       </div>,

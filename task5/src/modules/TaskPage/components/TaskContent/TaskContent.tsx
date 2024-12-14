@@ -21,18 +21,19 @@ import { TaskModalCreationEditing } from '@/modules/TaskModalCreationEditing/pag
 import ModalClose from '@/components/modal_close/ModalClose';
 import { useDeleteTaskMutation, useUpdateTaskMutation } from '@/api/appApi';
 import { useRouter } from 'next/router';
-import { log } from 'console';
 
 export default function TaskContent({
    projectSlug,
    task,
    activeUser,
    onClose,
+   refetch,
 }: {
    projectSlug: string;
    task: TaskSingle | undefined;
    activeUser: User | undefined;
    onClose: CallableFunction;
+   refetch?: CallableFunction;
 }) {
    const isAdmin = activeUser?.is_admin;
    const [selectedOptionComp, setSelectedOptionComp] = useState<Stage | undefined>(task?.stage);
@@ -177,6 +178,7 @@ export default function TaskContent({
          if (result.data) {
             modalInfo.setModalTitle('Успешно');
             modalInfo.setModalInfo('Статус задачи успешно изменен');
+            refetch && refetch();
          } else {
             modalInfo.setModalType('error');
             modalInfo.setModalInfo('Не удалось изменить статус задачи');

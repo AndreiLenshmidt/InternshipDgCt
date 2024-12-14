@@ -4,7 +4,7 @@ import { TaskModalCreationEditing } from '@/modules/TaskModalCreationEditing/pag
 import { useRouter } from 'next/router';
 import { useDrag } from 'react-dnd';
 import { TaskCard } from './components/task-card/TaskCard';
-import style from './kanban-page.module.css';
+import style from './kanban-page.module.scss';
 import { TasksColumn } from './components/tasks-column/TaskColumn';
 import { useGetAllTasksQuery, useGetTaskPrioritiesQuery, useGetTaskTagsQuery } from '@/api/tasks/tasks.api';
 import { useGetProjectQuery } from '../ProjectsPage/api/api';
@@ -19,6 +19,8 @@ import { DndProvider } from 'react-dnd';
 import ModalTask from '../TaskPage/ModalTask';
 import { useStagedTasks } from './hooks/stagedTasks';
 import { useGetCurrentUserQuery } from '@/api/appApi';
+import InfoModal from '@/modules/TaskPage/components/InfoModal/InfoModal';
+import { useModalInfo } from '@/hooks/useModalInfo';
 
 // import { ScrollbarProps, Scrollbars } from 'react-custom-scrollbars';
 // import task from '@/pages/projects/kanban/task';
@@ -38,14 +40,23 @@ export function KanbanPage() {
    ///
    /// ДЛЯ ОТКРЫТИЯ ОКНА СОЗДАНИЯ/ РЕДАКТИРОВАНИЯ ЗАДАЧИ:
    ///
-
+   
+   // Для открытия окна создания/ редактирования задачи
+   const modalInfo = useModalInfo();
    const [projectSlag, setProjectSlag] = useState<string>('');
    const [taskIdEditTask, setTaskIdEditTask] = useState<number | undefined>();
    const [isOpenCreateTask, setIsOpenCreateTask] = useState(false);
    const [newTaskId, setNewTaskId] = useState<number | undefined>();
    const [newTaskFlag, setNewTaskFlag] = useState(false);
+   const [tasksLocal, setTasksLocal] = useState<TaskMultiple[]>([]);
    // ------------------------------------------------
    const [isOpenTask, setOpenTask] = useState<boolean>(false);
+
+   // const { isOver, setNodeRef } = useDroppable({
+   //    id: 'droppable',
+   // });
+
+   // const dropstyle = { color: isOver ? 'green' : undefined };
 
    // Функция для получения newTaskId от дочернего компонента
    const handleNewTaskId = (taskId: number) => {
@@ -75,6 +86,16 @@ export function KanbanPage() {
    };
 
    /////////////////////////
+
+   // InfoModal в случае успешного создания задачи
+   useEffect(() => {
+      if (newTaskFlag && newTaskId) {
+         modalInfo.setCloseModal(true);
+         modalInfo.setModalTitle('Успех');
+         modalInfo.setModalType('info');
+         modalInfo.setModalInfo('Задача успешно создана');
+      }
+   }, [newTaskFlag, newTaskId]);
 
    return (
       <div className={style.base} style={{ display: 'flex', flexDirection: 'column', height: 'calc(100vh - 4rem)' }}>
@@ -143,7 +164,7 @@ export function KanbanPage() {
             />
          )}
          {isOpenTask && taskIdEditTask && (
-            <ModalTask id={taskIdEditTask} projectSlug={projectSlag} onClose={setOpenTask} />
+            <ModalTask id={taskIdEditTask} projectSlug={projectSlag} onClose={setOpenTask} refetch={refetch} />
          )}
 
          <Scrollbar

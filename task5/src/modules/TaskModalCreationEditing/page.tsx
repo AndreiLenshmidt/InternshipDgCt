@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useModalInfo } from '@/hooks/useModalInfo';
+import InfoModal from '@/modules/TaskPage/components/InfoModal/InfoModal';
 import Close from '@public/icons/close.svg';
 import style from '@/modules/TaskModalCreationEditing/task-modal-creation-editing.module.scss';
 import ModalClose from '@/components/modal_close/ModalClose';
@@ -106,6 +107,9 @@ export function TaskModalCreationEditing({
    const [priorityOptions, setPriorityOptions] = useState(priorOptions);
    const [users, setUsersOptions] = useState(usersOptions);
 
+   const [updateErrors, setUpdateErrors] = useState('');
+   const [createErrors, setCreateErrors] = useState('');
+
    // api -----------
    const [sendFilesTaskMutation] = useAddFilesToTaskMutation();
    const { data: getComponents } = useGetComponentsQuery();
@@ -180,7 +184,7 @@ export function TaskModalCreationEditing({
    ) => {
       if (!idTask) return;
 
-      // console.log(' ------------- idTask, taskDataUpd, filesTask UPDATE------------', idTask, taskDataUpd, filesTask);
+      console.log(' ------------- idTask, taskDataUpd, filesTask UPDATE------------', idTask, taskDataUpd, filesTask);
 
       try {
          const response = await updateTaskMutation({
@@ -190,17 +194,15 @@ export function TaskModalCreationEditing({
 
          const taskDataResponse: TaskSingle = response?.data;
 
-         // console.log(' ------------- taskDataResponse UPDATE------------', taskDataResponse);
+         console.log(' ------------- taskDataResponse UPDATE------------', taskDataResponse);
 
          if (taskDataResponse) {
             setTaskData((prev) => ({
                ...prev,
                ...taskDataResponse,
             }));
-            modalInfo.setCloseModal(true);
-            modalInfo.setModalTitle('Успешно');
-            modalInfo.setModalType('info');
-            modalInfo.setModalInfo('Задача успешно обновлена');
+
+            console.log(' ------------- modalInfo.modal UPDATE------------', modalInfo.modal);
 
             if (taskDataResponse.files) {
                if (taskDataResponse.files.length > 0) setFiles(taskDataResponse.files);
@@ -232,12 +234,14 @@ export function TaskModalCreationEditing({
          }
       } catch (error) {
          console.error('Ошибка при обновлении задачи:', error);
+
+         setUpdateErrors('Ошибка при обновлении задачи');
       }
    };
 
    const handleCreateTask = async (slugName: string, taskData: TaskMultiple, files: ResponseFile[]) => {
       try {
-         // console.log(' ------------- taskData, slugName NEWs------------', slugName, taskData);
+         console.log(' ------------- taskData, slugName NEWs------------', slugName, taskData);
 
          const response = await createTaskMutation({
             slug: slugName,
@@ -250,12 +254,6 @@ export function TaskModalCreationEditing({
 
          if (taskDataResponse) {
             setTaskData(taskDataResponse);
-
-            modalInfo.setCloseModal(true);
-            modalInfo.setModalTitle('Успешно');
-            modalInfo.setModalType('info');
-            modalInfo.setModalInfo('Задача успешно добавлена');
-            console.log('modalInfo,modalInfo.modal', modalInfo, modalInfo.modal);
 
             if (taskDataResponse.files) {
                if (taskDataResponse.files.length > 0) setFiles(taskDataResponse.files);
@@ -278,6 +276,8 @@ export function TaskModalCreationEditing({
          }
       } catch (error) {
          console.error('Ошибка при создании задачи:', error);
+
+         setCreateErrors('Ошибка при создании задачи');
       }
    };
 
@@ -379,20 +379,29 @@ export function TaskModalCreationEditing({
          const fileLinks = data.fileLinks ?? [];
 
          //!!! ----------------------------------------------------
-         // console.log(
-         //    '****** data, serverData, isEditMode, newTaskFlag **********',
-         //    data,
-         //    serverData,
-         //    isEditMode,
-         //    newTaskFlag
-         // );
+         console.log(
+            '****** data, serverData, isEditMode, newTaskFlag **********',
+            data,
+            serverData,
+            isEditMode,
+            newTaskFlag
+         );
 
          if (serverData && newTaskFlag) {
+            modalInfo.setCloseModal(false);
+            setCreateErrors('');
             handleCreateTask(slugName, serverData, fileLinks);
          }
 
          if (serverData && isEditMode && !newTaskFlag) {
+            modalInfo.setCloseModal(false);
+            setUpdateErrors('');
             handleUpdateTask(idTaskMain, serverData, fileLinks);
+         } else {
+            modalInfo.setCloseModal(true);
+            modalInfo.setModalTitle('Неудача');
+            modalInfo.setModalInfo('Ошибка id задачи');
+            modalInfo.setModalType('error');
          }
       }
    };
@@ -424,6 +433,21 @@ export function TaskModalCreationEditing({
       if (taskId && taskById) setTaskData(taskById?.data);
       if (taskData?.files) setFiles(taskData.files as ResponseFile[]);
    }, [isOpen, taskId, taskById, taskData?.files]);
+
+   useEffect(() => {
+      if (updateErrors || createErrors) {
+         modalInfo.setCloseModal(true);
+         modalInfo.setModalTitle('Неудача');
+         modalInfo.setModalType('error');
+      }
+
+      if (updateErrors) {
+         modalInfo.setModalInfo(updateErrors || 'Ошибка');
+      }
+      if (createErrors) {
+         modalInfo.setModalInfo(createErrors || 'Ошибка');
+      }
+   }, [updateErrors, createErrors]);
 
    useEffect(() => {
       if (taskData) {
@@ -479,6 +503,8 @@ export function TaskModalCreationEditing({
    //       router.replace(`/${idTaskMain}`);
    //    }
    // }, [idTaskMain]);
+
+   console.log('newTaskFlag', newTaskFlag);
 
    if (!isOpen) return null;
    if (isGetTaskByTaskIdLoading) return <div className={style.loading}>Загрузка...</div>;
@@ -699,6 +725,17 @@ export function TaskModalCreationEditing({
          </div>
 
          <ModalClose title="Закрыть окно?" isOpen={isModalOpen} onClose={handleCloseModal} onConfirm={handleConfirm} />
+
+         {modalInfo.modal ? (
+            <InfoModal
+               type={modalInfo.modalType}
+               title={modalInfo.modalTitle}
+               info={modalInfo.modalInfo}
+               setClose={modalInfo.setCloseModal}
+            />
+         ) : (
+            <></>
+         )}
       </div>
    );
 }
