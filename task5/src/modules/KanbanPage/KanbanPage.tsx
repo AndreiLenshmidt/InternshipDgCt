@@ -40,7 +40,7 @@ export function KanbanPage() {
    ///
    /// ДЛЯ ОТКРЫТИЯ ОКНА СОЗДАНИЯ/ РЕДАКТИРОВАНИЯ ЗАДАЧИ:
    ///
-   
+
    // Для открытия окна создания/ редактирования задачи
    const modalInfo = useModalInfo();
    const [projectSlag, setProjectSlag] = useState<string>('');
