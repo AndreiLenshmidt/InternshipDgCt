@@ -32,13 +32,12 @@ export function ProjectPage() {
             ]}
          />
 
-         {isLoading ? 'isLoading' : 'no-Loading'}
+         {/* {isLoading ? 'isLoading' : 'no-Loading'}
          <br />
          {isSuccess ? 'isSuccess' : 'noSuccess'}
          <br />
-         {isError ? error : 'no-error'}
+         {isError ? error : 'no-error'} */}
          <br />
-         {/* {projects ? projects.data : '___'} */}
 
          <h1>Проекты</h1>
 
@@ -69,7 +68,7 @@ export function ProjectPage() {
             <>
                {projects.some((proj) => proj.is_favorite && !proj.is_archived) ? (
                   <>
-                     <h4>Избранные проекты</h4>
+                     <h4 style={{margin: "3rem 0 2rem"}}>Избранные проекты</h4>
 
                      <div className={style.favorite_projects}>
                         {/* {JSON.stringify(projects.data)} */}
