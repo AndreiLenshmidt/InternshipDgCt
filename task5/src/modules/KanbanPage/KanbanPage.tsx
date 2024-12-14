@@ -234,7 +234,7 @@ export function KanbanPage() {
             />
          )}
          {isOpenTask && taskIdEditTask && (
-            <ModalTask id={taskIdEditTask} projectSlug={projectSlag} onClose={setOpenTask} />
+            <ModalTask id={taskIdEditTask} projectSlug={projectSlag} onClose={setOpenTask} refetch={refetch} />
          )}
       </>
    );
