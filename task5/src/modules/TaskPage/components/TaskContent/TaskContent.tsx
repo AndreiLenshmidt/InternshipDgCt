@@ -89,7 +89,9 @@ export default function TaskContent({
          modalInfo.setModalTitle('Ошибка');
          modalInfo.setModalType('error');
          modalInfo.setModalInfo('Сначала добавьте Dev Link в меню редактирования задачи');
-         task?.stage && setSelectedOptionComp(task?.stage);
+         refetch && refetch();
+         taskRefetch();
+         // task?.stage && setSelectedOptionComp(task?.stage);
       }
       if (deleteError) {
          modalInfo.setCloseModal(true);
