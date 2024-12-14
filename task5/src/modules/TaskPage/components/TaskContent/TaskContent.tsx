@@ -201,6 +201,12 @@ export default function TaskContent({
       }
    };
 
+   useEffect(() => {
+      if (refetch) {
+         refetch();
+      }
+   }, [isOpenCreateTask, refetch]);
+
    return (
       <>
          <div className={styles.content}>
