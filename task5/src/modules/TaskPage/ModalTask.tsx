@@ -19,7 +19,7 @@ export default function ModalTask({
    delTaskFunc?: (flag: boolean) => void;
 }) {
    const { data: task, isLoading } = useGetTaskByTaskIdQuery(id);
-   console.log(task?.data);
+   console.log(task?.data, 'task?.data');
 
    const { data: user } = useGetCurrentUserQuery();
    console.log(user?.data);

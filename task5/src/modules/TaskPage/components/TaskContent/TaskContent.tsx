@@ -132,8 +132,11 @@ export default function TaskContent({
    };
 
    const deleteTaskHandler = async () => {
+      console.log(task?.id, 'task?.id');
+      console.log(task, 'task');
+
       if (task?.id) {
-         const taskDel = await deleteTask(task.id);
+         const taskDel = await deleteTask(175);
          const response: TaskSingle | undefined = taskDel?.data?.data || undefined;
 
          if (response) {

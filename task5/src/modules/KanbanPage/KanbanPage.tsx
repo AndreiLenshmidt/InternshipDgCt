@@ -72,21 +72,13 @@ export function KanbanPage() {
    //    );
    // }, [tasks, project?.flow?.possibleProjectStages]);
 
+   console.log(tasks, 'tasks');
+
    useEffect(() => {
       if (isSuccess) {
          setTasksLocal(tasks);
       }
    }, [isSuccess, tasks]);
-
-   useEffect(() => {
-      if ((newTaskId && isSuccess) || (!delTaskFlag && isSuccess)) {
-         modalInfo.setCloseModal(true);
-         modalInfo.setModalTitle('Успех');
-         modalInfo.setModalType('info');
-         modalInfo.setModalInfo('Задача успешно удалена');
-         tasksRefetch();
-      }
-   }, [newTaskId, tasksRefetch, delTaskFlag]);
 
    // const { isOver, setNodeRef } = useDroppable({
    //    id: 'droppable',
@@ -130,13 +122,32 @@ export function KanbanPage() {
 
    // InfoModal в случае успешного создания задачи
    useEffect(() => {
-      if (newTaskFlag && newTaskId) {
+      if (newTaskFlag && newTaskId && isSuccess) {
          modalInfo.setCloseModal(true);
          modalInfo.setModalTitle('Успех');
          modalInfo.setModalType('info');
          modalInfo.setModalInfo('Задача успешно создана');
+
+         tasksRefetch();
+         setDelTaskFlag(false);
       }
-   }, [newTaskFlag, newTaskId]);
+   }, [newTaskFlag, tasksRefetch, newTaskId]);
+
+   useEffect(() => {
+      if (delTaskFlag && isSuccess) {
+         modalInfo.setCloseModal(true);
+         modalInfo.setModalTitle('Успех');
+         modalInfo.setModalType('info');
+         modalInfo.setModalInfo('Задача успешно удалена');
+
+         tasksRefetch();
+         setDelTaskFlag(false);
+      }
+   }, [delTaskFlag, tasksRefetch]);
+
+   useEffect(() => {
+      tasksRefetch();
+   }, [isOpenTask]);
 
    return (
       <div className={style.base} style={{ display: 'flex', flexDirection: 'column', height: 'calc(100vh - 4rem)' }}>

@@ -20,7 +20,9 @@ interface FileUploadProps {
    files: ResponseFile[] | [];
    onFilesChange: (newFiles: ResponseFile[] | undefined) => void;
    error?: string;
+   isSuccess?: boolean;
    disabled?: boolean;
+   refetch?: CallableFunction | undefined;
 }
 
 // Утилиты для проверки типов
@@ -28,7 +30,7 @@ function isResponseFileWithObject(file: any): file is ResponseFileWithObject {
    return file && typeof file === 'object' && 'fileObject' in file;
 }
 
-export default function FileUpload({ taskId, files, onFilesChange, error }: FileUploadProps) {
+export default function FileUpload({ taskId, files, onFilesChange, error, isSuccess, refetch }: FileUploadProps) {
    const [isDragging, setIsDragging] = useState(false);
    const [permissions, setPermissions] = useState(false);
    const [fileLocal, setFileLocal] = useState<ResponseFileWithObject[] | []>([]);
@@ -96,6 +98,8 @@ export default function FileUpload({ taskId, files, onFilesChange, error }: File
          let newFiles: ResponseFile[] | undefined = [];
          const uploadedFiles = await sendFiles(filterFileId);
 
+         if (refetch) refetch();
+
          if (filesId?.length > 0) {
             newFiles = [...(filesId || []), ...(uploadedFiles || [])];
          } else {
@@ -152,8 +156,6 @@ export default function FileUpload({ taskId, files, onFilesChange, error }: File
             if (response?.data) {
                const filesResponse: TaskSingle = response.data;
 
-               console.log('filesResponse', filesResponse);
-
                if (onFilesChange) {
                   onFilesChange(filesResponse.files);
                }
@@ -192,8 +194,9 @@ export default function FileUpload({ taskId, files, onFilesChange, error }: File
             setFileLocal(updatedFiles);
          }
       }
-   }, [files]);
+   }, [files, isSuccess]);
 
+   // console.log('files', files);
    // console.log('filesLocal', fileLocal);
 
    return (
