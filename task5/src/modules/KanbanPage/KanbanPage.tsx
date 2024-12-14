@@ -50,6 +50,7 @@ export function KanbanPage() {
    const [newTaskFlag, setNewTaskFlag] = useState(false);
    const [tasksLocal, setTasksLocal] = useState<TaskMultiple[]>([]);
    const [delTaskFlag, setDelTaskFlag] = useState(false);
+
    const [taskLocal, setTaskLocal] = useState([]);
 
    // ------------------------------------------------
