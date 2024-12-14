@@ -380,13 +380,14 @@ export function TaskModalCreationEditing({
          const fileLinks = data.fileLinks ?? [];
 
          //!!! ----------------------------------------------------
-         // console.log(
-         //    '****** data, serverData, isEditMode, newTaskFlag **********',
-         //    data,
-         //    serverData,
-         //    isEditMode,
-         //    newTaskFlag
-         // );
+         console.log(
+            '****** data, serverData, isEditMode, newTaskFlag , idTaskMain**********',
+            data,
+            serverData,
+            isEditMode,
+            newTaskFlag,
+            idTaskMain
+         );
 
          if (serverData && newTaskFlag) {
             modalInfo.setCloseModal(false);
