@@ -10,7 +10,7 @@ export default function TaskPage() {
    const router = useRouter();
    const taskId = Number(router.query['slug']);
    const projectSlug = router.query['task-slug'] as string;
-   const { data, isLoading, isError } = useGetTaskByTaskIdQuery(taskId);
+   const { data, isLoading, isError, refetch: taskRefetch } = useGetTaskByTaskIdQuery(taskId);
    const { data: user } = useGetCurrentUserQuery();
 
    useEffect(() => {
@@ -45,7 +45,12 @@ export default function TaskPage() {
                      ]}
                   />
                   <div className={styles.page_container}>
-                     <TaskContent task={data?.data} activeUser={user?.data} projectSlug={projectSlug} />
+                     <TaskContent
+                        task={data?.data}
+                        activeUser={user?.data}
+                        projectSlug={projectSlug}
+                        taskRefetch={taskRefetch}
+                     />
                   </div>
                </div>
             </>

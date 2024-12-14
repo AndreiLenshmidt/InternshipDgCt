@@ -30,6 +30,7 @@ export default function TaskContent({
    refetch,
    delTaskFunc,
    currentStage,
+   taskRefetch,
 }: {
    projectSlug: string;
    task: TaskSingle | undefined;
@@ -38,13 +39,12 @@ export default function TaskContent({
    refetch?: CallableFunction;
    delTaskFunc?: (flag: boolean) => void;
    currentStage?: Stage;
+   taskRefetch: CallableFunction;
 }) {
    const isAdmin = activeUser?.is_admin;
    const [selectedOptionComp, setSelectedOptionComp] = useState<Stage | undefined>(task?.stage);
-
-   const [deleteTask, { data: deleteData, isError: deleteError }] = useDeleteTaskMutation();
+   const [deleteTask, { isError: deleteError }] = useDeleteTaskMutation();
    const [updateTask, {}] = useUpdateTaskMutation();
-
    // Для открытия окна создания/ редактирования задачи
    const [projectSlag, setProjectSlag] = useState<string>('');
    const [taskIdEditTask, setTaskIdEditTask] = useState<number | undefined>();
@@ -82,10 +82,9 @@ export default function TaskContent({
    }, [task?.stage?.name, task?.files, task?.comments]);
 
    useEffect(() => {
-      if (task?.dev_link && task?.stage !== selectedOptionComp && selectedOptionComp) {
+      if (task?.dev_link && selectedOptionComp && task?.stage?.id !== selectedOptionComp?.id) {
          updateTaskHandler(selectedOptionComp, task);
-         modalInfo.setCloseModal(true);
-      } else if (task?.stage !== selectedOptionComp) {
+      } else if (task?.stage?.id !== selectedOptionComp?.id && !task?.dev_link) {
          modalInfo.setCloseModal(true);
          modalInfo.setModalTitle('Ошибка');
          modalInfo.setModalType('error');
@@ -152,8 +151,6 @@ export default function TaskContent({
             setDelTaskModal(false);
             modalInfo.setCloseModal(true);
          }
-
-         // router.replace(`/projects/${projectSlug}`); //!!! -----------  удалить?
       } else {
          setDelTaskModal(false);
          modalInfo.setCloseModal(true);
@@ -188,16 +185,17 @@ export default function TaskContent({
          const result = await updateTask({ id: task.id, body: taskBody });
 
          if (result.data) {
+            console.log(task.stage?.name, selectedOptionComp?.name);
+            modalInfo.setCloseModal(true);
             modalInfo.setModalTitle('Успешно');
             modalInfo.setModalInfo('Статус задачи успешно изменен');
             refetch && refetch();
+            taskRefetch();
          } else {
             modalInfo.setModalType('error');
             modalInfo.setModalInfo('Не удалось изменить статус задачи');
             task?.stage && setSelectedOptionComp(task?.stage);
          }
-         // console.log(result.data);
-         // console.log(stage);
       }
    };
 
@@ -409,6 +407,7 @@ export default function TaskContent({
                   newTaskId={newTaskId}
                   onNewTaskId={handleNewTaskId}
                   newTaskFlag={newTaskFlag}
+                  taskRefetch={taskRefetch}
                />
             )}
             {isDeleteTaskModal && (

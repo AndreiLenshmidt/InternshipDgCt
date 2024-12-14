@@ -21,7 +21,7 @@ export default function ModalTask({
    delTaskFunc?: (flag: boolean) => void;
    currentStage?: Stage;
 }) {
-   const { data: task, isLoading, isError } = useGetTaskByTaskIdQuery(id);
+   const { data: task, isLoading, isError, refetch: taskRefetch } = useGetTaskByTaskIdQuery(id);
    console.log(task?.data, 'task?.data************');
 
    const { data: user } = useGetCurrentUserQuery();
@@ -53,6 +53,7 @@ export default function ModalTask({
                   projectSlug={projectSlug}
                   onClose={onClose}
                   refetch={refetch}
+                  taskRefetch={taskRefetch}
                   delTaskFunc={delTaskFunc}
                   currentStage={currentStage}
                />
