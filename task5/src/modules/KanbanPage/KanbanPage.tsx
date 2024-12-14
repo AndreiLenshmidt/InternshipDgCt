@@ -146,7 +146,9 @@ export function KanbanPage() {
    }, [delTaskFlag, tasksRefetch]);
 
    useEffect(() => {
-      tasksRefetch();
+      if (isSuccess) {
+         tasksRefetch();
+      }
    }, [isOpenTask]);
 
    return (
