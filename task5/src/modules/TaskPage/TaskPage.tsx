@@ -17,6 +17,12 @@ export default function TaskPage() {
    console.log(user?.data);
 
    useEffect(() => {
+      if (!data?.data) {
+         router.replace('/404');
+      }
+   });
+
+   useEffect(() => {
       if (data?.data.project?.slug !== projectSlug && data?.data.project?.slug) {
          router.replace('/404');
       }
