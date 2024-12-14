@@ -33,7 +33,7 @@ export function KanbanPage() {
    const router = useRouter();
    const route = useMemo(() => router.query['task-slug'] as string, [router.query['task-slug']]);
 
-   const { tasks, stagedTasks, project, showJustMine } = useStagedTasks(route);
+   const { tasks, stagedTasks, tasksRefetch, showJustMine, project } = useStagedTasks(route);
 
    // const dropstyle = { color: isOver ? 'green' : undefined };
 
@@ -164,7 +164,7 @@ export function KanbanPage() {
             />
          )}
          {isOpenTask && taskIdEditTask && (
-            <ModalTask id={taskIdEditTask} projectSlug={projectSlag} onClose={setOpenTask} refetch={refetch} />
+            <ModalTask id={taskIdEditTask} projectSlug={projectSlag} onClose={setOpenTask} refetch={tasksRefetch} />
          )}
 
          <Scrollbar

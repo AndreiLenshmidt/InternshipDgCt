@@ -27,6 +27,7 @@ export function useStagedTasks(route: string) {
       isLoading,
       isSuccess,
       isError,
+      refetch
    } = useGetAllTasksQuery(route, { skip: !route || !(project) }); //  || !taskStages?.length
 
    const stagedTasks = useMemo(() => {
@@ -39,5 +40,5 @@ export function useStagedTasks(route: string) {
       return grouped;
    }, [tasks, project?.flow?.possibleProjectStages, justMine]);
 
-   return { tasks, stagedTasks, project, showJustMine: setJustMine, isLoading, isSuccess, isError };
+   return { tasks, stagedTasks, project, tasksRefetch: refetch, showJustMine: setJustMine, isLoading, isSuccess, isError };
 }
