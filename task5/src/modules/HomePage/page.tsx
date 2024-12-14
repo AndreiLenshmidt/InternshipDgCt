@@ -6,8 +6,9 @@ import { useCookies } from 'react-cookie';
 import { useEffect, useState } from 'react';
 
 export default function MainPage() {
-   const [inOut, setInOut] = useState(false);
    const [token, _, removeCookie] = useCookies(['token-auth']);
+   
+   const [inOut, setInOut] = useState(!!token['token-auth']);
 
    useEffect(() => {
       if (token['token-auth']) {
@@ -52,7 +53,7 @@ export default function MainPage() {
                   этого не сделали.
                </p>
                <p className={styles.main_info}>
-                  Если вы уже зарегистрированы, то можете начать работу, нажав на кнопку "перейти к пректам".
+                  Если вы уже зарегистрированы, то можете начать работу, нажав на кнопку "перейти к проектам".
                </p>
                <Link className={styles.link} href="/projects">
                   Перейти к проектам

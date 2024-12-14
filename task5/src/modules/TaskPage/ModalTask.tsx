@@ -4,6 +4,7 @@ import TaskContent from './components/TaskContent/TaskContent';
 import { useGetCurrentUserQuery, useGetTaskByTaskIdQuery } from '@/api/appApi';
 import { MouseEvent, useEffect } from 'react';
 import { createPortal } from 'react-dom';
+import { Stage } from '@/api/data.types';
 
 export default function ModalTask({
    id,
@@ -11,12 +12,14 @@ export default function ModalTask({
    onClose,
    refetch,
    delTaskFunc,
+   currentStage,
 }: {
    id: number;
    projectSlug: string;
    onClose: CallableFunction;
    refetch: CallableFunction;
    delTaskFunc?: (flag: boolean) => void;
+   currentStage?: Stage;
 }) {
    const { data: task, isLoading } = useGetTaskByTaskIdQuery(id);
    console.log(task?.data, 'task?.data************');
@@ -47,6 +50,7 @@ export default function ModalTask({
                   onClose={onClose}
                   refetch={refetch}
                   delTaskFunc={delTaskFunc}
+                  currentStage={currentStage}
                />
             </div>
          )}

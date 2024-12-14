@@ -33,7 +33,7 @@ export function KanbanPage() {
    const router = useRouter();
    const route = useMemo(() => router.query['task-slug'] as string, [router.query['task-slug']]);
 
-   const { tasks, stagedTasks, tasksRefetch, showJustMine, project, isSuccess } = useStagedTasks(route);
+   const { tasks, stagedTasks, tasksRefetch, user, showJustMine, project, isSuccess } = useStagedTasks(route);
 
    // const dropstyle = { color: isOver ? 'green' : undefined };
 
@@ -54,8 +54,10 @@ export function KanbanPage() {
 
    // ------------------------------------------------
    const [isOpenTask, setOpenTask] = useState<boolean>(false);
+   const [currentStage, setCurrentStage] = useState<Stage>();
 
-   const { data: isTaskId, isSuccess: getIsTaskIdSuccess } = useGetTaskByTaskIdQuery(181);
+   const { data: isTaskId, isSuccess: getIsTaskIdSuccess } = useGetTaskByTaskIdQuery(taskIdEditTask);
+   console.log(taskIdEditTask, 'taskIdEditTask');
 
    // const { data: { data: project } = { data: null }, error } = useGetProjectQuery(route, loaded);
    // const { data: { data: priorities } = { data: null } } = useGetTaskPrioritiesQuery(undefined, loaded);
@@ -112,7 +114,8 @@ export function KanbanPage() {
       setIsOpenCreateTask(!isOpenCreateTask);
    };
 
-   const handleOpenTask = (id: number | undefined) => {
+   const handleOpenTask = (id: number | undefined, stage: Stage) => {
+      setCurrentStage(stage);
       if (id && isTaskId?.data) {
          setTaskIdEditTask(id);
          setProjectSlag(route);
@@ -177,10 +180,14 @@ export function KanbanPage() {
             <Switch onChange={(v) => (showJustMine((v) => !v), true)} checked={false} />
             <h6>Только мои</h6>
 
-            <button onClick={handlerNewTask}>
-               <span>+</span>
-               Добавить задачу
-            </button>
+            {user?.is_admin ? (
+               <button onClick={handlerNewTask}>
+                  <span>+</span>
+                  Добавить задачу
+               </button>
+            ) : (
+               ''
+            )}
          </div>
 
          <div className={style.filters}>
@@ -240,6 +247,7 @@ export function KanbanPage() {
                onClose={setOpenTask}
                refetch={tasksRefetch}
                delTaskFunc={delTaskFunc}
+               currentStage={currentStage}
             />
          )}
 
@@ -276,10 +284,7 @@ export function KanbanPage() {
                                                 task={task}
                                                 key={task.id}
                                                 openTask={() => {
-                                                   if (task?.id) {
-                                                      setTaskLocal(task);
-                                                      handleOpenTask(task.id);
-                                                   }
+                                                   if (task?.id) handleOpenTask(task?.id, stage);
                                                 }}
                                              />
                                           );
