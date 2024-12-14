@@ -7,7 +7,10 @@ import ProjectsIcon from '@public/icons/projects.svg';
 import Link from 'next/link';
 import { useReducer, useState } from 'react';
 import { projectsUrl, projectUrl } from '@/consts';
-import { useGetCurrentUserQuery } from '@/api/appApi';
+import { useGetCurrentUserQuery } from '@/api/user/user.api';
+import { removeCookie } from '@/utils/cookies';
+import { useRouter } from 'next/router';
+
 
 
 export function AsidePanel() {
@@ -15,6 +18,13 @@ export function AsidePanel() {
    const [expanded, changeExpanded] = useReducer((v) => !v, true);
 
    const { data: { data: user } = { data: null }, isLoading, isError } = useGetCurrentUserQuery();
+   const router = useRouter();
+
+   const exit = () => {
+      // 
+      removeCookie('token-auth');      
+      router.push('/');
+   }
 
    return (
       <div className={[style.container, expanded ? '' : style.collapsed].join(' ')}>
@@ -39,7 +49,7 @@ export function AsidePanel() {
                )}
             </div>
          </div>
-         <button className={style.exit} onClick={() => {alert('todo')}}>Выйти</button>
+         <button className={style.exit} onClick={exit}>Выйти</button>
 
          <hr />
 

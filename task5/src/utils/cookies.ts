@@ -8,3 +8,9 @@ export function getCookie(name: CookieKey): string | undefined {
    ));
    return matches ? decodeURIComponent(matches[1]) : undefined;
 }
+
+export function removeCookie(key: CookieKey) {
+   const eqPos = key.indexOf('=');
+   const name = eqPos > -1 ? key.substring(0, eqPos) : key;
+   document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:00 GMT';
+}
