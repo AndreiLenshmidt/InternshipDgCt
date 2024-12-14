@@ -7,14 +7,19 @@ import { useEffect, useState } from 'react';
 
 export default function MainPage() {
    const [token, _, removeCookie] = useCookies(['token-auth']);
-
    const [inOut, setInOut] = useState(!!token['token-auth']);
+   const [LogInLogOutButton, setBtnContent] = useState('Войти');
+   const [mainBtn, setMainBtn] = useState('Войти');
+   const [mainLink, setMainLink] = useState('/auth');
 
    useEffect(() => {
       if (token['token-auth']) {
          setInOut(true);
+         setBtnContent('Выйти');
+         setMainBtn('Перейти к проектам');
+         setMainLink('/projects');
       }
-   });
+   }, [inOut]);
 
    const logOut = () => {
       removeCookie('token-auth');
@@ -28,8 +33,8 @@ export default function MainPage() {
          <Snow className={styles.snow} />
          <header className={styles.header}>
             <Image src="/mainlogo.svg" alt="logo" width={159} height={43} priority={true} />
-            <Link className={styles.link} href={!inOut ? '/auth' : '/'} onClick={() => inOut && logOut()}>
-               {!inOut ? 'Войти' : 'Выйти'}
+            <Link className={styles.link} href="/auth" onClick={() => inOut && logOut()}>
+               {LogInLogOutButton}
             </Link>
          </header>
          <main className={styles.main}>
@@ -42,8 +47,8 @@ export default function MainPage() {
                <p className={styles.main_info}>
                   Если вы уже зарегистрированы, то можете начать работу, нажав на кнопку "перейти к проектам".
                </p>
-               <Link className={styles.link} href={inOut ? '/projects' : '/auth'}>
-                  {inOut ? 'Перейти к проектам' : 'Войти'}
+               <Link className={styles.link} href={mainLink}>
+                  {mainBtn}
                </Link>
             </div>
          </main>
