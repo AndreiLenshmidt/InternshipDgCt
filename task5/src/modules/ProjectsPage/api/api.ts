@@ -15,6 +15,37 @@ export const projectsApi = createApi({
    endpoints: (builder) => ({
       getProjects: builder.query<{ data: Array<ProjectItem> }, void>({ query: () => '/project' }),
       getProject: builder.query<{ data: ProjectSingle }, string>({ query: (slug: string) => `/project/${slug}` }),
+
+      // updateProject: build.mutation<ProjectSingle, Partial<TaskUpType> & { id: number, projectslug: string }>({
+      //    query: (task) => {
+      //       const { id, ...patch } = task;
+      //       return {
+      //          url: `/task/${id}`,
+      //          method: 'PATCH',
+      //          body: patch,
+      //       }
+      //    },
+      //    async onQueryStarted({ id, ...patch }, { dispatch, queryFulfilled }) {
+      //       const patchResult = dispatch(
+      //          tasksApi.util.updateQueryData('getAllTasks', patch.projectslug, (draft) => {
+      //             Object.assign(draft, patch)
+      //          })
+      //       )
+      //       try {
+      //          await queryFulfilled
+      //       } catch {
+      //          patchResult.undo()
+
+      //          /**
+      //           * Alternatively, on failure you can invalidate the corresponding cache tags
+      //           * to trigger a re-fetch:
+      //           * dispatch(api.util.invalidateTags(['Post']))
+      //           */
+      //       }
+      //    },
+      //    invalidatesTags: ['Tasks']
+      //    // transformResponse: (response: { data: TaskMultiple }, meta, arg) => response.data,
+      // })
    }),
 });
 

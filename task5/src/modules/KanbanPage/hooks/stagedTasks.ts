@@ -39,5 +39,5 @@ export function useStagedTasks(route: string) {
       return grouped;
    }, [tasks, project?.flow?.possibleProjectStages, justMine]);
 
-   return { tasks, stagedTasks, project, setJustMine, isLoading, isSuccess, isError };
+   return { tasks, stagedTasks, project, showJustMine: setJustMine, isLoading, isSuccess, isError };
 }

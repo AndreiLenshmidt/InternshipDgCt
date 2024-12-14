@@ -31,7 +31,7 @@ export function KanbanPage() {
    const router = useRouter();
    const route = useMemo(() => router.query['task-slug'] as string, [router.query['task-slug']]);
 
-   const {tasks, stagedTasks, project, setJustMine} = useStagedTasks(route);
+   const { tasks, stagedTasks, project, showJustMine } = useStagedTasks(route);
 
    // const dropstyle = { color: isOver ? 'green' : undefined };
 
@@ -91,13 +91,7 @@ export function KanbanPage() {
          <div className={style.title}>
             <h1>{project?.name}</h1>
 
-            <Switch
-               onChange={(v) => {
-                  setJustMine(v => !v);
-                  return true;
-               }}
-               checked={false}
-            />
+            <Switch onChange={(v) => (showJustMine((v) => !v), true)} checked={false} />
             <h6>Только мои</h6>
 
             <button onClick={handlerNewTask}>
