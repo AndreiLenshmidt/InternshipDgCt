@@ -2,7 +2,7 @@ import { BASE_URL } from '@/consts';
 import FavLogo from '@public/icons/favorite-icon.svg';
 import Link from 'next/link';
 import { useState } from 'react';
-import { ProjectItem } from '../../api/api';
+import { ProjectItem, useUpdateProjectMutation } from '../../api/api';
 import style from './project-card.module.css';
 
 
@@ -17,14 +17,29 @@ export function ProjectCard({ project, onChange }: PropsType) {
    //
    const [isFavorite, setFavorite] = useState(project?.is_favorite);
 
+   const [updateProject, _result] = useUpdateProjectMutation({
+      fixedCacheKey: 'shared-update-project',
+   });
+
+   /**
+    * 
+    * @param e 
+    */
    const switchFavoriteState = (e: React.MouseEvent<HTMLDivElement>) => {
       e.preventDefault();
 
-      const markFavorite = !isFavorite;
-      setFavorite(markFavorite);
-      if (onChange) {
-         onChange(markFavorite);
+      // const markFavorite = !isFavorite;
+
+      if (project) {
+                  
+         // setFavorite(markFavorite);
+         // if (onChange) {
+         //    onChange(markFavorite);
+         // }
+   
+         updateProject({id: project?.id as number, type: 'project', setFavorite: !project.is_favorite})
       }
+
    };
 
    return (

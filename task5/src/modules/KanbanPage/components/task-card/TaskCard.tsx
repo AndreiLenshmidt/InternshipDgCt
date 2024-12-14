@@ -61,7 +61,7 @@ export function TaskCard({ task, openTask }: { task: TaskMultiple; openTask: Cal
       <div className={style.card} ref={dragRef as unknown as LegacyRef<HTMLDivElement>} onClick={() => openTask()}>
          <div className={style.header}>
             <h5>id: {task.id}</h5>
-            <div className={style.prioritize} style={colorSchema.priorities[priority?.id || 0 - 1]}>
+            <div className={style.prioritize} style={colorSchema.priorities[(priority?.id || 0) - 1]}>
                • {priority?.name}
             </div>
          </div>
