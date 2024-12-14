@@ -7,7 +7,8 @@ import ProjectsIcon from '@public/icons/projects.svg';
 import Link from 'next/link';
 import { useReducer, useState } from 'react';
 import { projectsUrl, projectUrl } from '@/consts';
-import { useGetCurrentUserQuery } from '@/api/user/user.api';
+import { useGetCurrentUserQuery } from '@/api/appApi';
+
 
 export function AsidePanel() {
    // 

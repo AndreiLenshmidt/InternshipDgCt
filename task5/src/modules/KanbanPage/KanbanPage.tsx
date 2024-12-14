@@ -17,10 +17,10 @@ import { useResize } from '@/hooks/resize';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { DndProvider } from 'react-dnd';
 import ModalTask from '../TaskPage/ModalTask';
+import { useGetCurrentUserQuery } from '@/api/appApi';
 
 // import { ScrollbarProps, Scrollbars } from 'react-custom-scrollbars';
 // import task from '@/pages/projects/kanban/task';
-
 
 // const ScrollBar = Scrollbars as unknown as JSXElementConstructor<ScrollbarProps>;
 
@@ -30,9 +30,11 @@ export function KanbanPage() {
    const router = useRouter();
 
    const wrapper = useRef<HTMLDivElement>(null);
+   const [justMine, setJustMine] = useState(false);
 
    const route = useMemo(() => router.query['task-slug'] as string, [router.query['task-slug']]);
    const loaded = useMemo(() => ({ skip: !router.query['task-slug'] }), [router.query['task-slug']]);
+
    // Для открытия окна создания/ редактирования задачи
    const [projectSlag, setProjectSlag] = useState<string>('');
    const [taskIdEditTask, setTaskIdEditTask] = useState<number | undefined>();
@@ -43,6 +45,8 @@ export function KanbanPage() {
    const [isOpenTask, setOpenTask] = useState<boolean>(false);
 
    const { height } = useResize();
+
+   const { data: { data: user } = { data: null } } = useGetCurrentUserQuery();
 
    const { data: { data: project } = { data: null }, error } = useGetProjectQuery(route, loaded);
    const { data: { data: priorities } = { data: null } } = useGetTaskPrioritiesQuery(undefined, loaded);
@@ -55,17 +59,16 @@ export function KanbanPage() {
    } = useGetAllTasksQuery(route, { skip: !router.query['task-slug'] || !(project && priorities) }); //  || !taskStages?.length
 
    const stagedTasks = useMemo(() => {
-      return groupByObject(
+      const grouped = groupByObject(
          project?.flow?.possibleProjectStages as Required<Stage>[],
          tasks as (Record<PropertyKey, unknown> & TaskMultiple)[],
-         'stage'
+         'stage',
+         justMine ? (item) => item.created_by === user?.id : undefined
       );
-   }, [tasks, project?.flow?.possibleProjectStages]);
+      return grouped;
+   }, [tasks, project?.flow?.possibleProjectStages, justMine]);
 
    useEffect(() => {
-      height;
-
-      // debugger
       console.log(wrapper.current?.offsetWidth);
       // $0.getBoundingClientRect().y
    }, [wrapper]);
@@ -129,7 +132,13 @@ export function KanbanPage() {
          <div className={style.title}>
             <h1>{project?.name}</h1>
 
-            <Switch onChange={(v) => v} checked={false} />
+            <Switch
+               onChange={(v) => {
+                  setJustMine(!justMine);
+                  return true;
+               }}
+               checked={false}
+            />
             <h6>Только мои</h6>
 
             <button onClick={handlerNewTask}>
@@ -168,6 +177,21 @@ export function KanbanPage() {
 
          {/* autoHeight autoHeightMin={500} */}
          {/* // width: (width || 0) - 336, // TODO (reTODO) with s/m */}
+
+         {isOpenCreateTask && (
+            <TaskModalCreationEditing
+               isOpen={isOpenCreateTask}
+               onClose={() => setIsOpenCreateTask(false)}
+               slugName={projectSlag}
+               taskId={taskIdEditTask}
+               newTaskId={newTaskId}
+               onNewTaskId={handleNewTaskId}
+               newTaskFlag={newTaskFlag}
+            />
+         )}
+         {isOpenTask && taskIdEditTask && (
+            <ModalTask id={taskIdEditTask} projectSlug={projectSlag} onClose={setOpenTask} />
+         )}
 
          <Scrollbar
             noScrollY
@@ -217,21 +241,6 @@ export function KanbanPage() {
                {/* </DndContext> */}
             </div>
          </Scrollbar>
-
-         {isOpenCreateTask && (
-            <TaskModalCreationEditing
-               isOpen={isOpenCreateTask}
-               onClose={() => setIsOpenCreateTask(false)}
-               slugName={projectSlag}
-               taskId={taskIdEditTask}
-               newTaskId={newTaskId}
-               onNewTaskId={handleNewTaskId}
-               newTaskFlag={newTaskFlag}
-            />
-         )}
-         {isOpenTask && taskIdEditTask && (
-            <ModalTask id={taskIdEditTask} projectSlug={projectSlag} onClose={setOpenTask} />
-         )}         
       </div>
    );
 }

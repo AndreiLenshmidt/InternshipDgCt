@@ -45,7 +45,10 @@ export function TasksColumn({
          // const { data } = tasksApi.useGetAllTasksQuery(router.query['task-slug']);        // -//- via slice object (== via s/m)
          // const [updatePost, { data }] = api.endpoints.updatePost.useMutation()
 
+         // кэширует ли?
+
          
+
          getTasks(router.query['task-slug'] as string).then(({data: tasks}) => {
             
             const { data } = tasks || {};

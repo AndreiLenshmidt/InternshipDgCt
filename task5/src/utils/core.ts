@@ -21,23 +21,30 @@ export function groupBy<T extends PropertyKey>(xs: Array<{ [k in T]?: PropertyKe
 };
 
 
-export function groupByObject<T extends PropertyKey, GroupedType extends { [k in T]?: PropertyKey }, CompositeType extends { id: string | number }>(
+export function groupByObject<T extends PropertyKey, GroupingType extends { [k in T]?: PropertyKey }, CompositeType extends { id: string | number }>(
    tarArr: Array<CompositeType>,
-   arr: Array<GroupedType>,
-   key: T) {
+   arr: Array<GroupingType>,
+   key: T,
+   filter?: (item: GroupingType) => boolean
+) {
 
-   if (!tarArr?.length) return [] as unknown as Record<string, [GroupedType[], CompositeType]>;
+   if (!tarArr?.length) return [] as unknown as Record<string, [GroupingType[], CompositeType]>;
 
    // type GroupedType = { [k in T]?: PropertyKey } & Record<PropertyKey, unknown>;
 
    const entries = Object.entries(
       arr.reduce(function (acc, item) {
          const v = item[key] as PropertyKey;
-
-         (acc[v] = acc[v] || [] as GroupedType[]).push(item);
+         
+         if (filter) {
+            if (filter(item)) (acc[v] = acc[v] || [] as GroupingType[]).push(item);
+         }
+         else {
+            (acc[v] = acc[v] || [] as GroupingType[]).push(item);
+         }
 
          return acc;
-      }, {} as Record<PropertyKey, GroupedType[]>)
+      }, {} as Record<PropertyKey, GroupingType[]>)
    )
 
    entries.map(v => {
@@ -52,10 +59,10 @@ export function groupByObject<T extends PropertyKey, GroupedType extends { [k in
    })
 
    const result = entries.reduce((acc, v) => {
-      acc[v.shift() as unknown as string] = v as unknown as [GroupedType[], typeof tarArr[number]];
+      acc[v.shift() as unknown as string] = v as unknown as [GroupingType[], typeof tarArr[number]];
       return acc;
-   }, {} as Record<string, [GroupedType[], typeof tarArr[number]]>)
+   }, {} as Record<string, [GroupingType[], typeof tarArr[number]]>)
 
-   return result as Record<string, [GroupedType[], CompositeType]>;
+   return result as Record<string, [GroupingType[], CompositeType]>;
    // return entries as unknown as [string, GroupedType[], typeof tarArr[number]][];
 };

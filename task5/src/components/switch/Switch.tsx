@@ -18,14 +18,12 @@ export function Switch({ onChange, checked = false, size = 16 }: Props) {
    
    // , colorScheme = { back: '#3787EB', ball: '#FFFFFF' }
 
-   const [isChecked, switchChecked] = useReducer((v) => {
-      if (onChange) return onChange(!v);
-      else {
-         return !v;
-      }
-   }, checked);
+   const [isChecked, switchChecked] = useReducer((v) =>  !v, checked);
 
-   function onSwitch(e: React.MouseEvent) {switchChecked()}
+   function onSwitch(e: React.MouseEvent) {
+      switchChecked()
+      if (onChange) return onChange(!isChecked);
+   }
 
    return (
       <div
