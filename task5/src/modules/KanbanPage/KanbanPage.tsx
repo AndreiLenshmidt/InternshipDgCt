@@ -32,6 +32,7 @@ export function KanbanPage() {
    const [isOpenCreateTask, setIsOpenCreateTask] = useState(false);
    const [newTaskId, setNewTaskId] = useState<number | undefined>();
    const [newTaskFlag, setNewTaskFlag] = useState(false);
+   const [tasksLocal, setTasksLocal] = useState<TaskMultiple[]>([]);
    // ------------------------------------------------
    const [isOpenTask, setOpenTask] = useState<boolean>(false);
 
@@ -43,7 +44,20 @@ export function KanbanPage() {
       isLoading,
       isSuccess,
       isError,
+      refetch,
    } = useGetAllTasksQuery(route, { skip: !router.query['task-slug'] || !(project && priorities) }); //  || !taskStages?.length
+
+   useEffect(() => {
+      if (isSuccess) {
+         setTasksLocal(tasks);
+      }
+   }, [isSuccess, tasks]);
+
+   useEffect(() => {
+      if (newTaskId) {
+         refetch();
+      }
+   }, [newTaskId, refetch]);
 
    const stagedTasks = useMemo(() => {
       return groupByObject(
@@ -52,6 +66,8 @@ export function KanbanPage() {
          'stage'
       );
    }, [tasks, project?.flow?.possibleProjectStages]);
+
+   console.log('stagedTasks', stagedTasks);
 
    // const { isOver, setNodeRef } = useDroppable({
    //    id: 'droppable',
