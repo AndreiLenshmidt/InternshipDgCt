@@ -55,25 +55,7 @@ export function KanbanPage() {
    const [isOpenTask, setOpenTask] = useState<boolean>(false);
    const [currentStage, setCurrentStage] = useState<Stage>();
 
-   // const { data: { data: project } = { data: null }, error } = useGetProjectQuery(route, loaded);
-   // const { data: { data: priorities } = { data: null } } = useGetTaskPrioritiesQuery(undefined, loaded);
 
-   // const {
-   //    data: { data: tasks } = { data: [] },
-   //    isLoading,
-   //    isSuccess,
-   //    isError,
-   //    refetch,
-   // } = useGetAllTasksQuery(route, { skip: !router.query['task-slug'] || !(project && priorities) }); //  || !taskStages?.length
-   // const stagedTasks = useMemo(() => {
-   //    return groupByObject(
-   //       project?.flow?.possibleProjectStages as Required<Stage>[],
-   //       tasks as (Record<PropertyKey, unknown> & TaskMultiple)[],
-   //       'stage'
-   //    );
-   // }, [tasks, project?.flow?.possibleProjectStages]);
-
-   console.log(tasks, 'tasks');
 
    useEffect(() => {
       if (isSuccess) {
@@ -81,11 +63,6 @@ export function KanbanPage() {
       }
    }, [isSuccess, tasks]);
 
-   // const { isOver, setNodeRef } = useDroppable({
-   //    id: 'droppable',
-   // });
-
-   // const dropstyle = { color: isOver ? 'green' : undefined };
 
    // Функция для получения newTaskId от дочернего компонента
    const handleNewTaskId = (taskId: number) => {
@@ -242,17 +219,8 @@ export function KanbanPage() {
             />
          )}
 
-         {/* autoHeight autoHeightMin={500} */}
-         {/* // width: (width || 0) - 336, // TODO (reTODO) with s/m */}
-
-         <Scrollbar
-            noScrollY
-            style={{
-               height: 300, // height || 0, // TODO
-            }}
-         >
+         <Scrollbar noScrollY style={{ height: 300 }}>
             <div className={style.kanban_container}>
-               {/* <DndContext id={'11'} onDragStart={(e) => {}} onDragEnd={(e) => console.log('dropped', e.active.id, e.over?.id)}> */}
                <DndProvider backend={HTML5Backend}>
                   <div className={style.kanban}>
                      {project?.flow?.possibleProjectStages?.map((stage) => {
@@ -279,8 +247,6 @@ export function KanbanPage() {
                                           );
                                        })}
                                     </Scrollbar>
-                                    {/* ScrollbarsCustom-Scroller, ScrollbarsCustom-Wrapper, ScrollbarsCustom-Scroller? -> display: contents; */}
-                                    {/* ScrollbarsCustom-Scroller, ScrollbarsCustom-Wrapper -> overflow: null; */}
                                  </TasksColumn>
                               )
                            );
@@ -290,7 +256,6 @@ export function KanbanPage() {
                      })}
                   </div>
                </DndProvider>
-               {/* </DndContext> */}
             </div>
          </Scrollbar>
       </div>
