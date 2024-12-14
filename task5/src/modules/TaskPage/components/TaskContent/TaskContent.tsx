@@ -257,7 +257,7 @@ export default function TaskContent({
                options={selectOptions}
             />
             <div className={`${styles.flex} ${styles.aside_tabbox}`}>
-               <MarkersTask priority={task?.priority} component={task?.component} stage={task?.stage} />
+               <MarkersTask priority={task?.priority} component={task?.component} type={task?.task_type} />
             </div>
             <div className={styles.flexcentre}>
                <span className={styles.aside_text}>Оценка</span>

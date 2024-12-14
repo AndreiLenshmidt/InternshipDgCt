@@ -1,14 +1,14 @@
 import styles from './markers.module.scss';
-import { Priority, Component, Stage } from '@/api/data.types';
+import { Priority, Component, TaskType } from '@/api/data.types';
 
 export default function MarkersTask({
    priority,
    component,
-   stage,
+   type,
 }: {
    priority: Priority | undefined;
    component: Component | undefined;
-   stage: Stage | undefined;
+   type: TaskType | undefined;
 }) {
    return (
       <>
@@ -24,7 +24,7 @@ export default function MarkersTask({
          </div>
          <div>
             <p className={styles.tasktext}>Тип</p>
-            <p className={`${styles.tabtext} ${styles[`type${priority?.id}`]}`}>{stage?.name}</p>
+            <p className={`${styles.tabtext} ${styles[`type${type?.id}`]}`}>{type?.name}</p>
          </div>
       </>
    );
