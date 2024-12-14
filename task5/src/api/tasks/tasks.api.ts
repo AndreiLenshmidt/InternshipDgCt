@@ -22,8 +22,6 @@ export const tasksApi = createApi({
       updateTask: build.mutation<TaskSingle, Partial<TaskUpType> & {id: number, projectslug: string}>({
          query: (task) => {
             const { id, ...patch } = task;
-            
-            // debugger
             return {
                url: `/task/${id}`,
                method: 'PATCH',
@@ -69,6 +67,7 @@ export const {
    // useLazyGetTaskPrioritiesQuery,
    // useGetTaskStagesQuery
 } = tasksApi;
+
 
 /**
  * @link { https://stackoverflow.com/questions/76212082/how-to-use-rtk-query-in-combination-with-selectors }

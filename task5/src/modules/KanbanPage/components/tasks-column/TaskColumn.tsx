@@ -48,8 +48,7 @@ export function TasksColumn({
          // const { data } = tasksApi.useGetAllTasksQuery(router.query['task-slug']);        // -//- via slice object (== via s/m)
          // const [updatePost, { data }] = api.endpoints.updatePost.useMutation()
 
-         // кэширует ли?         
-         
+         // кэширует ли?                  
 
          getTask((item as { id: number }).id.toString()).then(({ data: taskInfo }) => {
             const { data: task } = taskInfo || {};
@@ -63,31 +62,15 @@ export function TasksColumn({
             }).then((e) => {
                if ('error' in e) {
                   const { data: error } = e.error as { data: ValidationError };
-                  console.log(error);
-
-                  alert(Object.values(error.errors as Record<string, string[]>)[0] || error.message);
-               } else {                  
-                  tasksApi.util.updateQueryData('getAllTasks', router.query['task-slug'] as string, (tasks) => {
-                     debugger;
-                     const upTask = tasks.data.find((draftTask) => draftTask.id === task?.id);
-                     if (upTask) {
-                        upTask.stage = stage.id;
-
-                        return { ...tasks };
-                     }
-                  });
-               }
+                  console.warn(error);
+                  // alert(Object.values(error.errors as Record<string, string[]>)[0] || error.message);
+               } 
             });
          });
-
-         // updateTask();
-         // handleUpdate(item.id, );
-         // updateTask()
       },
    }));
 
    return (
-      // ref={setNodeRef}
       <div className="col" ref={drop as unknown as LegacyRef<HTMLDivElement>}>
          <h4 data-count={tasksAmount}>{stage.name}</h4>
          {/* style={dropstyle} */}
