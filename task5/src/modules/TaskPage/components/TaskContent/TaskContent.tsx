@@ -305,7 +305,7 @@ export default function TaskContent({
                   <p className={`${styles.aside_text} ${styles.pb8}`}>Эпик</p>
                   <p className={`${styles.aside_text} ${styles.pb8}`} style={{ color: '#3787eb' }}>
                      <span># </span>
-                     <Link href={`/projects/task/${task?.epic?.id}`}>
+                     <Link href={`/projects/${projectSlug}/${task?.epic?.id}`}>
                         {task?.epic?.id} {task?.epic?.name}
                      </Link>
                   </p>
