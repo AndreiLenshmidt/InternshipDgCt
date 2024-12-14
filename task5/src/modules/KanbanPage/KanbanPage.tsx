@@ -56,8 +56,8 @@ export function KanbanPage() {
    const [isOpenTask, setOpenTask] = useState<boolean>(false);
    const [currentStage, setCurrentStage] = useState<Stage>();
 
-   const { data: isTaskId, isSuccess: getIsTaskIdSuccess } = useGetTaskByTaskIdQuery(taskIdEditTask);
-   console.log(taskIdEditTask, 'taskIdEditTask');
+   const { data: isTaskId, isSuccess: getIsTaskIdSuccess } = useGetTaskByTaskIdQuery(taskIdEditTask || 0);
+   console.log(isTaskId, taskIdEditTask, 'isTaskId, taskIdEditTask');
 
    // const { data: { data: project } = { data: null }, error } = useGetProjectQuery(route, loaded);
    // const { data: { data: priorities } = { data: null } } = useGetTaskPrioritiesQuery(undefined, loaded);
@@ -116,7 +116,10 @@ export function KanbanPage() {
 
    const handleOpenTask = (id: number | undefined, stage: Stage) => {
       setCurrentStage(stage);
-      if (id && isTaskId?.data) {
+      setTaskIdEditTask(id);
+
+      //  && isTaskId?.data
+      if (id) {
          setTaskIdEditTask(id);
          setProjectSlag(route);
          setOpenTask(true);

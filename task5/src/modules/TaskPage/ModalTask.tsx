@@ -22,7 +22,7 @@ export default function ModalTask({
    currentStage?: Stage;
 }) {
    const { data: task, isLoading } = useGetTaskByTaskIdQuery(id);
-   console.log(task?.data, 'task?.data************');
+   // console.log(task?.data, 'task?.data************');
 
    const { data: user } = useGetCurrentUserQuery();
    // console.log(user?.data);

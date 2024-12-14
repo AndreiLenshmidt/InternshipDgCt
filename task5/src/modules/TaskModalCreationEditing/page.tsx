@@ -481,7 +481,7 @@ export function TaskModalCreationEditing({
                epic_id: 0,
                release_id: 0,
                estimateMinutes: '',
-               estimate: taskData?.estimate_worker || '',
+               estimate: '',
                date: {
                   startDate: taskData.begin ? new Date(taskData.begin).toISOString() : null,
                   endDate: taskData.end ? new Date(taskData.end).toISOString() : null,
@@ -497,6 +497,8 @@ export function TaskModalCreationEditing({
    }, [taskData, reset, taskData?.files]);
 
    //!!! здесь роутинг
+   // taskData?.estimate_worker ||
+
    // useEffect(() => {
    //    if (idTaskMain !== taskId) {
    // console.log('idTaskMain,taskId', idTaskMain, taskId);
