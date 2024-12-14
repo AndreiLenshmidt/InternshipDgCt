@@ -504,6 +504,8 @@ export function TaskModalCreationEditing({
    //    }
    // }, [idTaskMain]);
 
+   console.log('newTaskFlag', newTaskFlag);
+
    if (!isOpen) return null;
    if (isGetTaskByTaskIdLoading) return <div className={style.loading}>Загрузка...</div>;
 

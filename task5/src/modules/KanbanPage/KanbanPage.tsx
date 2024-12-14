@@ -96,7 +96,6 @@ export function KanbanPage() {
          modalInfo.setModalType('info');
          modalInfo.setModalInfo('Задача успешно создана');
       }
-      setNewTaskFlag(false);
    }, [newTaskFlag, newTaskId]);
 
    return (
