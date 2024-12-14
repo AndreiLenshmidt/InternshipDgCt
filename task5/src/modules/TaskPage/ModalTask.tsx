@@ -1,4 +1,5 @@
 import styles from './task-page.module.scss';
+import Close from '@public/icons/close.svg';
 import TaskContent from './components/TaskContent/TaskContent';
 import { useGetCurrentUserQuery, useGetTaskByTaskIdQuery } from '@/api/appApi';
 import { MouseEvent } from 'react';
@@ -28,6 +29,9 @@ export default function ModalTask({
 
    const modal = createPortal(
       <div className={styles.layout_modal} onClick={(e) => modalCloseHandler(e)}>
+         <button className={styles['close-button-modal']} type="button" onClick={() => onClose(false)}>
+            <Close />
+         </button>
          {isLoading ? (
             <div className="loader" style={{ margin: '36% auto' }}></div>
          ) : (

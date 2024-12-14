@@ -21,7 +21,6 @@ import { TaskModalCreationEditing } from '@/modules/TaskModalCreationEditing/pag
 import ModalClose from '@/components/modal_close/ModalClose';
 import { useDeleteTaskMutation, useUpdateTaskMutation } from '@/api/appApi';
 import { useRouter } from 'next/router';
-import { log } from 'console';
 
 export default function TaskContent({
    projectSlug,
@@ -116,6 +115,7 @@ export default function TaskContent({
       setNewTaskFlag(false);
       setTaskIdEditTask(task?.id);
       setProjectSlag(projectSlug);
+      setIsOpenCreateTask(!isOpenCreateTask);
    };
 
    // Функция для получения newTaskId созданной задачи от дочернего компонента

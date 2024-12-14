@@ -5,7 +5,7 @@ import { TaskModalCreationEditing } from '@/modules/TaskModalCreationEditing/pag
 import { useRouter } from 'next/router';
 import { useDrag } from 'react-dnd';
 import { TaskCard } from './components/task-card/TaskCard';
-import style from './kanban-page.module.css';
+import style from './kanban-page.module.scss';
 import { TasksColumn } from './components/tasks-column/TaskColumn';
 import { useGetAllTasksQuery, useGetTaskPrioritiesQuery, useGetTaskTagsQuery } from '@/api/tasks/tasks.api';
 import { useGetProjectQuery } from '../ProjectsPage/api/api';
@@ -13,6 +13,8 @@ import { groupBy, groupByObject } from '@/utils/core';
 import { projectsUrl, projectUrl } from '@/consts';
 import { Stage, TaskMultiple } from '@/api/data.types';
 import ModalTask from '../TaskPage/ModalTask';
+import InfoModal from '@/modules/TaskPage/components/InfoModal/InfoModal';
+import { useModalInfo } from '@/hooks/useModalInfo';
 
 // import task from '@/pages/projects/kanban/task';
 
@@ -24,6 +26,7 @@ export function KanbanPage() {
    const route = useMemo(() => router.query['task-slug'] as string, [router.query['task-slug']]);
    const loaded = useMemo(() => ({ skip: !router.query['task-slug'] }), [router.query['task-slug']]);
    // Для открытия окна создания/ редактирования задачи
+   const modalInfo = useModalInfo();
    const [projectSlag, setProjectSlag] = useState<string>('');
    const [taskIdEditTask, setTaskIdEditTask] = useState<number | undefined>();
    const [isOpenCreateTask, setIsOpenCreateTask] = useState(false);
@@ -84,6 +87,17 @@ export function KanbanPage() {
    };
 
    // console.log(router.query['task-slug'], 'router.query[task-slug]'); //, isCloseModal: boolean
+
+   // InfoModal в случае успешного создания задачи
+   useEffect(() => {
+      if (newTaskFlag && newTaskId) {
+         modalInfo.setCloseModal(true);
+         modalInfo.setModalTitle('Успех');
+         modalInfo.setModalType('info');
+         modalInfo.setModalInfo('Задача успешно создана');
+      }
+      setNewTaskFlag(false);
+   }, [newTaskFlag, newTaskId]);
 
    return (
       <>
@@ -183,6 +197,16 @@ export function KanbanPage() {
                </div>
             </DndContext> */}
          </div>
+         {modalInfo.modal ? (
+            <InfoModal
+               type={modalInfo.modalType}
+               title={modalInfo.modalTitle}
+               info={modalInfo.modalInfo}
+               setClose={modalInfo.setCloseModal}
+            />
+         ) : (
+            <></>
+         )}
          {isOpenCreateTask && (
             <TaskModalCreationEditing
                isOpen={isOpenCreateTask}

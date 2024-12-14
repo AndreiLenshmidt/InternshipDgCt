@@ -1,8 +1,12 @@
 import { Stage } from '@/api/data.types';
 import { PropsWithChildren } from 'react';
-import style from '../../kanban-page.module.css';
+import style from '../../kanban-page.module.scss';
 
-export function TasksColumn({ children, stage, tasksAmount }: { stage: Stage; tasksAmount: number } & PropsWithChildren) {
+export function TasksColumn({
+   children,
+   stage,
+   tasksAmount,
+}: { stage: Stage; tasksAmount: number } & PropsWithChildren) {
    //
    // const { isOver, setNodeRef } = useDroppable({
    //    id: stage.id || 'droppable',

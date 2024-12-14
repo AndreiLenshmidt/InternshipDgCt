@@ -1,3 +1,30 @@
+.close-button-modal {
+   position: absolute;
+   top: 24px;
+   right: 24px;
+   border-radius: 6px;
+   width: 24px;
+   height: 24px;
+   background: rgba(244, 246, 248, 0.2);
+
+   &:hover {
+      svg {
+         path {
+            fill: #353535;
+         }
+      }
+   }
+   svg {
+      width: 10px;
+      height: 10px;
+
+      path {
+         fill: #ffffff;
+         transition: fill 0.3s ease-in-out;
+      }
+   }
+}
+
 .layout {
    &_page {
       display: flex;
