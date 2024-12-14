@@ -33,6 +33,8 @@ export default function SelectCustom<T>({
    const [isOpen, setIsOpen] = useState(false);
    const dropdownRef = useRef<HTMLDivElement>(null);
 
+   const valueWithType = value as TaskType | Stage | Priority | Component | undefined;
+
    const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
          setIsOpen(false);
@@ -67,27 +69,35 @@ export default function SelectCustom<T>({
                   className={`${style['select']} ${isOpen ? style['open'] : ''}`}
                   onClick={() => setIsOpen((prev) => !prev)}
                >
-                  <span className={`${style['select-title']} ${value?.name ? style.selected : ''}`}>
-                     {value?.name ? (optionRenderer ? optionRenderer(value) : String(value.name)) : titleSelect}
+                  <span className={`${style['select-title']} ${valueWithType?.name ? style.selected : ''}`}>
+                     {valueWithType?.name
+                        ? optionRenderer
+                           ? optionRenderer(valueWithType)
+                           : String(valueWithType.name)
+                        : titleSelect}
                   </span>
                </div>
 
                {isOpen && options && (
                   <ul className={style['dropdown-list']}>
-                     {options.map((option, index) => (
-                        <li
-                           className={style['dropdown-item']}
-                           key={index}
-                           onClick={() => {
-                              onChange(option);
-                              setIsOpen(false);
-                           }}
-                        >
-                           <span style={{ backgroundColor: option.color ? option.color : '' }}>
-                              {optionRenderer ? optionRenderer(option) : option.name}
-                           </span>
-                        </li>
-                     ))}
+                     {options.map((option, index) => {
+                        const itemOfOptions = option as TaskType | Stage | Priority | Component;
+                        const stageOption = option as Stage;
+                        return (
+                           <li
+                              className={style['dropdown-item']}
+                              key={index}
+                              onClick={() => {
+                                 onChange(option);
+                                 setIsOpen(false);
+                              }}
+                           >
+                              <span style={{ backgroundColor: stageOption.color ? stageOption.color : '' }}>
+                                 {optionRenderer ? optionRenderer(itemOfOptions) : itemOfOptions.name}
+                              </span>
+                           </li>
+                        );
+                     })}
                   </ul>
                )}
                <span className={`${style['dropdown-arrow']} ${isOpen ? style['open'] : ''}`}>
