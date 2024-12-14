@@ -21,7 +21,7 @@ export default function ModalTask({
    delTaskFunc?: (flag: boolean) => void;
    currentStage?: Stage;
 }) {
-   const { data: task, isLoading } = useGetTaskByTaskIdQuery(id);
+   const { data: task, isLoading, isError } = useGetTaskByTaskIdQuery(id);
    console.log(task?.data, 'task?.data************');
 
    const { data: user } = useGetCurrentUserQuery();
@@ -41,6 +41,10 @@ export default function ModalTask({
          </button>
          {isLoading ? (
             <div className="loader" style={{ margin: '36% auto' }}></div>
+         ) : isError ? (
+            <div className={styles.layout_modalbox}>
+               <p>Задача не найдена</p>
+            </div>
          ) : (
             <div className={styles.layout_modalbox}>
                <TaskContent
