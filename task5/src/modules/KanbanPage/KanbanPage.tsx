@@ -33,6 +33,8 @@ export function KanbanPage() {
    const [newTaskId, setNewTaskId] = useState<number | undefined>();
    const [newTaskFlag, setNewTaskFlag] = useState(false);
    const [tasksLocal, setTasksLocal] = useState<TaskMultiple[]>([]);
+   const [delTaskFlag, setDelTaskFlag] = useState(false);
+
    // ------------------------------------------------
    const [isOpenTask, setOpenTask] = useState<boolean>(false);
 
@@ -46,19 +48,6 @@ export function KanbanPage() {
       isError,
       refetch,
    } = useGetAllTasksQuery(route, { skip: !router.query['task-slug'] || !(project && priorities) }); //  || !taskStages?.length
-
-   useEffect(() => {
-      if (isSuccess) {
-         setTasksLocal(tasks);
-      }
-   }, [isSuccess, tasks]);
-
-   useEffect(() => {
-      if (newTaskId) {
-         refetch();
-      }
-   }, [newTaskId, refetch]);
-
    const stagedTasks = useMemo(() => {
       return groupByObject(
          project?.flow?.possibleProjectStages as Required<Stage>[],
@@ -67,7 +56,17 @@ export function KanbanPage() {
       );
    }, [tasks, project?.flow?.possibleProjectStages]);
 
-   console.log('stagedTasks', stagedTasks);
+   useEffect(() => {
+      if (isSuccess) {
+         setTasksLocal(tasks);
+      }
+   }, [isSuccess, tasks]);
+
+   useEffect(() => {
+      if ((newTaskId && isSuccess) || (!delTaskFlag && isSuccess)) {
+         refetch();
+      }
+   }, [newTaskId, refetch, delTaskFlag]);
 
    // const { isOver, setNodeRef } = useDroppable({
    //    id: 'droppable',
@@ -78,6 +77,10 @@ export function KanbanPage() {
    // Функция для получения newTaskId от дочернего компонента
    const handleNewTaskId = (taskId: number) => {
       setNewTaskId(taskId);
+   };
+
+   const delTaskFunc = (flag: boolean) => {
+      setDelTaskFlag(flag);
    };
 
    const handlerNewTask = () => {
@@ -212,6 +215,7 @@ export function KanbanPage() {
                </div>
             </DndContext> */}
          </div>
+
          {modalInfo.modal ? (
             <InfoModal
                type={modalInfo.modalType}
@@ -234,7 +238,13 @@ export function KanbanPage() {
             />
          )}
          {isOpenTask && taskIdEditTask && (
-            <ModalTask id={taskIdEditTask} projectSlug={projectSlag} onClose={setOpenTask} refetch={refetch} />
+            <ModalTask
+               id={taskIdEditTask}
+               projectSlug={projectSlag}
+               onClose={setOpenTask}
+               refetch={refetch}
+               delTaskFunc={delTaskFunc}
+            />
          )}
       </>
    );
