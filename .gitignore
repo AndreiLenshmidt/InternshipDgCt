@@ -40,5 +40,5 @@ yarn-error.log*
 next-env.d.ts
 settings.json
 .vscode/
-
+.editorconfig
 /openapi.json

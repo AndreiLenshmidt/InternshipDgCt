@@ -1,8 +1,12 @@
 import { CustomFormData } from '@/modules/TaskModalCreationEditing/page';
 import { User } from '@/api/data.types';
+import { formatDate } from '@/modules/TaskModalCreationEditing/utils/formatDate';
 
 export const transformToServerData = (formData: CustomFormData) => {
    const selectedIds = formData.selectedOptionsCheckbox?.map((option: User) => option.id) || [];
+
+   const startDate = formData.date?.startDate || '';
+   const endDate = formData.date?.endDate || '';
 
    return {
       name: formData.name || '', // Название задачи (обязательно)
@@ -23,7 +27,9 @@ export const transformToServerData = (formData: CustomFormData) => {
       markup_link: formData.markupLink || '', // Ссылка на вёрстку
       dev_link: formData.devLink || '', // Ссылка на сборку
       executors: selectedIds.length > 0 ? selectedIds : [0], // Исполнители задачи
-      begin: formData.date?.startDate || '', // Дата начала работы
-      end: formData.date?.endDate || '', // Дата окончания работы
+      begin: startDate, // Дата начала работы
+      end: endDate, // Дата окончания работы
+      date_start: startDate ? formatDate(startDate) : '', // Дата начала работы
+      date_end: endDate ? formatDate(endDate) : '', // Дата окончания работы
    };
 };

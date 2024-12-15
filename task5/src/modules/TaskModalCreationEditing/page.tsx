@@ -136,8 +136,6 @@ export function TaskModalCreationEditing({
 
                   const taskDataResponse: TaskSingle = response.data;
 
-                  // console.log(taskDataResponse, filesTask, idTask, 'taskDataResponse, filesTask,idTask,');
-
                   if (taskDataResponse?.files) {
                      setTaskData(taskDataResponse);
 
