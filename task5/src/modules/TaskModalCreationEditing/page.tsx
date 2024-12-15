@@ -24,7 +24,12 @@ import {
    useGetAllTasksQuery,
 } from '@/api/appApi';
 import { Priority, TaskMultiple, TaskSingle, TaskType, User, ResponseFile, Component } from '@/api/data.types';
-import { typesTasksOptions, compOptions, priorOptions, usersOptions } from '@/modules/TaskModalCreationEditing/variors';
+import {
+   typesTasksOptions,
+   compOptions,
+   priorOptions,
+   usersOptions,
+} from '@/modules/TaskModalCreationEditing/variors/variors';
 import { transformToServerData } from '@/modules/TaskModalCreationEditing/utils/transformToServerData';
 import { parseEstimate } from '@/modules/TaskModalCreationEditing/utils/parseEstimate';
 import { extractTextFromHtml } from '@/modules/TaskModalCreationEditing/utils/extractTextFromHtml';
