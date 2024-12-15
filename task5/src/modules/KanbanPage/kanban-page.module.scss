@@ -75,6 +75,10 @@
       font-size: 14px;
       flex-basis: 23%;
       max-width: none;
+
+      span svg path {
+         fill: #abbed1;
+      }
    }
 
    & > div {

@@ -38,10 +38,9 @@ export function ProjectPage() {
 
    const {
       register,
-      clearErrors,
       handleSubmit,
-      reset,
-      // setFocus,
+      // clearErrors,
+      // reset,
       formState: { isDirty, isSubmitting, errors },
    } = useForm<FormSchema>({
       mode: 'all',
@@ -63,10 +62,6 @@ export function ProjectPage() {
       } else if (data.projectName?.length === 0) {
          setFilterData(data as typeof filterData);
       }
-
-      // console.log(data);
-      // сбрасываем состояние формы (очищаем поля)
-      // reset();
    };
 
    return (
