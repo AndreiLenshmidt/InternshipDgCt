@@ -184,17 +184,16 @@ export default function TaskContent({
          begin: task.begin,
          end: task.end,
       };
-      if (task?.id) {
+      if (task?.id && selectedOptionComp?.id !== currentStage?.id) {
          const result = await updateTask({ id: task.id, body: taskBody });
 
          if (result.data) {
             // console.log(task.stage?.name, selectedOptionComp?.name);
-
             modalInfo.setCloseModal(true);
             modalInfo.setModalTitle('Успешно');
             modalInfo.setModalInfo('Статус задачи успешно изменен');
             refetch && refetch();
-            taskRefetch();
+            // taskRefetch();
          } else {
             modalInfo.setModalType('error');
             modalInfo.setModalInfo('Не удалось изменить статус задачи');
