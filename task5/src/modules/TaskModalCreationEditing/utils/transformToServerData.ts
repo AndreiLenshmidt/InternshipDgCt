@@ -1,18 +1,9 @@
 import { CustomFormData } from '@/modules/TaskModalCreationEditing/page';
 import { User } from '@/api/data.types';
+import { formatDate } from '@/modules/TaskModalCreationEditing/utils/formatDate';
 
 export const transformToServerData = (formData: CustomFormData) => {
    const selectedIds = formData.selectedOptionsCheckbox?.map((option: User) => option.id) || [];
-
-   const formatDate = (dateString: string): string | undefined => {
-      const date = new Date(dateString);
-
-      const day = String(date.getUTCDate()).padStart(2, '0');
-      const month = String(date.getUTCMonth() + 1).padStart(2, '0');
-      const year = date.getUTCFullYear();
-
-      return `${day}.${month}.${year}`;
-   };
 
    const startDate = formData.date?.startDate || '';
    const endDate = formData.date?.endDate || '';
