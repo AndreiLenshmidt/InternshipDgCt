@@ -71,7 +71,7 @@ export function TaskCard({ task, openTask }: { task: TaskMultiple; openTask: Cal
          </h3>
          <h4>user {task.created_by}</h4>
          <div className={style.tags}>
-            {tag ? <span style={{ backgroundColor: tag?.color }}>{tag?.name}</span> : ''}
+            {tag ? <span style={{ backgroundColor: tag?.color }}>{tag?.name}</span> : ''}            
             <span style={colorSchema.taskTypes[(tasktype?.id || 0) - 1]}>{tasktype?.name}</span>
          </div>
       </div>

@@ -1,6 +1,6 @@
 import { useGetCurrentUserQuery } from "@/api/appApi";
 import { Stage, TaskMultiple, User } from "@/api/data.types";
-import { useGetAllTasksQuery } from "@/api/tasks/tasks.api";
+import { useGetAllTasksQuery, useGetTaskTypesQuery } from "@/api/tasks/tasks.api";
 import { useGetProjectQuery } from "@/modules/ProjectsPage/api/api";
 import { groupByObject } from "@/utils/core";
 import { Dispatch, SetStateAction, useMemo, useState } from "react";
@@ -31,12 +31,10 @@ let cachedData: {
  */
 export function useStagedTasks(route: string, filter: FormSchema, skip?: boolean) {
 
-   // if (skip) {
-   //    return cachedData;
-   // }
-
    const [justMine, setJustMine] = useState(false);
    const { data: { data: user } = { data: null } } = useGetCurrentUserQuery();
+
+   const { data: { data: tasktypesInfo } = { data: [] } } = useGetTaskTypesQuery(undefined);
 
    const loaded = useMemo(() => ({ skip: !route }), [route]);
 
@@ -78,7 +76,9 @@ export function useStagedTasks(route: string, filter: FormSchema, skip?: boolean
                   return false;
                }
             }
-            if (!item.task_type) {
+            if (!tasktypesInfo[item.task_type as number]) {
+               // tasktypesInfo;
+               // debugger
                return false;
             }
             return true;
