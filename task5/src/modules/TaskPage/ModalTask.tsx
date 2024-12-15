@@ -39,10 +39,9 @@ export default function ModalTask({
          onClose(false);
       }
    };
-   const node = document.querySelector('#__next') as HTMLElement;
 
    const modal = createPortal(
-      <div className={styles.layout_modal} onClick={(e) => modalCloseHandler(e)}>
+      <div className={`${styles.layout_modal} ${inter.className}`} onClick={(e) => modalCloseHandler(e)}>
          <button className={styles['close-button-modal']} type="button" onClick={() => onClose(false)}>
             <Close />
          </button>
@@ -67,7 +66,7 @@ export default function ModalTask({
             </div>
          )}
       </div>,
-      node
+      document.body
    );
 
    return modal;
