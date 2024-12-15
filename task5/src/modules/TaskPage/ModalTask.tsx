@@ -2,7 +2,7 @@ import styles from './task-page.module.scss';
 import Close from '@public/icons/close.svg';
 import TaskContent from './components/TaskContent/TaskContent';
 import { useGetCurrentUserQuery, useGetTaskByTaskIdQuery } from '@/api/appApi';
-import { MouseEvent, useEffect } from 'react';
+import { MouseEvent, useLayoutEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { Stage } from '@/api/data.types';
 
@@ -21,8 +21,15 @@ export default function ModalTask({
    delTaskFunc?: (flag: boolean) => void;
    currentStage?: Stage;
 }) {
-   const { data: task, isLoading, isError } = useGetTaskByTaskIdQuery(id);
-   console.log(task?.data, 'task?.data************');
+   const { data: task, isLoading, isError, refetch: taskRefetch, error } = useGetTaskByTaskIdQuery(id);
+   // console.log(task?.data, 'task?.data************');
+
+   useLayoutEffect(() => {
+      const error401 = error as { status: number; data: { message: 'Unauthenticated.' } };
+      if (error401?.status === 401) {
+         location.reload();
+      }
+   }, [error]);
 
    const { data: user } = useGetCurrentUserQuery();
    // console.log(user?.data);
@@ -53,6 +60,7 @@ export default function ModalTask({
                   projectSlug={projectSlug}
                   onClose={onClose}
                   refetch={refetch}
+                  taskRefetch={taskRefetch}
                   delTaskFunc={delTaskFunc}
                   currentStage={currentStage}
                />

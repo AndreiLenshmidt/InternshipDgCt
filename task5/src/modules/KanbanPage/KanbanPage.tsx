@@ -2,18 +2,12 @@ import { BreadCrumbs } from '@components/bread_crumbs/BreadCrumbs';
 import { Switch } from '@components/switch/Switch';
 import { TaskModalCreationEditing } from '@/modules/TaskModalCreationEditing/page';
 import { useRouter } from 'next/router';
-import { useDrag } from 'react-dnd';
 import { TaskCard } from './components/task-card/TaskCard';
-import style from './kanban-page.module.scss';
 import { TasksColumn } from './components/tasks-column/TaskColumn';
-import { useGetAllTasksQuery, useGetTaskPrioritiesQuery, useGetTaskTagsQuery } from '@/api/tasks/tasks.api';
-import { useGetProjectQuery } from '../ProjectsPage/api/api';
-import { JSXElementConstructor, useEffect, useMemo, useState, useRef } from 'react';
-import { groupBy, groupByObject } from '@/utils/core';
-import { projectsUrl, projectUrl } from '@/consts';
+import { useEffect, useMemo, useState } from 'react';
+import { projectsUrl } from '@/consts';
 import { Stage, TaskMultiple, User } from '@/api/data.types';
 import { Scrollbar } from 'react-scrollbars-custom';
-import { useResize } from '@/hooks/resize';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { DndProvider } from 'react-dnd';
 import ModalTask from '../TaskPage/ModalTask';
@@ -21,6 +15,8 @@ import { useStagedTasks } from './hooks/stagedTasks';
 import { useGetTaskByTaskIdQuery } from '@/api/appApi';
 import InfoModal from '@/modules/TaskPage/components/InfoModal/InfoModal';
 import { useModalInfo } from '@/hooks/useModalInfo';
+
+import style from './kanban-page.module.scss';
 
 // import { ScrollbarProps, Scrollbars } from 'react-custom-scrollbars';
 // import task from '@/pages/projects/kanban/task';
@@ -31,7 +27,7 @@ export function KanbanPage() {
    //
    //
    const router = useRouter();
-   const route = useMemo(() => router.query['task-slug'] as string, [router.query['task-slug']]);
+   const route = useMemo(() => router.query['project-slug'] as string, [router.query['project-slug']]);
 
    const { tasks, stagedTasks, tasksRefetch, user, showJustMine, project, isSuccess } = useStagedTasks(route);
 
@@ -62,37 +58,13 @@ export function KanbanPage() {
    });
 
    // const { data: isTaskId } = useGetTaskByTaskIdQuery(180);
-   console.log(isTaskId, taskIdEditTask, isTaskId?.data.id, 'isTaskId, taskIdEditTask , isTaskId?.data.id--------');
-
-   // const { data: { data: project } = { data: null }, error } = useGetProjectQuery(route, loaded);
-   // const { data: { data: priorities } = { data: null } } = useGetTaskPrioritiesQuery(undefined, loaded);
-
-   // const {
-   //    data: { data: tasks } = { data: [] },
-   //    isLoading,
-   //    isSuccess,
-   //    isError,
-   //    refetch,
-   // } = useGetAllTasksQuery(route, { skip: !router.query['task-slug'] || !(project && priorities) }); //  || !taskStages?.length
-   // const stagedTasks = useMemo(() => {
-   //    return groupByObject(
-   //       project?.flow?.possibleProjectStages as Required<Stage>[],
-   //       tasks as (Record<PropertyKey, unknown> & TaskMultiple)[],
-   //       'stage'
-   //    );
-   // }, [tasks, project?.flow?.possibleProjectStages]);
+   // console.log(isTaskId, taskIdEditTask, isTaskId?.data.id, 'isTaskId, taskIdEditTask , isTaskId?.data.id--------');
 
    useEffect(() => {
       if (isSuccess) {
          setTasksLocal(tasks);
       }
    }, [isSuccess, tasks]);
-
-   // const { isOver, setNodeRef } = useDroppable({
-   //    id: 'droppable',
-   // });
-
-   // const dropstyle = { color: isOver ? 'green' : undefined };
 
    // Функция для получения newTaskId от дочернего компонента
    const handleNewTaskId = (taskId: number) => {
@@ -107,7 +79,7 @@ export function KanbanPage() {
       setNewTaskFlag(true);
       setTaskIdEditTask(undefined);
 
-      const taskSlug = router.query['task-slug'];
+      const taskSlug = router.query['project-slug'];
       if (Array.isArray(taskSlug)) {
          setProjectSlag(taskSlug[0]);
       } else if (typeof taskSlug === 'string') {
@@ -165,7 +137,7 @@ export function KanbanPage() {
             crumbs={[
                { text: 'Главная', url: '/' },
                { text: 'Проекты', url: projectsUrl },
-               { text: project?.name || '', url: `/${projectUrl}/${router.query['task-slug']}` },
+               { text: project?.name || '', url: `${projectsUrl}/${router.query['project-slug']}` },
             ]}
          />
 
@@ -248,17 +220,8 @@ export function KanbanPage() {
             />
          )}
 
-         {/* autoHeight autoHeightMin={500} */}
-         {/* // width: (width || 0) - 336, // TODO (reTODO) with s/m */}
-
-         <Scrollbar
-            noScrollY
-            style={{
-               height: 300, // height || 0, // TODO
-            }}
-         >
+         <Scrollbar noScrollY style={{ height: 300 }}>
             <div className={style.kanban_container}>
-               {/* <DndContext id={'11'} onDragStart={(e) => {}} onDragEnd={(e) => console.log('dropped', e.active.id, e.over?.id)}> */}
                <DndProvider backend={HTML5Backend}>
                   <div className={style.kanban}>
                      {project?.flow?.possibleProjectStages?.map((stage) => {
@@ -266,33 +229,28 @@ export function KanbanPage() {
                            const [stageTasks, stageInfo] = stagedTasks[stage.id] || [];
 
                            return (
-                              tasks as (Record<PropertyKey, unknown> & TaskMultiple)[],
-                              (
-                                 <TasksColumn
-                                    key={stage.id}
-                                    stage={stage}
-                                    tasksAmount={stageTasks?.length || 0}
-                                    tasks={tasks}
-                                 >
-                                    <Scrollbar noScrollX style={{ height: 800, width: 250 }}>
-                                       {stageTasks?.map((task) => {
-                                          return (
-                                             <TaskCard
-                                                task={task}
-                                                key={task.id}
-                                                openTask={() => {
-                                                   setTaskIdEditTask(task?.id);
+                              <TasksColumn
+                                 key={stage.id}
+                                 stage={stage}
+                                 tasksAmount={stageTasks?.length || 0}
+                                 tasks={tasks}
+                              >
+                                 <Scrollbar noScrollX style={{ height: 800, width: 250 }}>
+                                    {stageTasks?.map((task) => {
+                                       return (
+                                          <TaskCard
+                                             task={task}
+                                             key={task.id}
+                                             openTask={() => {
+                                                setTaskIdEditTask(task?.id);
 
-                                                   if (task?.id) handleOpenTask(task.id, stage);
-                                                }}
-                                             />
-                                          );
-                                       })}
-                                    </Scrollbar>
-                                    {/* ScrollbarsCustom-Scroller, ScrollbarsCustom-Wrapper, ScrollbarsCustom-Scroller? -> display: contents; */}
-                                    {/* ScrollbarsCustom-Scroller, ScrollbarsCustom-Wrapper -> overflow: null; */}
-                                 </TasksColumn>
-                              )
+                                                if (task?.id) handleOpenTask(task.id, stage);
+                                             }}
+                                          />
+                                       );
+                                    })}
+                                 </Scrollbar>
+                              </TasksColumn>
                            );
                         }
 
@@ -300,7 +258,6 @@ export function KanbanPage() {
                      })}
                   </div>
                </DndProvider>
-               {/* </DndContext> */}
             </div>
          </Scrollbar>
       </div>

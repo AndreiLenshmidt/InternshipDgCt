@@ -16,6 +16,13 @@
 
          & > * {
             flex-basis: 50%;
+            &::after {
+               content: attr(data-error);
+               color: #eb597b;
+               font-size: 11px;
+               position: relative;
+               top: 6px;
+            }
 
             input {
                width: 100%;
@@ -86,9 +93,12 @@
       font-weight: bold;
    }
 
-   h6 {
+   h6,
+   label {
       /* font-size: 14px; */
       color: var(--bread-crumbs-text);
       margin-bottom: 0.5rem;
+      display: block;
+      cursor: auto;
    }
 }

@@ -36,7 +36,7 @@ export default function AuthPage() {
       const paylord = await login(formData);
       setCookie('token-auth', paylord.data?.token);
 
-      setTimeout(() => router.replace('/projects', { scroll: false }), 2000);
+      setTimeout(() => router.replace('/project', { scroll: false }), 2000);
    };
 
    const { onBlur: onBlurEmail, onChange: onChangeEmail, name: nameEmail, ref: refEmail } = register('email');

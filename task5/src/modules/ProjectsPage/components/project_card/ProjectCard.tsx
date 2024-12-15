@@ -1,4 +1,4 @@
-import { BASE_URL } from '@/consts';
+import { BASE_URL, projectsUrl } from '@/consts';
 import FavLogo from '@public/icons/favorite-icon.svg';
 import Link from 'next/link';
 import { useState } from 'react';
@@ -31,7 +31,7 @@ export function ProjectCard({ project, onChange }: PropsType) {
    };
 
    return (
-      <Link className={style.card} href={'/projects/' + project?.slug}>
+      <Link className={style.card} href={projectsUrl + '/' + project?.slug}>
          <div
             className={style.favorite_icon}
             style={project?.is_favorite ? { backgroundColor: `var(--main-blue)` } : {}}

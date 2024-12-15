@@ -8,13 +8,16 @@ import { useEffect } from 'react';
 
 export default function TaskPage() {
    const router = useRouter();
-   const taskId = Number(router.query['slug']);
-   const projectSlug = router.query['task-slug'] as string;
-   const { data, isLoading } = useGetTaskByTaskIdQuery(taskId);
-   console.log(data?.data);
-
+   const taskId = Number(router.query['task-slug']);
+   const projectSlug = router.query['project-slug'] as string;
+   const { data, isLoading, isError, refetch: taskRefetch } = useGetTaskByTaskIdQuery(taskId);
    const { data: user } = useGetCurrentUserQuery();
-   console.log(user?.data);
+
+   useEffect(() => {
+      if (isError) {
+         router.replace('/404');
+      }
+   }, [isError]);
 
    useEffect(() => {
       if (data?.data.project?.slug !== projectSlug && data?.data.project?.slug) {
@@ -34,15 +37,20 @@ export default function TaskPage() {
                      crumbs={[
                         { text: 'Главная', url: '/' },
                         { text: 'Проекты', url: '/projects' },
-                        { text: 'Задачи', url: '/projects/task' },
+                        { text: projectSlug, url: `/projects/${projectSlug}` },
                         {
                            text: `Задачa id: ${taskId}`,
-                           url: `/projects/task/${taskId}`,
+                           url: `/project/${projectSlug}/${taskId}`,
                         },
                      ]}
                   />
                   <div className={styles.page_container}>
-                     <TaskContent task={data?.data} activeUser={user?.data} projectSlug={projectSlug} />
+                     <TaskContent
+                        task={data?.data}
+                        activeUser={user?.data}
+                        projectSlug={projectSlug}
+                        taskRefetch={taskRefetch}
+                     />
                   </div>
                </div>
             </>
