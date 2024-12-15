@@ -7,35 +7,25 @@ import { useEffect, useState } from 'react';
 
 export default function MainPage() {
    const [token, _, removeCookie] = useCookies(['token-auth']);
-   
    const [inOut, setInOut] = useState(!!token['token-auth']);
+   const [LogInLogOutButton, setBtnContent] = useState('Войти');
+   const [mainBtn, setMainBtn] = useState('Войти');
+   const [mainLink, setMainLink] = useState('/auth');
 
    useEffect(() => {
       if (token['token-auth']) {
          setInOut(true);
+         setBtnContent('Выйти');
+         setMainBtn('Перейти к проектам');
+         setMainLink('/projects');
       }
-   });
+   }, [inOut]);
 
-   const LogInLogOutButton = ({ inOut }: { inOut: boolean }) => {
-      const logOut = () => {
-         removeCookie('token-auth');
-         globalThis.document.cookie = '';
-         location.reload();
-         setInOut(false);
-      };
-      if (inOut) {
-         return (
-            <Link className={styles.link} href="/" onClick={() => logOut()}>
-               Выйти
-            </Link>
-         );
-      } else {
-         return (
-            <Link className={styles.link} href="/auth">
-               Войти
-            </Link>
-         );
-      }
+   const logOut = () => {
+      removeCookie('token-auth');
+      globalThis.document.cookie = '';
+      location.reload();
+      setInOut(false);
    };
 
    return (
@@ -43,7 +33,9 @@ export default function MainPage() {
          <Snow className={styles.snow} />
          <header className={styles.header}>
             <Image src="/mainlogo.svg" alt="logo" width={159} height={43} priority={true} />
-            <LogInLogOutButton inOut={inOut} />
+            <Link className={styles.link} href="/auth" onClick={() => inOut && logOut()}>
+               {LogInLogOutButton}
+            </Link>
          </header>
          <main className={styles.main}>
             <div className={styles.main_box}>
@@ -55,8 +47,8 @@ export default function MainPage() {
                <p className={styles.main_info}>
                   Если вы уже зарегистрированы, то можете начать работу, нажав на кнопку "перейти к проектам".
                </p>
-               <Link className={styles.link} href="/projects">
-                  Перейти к проектам
+               <Link className={styles.link} href={mainLink}>
+                  {mainBtn}
                </Link>
             </div>
          </main>

@@ -12,6 +12,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import { DndProvider } from 'react-dnd';
 import ModalTask from '../TaskPage/ModalTask';
 import { useStagedTasks } from './hooks/stagedTasks';
+import { useGetTaskByTaskIdQuery } from '@/api/appApi';
 import InfoModal from '@/modules/TaskPage/components/InfoModal/InfoModal';
 import { useModalInfo } from '@/hooks/useModalInfo';
 
@@ -46,9 +47,18 @@ export function KanbanPage() {
    const [tasksLocal, setTasksLocal] = useState<TaskMultiple[]>([]);
    const [delTaskFlag, setDelTaskFlag] = useState(false);
 
+   const [taskLocal, setTaskLocal] = useState([]);
+
    // ------------------------------------------------
    const [isOpenTask, setOpenTask] = useState<boolean>(false);
    const [currentStage, setCurrentStage] = useState<Stage>();
+
+   const { data: isTaskId, isSuccess: getIsTaskIdSuccess } = useGetTaskByTaskIdQuery(taskIdEditTask || 0, {
+      skip: !taskIdEditTask,
+   });
+
+   // const { data: isTaskId } = useGetTaskByTaskIdQuery(180);
+   // console.log(isTaskId, taskIdEditTask, isTaskId?.data.id, 'isTaskId, taskIdEditTask , isTaskId?.data.id--------');
 
    useEffect(() => {
       if (isSuccess) {
@@ -83,7 +93,6 @@ export function KanbanPage() {
 
    const handleOpenTask = (id: number | undefined, stage: Stage) => {
       setCurrentStage(stage);
-      setTaskIdEditTask(id);
       setProjectSlag(route);
       setOpenTask(true);
       setDelTaskFlag(false);
@@ -128,7 +137,7 @@ export function KanbanPage() {
             crumbs={[
                { text: 'Главная', url: '/' },
                { text: 'Проекты', url: projectsUrl },
-               { text: project?.name || '', url: `/${projectUrl}/${router.query['task-slug']}` },
+               { text: project?.name || '', url: `/${projectsUrl}/${router.query['task-slug']}` },
             ]}
          />
 
@@ -232,7 +241,11 @@ export function KanbanPage() {
                                           <TaskCard
                                              task={task}
                                              key={task.id}
-                                             openTask={() => handleOpenTask(task?.id, stage)}
+                                             openTask={() => {
+                                                setTaskIdEditTask(task?.id);
+
+                                                if (task?.id) handleOpenTask(task.id, stage);
+                                             }}
                                           />
                                        );
                                     })}

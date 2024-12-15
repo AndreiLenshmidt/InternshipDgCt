@@ -30,6 +30,7 @@ export default function TaskContent({
    refetch,
    delTaskFunc,
    currentStage,
+   taskRefetch,
 }: {
    projectSlug: string;
    task: TaskSingle | undefined;
@@ -38,13 +39,12 @@ export default function TaskContent({
    refetch?: CallableFunction;
    delTaskFunc?: (flag: boolean) => void;
    currentStage?: Stage;
+   taskRefetch: CallableFunction;
 }) {
    const isAdmin = activeUser?.is_admin;
    const [selectedOptionComp, setSelectedOptionComp] = useState<Stage | undefined>(task?.stage);
-
-   const [deleteTask, { data: deleteData, isError: deleteError }] = useDeleteTaskMutation();
+   const [deleteTask, { isError: deleteError }] = useDeleteTaskMutation();
    const [updateTask, {}] = useUpdateTaskMutation();
-
    // Для открытия окна создания/ редактирования задачи
    const [projectSlag, setProjectSlag] = useState<string>('');
    const [taskIdEditTask, setTaskIdEditTask] = useState<number | undefined>();
@@ -82,15 +82,16 @@ export default function TaskContent({
    }, [task?.stage?.name, task?.files, task?.comments]);
 
    useEffect(() => {
-      if (task?.dev_link && task?.stage !== selectedOptionComp && selectedOptionComp) {
+      if (task?.dev_link && selectedOptionComp && task?.stage?.id !== selectedOptionComp?.id) {
          updateTaskHandler(selectedOptionComp, task);
-         modalInfo.setCloseModal(true);
-      } else if (task?.stage !== selectedOptionComp) {
+      } else if (task?.stage?.id !== selectedOptionComp?.id && !task?.dev_link) {
          modalInfo.setCloseModal(true);
          modalInfo.setModalTitle('Ошибка');
          modalInfo.setModalType('error');
          modalInfo.setModalInfo('Сначала добавьте Dev Link в меню редактирования задачи');
-         task?.stage && setSelectedOptionComp(task?.stage);
+         refetch && refetch();
+         taskRefetch();
+         // task?.stage && setSelectedOptionComp(task?.stage);
       }
       if (deleteError) {
          modalInfo.setCloseModal(true);
@@ -137,11 +138,11 @@ export default function TaskContent({
    };
 
    const deleteTaskHandler = async () => {
-      console.log(task?.id, 'task?.id');
-      console.log(task, 'task');
+      console.log(task, '-------- task ----------');
 
       if (task?.id) {
-         const taskDel = await deleteTask(175);
+         const taskDel = await deleteTask(task?.id);
+
          const response: TaskSingle | undefined = taskDel?.data?.data || undefined;
 
          if (response) {
@@ -152,8 +153,6 @@ export default function TaskContent({
             setDelTaskModal(false);
             modalInfo.setCloseModal(true);
          }
-
-         // router.replace(`/projects/${projectSlug}`); //!!! -----------  удалить?
       } else {
          setDelTaskModal(false);
          modalInfo.setCloseModal(true);
@@ -188,18 +187,25 @@ export default function TaskContent({
          const result = await updateTask({ id: task.id, body: taskBody });
 
          if (result.data) {
+            console.log(task.stage?.name, selectedOptionComp?.name);
+            modalInfo.setCloseModal(true);
             modalInfo.setModalTitle('Успешно');
             modalInfo.setModalInfo('Статус задачи успешно изменен');
             refetch && refetch();
+            taskRefetch();
          } else {
             modalInfo.setModalType('error');
             modalInfo.setModalInfo('Не удалось изменить статус задачи');
             task?.stage && setSelectedOptionComp(task?.stage);
          }
-         // console.log(result.data);
-         // console.log(stage);
       }
    };
+
+   useEffect(() => {
+      if (refetch) {
+         refetch();
+      }
+   }, [isOpenCreateTask, refetch]);
 
    return (
       <>
@@ -299,7 +305,7 @@ export default function TaskContent({
                   <p className={`${styles.aside_text} ${styles.pb8}`}>Эпик</p>
                   <p className={`${styles.aside_text} ${styles.pb8}`} style={{ color: '#3787eb' }}>
                      <span># </span>
-                     <Link href={`/projects/task/${task?.epic?.id}`}>
+                     <Link href={`/projects/${projectSlug}/${task?.epic?.id}`}>
                         {task?.epic?.id} {task?.epic?.name}
                      </Link>
                   </p>
@@ -403,6 +409,7 @@ export default function TaskContent({
                   newTaskId={newTaskId}
                   onNewTaskId={handleNewTaskId}
                   newTaskFlag={newTaskFlag}
+                  taskRefetch={taskRefetch}
                />
             )}
             {isDeleteTaskModal && (

@@ -51,6 +51,7 @@ interface TaskModalCreationEditingProps {
    newTaskId: number | undefined;
    onNewTaskId: (taskId: number) => void;
    newTaskFlag: boolean;
+   taskRefetch?: CallableFunction;
 }
 
 export interface CustomFormData {
@@ -88,6 +89,7 @@ export function TaskModalCreationEditing({
    newTaskId,
    onNewTaskId,
    newTaskFlag,
+   taskRefetch,
 }: TaskModalCreationEditingProps) {
    const router = useRouter();
    const modalInfo = useModalInfo();
@@ -196,9 +198,8 @@ export function TaskModalCreationEditing({
          }).unwrap();
 
          const taskDataResponse: TaskSingle = response?.data;
-
          // console.log(' ------------- taskDataResponse UPDATE------------', taskDataResponse);
-
+         taskRefetch && taskRefetch();
          if (taskDataResponse) {
             setTaskData((prev) => ({
                ...prev,
@@ -380,13 +381,14 @@ export function TaskModalCreationEditing({
          const fileLinks = data.fileLinks ?? [];
 
          //!!! ----------------------------------------------------
-         // console.log(
-         //    '****** data, serverData, isEditMode, newTaskFlag **********',
-         //    data,
-         //    serverData,
-         //    isEditMode,
-         //    newTaskFlag
-         // );
+         console.log(
+            '****** data, serverData, isEditMode, newTaskFlag , idTaskMain**********',
+            data,
+            serverData,
+            isEditMode,
+            newTaskFlag,
+            idTaskMain
+         );
 
          if (serverData && newTaskFlag) {
             modalInfo.setCloseModal(false);
@@ -481,7 +483,7 @@ export function TaskModalCreationEditing({
                epic_id: 0,
                release_id: 0,
                estimateMinutes: '',
-               estimate: taskData?.estimate_worker || '',
+               estimate: '',
                date: {
                   startDate: taskData.begin ? new Date(taskData.begin).toISOString() : null,
                   endDate: taskData.end ? new Date(taskData.end).toISOString() : null,
@@ -497,6 +499,8 @@ export function TaskModalCreationEditing({
    }, [taskData, reset, taskData?.files]);
 
    //!!! здесь роутинг
+   // taskData?.estimate_worker ||
+
    // useEffect(() => {
    //    if (idTaskMain !== taskId) {
    // console.log('idTaskMain,taskId', idTaskMain, taskId);
