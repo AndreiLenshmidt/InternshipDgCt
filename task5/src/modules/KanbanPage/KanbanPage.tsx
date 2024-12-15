@@ -146,7 +146,7 @@ export function KanbanPage() {
          <div className={style.title}>
             <h1>{project?.name}</h1>
 
-            <Switch onChange={(v) => (showJustMine((v) => !v), true)} checked={false} />
+            <Switch onChange={(v) => (showJustMine((v: boolean) => !v), true)} checked={false} />
             <h6>Только мои</h6>
 
             {user?.is_admin ? (
