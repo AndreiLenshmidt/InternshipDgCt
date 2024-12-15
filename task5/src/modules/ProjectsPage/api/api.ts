@@ -1,8 +1,6 @@
 import { prepareHeaders } from '../../../utils/api';
-// Import the RTK Query methods from the React-specific entry point
 import { ProjectMultiple, ProjectShort, ProjectSingle } from '@/api/data.types';
 import { BASE_API_URL } from '@/consts';
-import { getCookie } from '@/utils/cookies';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 export type ProjectItem = ProjectMultiple & { is_favorite: boolean; is_archived: 0 | 1 };
