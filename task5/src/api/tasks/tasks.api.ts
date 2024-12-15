@@ -29,7 +29,7 @@ export const tasksApi = createApi({
             }
             if (taskFilter?.user_id) {
                taskFilter?.user_id.forEach(user => {
-                  uriOptions.push(`filter[name][]=` + user)
+                  uriOptions.push(`filter[user_id][]=` + user)
                })
             }
             if (taskFilter?.type_id) {
