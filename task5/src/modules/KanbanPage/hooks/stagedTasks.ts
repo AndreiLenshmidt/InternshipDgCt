@@ -73,35 +73,6 @@ export function useStagedTasks(route: string, filter: FormSchema, skip?: boolean
             if (justMine && item.created_by !== user?.id) {
                return false;
             }
-            // if (filter.dateStart) {
-
-            //    if (item.begin) {
-
-            //       const filterstart = new Date(filter.dateStart.startDate || 0).getTime();
-            //       const filterend = new Date(filter.dateStart.endDate || '01.01.3000').getTime();
-
-            //       const dateStart = new Date(item.begin).getTime();
-
-            //       if (dateStart > filterend || dateStart < filterstart) {
-            //          return false;
-            //       }
-            //    }
-            //    // else {                  
-            //    //    return false;
-            //    // }
-
-            // }
-            // if (filter.dateEnd && item.deadline) {
-            //    // 
-            //    const filterstart = new Date(filter.dateEnd.startDate || 0).getTime();
-            //    const filterend = new Date(filter.dateEnd.endDate || '01.01.3000').getTime();
-
-            //    const deadline = new Date(item.deadline).getTime();
-
-            //    if (deadline < filterstart || deadline > filterend) {
-            //       return false;
-            //    }
-            // }
             if (filter?.selectedTags?.length) {
                if (!filter.selectedTags.some(v => v.id === item.component)) {
                   return false;
