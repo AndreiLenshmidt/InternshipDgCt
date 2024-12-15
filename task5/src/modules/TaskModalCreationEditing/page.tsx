@@ -97,7 +97,6 @@ export function TaskModalCreationEditing({
    const [updateErrors, setUpdateErrors] = useState('');
    const [createErrors, setCreateErrors] = useState('');
 
-   // api -----------
    const [sendFilesTaskMutation] = useAddFilesToTaskMutation();
    const { data: getComponents } = useGetComponentsQuery();
    const { data: getPriorities } = useGetTaskPrioritiesQuery();

@@ -101,8 +101,6 @@ export function KanbanPage() {
       }
    }, [isOpenTask, tasksRefetch]);
 
-   console.log(project?.flow, 'project?.flow');
-
    return (
       <div className={style.base} style={{ display: 'flex', flexDirection: 'column', height: 'calc(100vh - 4rem)' }}>
          <BreadCrumbs
