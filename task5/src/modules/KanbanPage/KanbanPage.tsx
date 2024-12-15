@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 import { TaskCard } from './components/task-card/TaskCard';
 import { TasksColumn } from './components/tasks-column/TaskColumn';
 import { useEffect, useMemo, useState } from 'react';
-import { projectsUrl, projectUrl } from '@/consts';
+import { projectsUrl } from '@/consts';
 import { Stage, TaskMultiple, User } from '@/api/data.types';
 import { Scrollbar } from 'react-scrollbars-custom';
 import { HTML5Backend } from 'react-dnd-html5-backend';
@@ -137,7 +137,7 @@ export function KanbanPage() {
             crumbs={[
                { text: 'Главная', url: '/' },
                { text: 'Проекты', url: projectsUrl },
-               { text: project?.name || '', url: `/${projectsUrl}/${router.query['task-slug']}` },
+               { text: project?.name || '', url: `${projectsUrl}/${router.query['task-slug']}` },
             ]}
          />
 
