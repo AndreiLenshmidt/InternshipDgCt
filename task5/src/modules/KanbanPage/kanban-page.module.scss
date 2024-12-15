@@ -10,7 +10,7 @@
       flex-grow: 1;
    } */
 
-   &>*:last-child{
+   & > *:last-child {
       /* display: none; */
 
       position: relative;
@@ -47,7 +47,7 @@
          height: 16px;
          display: inline-block;
          border-radius: 4px;
-         line-height: 11px;
+         line-height: 12px;
          margin-right: 0.5rem;
          text-align: center;
       }
@@ -70,8 +70,17 @@
       }
    }
 
+   .filtered_ddbox {
+      color: var(--bread-crumbs-text);
+      font-size: 14px;
+      flex-basis: 23%;
+      max-width: none;
+   }
+
    & > div {
-      flex-grow: 0.25;
+      flex-grow: 0.24;
+      flex-basis: 23%;
+
       display: flex;
       flex-direction: column;
       gap: 0.6rem;
@@ -95,6 +104,7 @@
    input {
       width: 264px;
       width: 100%;
+      height: 40px;
    }
 }
 

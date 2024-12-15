@@ -4,6 +4,12 @@ import { useGetAllTasksQuery } from "@/api/tasks/tasks.api";
 import { useGetProjectQuery } from "@/modules/ProjectsPage/api/api";
 import { groupByObject } from "@/utils/core";
 import { useMemo, useState } from "react";
+import { z } from "zod";
+import { tasksFilterFormSchema } from "../utils/validationSchema";
+
+
+type FormSchema = z.infer<typeof tasksFilterFormSchema>;
+
 
 /**
  * 
@@ -12,7 +18,7 @@ import { useMemo, useState } from "react";
  * @param justMine  
  * @returns - staged tasks
  */
-export function useStagedTasks(route: string) {
+export function useStagedTasks(route: string, filter: FormSchema) {
 
    const [justMine, setJustMine] = useState(false);
    const { data: { data: user } = { data: null } } = useGetCurrentUserQuery();
@@ -28,17 +34,71 @@ export function useStagedTasks(route: string) {
       isSuccess,
       isError,
       refetch
-   } = useGetAllTasksQuery(route, { skip: !route || !(project) }); //  || !taskStages?.length
+   } = useGetAllTasksQuery({
+      slug: route, taskFilter: {
+         name: filter.taskName,
+         user_id: filter.selectedUsers?.map(u => u.id),
+         type_id: filter.selectedTypes?.map(tp => tp.id) as number[],
+         date_start_from: filter.dateStart?.startDate ? new Date(filter.dateStart?.startDate).toLocaleDateString('ru') : null,
+         date_start_to: filter.dateStart?.endDate ? new Date(filter.dateStart?.endDate).toLocaleDateString('ru') : null,
+         date_end_from: filter.dateEnd?.startDate ? new Date(filter.dateEnd?.startDate).toLocaleDateString('ru') : null,
+         date_end_to: filter.dateEnd?.endDate ? new Date(filter.dateEnd?.endDate).toLocaleDateString('ru') : null
+      }
+   }, { skip: !route || !(project) }); //  || !taskStages?.length
+
 
    const stagedTasks = useMemo(() => {
       const grouped = groupByObject(
          project?.flow?.possibleProjectStages as Required<Stage>[],
          tasks as (Record<PropertyKey, unknown> & TaskMultiple)[],
          'stage',
-         justMine ? (item) => item.created_by === user?.id : undefined
+         (item) => {
+
+            if (justMine && item.created_by !== user?.id) {
+               return false;
+            }
+            // if (filter.dateStart) {
+
+            //    if (item.begin) {
+
+            //       const filterstart = new Date(filter.dateStart.startDate || 0).getTime();
+            //       const filterend = new Date(filter.dateStart.endDate || '01.01.3000').getTime();
+
+            //       const dateStart = new Date(item.begin).getTime();
+
+            //       if (dateStart > filterend || dateStart < filterstart) {
+            //          return false;
+            //       }
+            //    }
+            //    // else {                  
+            //    //    return false;
+            //    // }
+
+            // }
+            // if (filter.dateEnd && item.deadline) {
+            //    // 
+            //    const filterstart = new Date(filter.dateEnd.startDate || 0).getTime();
+            //    const filterend = new Date(filter.dateEnd.endDate || '01.01.3000').getTime();
+
+            //    const deadline = new Date(item.deadline).getTime();
+
+            //    if (deadline < filterstart || deadline > filterend) {
+            //       return false;
+            //    }
+            // }
+            if (filter?.selectedTags?.length) {
+               if (!filter.selectedTags.some(v => v.id === item.component)) {
+                  return false;
+               }
+            }
+            if (!item.task_type) {
+               return false;
+            }
+            return true;
+         }
       );
       return grouped;
-   }, [tasks, project?.flow?.possibleProjectStages, justMine]);
+   }, [tasks, project?.flow?.possibleProjectStages, justMine, filter]);
 
    return { tasks, stagedTasks, project, user, tasksRefetch: refetch, showJustMine: setJustMine, isLoading, isSuccess, isError };
 }

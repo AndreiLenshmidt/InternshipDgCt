@@ -4,25 +4,74 @@ import { TaskModalCreationEditing } from '@/modules/TaskModalCreationEditing/pag
 import { useRouter } from 'next/router';
 import { TaskCard } from './components/task-card/TaskCard';
 import { TasksColumn } from './components/tasks-column/TaskColumn';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { projectsUrl } from '@/consts';
-import { Stage, TaskMultiple, User } from '@/api/data.types';
+import { Component, Stage, TaskMultiple, TaskType, User } from '@/api/data.types';
 import { Scrollbar } from 'react-scrollbars-custom';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { DndProvider } from 'react-dnd';
 import ModalTask from '../TaskPage/ModalTask';
 import { useStagedTasks } from './hooks/stagedTasks';
+import { useGetTaskByTaskIdQuery, useGetUsersQuery } from '@/api/appApi';
 import InfoModal from '@/modules/TaskPage/components/InfoModal/InfoModal';
 import { useModalInfo } from '@/hooks/useModalInfo';
 
 import style from './kanban-page.module.scss';
+import { z } from 'zod';
+import { tasksFilterFormSchema } from './utils/validationSchema';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm, SubmitHandler, Controller } from 'react-hook-form';
+import SelectCustomCheckbox from '@/components/select_custom_checkbox/select-custom-checkbox';
+import { useGetTaskTagsQuery, useGetTaskTypesQuery } from '@/api/tasks/tasks.api';
+import CalendarCustom from '@/components/calendar_custom/CalendarCustom';
+import { RangeCalendar } from '@/components/range_calendar/RangeCalendar';
+
+
+// import { ScrollbarProps, Scrollbars } from 'react-custom-scrollbars';
+
+type FormSchema = z.infer<typeof tasksFilterFormSchema>;
+
+// const ScrollBar = Scrollbars as unknown as JSXElementConstructor<ScrollbarProps>;
 
 export function KanbanPage() {
    const router = useRouter();
    const route = useMemo(() => router.query['project-slug'] as string, [router.query['project-slug']]);
 
-   const { tasks, stagedTasks, tasksRefetch, user, showJustMine, project, isSuccess } = useStagedTasks(route);
+   const { data: { data: users } = { data: [] } } = useGetUsersQuery(route, { skip: !route });
 
+   const { data: { data: tasktypesInfo } = { data: [] } } = useGetTaskTypesQuery(undefined);
+   const { data: { data: tags } = { data: [] } } = useGetTaskTagsQuery(undefined);
+
+   const handleTaskFilterUsersChange = (value: User[]) => setFilterFormValue('selectedUsers', value as Required<User>[]);
+   const handleTaskFilterTypeChange = (value: TaskType[]) => setFilterFormValue('selectedTypes', value);
+   const handleTaskFilterTagChange = (value: Component[]) => setFilterFormValue('selectedTags', value);
+
+   const onSubmit: SubmitHandler<FormSchema> = (data) => {
+      //
+      console.warn(data);
+   };
+
+   const form = useRef<HTMLFormElement>(null)
+
+   const {
+      register,
+      handleSubmit,
+      watch,
+      control,
+      getValues,
+      setValue: setFilterFormValue,
+      formState: { errors, validatingFields, dirtyFields },
+   } = useForm<FormSchema>({
+      resolver: zodResolver(tasksFilterFormSchema),
+   });
+
+   const { tasks, stagedTasks, tasksRefetch, user, showJustMine, project, isSuccess } = useStagedTasks(route, getValues());
+
+   ///
+   /// ДЛЯ ОТКРЫТИЯ ОКНА СОЗДАНИЯ/ РЕДАКТИРОВАНИЯ ЗАДАЧИ:
+   ///
+
+   // Для открытия окна создания/ редактирования задачи
    const modalInfo = useModalInfo();
    const [projectSlag, setProjectSlag] = useState<string>('');
    const [taskIdEditTask, setTaskIdEditTask] = useState<number | undefined>();
@@ -40,6 +89,8 @@ export function KanbanPage() {
       }
    }, [isSuccess, tasks]);
 
+
+   // Функция для получения newTaskId от дочернего компонента
    const handleNewTaskId = (taskId: number) => {
       setNewTaskId(taskId);
    };
@@ -114,7 +165,7 @@ export function KanbanPage() {
          <div className={style.title}>
             <h1>{project?.name}</h1>
 
-            <Switch onChange={(v) => (showJustMine((v) => !v), true)} checked={false} />
+            <Switch onChange={(v) => (showJustMine((v: boolean) => !v), true)} checked={false} />
             <h6>Только мои</h6>
 
             {user?.is_admin ? (
@@ -127,32 +178,96 @@ export function KanbanPage() {
             )}
          </div>
 
-         <div className={style.filters}>
+         <form className={style.filters} onSubmit={handleSubmit(onSubmit)} ref={form}>
             <div>
-               <label htmlFor="task_name">Название задачи</label>
-               <input name="task_name" type="text" placeholder="Название задачи" />
+               <label htmlFor="taskName">Название задачи</label>
+               <input
+                  onInput={e => {if ((e.target as HTMLInputElement).value.length > 2) tasksRefetch()}}
+                  style={{ backgroundColor: errors.taskName ? '#FFF1F0' : undefined }}
+                  id="taskName"
+                  type="search"
+                  placeholder="Название задачи"
+                  {...register('taskName')}
+               />
             </div>
-            <div>
-               <label htmlFor="username">Выбрать пользователей</label>
-               <input name="username" type="text" placeholder="Пользователи" />
-            </div>
-            <div>
-               <label htmlFor="username">Выбрать тип</label>
-               <input name="username" type="text" placeholder="Выбрать тип" />
-            </div>
-            <div>
-               <label htmlFor="username">Выбрать компонент</label>
-               <input name="username" type="text" placeholder="Выбрать компонент" />
-            </div>
-         </div>
+            <SelectCustomCheckbox
+               value={watch('selectedUsers') || []}
+               onChange={handleTaskFilterUsersChange}
+               options={users}
+               label="Выбрать пользователей"
+               titleSelect="Пользователи"
+               wrapClassName={style.filtered_ddbox}
+            />
+            {/* {errors.selectedUsers && <p className={style.error}>{errors.selectedUsers.message}</p>} */}
+            <SelectCustomCheckbox
+               value={watch('selectedTypes') || []}
+               onChange={handleTaskFilterTypeChange}
+               options={tasktypesInfo}
+               label="Выбрать тип"
+               titleSelect="Выбрать тип"
+               wrapClassName={style.filtered_ddbox}
+            />
+            <SelectCustomCheckbox
+               value={watch('selectedTags') || []}
+               onChange={handleTaskFilterTagChange}
+               options={tags}
+               label="Выбрать компонент"
+               titleSelect="Выбрать компонент"
+               wrapClassName={style.filtered_ddbox}
+            />
+         </form>
 
          <div className={style.filters}>
-            <div>
-               <input name="username" type="text" placeholder="Дата начала" />
-            </div>
-            <div>
+            <Controller
+               name="dateStart"
+               control={control}
+               render={({ field }) => (
+                  <RangeCalendar
+                     fieldName="dateStart"
+                     placeholder="Дата начала"
+                     onChange={(data: object) => {
+                        console.log(data);
+                        field.onChange(data);
+                     }}
+                  />
+               )}
+            />
+            {errors.dateStart && <p className={style.error}>{errors.dateStart.message}</p>}
+
+            {/* {JSON.stringify(getValues())} */}
+
+            {/* <RangeCalendar
+               fieldName="dateEnd"
+               registerOptions={register('dateEnd')}
+               placeholder="Дата завершения"
+               onChange={(data: object) => {
+                  console.log(data);
+               }}
+            /> */}
+
+            {/* {errors.root && <p className={style.error}>{errors.root.message}</p>}
+
+            {JSON.stringify(validatingFields)}
+            {JSON.stringify(dirtyFields)} */}
+
+            <Controller
+               name="dateEnd"
+               control={control}
+               render={({ field }) => (
+                  <RangeCalendar
+                     fieldName="dateEnd"
+                     placeholder="Дата завершения"
+                     onChange={(data: object) => {
+                        console.log(data);
+                        field.onChange(data);
+                     }}
+                  />
+               )}
+            />
+
+            {/* <div>
                <input name="username" type="text" placeholder="Дата завершения" />
-            </div>
+            </div> */}
          </div>
 
          {modalInfo.modal ? (

@@ -1,5 +1,3 @@
-import Image from 'next/image';
-
 import style from './aside-panel.module.css';
 import Logo from '@public/Logo.svg';
 import Collapse from '@public/icons/collapse-btn.svg';
@@ -72,7 +70,7 @@ export function AsidePanel() {
             </div>
          )}
 
-         <div className={style.collapse_btn} title="Свернуть" onClick={changeExpanded}>
+         <div className={style.collapse_btn} title="Свернуть" onClick={changeExpanded} tabIndex={0}>
             <Collapse />
          </div>
       </div>
