@@ -5,6 +5,7 @@ import { useGetCurrentUserQuery, useGetTaskByTaskIdQuery } from '@/api/appApi';
 import { useRouter } from 'next/router';
 import TaskContent from './components/TaskContent/TaskContent';
 import { useEffect } from 'react';
+import { projectsUrl } from '@/consts';
 
 export default function TaskPage() {
    const router = useRouter();
@@ -36,11 +37,11 @@ export default function TaskPage() {
                   <BreadCrumbs
                      crumbs={[
                         { text: 'Главная', url: '/' },
-                        { text: 'Проекты', url: '/projects' },
-                        { text: projectSlug, url: `/projects/${projectSlug}` },
+                        { text: 'Проекты', url: projectsUrl },
+                        { text: projectSlug, url: `${projectsUrl}/${projectSlug}` },
                         {
                            text: `Задачa id: ${taskId}`,
-                           url: `/project/${projectSlug}/${taskId}`,
+                           url: `${projectsUrl}/${projectSlug}/${taskId}`,
                         },
                      ]}
                   />
