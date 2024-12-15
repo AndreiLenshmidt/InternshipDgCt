@@ -10,6 +10,7 @@ import { projectsUrl } from '@/consts';
 import { useGetCurrentUserQuery } from '@/api/user/user.api';
 import { removeCookie } from '@/utils/cookies';
 import { useRouter } from 'next/router';
+import { inter } from '@/pages/_app';
 
 export function AsidePanel() {
    //
@@ -25,7 +26,7 @@ export function AsidePanel() {
    };
 
    return (
-      <div className={[style.container, expanded ? '' : style.collapsed].join(' ')}>
+      <div className={[style.container, expanded ? '' : style.collapsed, inter.className].join(' ')}>
          <div className={style.title}>
             <Logo />
             <h3>DS KANBAN</h3>
