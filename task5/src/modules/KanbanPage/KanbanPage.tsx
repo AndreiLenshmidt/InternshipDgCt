@@ -21,13 +21,15 @@ import { z } from 'zod';
 import { tasksFilterFormSchema } from './utils/validationSchema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
+import { debounce } from '../../utils/debounce';
 import SelectCustomCheckbox from '@/components/select_custom_checkbox/select-custom-checkbox';
 import { useGetTaskTagsQuery, useGetTaskTypesQuery } from '@/api/tasks/tasks.api';
 import CalendarCustom from '@/components/calendar_custom/CalendarCustom';
 import { RangeCalendar } from '@/components/range_calendar/RangeCalendar';
 
-
 type FormSchema = z.infer<typeof tasksFilterFormSchema>;
+
+
 
 // const ScrollBar = Scrollbars as unknown as JSXElementConstructor<ScrollbarProps>;
 
@@ -35,12 +37,18 @@ export function KanbanPage() {
    const router = useRouter();
    const route = useMemo(() => router.query['project-slug'] as string, [router.query['project-slug']]);
 
+   const useDebouncedStagedTasks = debounce<FormSchema, typeof useStagedTasks, ReturnType<typeof useStagedTasks>>(
+      useStagedTasks,
+      300
+   );
+
    const { data: { data: users } = { data: [] } } = useGetUsersQuery(route, { skip: !route });
 
    const { data: { data: tasktypesInfo } = { data: [] } } = useGetTaskTypesQuery(undefined);
    const { data: { data: tags } = { data: [] } } = useGetTaskTagsQuery(undefined);
 
-   const handleTaskFilterUsersChange = (value: User[]) => setFilterFormValue('selectedUsers', value as Required<User>[]);
+   const handleTaskFilterUsersChange = (value: User[]) =>
+      setFilterFormValue('selectedUsers', value as Required<User>[]);
    const handleTaskFilterTypeChange = (value: TaskType[]) => setFilterFormValue('selectedTypes', value);
    const handleTaskFilterTagChange = (value: Component[]) => setFilterFormValue('selectedTags', value);
 
@@ -49,7 +57,7 @@ export function KanbanPage() {
       console.warn(data);
    };
 
-   const form = useRef<HTMLFormElement>(null)
+   const form = useRef<HTMLFormElement>(null);
 
    const {
       register,
@@ -64,7 +72,15 @@ export function KanbanPage() {
       resolver: zodResolver(tasksFilterFormSchema),
    });
 
-   const { tasks, stagedTasks, tasksRefetch, user, showJustMine, project, isSuccess } = useStagedTasks(route, getValues());
+   // const { tasks, stagedTasks, tasksRefetch, user, showJustMine, project, isSuccess } = useStagedTasks(
+   //    route,
+   //    getValues()
+   // );
+
+   const { tasks, stagedTasks, tasksRefetch, user, showJustMine, project, isSuccess } = useDebouncedStagedTasks(
+      route,
+      getValues()
+   );
 
    ///
    /// ДЛЯ ОТКРЫТИЯ ОКНА СОЗДАНИЯ/ РЕДАКТИРОВАНИЯ ЗАДАЧИ:
@@ -87,7 +103,6 @@ export function KanbanPage() {
          setTasksLocal(tasks);
       }
    }, [isSuccess, tasks]);
-
 
    // Функция для получения newTaskId от дочернего компонента
    const handleNewTaskId = (taskId: number) => {

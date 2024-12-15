@@ -33,9 +33,10 @@ export function useStagedTasks(route: string, filter: FormSchema) {
       isLoading,
       isSuccess,
       isError,
-      refetch
+      refetch,
    } = useGetAllTasksQuery({
-      slug: route, taskFilter: {
+      slug: route,
+      taskFilter: {
          name: filter.taskName,
          user_id: filter.selectedUsers?.map(u => u.id),
          type_id: filter.selectedTypes?.map(tp => tp.id) as number[],
