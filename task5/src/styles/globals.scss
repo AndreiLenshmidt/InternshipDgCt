@@ -356,3 +356,13 @@ h6 {
       transform: rotate(360deg);
    }
 }
+
+
+.range_calendar {
+   .react-calendar__tile--now{
+      background-color: white;
+   }
+   .react-calendar__tile--active{
+      background-color: #3787eb;
+   }
+}

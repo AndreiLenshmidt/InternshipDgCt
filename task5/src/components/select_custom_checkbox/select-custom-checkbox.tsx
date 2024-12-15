@@ -58,7 +58,7 @@ export default function SelectCustomCheckbox<T extends { id?: number, name?: str
    }, [isOpen]);
 
    return (
-      <div className={[style['select-custom'], wrapClassName].join(' ')} ref={dropdownRef}>
+      <div className={[style['select-custom'], wrapClassName].join(' ')} ref={dropdownRef} tabIndex={0}>
          {/* Заголовок */}
          {label && (
             <label className={style['label']}>

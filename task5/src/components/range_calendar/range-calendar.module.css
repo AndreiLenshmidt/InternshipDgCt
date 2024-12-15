@@ -1,0 +1,22 @@
+.calendar_icon {
+   position: absolute;
+   right: 18px;
+   top: 50%;
+   transform: translateY(-50%);
+
+   width: 18px;
+   height: 20px;
+
+   fill: lightgray;
+}
+
+
+.calendar{
+   z-index: 21;
+   top: 40.5px;
+
+   &.visible{
+      visibility: hidden;
+   }
+}
+

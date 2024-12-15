@@ -4,7 +4,7 @@ import { TaskModalCreationEditing } from '@/modules/TaskModalCreationEditing/pag
 import { useRouter } from 'next/router';
 import { TaskCard } from './components/task-card/TaskCard';
 import { TasksColumn } from './components/tasks-column/TaskColumn';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { projectsUrl } from '@/consts';
 import { Component, Stage, TaskMultiple, TaskType, User } from '@/api/data.types';
 import { Scrollbar } from 'react-scrollbars-custom';
@@ -20,9 +20,12 @@ import style from './kanban-page.module.scss';
 import { z } from 'zod';
 import { tasksFilterFormSchema } from './utils/validationSchema';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm, SubmitHandler } from 'react-hook-form';
+import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 import SelectCustomCheckbox from '@/components/select_custom_checkbox/select-custom-checkbox';
 import { useGetTaskTagsQuery, useGetTaskTypesQuery } from '@/api/tasks/tasks.api';
+import CalendarCustom from '@/components/calendar_custom/CalendarCustom';
+import { RangeCalendar } from '@/components/range_calendar/RangeCalendar';
+
 
 // import { ScrollbarProps, Scrollbars } from 'react-custom-scrollbars';
 
@@ -37,27 +40,29 @@ export function KanbanPage() {
    const route = useMemo(() => router.query['project-slug'] as string, [router.query['project-slug']]);
 
    const { tasks, stagedTasks, tasksRefetch, user, showJustMine, project, isSuccess } = useStagedTasks(route);
-   
-   const { data: { data: users } = { data: [] } } = useGetUsersQuery(route, { skip: !route });   
+
+   const { data: { data: users } = { data: [] } } = useGetUsersQuery(route, { skip: !route });
 
    const { data: { data: tasktypesInfo } = { data: [] } } = useGetTaskTypesQuery(undefined);
    const { data: { data: tags } = { data: [] } } = useGetTaskTagsQuery(undefined);
-   
 
-   const handleTaskFilterUsersChange = (value: User[]) => setFilterFormValue('selectedUsers', value as Required<User>[]);
+   const handleTaskFilterUsersChange = (value: User[]) =>
+      setFilterFormValue('selectedUsers', value as Required<User>[]);
    const handleTaskFilterTypeChange = (value: TaskType[]) => setFilterFormValue('selectedTypes', value);
    const handleTaskFilterTagChange = (value: Component[]) => setFilterFormValue('selectedTags', value);
 
-
    const onSubmit: SubmitHandler<FormSchema> = (data) => {
-      // 
-      console.warn(data);      
-   }
+      //
+      console.warn(data);
+   };
+
+   const form = useRef<HTMLFormElement>(null)
 
    const {
       register,
       handleSubmit,
       watch,
+      control,
       setValue: setFilterFormValue,
       formState: { errors },
    } = useForm<FormSchema>({
@@ -96,6 +101,13 @@ export function KanbanPage() {
          setTasksLocal(tasks);
       }
    }, [isSuccess, tasks]);
+
+   useEffect(() => {
+      form.current?.addEventListener('focusout', (e) => {
+         // console.warn(e);
+         
+      })
+   }, [form]);
 
    // Функция для получения newTaskId от дочернего компонента
    const handleNewTaskId = (taskId: number) => {
@@ -190,7 +202,7 @@ export function KanbanPage() {
             )}
          </div>
 
-         <form className={style.filters} onSubmit={handleSubmit(onSubmit)}>
+         <form className={style.filters} onSubmit={handleSubmit(onSubmit)} ref={form}>
             <div>
                <label htmlFor="taskName">Название задачи</label>
                <input
@@ -229,9 +241,20 @@ export function KanbanPage() {
          </form>
 
          <div className={style.filters}>
-            <div>
-               <input name="username" type="text" placeholder="Дата начала" />
-            </div>
+            <Controller
+               name="dateStart"
+               control={control}
+               render={({ field }) => (
+                  <RangeCalendar
+                     onChange={(data: object) => {
+                        console.log(data);
+                        field.onChange(data);
+                     }}
+                  />
+               )}
+            />
+            {errors.dateStart && <p className={style.error}>{errors.dateStart.message}</p>}
+
             <div>
                <input name="username" type="text" placeholder="Дата завершения" />
             </div>
