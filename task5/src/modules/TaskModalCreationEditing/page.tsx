@@ -217,7 +217,6 @@ export function TaskModalCreationEditing({
          }).unwrap();
 
          const taskDataResponse: TaskSingle = response.data;
-         console.log(taskDataResponse);
 
          if (taskDataResponse) {
             setTaskData(taskDataResponse);
