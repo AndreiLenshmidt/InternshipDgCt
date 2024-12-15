@@ -109,9 +109,7 @@ export default function FileUpload({ taskId, files, onFilesChange, error, isSucc
          if (onFilesChange && newFiles) {
             onFilesChange(newFiles);
          }
-      } catch (error) {
-         console.error('Ошибка при загрузке файлов:', error);
-      }
+      } catch (error) {}
    };
 
    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -161,9 +159,7 @@ export default function FileUpload({ taskId, files, onFilesChange, error, isSucc
                }
             }
          }
-      } catch (error) {
-         console.error('Ошибка при удалении файла:', error);
-      }
+      } catch (error) {}
    };
 
    const handleRemoveFile = (file: ResponseFileWithObject) => {
@@ -195,9 +191,6 @@ export default function FileUpload({ taskId, files, onFilesChange, error, isSucc
          }
       }
    }, [files, isSuccess]);
-
-   // console.log('files', files);
-   // console.log('filesLocal', fileLocal);
 
    return (
       <div className={style['files-upload']}>

@@ -73,13 +73,14 @@ export default function TaskContent({
       if (currentStage && currentStage.id !== task?.stage?.id) {
          setSelectedOptionComp(currentStage);
       }
+
       if (task?.files) {
          setFiles(task?.files);
       }
       if (task?.comments) {
          setComments(task?.comments);
       }
-   }, [task?.stage?.name, task?.files, task?.comments]);
+   }, [task?.stage?.name, task?.files, task?.comments, refetch]);
 
    useEffect(() => {
       if (task?.dev_link && selectedOptionComp && task?.stage?.id !== selectedOptionComp?.id) {
@@ -187,7 +188,8 @@ export default function TaskContent({
          const result = await updateTask({ id: task.id, body: taskBody });
 
          if (result.data) {
-            console.log(task.stage?.name, selectedOptionComp?.name);
+            // console.log(task.stage?.name, selectedOptionComp?.name);
+
             modalInfo.setCloseModal(true);
             modalInfo.setModalTitle('Успешно');
             modalInfo.setModalInfo('Статус задачи успешно изменен');
@@ -206,7 +208,6 @@ export default function TaskContent({
          refetch();
       }
    }, [isOpenCreateTask, refetch]);
-   console.log(isOpenCreateTask, 'isOpenCreateTask');
 
    return (
       <>

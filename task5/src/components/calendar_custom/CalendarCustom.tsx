@@ -178,11 +178,3 @@ export default function CalendarCustom({ value, onChange }: CalendarCustomProps)
       </div>
    );
 }
-
-// Использование
-// const handleDateChange = (dates: { startDate: string | null; endDate: string | null }) => {
-//    console.log('Дата начала:', dates.startDate);
-//    console.log('Дата завершения:', dates.endDate);
-// };
-
-// return <CalendarCustom value={{ startDate: '2024-12-01', endDate: '2024-12-10' }} onChange={handleDateChange} />;
