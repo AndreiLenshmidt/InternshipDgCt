@@ -22,7 +22,6 @@ export default function ModalTask({
    currentStage?: Stage;
 }) {
    const { data: task, isLoading, isError, refetch: taskRefetch, error } = useGetTaskByTaskIdQuery(id);
-   // console.log(task?.data, 'task?.data************');
 
    useLayoutEffect(() => {
       const error401 = error as { status: number; data: { message: 'Unauthenticated.' } };
@@ -32,7 +31,6 @@ export default function ModalTask({
    }, [error]);
 
    const { data: user } = useGetCurrentUserQuery();
-   // console.log(user?.data);
 
    const modalCloseHandler = (e: MouseEvent<HTMLDivElement, globalThis.MouseEvent>) => {
       const target = e.target as HTMLElement;

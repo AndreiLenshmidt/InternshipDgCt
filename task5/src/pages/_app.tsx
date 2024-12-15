@@ -1,5 +1,5 @@
 import '@/styles/globals.scss';
-import '@/styles/reset.css';
+import '@/styles/reset.scss';
 import type { AppProps } from 'next/app';
 import localFont from 'next/font/local';
 import { Provider } from 'react-redux';

@@ -12,7 +12,7 @@ import { useGetProjectsQuery } from './api/api';
 import { ProjectCard } from './components/project_card/ProjectCard';
 import { projectsFilterFormSchema } from './form_schemas/filterSchema';
 
-import style from './projects-page.module.css';
+import style from './projects-page.module.scss';
 
 type FormSchema = z.infer<typeof projectsFilterFormSchema>;
 

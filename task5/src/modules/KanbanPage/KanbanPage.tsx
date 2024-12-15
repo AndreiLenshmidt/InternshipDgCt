@@ -57,9 +57,6 @@ export function KanbanPage() {
       skip: !taskIdEditTask,
    });
 
-   // const { data: isTaskId } = useGetTaskByTaskIdQuery(180);
-   // console.log(isTaskId, taskIdEditTask, isTaskId?.data.id, 'isTaskId, taskIdEditTask , isTaskId?.data.id--------');
-
    useEffect(() => {
       if (isSuccess) {
          setTasksLocal(tasks);

@@ -137,6 +137,8 @@ export function TaskModalCreationEditing({
 
                   const taskDataResponse: TaskSingle = response.data;
 
+                  // console.log(taskDataResponse, filesTask, idTask, 'taskDataResponse, filesTask,idTask,');
+
                   if (taskDataResponse?.files) {
                      setTaskData(taskDataResponse);
 
@@ -227,8 +229,10 @@ export function TaskModalCreationEditing({
             }
             const taskId: number | undefined = taskDataResponse.id;
 
-            onNewTaskId(taskId!);
-            setIdTaskMain(taskId!);
+            if (taskId) {
+               onNewTaskId(taskId);
+               setIdTaskMain(taskId);
+            }
 
             const idTask = taskDataResponse?.id;
 
