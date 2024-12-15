@@ -39,6 +39,10 @@ export function useStagedTasks(route: string, filter: FormSchema) {
          name: filter.taskName,
          user_id: filter.selectedUsers?.map(u => u.id),
          type_id: filter.selectedTypes?.map(tp => tp.id) as number[],
+         date_start_from: filter.dateStart?.startDate ? new Date(filter.dateStart?.startDate).toLocaleDateString('ru') : null,
+         date_start_to: filter.dateStart?.endDate ? new Date(filter.dateStart?.endDate).toLocaleDateString('ru') : null,
+         date_end_from: filter.dateEnd?.startDate ? new Date(filter.dateEnd?.startDate).toLocaleDateString('ru') : null,
+         date_end_to: filter.dateEnd?.endDate ? new Date(filter.dateEnd?.endDate).toLocaleDateString('ru') : null
       }
    }, { skip: !route || !(project) }); //  || !taskStages?.length
 
@@ -49,32 +53,40 @@ export function useStagedTasks(route: string, filter: FormSchema) {
          tasks as (Record<PropertyKey, unknown> & TaskMultiple)[],
          'stage',
          (item) => {
+
             if (justMine && item.created_by !== user?.id) {
                return false;
             }
-            if (filter.dateStart && item.begin) {
+            // if (filter.dateStart) {
 
-               const filterstart = new Date(filter.dateStart.startDate || 0).getTime();
-               const filterend = new Date(filter.dateStart.endDate || '01.01.3000').getTime();
+            //    if (item.begin) {
 
-               const dateStart = new Date(item.begin).getTime();
+            //       const filterstart = new Date(filter.dateStart.startDate || 0).getTime();
+            //       const filterend = new Date(filter.dateStart.endDate || '01.01.3000').getTime();
 
-               if (dateStart > filterend || dateStart < filterstart) {
-                  return false;
-               }
-            }
-            if (filter.dateEnd && item.deadline) {
-               // 
-               const filterstart = new Date(filter.dateEnd.startDate || 0).getTime();
-               const filterend = new Date(filter.dateEnd.endDate || '01.01.3000').getTime();
+            //       const dateStart = new Date(item.begin).getTime();
 
-               const deadline = new Date(item.deadline).getTime();
+            //       if (dateStart > filterend || dateStart < filterstart) {
+            //          return false;
+            //       }
+            //    }
+            //    // else {                  
+            //    //    return false;
+            //    // }
 
-               if (deadline < filterstart || deadline > filterend) {
-                  return false;
-               }
-            }
-            if (filter.selectedTags) {
+            // }
+            // if (filter.dateEnd && item.deadline) {
+            //    // 
+            //    const filterstart = new Date(filter.dateEnd.startDate || 0).getTime();
+            //    const filterend = new Date(filter.dateEnd.endDate || '01.01.3000').getTime();
+
+            //    const deadline = new Date(item.deadline).getTime();
+
+            //    if (deadline < filterstart || deadline > filterend) {
+            //       return false;
+            //    }
+            // }
+            if (filter?.selectedTags?.length) {
                if (!filter.selectedTags.some(v => v.id === item.component)) {
                   return false;
                }
@@ -86,7 +98,7 @@ export function useStagedTasks(route: string, filter: FormSchema) {
          }
       );
       return grouped;
-   }, [tasks, project?.flow?.possibleProjectStages, justMine]);
+   }, [tasks, project?.flow?.possibleProjectStages, justMine, filter]);
 
    return { tasks, stagedTasks, project, user, tasksRefetch: refetch, showJustMine: setJustMine, isLoading, isSuccess, isError };
 }
