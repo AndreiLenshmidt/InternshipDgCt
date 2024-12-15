@@ -11,13 +11,15 @@ export default function MainPage() {
    const [LogInLogOutButton, setBtnContent] = useState('Войти');
    const [mainBtn, setMainBtn] = useState('Войти');
    const [mainLink, setMainLink] = useState('/auth');
+   const [btnLink, setBtnLink] = useState('/auth');
 
    useEffect(() => {
       if (token['token-auth']) {
          setInOut(true);
          setBtnContent('Выйти');
          setMainBtn('Перейти к проектам');
-         setMainLink('/projects');
+         setMainLink('/project');
+         setBtnLink('#');
       }
    }, [inOut]);
 
@@ -33,7 +35,7 @@ export default function MainPage() {
          <Snow className={styles.snow} />
          <header className={styles.header}>
             <Image src="/mainlogo.svg" alt="logo" width={159} height={43} priority={true} />
-            <Link className={styles.link} href="/auth" onClick={() => inOut && logOut()}>
+            <Link className={styles.link} href={btnLink} onClick={() => inOut && logOut()}>
                {LogInLogOutButton}
             </Link>
          </header>
