@@ -21,6 +21,7 @@ import { TaskModalCreationEditing } from '@/modules/TaskModalCreationEditing/pag
 import ModalClose from '@/components/modal_close/ModalClose';
 import { useDeleteTaskMutation, useUpdateTaskMutation } from '@/api/appApi';
 import { useRouter } from 'next/router';
+import { projectsUrl } from '@/consts';
 
 export default function TaskContent({
    projectSlug,
@@ -305,7 +306,7 @@ export default function TaskContent({
                   <p className={`${styles.aside_text} ${styles.pb8}`}>Эпик</p>
                   <p className={`${styles.aside_text} ${styles.pb8}`} style={{ color: '#3787eb' }}>
                      <span># </span>
-                     <Link href={`/projects/${projectSlug}/${task?.epic?.id}`}>
+                     <Link href={`${projectsUrl}/${projectSlug}/${task?.epic?.id}`}>
                         {task?.epic?.id} {task?.epic?.name}
                      </Link>
                   </p>

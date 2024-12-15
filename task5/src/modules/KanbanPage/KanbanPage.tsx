@@ -19,7 +19,7 @@ import { useModalInfo } from '@/hooks/useModalInfo';
 import style from './kanban-page.module.scss';
 
 // import { ScrollbarProps, Scrollbars } from 'react-custom-scrollbars';
-// import task from '@/pages/projects/kanban/task';
+
 
 // const ScrollBar = Scrollbars as unknown as JSXElementConstructor<ScrollbarProps>;
 
