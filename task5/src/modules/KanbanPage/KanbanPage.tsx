@@ -34,8 +34,6 @@ type FormSchema = z.infer<typeof tasksFilterFormSchema>;
 // const ScrollBar = Scrollbars as unknown as JSXElementConstructor<ScrollbarProps>;
 
 export function KanbanPage() {
-   //
-   //
    const router = useRouter();
    const route = useMemo(() => router.query['project-slug'] as string, [router.query['project-slug']]);
 
@@ -82,19 +80,8 @@ export function KanbanPage() {
    const [newTaskFlag, setNewTaskFlag] = useState(false);
    const [tasksLocal, setTasksLocal] = useState<TaskMultiple[]>([]);
    const [delTaskFlag, setDelTaskFlag] = useState(false);
-
-   const [taskLocal, setTaskLocal] = useState([]);
-
-   // ------------------------------------------------
    const [isOpenTask, setOpenTask] = useState<boolean>(false);
    const [currentStage, setCurrentStage] = useState<Stage>();
-
-   const { data: isTaskId, isSuccess: getIsTaskIdSuccess } = useGetTaskByTaskIdQuery(taskIdEditTask || 0, {
-      skip: !taskIdEditTask,
-   });
-
-   // const { data: isTaskId } = useGetTaskByTaskIdQuery(180);
-   // console.log(isTaskId, taskIdEditTask, isTaskId?.data.id, 'isTaskId, taskIdEditTask , isTaskId?.data.id--------');
 
    useEffect(() => {
       if (isSuccess) {
@@ -102,12 +89,6 @@ export function KanbanPage() {
       }
    }, [isSuccess, tasks]);
 
-   useEffect(() => {
-      form.current?.addEventListener('focusout', (e) => {
-         // console.warn(e);
-         
-      })
-   }, [form]);
 
    // Функция для получения newTaskId от дочернего компонента
    const handleNewTaskId = (taskId: number) => {
@@ -141,9 +122,6 @@ export function KanbanPage() {
       setDelTaskFlag(false);
    };
 
-   /////////////////////////
-
-   // InfoModal в случае успешного создания задачи
    useEffect(() => {
       if (newTaskFlag && newTaskId && isSuccess) {
          modalInfo.setCloseModal(true);
@@ -172,7 +150,7 @@ export function KanbanPage() {
       if (isSuccess) {
          tasksRefetch();
       }
-   }, [isOpenTask]);
+   }, [isOpenTask, tasksRefetch]);
 
    return (
       <div className={style.base} style={{ display: 'flex', flexDirection: 'column', height: 'calc(100vh - 4rem)' }}>
@@ -183,8 +161,6 @@ export function KanbanPage() {
                { text: project?.name || '', url: `${projectsUrl}/${router.query['project-slug']}` },
             ]}
          />
-
-         {/* {JSON.stringify(project)} */}
 
          <div className={style.title}>
             <h1>{project?.name}</h1>

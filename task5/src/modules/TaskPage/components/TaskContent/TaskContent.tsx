@@ -46,13 +46,11 @@ export default function TaskContent({
    const [selectedOptionComp, setSelectedOptionComp] = useState<Stage | undefined>(task?.stage);
    const [deleteTask, { isError: deleteError }] = useDeleteTaskMutation();
    const [updateTask, {}] = useUpdateTaskMutation();
-   // Для открытия окна создания/ редактирования задачи
    const [projectSlag, setProjectSlag] = useState<string>('');
    const [taskIdEditTask, setTaskIdEditTask] = useState<number | undefined>();
    const [isOpenCreateTask, setIsOpenCreateTask] = useState(false);
    const [newTaskId, setNewTaskId] = useState<number | undefined>();
    const [newTaskFlag, setNewTaskFlag] = useState(false);
-   // ------------------------------------------------
    const [files, setFiles] = useState<ResponseFile[]>(task?.files || []);
    const [filesComments, setFIlesComments] = useState<ResponseFile[]>([]);
    const [comments, setComments] = useState<Comment[]>(task?.comments || []);
@@ -63,7 +61,7 @@ export default function TaskContent({
 
    useEffect(() => {
       if (task?.possibleTaskNextStages) {
-         setSelectOptions(task?.possibleTaskNextStages);
+         setSelectOptions(task?.possibleTaskNextStages.filter((stage) => stage.id !== 101));
       }
    }, [task?.possibleTaskNextStages]);
 
@@ -74,13 +72,14 @@ export default function TaskContent({
       if (currentStage && currentStage.id !== task?.stage?.id) {
          setSelectedOptionComp(currentStage);
       }
+
       if (task?.files) {
          setFiles(task?.files);
       }
       if (task?.comments) {
          setComments(task?.comments);
       }
-   }, [task?.stage?.name, task?.files, task?.comments]);
+   }, [task?.stage?.name, task?.files, task?.comments, refetch]);
 
    useEffect(() => {
       if (task?.dev_link && selectedOptionComp && task?.stage?.id !== selectedOptionComp?.id) {
@@ -129,7 +128,6 @@ export default function TaskContent({
       setIsOpenCreateTask(!isOpenCreateTask);
    };
 
-   // Функция для получения newTaskId созданной задачи от дочернего компонента
    const handleNewTaskId = (taskId: number) => {
       setNewTaskId(taskId);
    };
@@ -139,8 +137,6 @@ export default function TaskContent({
    };
 
    const deleteTaskHandler = async () => {
-      console.log(task, '-------- task ----------');
-
       if (task?.id) {
          const taskDel = await deleteTask(task?.id);
 
@@ -184,21 +180,22 @@ export default function TaskContent({
          begin: task.begin,
          end: task.end,
       };
-      if (task?.id) {
+      if (task?.id && selectedOptionComp?.id !== currentStage?.id) {
          const result = await updateTask({ id: task.id, body: taskBody });
-
          if (result.data) {
-            console.log(task.stage?.name, selectedOptionComp?.name);
             modalInfo.setCloseModal(true);
             modalInfo.setModalTitle('Успешно');
             modalInfo.setModalInfo('Статус задачи успешно изменен');
             refetch && refetch();
-            taskRefetch();
+            // taskRefetch();
          } else {
             modalInfo.setModalType('error');
             modalInfo.setModalInfo('Не удалось изменить статус задачи');
             task?.stage && setSelectedOptionComp(task?.stage);
          }
+      } else if (selectedOptionComp?.id === currentStage?.id) {
+         taskRefetch();
+         refetch && refetch();
       }
    };
 

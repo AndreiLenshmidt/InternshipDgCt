@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
 import { useModalInfo } from '@/hooks/useModalInfo';
 import InfoModal from '@/modules/TaskPage/components/InfoModal/InfoModal';
 import Close from '@public/icons/close.svg';
@@ -13,23 +12,9 @@ import { formSchema } from '@/modules/TaskModalCreationEditing/utils/validationS
 import CalendarCustom from '@/components/calendar_custom/CalendarCustom';
 import TextAreaWithToolbar from '@/components/text_area_with_toolbar/TextAreaWithToolbar';
 import FileUpload from '@/components/file_upload/FileUpload';
-import {
-   // useCreateTaskMutation,
-   // useGetPrioritiesQuery,
-   // useGetTaskTypesQuery,
-   useGetComponentsQuery,
-   useGetTasksQuery,
-} from '@/modules/TaskModalCreationEditing/api/taskApiActions';
+import { useGetComponentsQuery } from '@/modules/TaskModalCreationEditing/api/taskApiActions';
 
-import { useGetProjectsQuery } from '@/modules/ProjectsPage/api/api';
-
-// import { useGetCurrentUserQuery } from '@/api/user/user.api';
-import {
-   // useGetAllTasksQuery,
-   useGetTaskPrioritiesQuery,
-   useGetTaskTagsQuery,
-   useGetTaskTypesQuery,
-} from '@/api/tasks/tasks.api';
+import { useGetTaskPrioritiesQuery, useGetTaskTypesQuery } from '@/api/tasks/tasks.api';
 import {
    useGetTaskByTaskIdQuery,
    useCreateTaskMutation,
@@ -42,6 +27,7 @@ import { Priority, TaskMultiple, TaskSingle, TaskType, User, ResponseFile, Compo
 import { typesTasksOptions, compOptions, priorOptions, usersOptions } from '@/modules/TaskModalCreationEditing/variors';
 import { transformToServerData } from '@/modules/TaskModalCreationEditing/utils/transformToServerData';
 import { parseEstimate } from '@/modules/TaskModalCreationEditing/utils/parseEstimate';
+import { extractTextFromHtml } from '@/modules/TaskModalCreationEditing/utils/extractTextFromHtml';
 
 interface TaskModalCreationEditingProps {
    isOpen: boolean;
@@ -91,7 +77,6 @@ export function TaskModalCreationEditing({
    newTaskFlag,
    taskRefetch,
 }: TaskModalCreationEditingProps) {
-   const router = useRouter();
    const modalInfo = useModalInfo();
    const isEditMode = Boolean(taskId);
 
@@ -112,7 +97,6 @@ export function TaskModalCreationEditing({
    const [updateErrors, setUpdateErrors] = useState('');
    const [createErrors, setCreateErrors] = useState('');
 
-   // api -----------
    const [sendFilesTaskMutation] = useAddFilesToTaskMutation();
    const { data: getComponents } = useGetComponentsQuery();
    const { data: getPriorities } = useGetTaskPrioritiesQuery();
@@ -121,13 +105,6 @@ export function TaskModalCreationEditing({
    });
 
    const { data: getUsers } = useGetUsersQuery(slugName);
-
-   //isLoading, isSuccess, isError, error
-   const { data: { data: projects } = { data: [] } } = useGetProjectsQuery();
-   // console.log('projects', projects);
-
-   const { data } = useGetTasksQuery({ slug: slugName });
-   console.log('slugName,tasks', 'project2', data);
 
    const [createTaskMutation, { isLoading: isCreateLoading, isSuccess: createIsSuccess, error: createError }] =
       useCreateTaskMutation();
@@ -145,12 +122,8 @@ export function TaskModalCreationEditing({
       skip: !taskId || !isOpen,
    });
 
-   const isLoading = isUpdateLoading || isCreateLoading;
-   const error = updateError || createError;
-
    const handleFileTaskLinked = async (idTask: number | undefined, filesTask: ResponseFile[] | undefined) => {
       if (idTask === undefined) return;
-      refetch();
 
       try {
          if (filesTask && filesTask.length > 0) {
@@ -163,22 +136,24 @@ export function TaskModalCreationEditing({
 
                   const taskDataResponse: TaskSingle = response.data;
 
+                  // console.log(taskDataResponse, filesTask, idTask, 'taskDataResponse, filesTask,idTask,');
+
                   if (taskDataResponse?.files) {
                      setTaskData(taskDataResponse);
 
                      setFiles(taskDataResponse.files ?? []);
                   } else {
-                     console.warn('Файлы отсутствуют в ответе для задачи:', taskDataResponse);
+                     // console.warn('Файлы отсутствуют в ответе для задачи:', taskDataResponse);
                   }
                } else {
-                  console.warn(`Файл пропущен, так как у него отсутствует id:`, file);
+                  // console.warn(`Файл пропущен, так как у него отсутствует id:`, file);
                }
             }
          } else {
-            console.warn('Нет файлов для привязки.');
+            // console.warn('Нет файлов для привязки.');
          }
       } catch (error) {
-         console.error('Ошибка при привязке файла:', error);
+         // console.error('Ошибка при привязке файла:', error);
       }
    };
 
@@ -189,8 +164,6 @@ export function TaskModalCreationEditing({
    ) => {
       if (!idTask) return;
 
-      // console.log(' ------------- idTask, taskDataUpd, filesTask UPDATE------------', idTask, taskDataUpd, filesTask);
-
       try {
          const response = await updateTaskMutation({
             id: idTask,
@@ -198,7 +171,6 @@ export function TaskModalCreationEditing({
          }).unwrap();
 
          const taskDataResponse: TaskSingle = response?.data;
-         // console.log(' ------------- taskDataResponse UPDATE------------', taskDataResponse);
          taskRefetch && taskRefetch();
          if (taskDataResponse) {
             setTaskData((prev) => ({
@@ -235,24 +207,18 @@ export function TaskModalCreationEditing({
             onClose();
          }
       } catch (error) {
-         console.error('Ошибка при обновлении задачи:', error);
-
          setUpdateErrors('Ошибка при обновлении задачи');
       }
    };
 
    const handleCreateTask = async (slugName: string, taskData: TaskMultiple, files: ResponseFile[]) => {
       try {
-         // console.log(' ------------- taskData, slugName NEWs------------', slugName, taskData);
-
          const response = await createTaskMutation({
             slug: slugName,
             body: taskData,
          }).unwrap();
 
          const taskDataResponse: TaskSingle = response.data;
-
-         // console.log(' ------------- taskDataResponse NEWs------------', taskDataResponse);
 
          if (taskDataResponse) {
             setTaskData(taskDataResponse);
@@ -262,8 +228,10 @@ export function TaskModalCreationEditing({
             }
             const taskId: number | undefined = taskDataResponse.id;
 
-            onNewTaskId(taskId!);
-            setIdTaskMain(taskId!);
+            if (taskId) {
+               onNewTaskId(taskId);
+               setIdTaskMain(taskId);
+            }
 
             const idTask = taskDataResponse?.id;
 
@@ -277,8 +245,6 @@ export function TaskModalCreationEditing({
             onClose();
          }
       } catch (error) {
-         console.error('Ошибка при создании задачи:', error);
-
          setCreateErrors('Ошибка при создании задачи');
       }
    };
@@ -312,13 +278,12 @@ export function TaskModalCreationEditing({
             endDate: taskData?.end ? new Date(taskData.end).toISOString() : '',
          },
          description: taskData?.description || '',
-         fileLinks: [],
+         fileLinks: taskData?.files || [],
          layoutLink: taskData?.layout_link || '',
          markupLink: taskData?.markup_link || '',
          devLink: taskData?.dev_link || '',
       },
    });
-   // console.log(' ********** errors ********', errors);
 
    const handleCloseModal = () => {
       onClose();
@@ -368,31 +333,15 @@ export function TaskModalCreationEditing({
       setFiles(newFiles as ResponseFile[]);
    };
 
-   const extractTextFromHtml = (html: string): string => {
-      const parser = new DOMParser();
-      const doc = parser.parseFromString(html, 'text/html');
-      return doc.body.textContent || '';
-   };
-
    const onSubmit = (data: CustomFormData) => {
       const serverData: TaskMultiple = transformToServerData(data);
 
       if (data !== undefined) {
          const fileLinks = data.fileLinks ?? [];
-
-         //!!! ----------------------------------------------------
-         console.log(
-            '****** data, serverData, isEditMode, newTaskFlag , idTaskMain**********',
-            data,
-            serverData,
-            isEditMode,
-            newTaskFlag,
-            idTaskMain
-         );
-
          if (serverData && newTaskFlag) {
             modalInfo.setCloseModal(false);
             setCreateErrors('');
+
             handleCreateTask(slugName, serverData, fileLinks);
          }
 
@@ -497,17 +446,6 @@ export function TaskModalCreationEditing({
          }
       }
    }, [taskData, reset, taskData?.files]);
-
-   //!!! здесь роутинг
-   // taskData?.estimate_worker ||
-
-   // useEffect(() => {
-   //    if (idTaskMain !== taskId) {
-   // console.log('idTaskMain,taskId', idTaskMain, taskId);
-
-   //       router.replace(`/${idTaskMain}`);
-   //    }
-   // }, [idTaskMain]);
 
    if (!isOpen) return null;
    if (isGetTaskByTaskIdLoading) return <div className={style.loading}>Загрузка...</div>;

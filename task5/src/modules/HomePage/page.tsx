@@ -4,6 +4,7 @@ import Link from 'next/link';
 import styles from './Home.module.scss';
 import { useCookies } from 'react-cookie';
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 export default function MainPage() {
    const [token, _, removeCookie] = useCookies(['token-auth']);
@@ -11,13 +12,16 @@ export default function MainPage() {
    const [LogInLogOutButton, setBtnContent] = useState('Войти');
    const [mainBtn, setMainBtn] = useState('Войти');
    const [mainLink, setMainLink] = useState('/auth');
+   // const [btnLink, setBtnLink] = useState('/auth');
+   const router = useRouter();
 
    useEffect(() => {
       if (token['token-auth']) {
          setInOut(true);
          setBtnContent('Выйти');
          setMainBtn('Перейти к проектам');
-         setMainLink('/projects');
+         setMainLink('/project');
+         // setBtnLink('#');
       }
    }, [inOut]);
 
@@ -33,9 +37,9 @@ export default function MainPage() {
          <Snow className={styles.snow} />
          <header className={styles.header}>
             <Image src="/mainlogo.svg" alt="logo" width={159} height={43} priority={true} />
-            <Link className={styles.link} href="/auth" onClick={() => inOut && logOut()}>
+            <button className={styles.link} onClick={() => (inOut ? logOut() : router.push('/auth'))}>
                {LogInLogOutButton}
-            </Link>
+            </button>
          </header>
          <main className={styles.main}>
             <div className={styles.main_box}>

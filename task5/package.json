@@ -43,6 +43,7 @@
       "next-images": "^1.8.5",
       "postcss": "^8.4.49",
       "postcss-nested": "^7.0.2",
+      "postcss-simple-vars": "^7.0.1",
       "prettier": "^3.4.1",
       "sass": "^1.81.0",
       "simple-git-hooks": "^2.11.1",

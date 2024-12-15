@@ -4,7 +4,6 @@ import { getCookie } from '@/utils/cookies';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 const token = getCookie('token-auth');
-// console.log(token);
 
 export const taskApiActions = createApi({
    reducerPath: 'api/single_task_actions',
@@ -25,10 +24,8 @@ export const taskApiActions = createApi({
             if (filters) {
                Object.entries(filters).forEach(([key, value]) => {
                   if (Array.isArray(value)) {
-                     // Если значение — массив, добавляем каждый элемент
                      value.forEach((v) => searchParams.append(`filter[${key}][]`, v.toString()));
                   } else {
-                     // Если значение — строка или число
                      searchParams.append(`filter[${key}][]`, value.toString());
                   }
                });

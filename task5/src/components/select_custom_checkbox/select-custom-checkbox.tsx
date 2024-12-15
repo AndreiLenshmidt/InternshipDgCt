@@ -120,23 +120,3 @@ export default function SelectCustomCheckbox<T extends { id?: number, name?: str
       </div>
    );
 }
-
-// Использование
-// const users: User[] = [
-//    { id: 1, name: 'Иван', surname: 'Иванов', email: 'ivanov@mail.com' },
-//    { id: 2, name: 'Мария', surname: 'Петрова', email: 'petrova@mail.com' },
-//    { id: 3, name: 'Анна', surname: 'Сидорова', email: 'sidorova@mail.com' },
-// ];
-
-// const [selectedUsers, setSelectedUsers] = useState<User[]>([]);
-
-// return (
-//    <SelectCustomCheckbox
-//       value={selectedUsers}
-//       onChange={setSelectedUsers}
-//       options={users}
-//       label="Выберите пользователей"
-//       titleSelect="Нет выбранных пользователей"
-//       required
-//    />
-// );

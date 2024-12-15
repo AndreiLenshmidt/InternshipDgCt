@@ -6,11 +6,10 @@ export type ResponseFileWithObject = ResponseFile & {
 };
 
 export const useFileUploader = () => {
-   const [sendler, { data: response, isLoading, isError }] = useSendFilesMutation();
+   const [sendler] = useSendFilesMutation();
 
    const sendFiles = async (files: ResponseFileWithObject[]) => {
       if (!files.length) {
-         console.error('Нет файлов для отправки');
          return [];
       }
 
@@ -22,11 +21,9 @@ export const useFileUploader = () => {
 
       try {
          const response = await sendler(form);
-         console.log('Файлы успешно загружены:', response.data.data);
 
          return response?.data?.data;
       } catch (error) {
-         console.error('Ошибка при загрузке файлов:', error);
          return [];
       }
    };

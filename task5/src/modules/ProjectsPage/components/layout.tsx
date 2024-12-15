@@ -6,8 +6,7 @@ import { Provider } from 'react-redux';
 import { store } from '@/store/store';
 import { useRouter } from 'next/router';
 
-
-import style from '../projects-page.module.css';
+import style from '../projects-page.module.scss';
 
 export default function Layout({ children }: PropsWithChildren) {
    // console.log('layout...');

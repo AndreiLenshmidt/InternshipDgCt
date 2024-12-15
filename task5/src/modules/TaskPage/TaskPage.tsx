@@ -41,7 +41,7 @@ export default function TaskPage() {
                         { text: projectSlug, url: `${projectsUrl}/${projectSlug}` },
                         {
                            text: `Задачa id: ${taskId}`,
-                           url: `${projectsUrl}/task/${taskId}`,
+                           url: `${projectsUrl}/${projectSlug}/${taskId}`,
                         },
                      ]}
                   />

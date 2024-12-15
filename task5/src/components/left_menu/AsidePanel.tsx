@@ -3,26 +3,24 @@ import Logo from '@public/Logo.svg';
 import Collapse from '@public/icons/collapse-btn.svg';
 import ProjectsIcon from '@public/icons/projects.svg';
 import Link from 'next/link';
-import { useReducer, useState } from 'react';
+import { useReducer } from 'react';
 import { projectsUrl } from '@/consts';
 import { useGetCurrentUserQuery } from '@/api/user/user.api';
 import { removeCookie } from '@/utils/cookies';
 import { useRouter } from 'next/router';
 
-
-
 export function AsidePanel() {
-   // 
+   //
    const [expanded, changeExpanded] = useReducer((v) => !v, true);
 
    const { data: { data: user } = { data: null }, isLoading, isError } = useGetCurrentUserQuery();
    const router = useRouter();
 
    const exit = () => {
-      // 
-      removeCookie('token-auth');      
+      //
+      removeCookie('token-auth');
       router.push('/');
-   }
+   };
 
    return (
       <div className={[style.container, expanded ? '' : style.collapsed].join(' ')}>
@@ -33,7 +31,10 @@ export function AsidePanel() {
 
          <div className={style.user}>
             {/*  style={{ backgroundImage: '' }} */}
-            <div className={style.ava} style={user?.avatar ? { backgroundImage: `url(${user?.avatar?.link})` } : {}}></div>
+            <div
+               className={style.ava}
+               style={user?.avatar ? { backgroundImage: `url(${user?.avatar?.link})` } : {}}
+            ></div>
             <div className="username">
                {isLoading ? (
                   <h3>loading...</h3>
@@ -47,7 +48,9 @@ export function AsidePanel() {
                )}
             </div>
          </div>
-         <button className={style.exit} onClick={exit}>Выйти</button>
+         <button className={style.exit} onClick={exit}>
+            Выйти
+         </button>
 
          <hr />
 
