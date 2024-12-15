@@ -125,7 +125,6 @@ export function TaskModalCreationEditing({
 
    const handleFileTaskLinked = async (idTask: number | undefined, filesTask: ResponseFile[] | undefined) => {
       if (idTask === undefined) return;
-      refetch();
 
       try {
          if (filesTask && filesTask.length > 0) {
@@ -276,7 +275,7 @@ export function TaskModalCreationEditing({
             endDate: taskData?.end ? new Date(taskData.end).toISOString() : '',
          },
          description: taskData?.description || '',
-         fileLinks: [],
+         fileLinks: taskData?.files || [],
          layoutLink: taskData?.layout_link || '',
          markupLink: taskData?.markup_link || '',
          devLink: taskData?.dev_link || '',
@@ -328,6 +327,7 @@ export function TaskModalCreationEditing({
 
    const handleFilesChange = (newFiles: ResponseFile[] | undefined): void => {
       setValue('fileLinks', newFiles);
+
       setFiles(newFiles as ResponseFile[]);
    };
 
@@ -339,6 +339,7 @@ export function TaskModalCreationEditing({
          if (serverData && newTaskFlag) {
             modalInfo.setCloseModal(false);
             setCreateErrors('');
+
             handleCreateTask(slugName, serverData, fileLinks);
          }
 

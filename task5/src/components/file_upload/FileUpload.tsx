@@ -98,8 +98,6 @@ export default function FileUpload({ taskId, files, onFilesChange, error, isSucc
          let newFiles: ResponseFile[] | undefined = [];
          const uploadedFiles = await sendFiles(filterFileId);
 
-         if (refetch) refetch();
-
          if (filesId?.length > 0) {
             newFiles = [...(filesId || []), ...(uploadedFiles || [])];
          } else {
@@ -108,6 +106,8 @@ export default function FileUpload({ taskId, files, onFilesChange, error, isSucc
 
          if (onFilesChange && newFiles) {
             onFilesChange(newFiles);
+
+            if (refetch) refetch();
          }
       } catch (error) {}
    };
@@ -191,6 +191,8 @@ export default function FileUpload({ taskId, files, onFilesChange, error, isSucc
          }
       }
    }, [files, isSuccess]);
+
+   console.log(files, fileLocal, 'files, fileLocal ');
 
    return (
       <div className={style['files-upload']}>
