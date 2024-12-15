@@ -61,7 +61,7 @@ export default function TaskContent({
 
    useEffect(() => {
       if (task?.possibleTaskNextStages) {
-         setSelectOptions(task?.possibleTaskNextStages);
+         setSelectOptions(task?.possibleTaskNextStages.filter((stage) => stage.id !== 101));
       }
    }, [task?.possibleTaskNextStages]);
 
