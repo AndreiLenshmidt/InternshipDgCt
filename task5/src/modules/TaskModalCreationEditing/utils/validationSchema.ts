@@ -62,7 +62,6 @@ export const formSchema = z.object({
       })
       .refine(
          (value) => {
-            // Проверка: либо обе даты заданы, либо обе отсутствуют
             const bothDatesEmpty = !value.startDate && !value.endDate;
             const bothDatesPresent = value.startDate && value.endDate;
             return bothDatesEmpty || bothDatesPresent;
@@ -84,21 +83,15 @@ export const formSchema = z.object({
          })
       )
       .optional(),
-   layoutLink: z
-      .string()
-      // .url('Введите корректный URL')
-      // .refine((value) => value.startsWith('http'), 'Ссылка должна начинаться с http')
-      .optional(),
+   layoutLink: z.string().optional(),
 
    markupLink: z
       .string()
-      // .url('Введите корректный URL')
-      // .refine((value) => value.startsWith('http'), 'Ссылка должна начинаться с http')
+
       .optional(),
 
    devLink: z
       .string()
-      // .url('Введите корректный URL')
-      // .refine((value) => value.startsWith('http'), 'Ссылка должна начинаться с http')
+
       .optional(),
 });
