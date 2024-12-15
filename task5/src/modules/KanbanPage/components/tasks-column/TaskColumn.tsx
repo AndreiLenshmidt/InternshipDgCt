@@ -1,5 +1,6 @@
 import { Stage, TaskMultiple, ValidationError } from '@/api/data.types';
 import { tasksApi, useGetAllTasksQuery, useLazyGetAllTasksQuery, useLazyGetTaskQuery, useUpdateTaskMutation } from '@/api/tasks/tasks.api';
+import InfoModal from '@/modules/TaskPage/components/InfoModal/InfoModal';
 import { useRouter } from 'next/router';
 // import { useDroppable } from '@dnd-kit/core';
 import { LegacyRef, PropsWithChildren, useState } from 'react';
@@ -18,6 +19,8 @@ export function TasksColumn({
    // });
 
    const router = useRouter();
+
+   const [warn, setWarn] = useState<{ modalType?: 'info' | 'error'; title: string, details: string } | null>(null);
 
    // const [getTasks, tasks] = useLazyGetAllTasksQuery();   
    const [getTask, _droppedTasks] = useLazyGetTaskQuery();
@@ -46,6 +49,22 @@ export function TasksColumn({
             const { data: task } = taskInfo || {};
 
             // validate
+            if (stage.id as number > 1 && !task?.dev_link) {
+               setWarn({
+                  details: 'Сначала добавьте Dev Link в меню редактирования задачи',
+                  title: 'Ошибка',
+
+               });
+               return;               
+            }
+
+            if ((stage.id as number) > 1 && !task?.dev_link) {
+               setWarn({
+                  details: 'Сначала добавьте Dev Link в меню редактирования задачи',
+                  title: 'Ошибка',
+               });
+               return;
+            }
 
             updateTask({
                id: task?.id as number,
@@ -57,6 +76,13 @@ export function TasksColumn({
                   console.warn(error);
                   // alert(Object.values(error.errors as Record<string, string[]>)[0] || error.message);
                } 
+               else {
+                  // setWarn({
+                  //    details: 'Статус задачи успешно изменен',
+                  //    title: 'Успешно',
+                  //    modalType: 'info',
+                  // });
+               }
             });
          });
       },
@@ -67,6 +93,17 @@ export function TasksColumn({
          <h4 data-count={tasksAmount}>{stage.name}</h4>
          {/* style={dropstyle} */}
          <div className={style.tasks}>{children}</div>
+
+         {warn ? (
+            <InfoModal
+               type={warn?.modalType || 'error'}
+               title={warn?.title}
+               info={warn?.details}
+               setClose={setWarn}
+            />
+         ) : (
+            <></>
+         )}
       </div>
    );
 }
