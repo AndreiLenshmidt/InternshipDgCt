@@ -39,15 +39,12 @@ export function KanbanPage() {
    const router = useRouter();
    const route = useMemo(() => router.query['project-slug'] as string, [router.query['project-slug']]);
 
-   const { tasks, stagedTasks, tasksRefetch, user, showJustMine, project, isSuccess } = useStagedTasks(route);
-
    const { data: { data: users } = { data: [] } } = useGetUsersQuery(route, { skip: !route });
 
    const { data: { data: tasktypesInfo } = { data: [] } } = useGetTaskTypesQuery(undefined);
    const { data: { data: tags } = { data: [] } } = useGetTaskTagsQuery(undefined);
 
-   const handleTaskFilterUsersChange = (value: User[]) =>
-      setFilterFormValue('selectedUsers', value as Required<User>[]);
+   const handleTaskFilterUsersChange = (value: User[]) => setFilterFormValue('selectedUsers', value as Required<User>[]);
    const handleTaskFilterTypeChange = (value: TaskType[]) => setFilterFormValue('selectedTypes', value);
    const handleTaskFilterTagChange = (value: Component[]) => setFilterFormValue('selectedTags', value);
 
@@ -63,11 +60,14 @@ export function KanbanPage() {
       handleSubmit,
       watch,
       control,
+      getValues,
       setValue: setFilterFormValue,
       formState: { errors, validatingFields, dirtyFields },
    } = useForm<FormSchema>({
       resolver: zodResolver(tasksFilterFormSchema),
    });
+
+   const { tasks, stagedTasks, tasksRefetch, user, showJustMine, project, isSuccess } = useStagedTasks(route, getValues());
 
    ///
    /// ДЛЯ ОТКРЫТИЯ ОКНА СОЗДАНИЯ/ РЕДАКТИРОВАНИЯ ЗАДАЧИ:
@@ -256,6 +256,8 @@ export function KanbanPage() {
                )}
             />
             {errors.dateStart && <p className={style.error}>{errors.dateStart.message}</p>}
+
+            {/* {JSON.stringify(getValues())} */}
 
             {/* <RangeCalendar
                fieldName="dateEnd"

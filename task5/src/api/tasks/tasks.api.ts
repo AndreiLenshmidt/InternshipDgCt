@@ -16,8 +16,14 @@ export const tasksApi = createApi({
       getTaskTypes: build.query<{ data: Array<TaskType> }, void>({ query: () => `/task_type` }),
       getTaskTags: build.query<{ data: Array<Component & { color?: string }> }, void>({ query: () => `/component` }),
       getTaskPriorities: build.query<{ data: Array<Priority> }, void>({ query: () => `/priority` }),
-      getAllTasks: build.query<{ data: Array<TaskMultiple> }, string>({ query: (slug: string) => `/project/${slug}/task`, providesTags: ['Tasks'], }),
       getTask: build.query<{ data: TaskSingle }, string>({ query: (id: string) => `/task/${id}`, providesTags: ['Task'], }),
+      getAllTasks: build.query<{ data: Array<TaskMultiple> }, { slug: string, taskFilter?: { name: string, user_id: number, type_id: number }}>({
+         query: ({slug}) => {
+            let baseUrl = `/project/${slug}/task?`            
+            return baseUrl;
+         },
+         providesTags: ['Tasks'],
+      }),
 
       updateTask: build.mutation<TaskSingle, Partial<TaskUpType> & {id: number, projectslug: string}>({
          query: (task) => {
@@ -30,7 +36,7 @@ export const tasksApi = createApi({
          },
          async onQueryStarted({ id, ...patch }, { dispatch, queryFulfilled }) {
             const patchResult = dispatch(
-               tasksApi.util.updateQueryData('getAllTasks', patch.projectslug, (draft) => {
+               tasksApi.util.updateQueryData('getAllTasks', {slug: patch.projectslug}, (draft) => {
                   Object.assign(draft, patch)
                })
             )
