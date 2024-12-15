@@ -27,13 +27,13 @@ export function ProjectPage() {
       () => projects.filter((p) => p.name && ~p.name.toLowerCase().indexOf(filterData.projectName.toLowerCase())),
       [projects, filterData]
    );
- 
+
    const [justArchive, switchArchiveProjects] = useReducer((v) => !v, false);
 
    const {
       register,
       clearErrors,
-      handleSubmit,      
+      handleSubmit,
       reset,
       // setFocus,
       formState: { isDirty, isSubmitting, errors },
@@ -50,14 +50,14 @@ export function ProjectPage() {
    }, [width]);
 
    const onSubmit: SubmitHandler<FormSchema> = (data) => {
-
+      // 
       if ((data.projectName?.length || 0) >= 3) {
+         setFilterData(data as typeof filterData);
+      } else if (data.projectName?.length === 0) {
          setFilterData(data as typeof filterData);
       }
 
-      // filterData = data as typeof filterData;
-      // просто выводим данные в консоль
-      console.log(data);
+      // console.log(data);
       // сбрасываем состояние формы (очищаем поля)
       // reset();
    };
@@ -83,6 +83,7 @@ export function ProjectPage() {
                   Название проекта
                </label>
                <input
+                  onInput={(e) => onSubmit({ projectName: (e.target as HTMLInputElement).value })}
                   style={{ backgroundColor: errors.projectName ? '#FFF1F0' : undefined }}
                   type="text"
                   id="projectName"
