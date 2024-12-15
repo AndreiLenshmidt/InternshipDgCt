@@ -1,10 +1,9 @@
 'use client';
 
-import { useMemo, useReducer } from 'react';
+import { useMemo, useReducer, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-
 
 import { projectsUrl } from '@/consts';
 import { useResize } from '@/hooks/resize';
@@ -23,6 +22,12 @@ export function ProjectPage() {
 
    const { data: { data: projects } = { data: [] }, isLoading, isSuccess, isError, error } = useGetProjectsQuery();
 
+   const [filterData, setFilterData] = useState<Record<keyof FormSchema, string>>({ projectName: '', taskId: '' });
+   const viewedProjects = useMemo(
+      () => projects.filter((p) => p.name && ~p.name.toLowerCase().indexOf(filterData.projectName.toLowerCase())),
+      [projects, filterData]
+   );
+
    const [justArchive, switchArchiveProjects] = useReducer((v) => !v, false);
 
    const {
@@ -33,9 +38,11 @@ export function ProjectPage() {
       // setFocus,
       formState: { isDirty, isSubmitting, errors },
    } = useForm<FormSchema>({
-      resolver: zodResolver(projectsFilterFormSchema), defaultValues: {
-         projectName: '',         
-   } });
+      resolver: zodResolver(projectsFilterFormSchema),
+      defaultValues: {
+         projectName: '',
+      },
+   });
 
    useMemo(() => {
       const columnsCount = Math.floor((width - 272) / 264); // 208 - on `5/1168`
@@ -43,11 +50,12 @@ export function ProjectPage() {
    }, [width]);
 
    const onSubmit: SubmitHandler<FormSchema> = (data) => {
-      
+      setFilterData(data as typeof filterData);
+      // filterData = data as typeof filterData;
       // просто выводим данные в консоль
       console.log(data);
       // сбрасываем состояние формы (очищаем поля)
-      reset()
+      // reset();
    };
 
    return (
@@ -89,9 +97,9 @@ export function ProjectPage() {
                   placeholder="Введите номер задачи"
                   // onInput={(e) => {if ((e.target as HTMLInputElement).value === '') reset(); }}
                   {...register('taskId', {
-                     setValueAs: (v: string) => v.length ? +v : '',
-                     // valueAsNumber: true,
+                     setValueAs: (v: string) => (v.length ? +v : ''),
                      required: false,
+                     // valueAsNumber: true,ы
                   })}
                />
             </div>
@@ -104,7 +112,7 @@ export function ProjectPage() {
 
          {justArchive ? (
             <div className={style.projects} style={{ marginTop: '40px' }}>
-               {projects
+               {viewedProjects
                   .filter((proj) => proj.is_archived)
                   .map((proj) => {
                      return (
@@ -125,7 +133,7 @@ export function ProjectPage() {
                      <h4 style={{ margin: '3rem 0 2rem' }}>Избранные проекты</h4>
 
                      <div className={style.favorite_projects}>
-                        {projects
+                        {viewedProjects
                            .filter((proj) => proj.is_favorite && !proj.is_archived)
                            .map((proj) => {
                               return <ProjectCard key={proj.id} project={proj} />;
@@ -139,7 +147,7 @@ export function ProjectPage() {
                )}
 
                <div className={style.projects}>
-                  {projects
+                  {viewedProjects
                      .filter((proj) => !proj.is_favorite && !proj.is_archived)
                      .map((proj) => {
                         return <ProjectCard key={proj.id} project={proj} />;
