@@ -206,6 +206,7 @@ export default function TaskContent({
          refetch();
       }
    }, [isOpenCreateTask, refetch]);
+   console.log(isOpenCreateTask, 'isOpenCreateTask');
 
    return (
       <>
