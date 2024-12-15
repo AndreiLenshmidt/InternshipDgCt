@@ -80,7 +80,7 @@
       font-size: 14px;
       padding: 0.6rem 0;
       padding-left: 1.2rem;
-      padding-right: .6rem;
+      padding-right: 0.6rem;
       color: #333333;
 
       &::placeholder {
@@ -101,5 +101,37 @@
       margin-bottom: 0.5rem;
       display: block;
       cursor: auto;
+   }
+}
+
+.found_task {
+   position: absolute;
+
+   width: 100%;
+   background-color: aliceblue;
+   height: 40px;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   border-radius: 0 0 1rem 1rem;
+   bottom: -40.1px;
+   box-shadow: 0 9px 15px lightgray;
+   color: darkgoldenrod;
+   cursor: pointer;
+   
+   a {
+      width: 100%;
+      text-align: center;
+      height: 100%;
+      background-color: antiquewhite;
+      line-height: 40px;
+      vertical-align: middle;
+      border-radius: 0 0 1rem 1rem;
+
+      border: 1px solid antiquewhite;
+
+      &:focus{
+         border: 1px solid lightgray;
+      }
    }
 }
