@@ -34,7 +34,14 @@ export function useStagedTasks(route: string, filter: FormSchema) {
       isSuccess,
       isError,
       refetch
-   } = useGetAllTasksQuery({ slug: route }, { skip: !route || !(project) }); //  || !taskStages?.length
+   } = useGetAllTasksQuery({
+      slug: route, taskFilter: {
+         name: filter.taskName,
+         user_id: filter.selectedUsers?.map(u => u.id),
+         type_id: filter.selectedTypes?.map(tp => tp.id) as number[],
+      }
+   }, { skip: !route || !(project) }); //  || !taskStages?.length
+
 
    const stagedTasks = useMemo(() => {
       const grouped = groupByObject(
@@ -71,6 +78,9 @@ export function useStagedTasks(route: string, filter: FormSchema) {
                if (!filter.selectedTags.some(v => v.id === item.component)) {
                   return false;
                }
+            }
+            if (!item.task_type) {
+               return false;
             }
             return true;
          }

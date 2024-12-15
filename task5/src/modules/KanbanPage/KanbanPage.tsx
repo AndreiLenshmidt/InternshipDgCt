@@ -206,9 +206,10 @@ export function KanbanPage() {
             <div>
                <label htmlFor="taskName">Название задачи</label>
                <input
+                  onInput={e => {if ((e.target as HTMLInputElement).value.length > 2) tasksRefetch()}}
                   style={{ backgroundColor: errors.taskName ? '#FFF1F0' : undefined }}
                   id="taskName"
-                  type="text"
+                  type="search"
                   placeholder="Название задачи"
                   {...register('taskName')}
                />

@@ -17,10 +17,27 @@ export const tasksApi = createApi({
       getTaskTags: build.query<{ data: Array<Component & { color?: string }> }, void>({ query: () => `/component` }),
       getTaskPriorities: build.query<{ data: Array<Priority> }, void>({ query: () => `/priority` }),
       getTask: build.query<{ data: TaskSingle }, string>({ query: (id: string) => `/task/${id}`, providesTags: ['Task'], }),
-      getAllTasks: build.query<{ data: Array<TaskMultiple> }, { slug: string, taskFilter?: { name: string, user_id: number, type_id: number }}>({
-         query: ({slug}) => {
-            let baseUrl = `/project/${slug}/task?`            
-            return baseUrl;
+      getAllTasks: build.query<{ data: Array<TaskMultiple> }, { slug: string, taskFilter?: { name?: string, user_id?: number[], type_id?: number[] }}>({
+         query: ({ slug, taskFilter }) => {
+            const baseUrl = `/project/${slug}/task`  
+            let uriOptions = []
+            if (taskFilter?.name && taskFilter.name.length >= 3) {  //  && taskFilter.name.length >= 3
+               uriOptions.push(`filter[name]=` + taskFilter.name)
+            }
+            else {               
+               
+            }
+            if (taskFilter?.user_id) {
+               taskFilter?.user_id.forEach(user => {
+                  uriOptions.push(`filter[name][]=` + user)
+               })
+            }
+            if (taskFilter?.type_id) {
+               taskFilter?.type_id.forEach(tasktype => {
+                  uriOptions.push(`filter[type_id][]=` + tasktype)
+               })
+            }
+            return baseUrl + (uriOptions.length ? `?${encodeURI(uriOptions.join('&'))}` : '');
          },
          providesTags: ['Tasks'],
       }),
