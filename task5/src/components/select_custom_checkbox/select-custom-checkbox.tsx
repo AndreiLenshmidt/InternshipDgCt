@@ -4,17 +4,17 @@ import ArrowDown from '@public/icons/arrow-down-select.svg';
 import Close from '@public/icons/close.svg';
 import { User } from '@/api/data.types';
 
-interface SelectCustomProps {
-   value: User[];
-   onChange: (newValue: User[]) => void; // Функция для обновления значений
-   options: User[];
+interface SelectCustomProps<T extends { id?: number, name?: string, surname?: string } = User> {
+   value: T[];
+   onChange: (newValue: T[]) => void; // Функция для обновления значений
+   options: T[];
    label?: string;
    titleSelect?: string; // Заголовок, если ничего не выбрано
    required?: boolean;
    wrapClassName?: string
 }
 
-export default function SelectCustomCheckbox({
+export default function SelectCustomCheckbox<T extends { id?: number, name?: string, surname?: string } = User>({
    value,
    onChange,
    options,
@@ -22,12 +22,12 @@ export default function SelectCustomCheckbox({
    titleSelect = 'Выберите значение',
    required = false,
    wrapClassName = '',
-}: SelectCustomProps) {
+}: SelectCustomProps<T>) {
    const [isOpen, setIsOpen] = useState(false);
    const dropdownRef = useRef<HTMLDivElement>(null);
 
    // Переключение состояния выбранности
-   const toggleOption = (optionValue: User) => {
+   const toggleOption = (optionValue: T) => {
       if (value.some((item) => item.id === optionValue.id)) {
          onChange(value.filter((item) => item.id !== optionValue.id)); // Удалить значение
       } else {

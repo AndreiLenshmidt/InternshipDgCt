@@ -73,11 +73,14 @@
    .filtered_ddbox {
       color: var(--bread-crumbs-text);
       font-size: 14px;
-      flex-basis: 24%;
+      flex-basis: 23%;
+      max-width: none;
    }
 
    & > div {
-      flex-grow: 0.25;
+      flex-grow: 0.24;
+      flex-basis: 23%;
+
       display: flex;
       flex-direction: column;
       gap: 0.6rem;

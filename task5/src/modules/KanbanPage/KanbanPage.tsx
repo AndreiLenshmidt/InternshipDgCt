@@ -6,7 +6,7 @@ import { TaskCard } from './components/task-card/TaskCard';
 import { TasksColumn } from './components/tasks-column/TaskColumn';
 import { useEffect, useMemo, useState } from 'react';
 import { projectsUrl } from '@/consts';
-import { Stage, TaskMultiple, User } from '@/api/data.types';
+import { Component, Stage, TaskMultiple, TaskType, User } from '@/api/data.types';
 import { Scrollbar } from 'react-scrollbars-custom';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { DndProvider } from 'react-dnd';
@@ -22,6 +22,7 @@ import { tasksFilterFormSchema } from './utils/validationSchema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import SelectCustomCheckbox from '@/components/select_custom_checkbox/select-custom-checkbox';
+import { useGetTaskTagsQuery, useGetTaskTypesQuery } from '@/api/tasks/tasks.api';
 
 // import { ScrollbarProps, Scrollbars } from 'react-custom-scrollbars';
 
@@ -39,7 +40,15 @@ export function KanbanPage() {
    
    const { data: { data: users } = { data: [] } } = useGetUsersQuery(route, { skip: !route });   
 
-   const handleUsersChange = (value: User[]) => setFilterFormValue('selectedUsers', value as Required<User>[]);
+   const { data: { data: tasktypesInfo } = { data: [] } } = useGetTaskTypesQuery(undefined);
+   const { data: { data: tags } = { data: [] } } = useGetTaskTagsQuery(undefined);
+   
+
+   const handleTaskFilterUsersChange = (value: User[]) => setFilterFormValue('selectedUsers', value as Required<User>[]);
+   const handleTaskFilterTypeChange = (value: TaskType[]) => setFilterFormValue('selectedTypes', value);
+   const handleTaskFilterTagChange = (value: Component[]) => setFilterFormValue('selectedTags', value);
+
+
    const onSubmit: SubmitHandler<FormSchema> = (data) => {
       // 
       console.warn(data);      
@@ -192,27 +201,31 @@ export function KanbanPage() {
                   {...register('taskName')}
                />
             </div>
-            {/* <div> */}
-               {/* <label htmlFor="username">Выбрать пользователей</label> */}
-               {/* <input id="username" type="text" placeholder="Пользователи" /> */}
-               <SelectCustomCheckbox
-                  value={watch('selectedUsers') || []}
-                  onChange={handleUsersChange}
-                  options={users}
-                  label="Выбрать пользователей"
-                  titleSelect="Пользователи"
-                  wrapClassName={style.filtered_ddbox}
-               />
-               {/* {errors.selectedUsers && <p className={style.error}>{errors.selectedUsers.message}</p>} */}
-            {/* </div> */}
-            <div>
-               <label htmlFor="username">Выбрать тип</label>
-               <input id="username" type="text" placeholder="Выбрать тип" />
-            </div>
-            <div>
-               <label htmlFor="username">Выбрать компонент</label>
-               <input id="username" type="text" placeholder="Выбрать компонент" />
-            </div>
+            <SelectCustomCheckbox
+               value={watch('selectedUsers') || []}
+               onChange={handleTaskFilterUsersChange}
+               options={users}
+               label="Выбрать пользователей"
+               titleSelect="Пользователи"
+               wrapClassName={style.filtered_ddbox}
+            />
+            {/* {errors.selectedUsers && <p className={style.error}>{errors.selectedUsers.message}</p>} */}
+            <SelectCustomCheckbox
+               value={watch('selectedTypes') || []}
+               onChange={handleTaskFilterTypeChange}
+               options={tasktypesInfo}
+               label="Выбрать тип"
+               titleSelect="Выбрать тип"
+               wrapClassName={style.filtered_ddbox}
+            />
+            <SelectCustomCheckbox
+               value={watch('selectedTags') || []}
+               onChange={handleTaskFilterTagChange}
+               options={tags}
+               label="Выбрать компонент"
+               titleSelect="Выбрать компонент"
+               wrapClassName={style.filtered_ddbox}
+            />
          </form>
 
          <div className={style.filters}>

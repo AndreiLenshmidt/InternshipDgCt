@@ -10,5 +10,17 @@ export const tasksFilterFormSchema = z.object({
             surname: z.string(),
             email: z.string(),
          })
-      )   
+   ),
+   selectedTypes: z.array(
+      z.object({
+         id: z.number().optional(),
+         name: z.string().optional(),
+      })
+   ),
+   selectedTags: z.array(
+      z.object({
+         id: z.number().optional(),
+         name: z.string().optional(),
+      })
+   )   
 })
