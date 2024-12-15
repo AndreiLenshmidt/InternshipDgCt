@@ -12,32 +12,17 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import { DndProvider } from 'react-dnd';
 import ModalTask from '../TaskPage/ModalTask';
 import { useStagedTasks } from './hooks/stagedTasks';
-import { useGetTaskByTaskIdQuery } from '@/api/appApi';
 import InfoModal from '@/modules/TaskPage/components/InfoModal/InfoModal';
 import { useModalInfo } from '@/hooks/useModalInfo';
 
 import style from './kanban-page.module.scss';
 
-// import { ScrollbarProps, Scrollbars } from 'react-custom-scrollbars';
-// import task from '@/pages/projects/kanban/task';
-
-// const ScrollBar = Scrollbars as unknown as JSXElementConstructor<ScrollbarProps>;
-
 export function KanbanPage() {
-   //
-   //
    const router = useRouter();
    const route = useMemo(() => router.query['project-slug'] as string, [router.query['project-slug']]);
 
    const { tasks, stagedTasks, tasksRefetch, user, showJustMine, project, isSuccess } = useStagedTasks(route);
 
-   // const dropstyle = { color: isOver ? 'green' : undefined };
-
-   ///
-   /// ДЛЯ ОТКРЫТИЯ ОКНА СОЗДАНИЯ/ РЕДАКТИРОВАНИЯ ЗАДАЧИ:
-   ///
-
-   // Для открытия окна создания/ редактирования задачи
    const modalInfo = useModalInfo();
    const [projectSlag, setProjectSlag] = useState<string>('');
    const [taskIdEditTask, setTaskIdEditTask] = useState<number | undefined>();
@@ -46,16 +31,8 @@ export function KanbanPage() {
    const [newTaskFlag, setNewTaskFlag] = useState(false);
    const [tasksLocal, setTasksLocal] = useState<TaskMultiple[]>([]);
    const [delTaskFlag, setDelTaskFlag] = useState(false);
-
-   const [taskLocal, setTaskLocal] = useState([]);
-
-   // ------------------------------------------------
    const [isOpenTask, setOpenTask] = useState<boolean>(false);
    const [currentStage, setCurrentStage] = useState<Stage>();
-
-   const { data: isTaskId, isSuccess: getIsTaskIdSuccess } = useGetTaskByTaskIdQuery(taskIdEditTask || 0, {
-      skip: !taskIdEditTask,
-   });
 
    useEffect(() => {
       if (isSuccess) {
@@ -63,7 +40,6 @@ export function KanbanPage() {
       }
    }, [isSuccess, tasks]);
 
-   // Функция для получения newTaskId от дочернего компонента
    const handleNewTaskId = (taskId: number) => {
       setNewTaskId(taskId);
    };
@@ -95,9 +71,6 @@ export function KanbanPage() {
       setDelTaskFlag(false);
    };
 
-   /////////////////////////
-
-   // InfoModal в случае успешного создания задачи
    useEffect(() => {
       if (newTaskFlag && newTaskId && isSuccess) {
          modalInfo.setCloseModal(true);
@@ -126,7 +99,9 @@ export function KanbanPage() {
       if (isSuccess) {
          tasksRefetch();
       }
-   }, [isOpenTask]);
+   }, [isOpenTask, tasksRefetch]);
+
+   console.log(project?.flow, 'project?.flow');
 
    return (
       <div className={style.base} style={{ display: 'flex', flexDirection: 'column', height: 'calc(100vh - 4rem)' }}>
@@ -137,8 +112,6 @@ export function KanbanPage() {
                { text: project?.name || '', url: `${projectsUrl}/${router.query['project-slug']}` },
             ]}
          />
-
-         {/* {JSON.stringify(project)} */}
 
          <div className={style.title}>
             <h1>{project?.name}</h1>
