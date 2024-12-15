@@ -1,10 +1,9 @@
 import '@/styles/globals.scss';
-import '@/styles/reset.css';
+import '@/styles/reset.scss';
 import type { AppProps } from 'next/app';
 import localFont from 'next/font/local';
 import { Provider } from 'react-redux';
 import { store } from '@/store/store';
-import TaskModalCreationEditing from '@/modules/TaskModalCreationEditing/page_main-fixis_main-fix';
 
 const inter = localFont({
    src: '../fonts/Inter-VariableFont_opsz,wght.ttf',

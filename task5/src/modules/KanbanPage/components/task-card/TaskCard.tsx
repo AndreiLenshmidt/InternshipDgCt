@@ -5,7 +5,7 @@ import { LegacyRef, useEffect, useMemo } from 'react';
 // import { RootState } from '@reduxjs/toolkit/dist/query/react';
 import { useDrag } from 'react-dnd';
 import { useSelector } from 'react-redux';
-import style from './task-card.module.css';
+import style from './task-card.module.scss';
 import { groupBy } from '../../../../utils/core';
 import { useGetTaskPrioritiesQuery, useGetTaskTagsQuery, useGetTaskTypesQuery } from '@/api/tasks/tasks.api';
 import { colorSchema } from '@/consts';
