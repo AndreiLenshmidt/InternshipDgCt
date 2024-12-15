@@ -12,14 +12,20 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import { DndProvider } from 'react-dnd';
 import ModalTask from '../TaskPage/ModalTask';
 import { useStagedTasks } from './hooks/stagedTasks';
-import { useGetTaskByTaskIdQuery } from '@/api/appApi';
+import { useGetTaskByTaskIdQuery, useGetUsersQuery } from '@/api/appApi';
 import InfoModal from '@/modules/TaskPage/components/InfoModal/InfoModal';
 import { useModalInfo } from '@/hooks/useModalInfo';
 
 import style from './kanban-page.module.scss';
+import { z } from 'zod';
+import { tasksFilterFormSchema } from './utils/validationSchema';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm, SubmitHandler } from 'react-hook-form';
+import SelectCustomCheckbox from '@/components/select_custom_checkbox/select-custom-checkbox';
 
 // import { ScrollbarProps, Scrollbars } from 'react-custom-scrollbars';
 
+type FormSchema = z.infer<typeof tasksFilterFormSchema>;
 
 // const ScrollBar = Scrollbars as unknown as JSXElementConstructor<ScrollbarProps>;
 
@@ -30,8 +36,24 @@ export function KanbanPage() {
    const route = useMemo(() => router.query['project-slug'] as string, [router.query['project-slug']]);
 
    const { tasks, stagedTasks, tasksRefetch, user, showJustMine, project, isSuccess } = useStagedTasks(route);
+   
+   const { data: { data: users } = { data: [] } } = useGetUsersQuery(route, { skip: !route });   
 
-   // const dropstyle = { color: isOver ? 'green' : undefined };
+   const handleUsersChange = (value: User[]) => setFilterFormValue('selectedUsers', value as Required<User>[]);
+   const onSubmit: SubmitHandler<FormSchema> = (data) => {
+      // 
+      console.warn(data);      
+   }
+
+   const {
+      register,
+      handleSubmit,
+      watch,
+      setValue: setFilterFormValue,
+      formState: { errors },
+   } = useForm<FormSchema>({
+      resolver: zodResolver(tasksFilterFormSchema),
+   });
 
    ///
    /// ДЛЯ ОТКРЫТИЯ ОКНА СОЗДАНИЯ/ РЕДАКТИРОВАНИЯ ЗАДАЧИ:
@@ -159,24 +181,39 @@ export function KanbanPage() {
             )}
          </div>
 
-         <div className={style.filters}>
+         <form className={style.filters} onSubmit={handleSubmit(onSubmit)}>
             <div>
-               <label htmlFor="task_name">Название задачи</label>
-               <input name="task_name" type="text" placeholder="Название задачи" />
+               <label htmlFor="taskName">Название задачи</label>
+               <input
+                  style={{ backgroundColor: errors.taskName ? '#FFF1F0' : undefined }}
+                  id="taskName"
+                  type="text"
+                  placeholder="Название задачи"
+                  {...register('taskName')}
+               />
             </div>
-            <div>
-               <label htmlFor="username">Выбрать пользователей</label>
-               <input name="username" type="text" placeholder="Пользователи" />
-            </div>
+            {/* <div> */}
+               {/* <label htmlFor="username">Выбрать пользователей</label> */}
+               {/* <input id="username" type="text" placeholder="Пользователи" /> */}
+               <SelectCustomCheckbox
+                  value={watch('selectedUsers') || []}
+                  onChange={handleUsersChange}
+                  options={users}
+                  label="Выбрать пользователей"
+                  titleSelect="Пользователи"
+                  wrapClassName={style.filtered_ddbox}
+               />
+               {/* {errors.selectedUsers && <p className={style.error}>{errors.selectedUsers.message}</p>} */}
+            {/* </div> */}
             <div>
                <label htmlFor="username">Выбрать тип</label>
-               <input name="username" type="text" placeholder="Выбрать тип" />
+               <input id="username" type="text" placeholder="Выбрать тип" />
             </div>
             <div>
                <label htmlFor="username">Выбрать компонент</label>
-               <input name="username" type="text" placeholder="Выбрать компонент" />
+               <input id="username" type="text" placeholder="Выбрать компонент" />
             </div>
-         </div>
+         </form>
 
          <div className={style.filters}>
             <div>

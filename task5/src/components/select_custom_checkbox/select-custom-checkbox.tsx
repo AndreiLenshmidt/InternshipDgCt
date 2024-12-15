@@ -11,6 +11,7 @@ interface SelectCustomProps {
    label?: string;
    titleSelect?: string; // Заголовок, если ничего не выбрано
    required?: boolean;
+   wrapClassName?: string
 }
 
 export default function SelectCustomCheckbox({
@@ -20,6 +21,7 @@ export default function SelectCustomCheckbox({
    label,
    titleSelect = 'Выберите значение',
    required = false,
+   wrapClassName = '',
 }: SelectCustomProps) {
    const [isOpen, setIsOpen] = useState(false);
    const dropdownRef = useRef<HTMLDivElement>(null);
@@ -56,7 +58,7 @@ export default function SelectCustomCheckbox({
    }, [isOpen]);
 
    return (
-      <div className={style['select-custom']} ref={dropdownRef}>
+      <div className={[style['select-custom'], wrapClassName].join(' ')} ref={dropdownRef}>
          {/* Заголовок */}
          {label && (
             <label className={style['label']}>

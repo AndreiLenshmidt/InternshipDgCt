@@ -10,7 +10,7 @@ import { useResize } from '@/hooks/resize';
 import { BreadCrumbs } from '@components/bread_crumbs/BreadCrumbs';
 import { useGetProjectsQuery } from './api/api';
 import { ProjectCard } from './components/project_card/ProjectCard';
-import { projectsFilterFormSchema } from './form_schemas/filterSchema';
+import { projectsFilterFormSchema } from './utils/validationSchema';
 
 import style from './projects-page.module.css';
 
@@ -27,7 +27,7 @@ export function ProjectPage() {
       () => projects.filter((p) => p.name && ~p.name.toLowerCase().indexOf(filterData.projectName.toLowerCase())),
       [projects, filterData]
    );
-
+ 
    const [justArchive, switchArchiveProjects] = useReducer((v) => !v, false);
 
    const {
