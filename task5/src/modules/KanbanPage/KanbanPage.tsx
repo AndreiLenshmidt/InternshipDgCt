@@ -27,7 +27,7 @@ export function KanbanPage() {
    //
    //
    const router = useRouter();
-   const route = useMemo(() => router.query['task-slug'] as string, [router.query['task-slug']]);
+   const route = useMemo(() => router.query['project-slug'] as string, [router.query['project-slug']]);
 
    const { tasks, stagedTasks, tasksRefetch, user, showJustMine, project, isSuccess } = useStagedTasks(route);
 
@@ -79,7 +79,7 @@ export function KanbanPage() {
       setNewTaskFlag(true);
       setTaskIdEditTask(undefined);
 
-      const taskSlug = router.query['task-slug'];
+      const taskSlug = router.query['project-slug'];
       if (Array.isArray(taskSlug)) {
          setProjectSlag(taskSlug[0]);
       } else if (typeof taskSlug === 'string') {
@@ -137,7 +137,7 @@ export function KanbanPage() {
             crumbs={[
                { text: 'Главная', url: '/' },
                { text: 'Проекты', url: projectsUrl },
-               { text: project?.name || '', url: `${projectsUrl}/${router.query['task-slug']}` },
+               { text: project?.name || '', url: `${projectsUrl}/${router.query['project-slug']}` },
             ]}
          />
 

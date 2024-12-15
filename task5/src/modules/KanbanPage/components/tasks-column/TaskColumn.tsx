@@ -50,7 +50,7 @@ export function TasksColumn({
             updateTask({
                id: task?.id as number,
                stage_id: stage.id,
-               projectslug: router.query['task-slug'] as string,
+               projectslug: router.query['project-slug'] as string,
             }).then((e) => {
                if ('error' in e) {
                   const { data: error } = e.error as { data: ValidationError };
@@ -77,5 +77,5 @@ export function TasksColumn({
 
 
 // const { data } = tasksApi.endpoints.getAllTasks.useQuery('');  // <- raw data
-// const { data } = tasksApi.useGetAllTasksQuery(router.query['task-slug']);        // -//- via slice object (== via s/m)
+// const { data } = tasksApi.useGetAllTasksQuery(router.query['project-slug']);        // -//- via slice object (== via s/m)
 // const [updatePost, { data }] = api.endpoints.updatePost.useMutation()

@@ -8,8 +8,8 @@ import { useEffect } from 'react';
 
 export default function TaskPage() {
    const router = useRouter();
-   const taskId = Number(router.query['slug']);
-   const projectSlug = router.query['task-slug'] as string;
+   const taskId = Number(router.query['task-slug']);
+   const projectSlug = router.query['project-slug'] as string;
    const { data, isLoading, isError, refetch: taskRefetch } = useGetTaskByTaskIdQuery(taskId);
    const { data: user } = useGetCurrentUserQuery();
 
