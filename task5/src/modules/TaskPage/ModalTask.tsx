@@ -5,6 +5,7 @@ import { useGetCurrentUserQuery, useGetTaskByTaskIdQuery } from '@/api/appApi';
 import { MouseEvent, useLayoutEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { Stage } from '@/api/data.types';
+import { inter } from '@/pages/_app';
 
 export default function ModalTask({
    id,
@@ -38,6 +39,7 @@ export default function ModalTask({
          onClose(false);
       }
    };
+   const node = document.querySelector('#__next') as HTMLElement;
 
    const modal = createPortal(
       <div className={styles.layout_modal} onClick={(e) => modalCloseHandler(e)}>
@@ -48,7 +50,7 @@ export default function ModalTask({
             <div className="loader" style={{ margin: '36% auto' }}></div>
          ) : isError ? (
             <div className={styles.layout_modalbox}>
-               <p>Задача не найдена</p>
+               <p className={inter.className}>Задача не найдена</p>
             </div>
          ) : (
             <div className={styles.layout_modalbox}>
@@ -65,7 +67,7 @@ export default function ModalTask({
             </div>
          )}
       </div>,
-      document.body
+      node
    );
 
    return modal;
