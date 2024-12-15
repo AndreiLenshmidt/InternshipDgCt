@@ -37,11 +37,6 @@ export function KanbanPage() {
    const router = useRouter();
    const route = useMemo(() => router.query['project-slug'] as string, [router.query['project-slug']]);
 
-   const useDebouncedStagedTasks = debounce<FormSchema, typeof useStagedTasks, ReturnType<typeof useStagedTasks>>(
-      useStagedTasks,
-      300
-   );
-
    const { data: { data: users } = { data: [] } } = useGetUsersQuery(route, { skip: !route });
 
    const { data: { data: tasktypesInfo } = { data: [] } } = useGetTaskTypesQuery(undefined);
@@ -72,15 +67,21 @@ export function KanbanPage() {
       resolver: zodResolver(tasksFilterFormSchema),
    });
 
-   // const { tasks, stagedTasks, tasksRefetch, user, showJustMine, project, isSuccess } = useStagedTasks(
-   //    route,
-   //    getValues()
-   // );
+   let [awaiting, setAwaiting] = useState(false);
 
-   const { tasks, stagedTasks, tasksRefetch, user, showJustMine, project, isSuccess } = useDebouncedStagedTasks(
+   const { tasks, stagedTasks, tasksRefetch, user, showJustMine, project, isSuccess } = useStagedTasks(
       route,
-      getValues()
+      getValues(),
+      awaiting
    );
+
+   useEffect(() => {
+      const { unsubscribe } = watch((value) => {
+         setAwaiting(true);
+         setTimeout(() => setAwaiting(false), 300);         
+      });
+      return () => unsubscribe();
+   }, [watch]);
 
    ///
    /// ДЛЯ ОТКРЫТИЯ ОКНА СОЗДАНИЯ/ РЕДАКТИРОВАНИЯ ЗАДАЧИ:
@@ -197,7 +198,9 @@ export function KanbanPage() {
                <label htmlFor="taskName">Название задачи</label>
                <input
                   onInput={(e) => {
-                     if ((e.target as HTMLInputElement).value.length > 2) tasksRefetch();
+                     if ((e.target as HTMLInputElement).value?.length > 2) try { tasksRefetch() } catch {
+                        
+                     };
                   }}
                   style={{ backgroundColor: errors.taskName ? '#FFF1F0' : undefined }}
                   id="taskName"
@@ -284,8 +287,6 @@ export function KanbanPage() {
                )}
             />
          </div>
-
-         {/* {JSON.stringify(getValues())} */}
 
          {modalInfo.modal ? (
             <InfoModal

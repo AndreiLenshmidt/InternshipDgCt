@@ -29,6 +29,7 @@ export const tasksApi = createApi({
       getTask: build.query<{ data: TaskSingle }, string>({ query: (id: string) => `/task/${id}`, providesTags: ['Task'], }),
       getAllTasks: build.query<{ data: Array<TaskMultiple> }, { slug: string, taskFilter?: TaskFilterType }>({
          query: ({ slug, taskFilter }) => {
+
             const baseUrl = `/project/${slug}/task`
             let uriOptions = []
             if (taskFilter?.name && taskFilter.name.length >= 3) {  //  && taskFilter.name.length >= 3
@@ -56,7 +57,7 @@ export const tasksApi = createApi({
       }),
 
       updateTask: build.mutation<TaskSingle, Partial<TaskUpType> & { id: number, projectslug: string }>({
-         query: (task) => {
+         query: (task) => {            
             const { id, ...patch } = task;
             return {
                url: `/task/${id}`,

@@ -3,13 +3,24 @@ import { Stage, TaskMultiple, User } from "@/api/data.types";
 import { useGetAllTasksQuery } from "@/api/tasks/tasks.api";
 import { useGetProjectQuery } from "@/modules/ProjectsPage/api/api";
 import { groupByObject } from "@/utils/core";
-import { useMemo, useState } from "react";
+import { Dispatch, SetStateAction, useMemo, useState } from "react";
 import { z } from "zod";
 import { tasksFilterFormSchema } from "../utils/validationSchema";
+import { ProjectSingle } from '../../../api/data.types';
 
 
 type FormSchema = z.infer<typeof tasksFilterFormSchema>;
 
+let cachedData: {
+   tasks: TaskMultiple[],
+   stagedTasks: Record<string, [(Record<PropertyKey, unknown> & TaskMultiple)[], Required<Stage>]>,
+   project: ProjectSingle | null,
+   user: User | null,
+   showJustMine: Dispatch<SetStateAction<boolean>>,
+   tasksRefetch: Function,
+   isLoading: boolean,
+   isSuccess: boolean
+};
 
 /**
  * 
@@ -18,7 +29,11 @@ type FormSchema = z.infer<typeof tasksFilterFormSchema>;
  * @param justMine  
  * @returns - staged tasks
  */
-export function useStagedTasks(route: string, filter: FormSchema) {
+export function useStagedTasks(route: string, filter: FormSchema, skip?: boolean) {
+
+   // if (skip) {
+   //    return cachedData;
+   // }
 
    const [justMine, setJustMine] = useState(false);
    const { data: { data: user } = { data: null } } = useGetCurrentUserQuery();
@@ -45,7 +60,7 @@ export function useStagedTasks(route: string, filter: FormSchema) {
          date_end_from: filter.dateEnd?.startDate ? new Date(filter.dateEnd?.startDate).toLocaleDateString('ru') : null,
          date_end_to: filter.dateEnd?.endDate ? new Date(filter.dateEnd?.endDate).toLocaleDateString('ru') : null
       }
-   }, { skip: !route || !(project) }); //  || !taskStages?.length
+   }, { skip: !route || !(project) || skip }); //  || !taskStages?.length
 
 
    const stagedTasks = useMemo(() => {
@@ -101,5 +116,9 @@ export function useStagedTasks(route: string, filter: FormSchema) {
       return grouped;
    }, [tasks, project?.flow?.possibleProjectStages, justMine, filter]);
 
-   return { tasks, stagedTasks, project, user, tasksRefetch: refetch, showJustMine: setJustMine, isLoading, isSuccess, isError };
+   const result = { tasks, stagedTasks, project, user, tasksRefetch: refetch, showJustMine: setJustMine, isLoading, isSuccess, isError };
+
+   // cachedData = result;
+
+   return result;
 }
