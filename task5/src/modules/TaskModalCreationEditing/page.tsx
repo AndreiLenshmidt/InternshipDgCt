@@ -327,7 +327,6 @@ export function TaskModalCreationEditing({
 
    const handleFilesChange = (newFiles: ResponseFile[] | undefined): void => {
       setValue('fileLinks', newFiles);
-
       setFiles(newFiles as ResponseFile[]);
    };
 
