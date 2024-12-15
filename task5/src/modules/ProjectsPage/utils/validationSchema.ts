@@ -11,8 +11,3 @@ export const projectsFilterFormSchema = z.object({
 
 
 
-// .refine((data) => data.name || data.taskId, {
-//    // https://github.com/colinhacks/zod#customize-error-path
-//    path: ['name'],
-//    message: '',
-// })

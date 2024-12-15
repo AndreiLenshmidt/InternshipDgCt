@@ -5,8 +5,6 @@ import { useState } from 'react';
 import { ProjectItem, useUpdateProjectMutation } from '../../api/api';
 import style from './project-card.module.scss';
 
-// import ProjectLogo1 from '@public/media/ProjectLogo.svg';
-
 type PropsType = {
    project?: ProjectItem;
    onChange?: (isFavorite: boolean) => void;

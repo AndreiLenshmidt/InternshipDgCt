@@ -9,8 +9,7 @@ import { useRouter } from 'next/router';
 import style from '../projects-page.module.scss';
 
 export default function Layout({ children }: PropsWithChildren) {
-   // console.log('layout...');
-
+   
    return (
       <div className={style.container}>
          <Provider store={store}>
@@ -19,6 +18,4 @@ export default function Layout({ children }: PropsWithChildren) {
          <div className={style.content}>{children}</div>
       </div>
    );
-
-   // return <main>{children}</main>;
 }
