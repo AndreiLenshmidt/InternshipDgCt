@@ -85,3 +85,5 @@ export const tasksFilterFormSchema = z.object({
    // path: ['dateStart', 'dateEnd'],
    message: 'Дата начала не может быть позже даты конца',
 })
+
+export type TasksFilterFormSchema = z.infer<typeof tasksFilterFormSchema>;

@@ -3,23 +3,47 @@ import CalendarIcon from '@public/icons/calendar.svg';
 import style from './range-calendar.module.css';
 import { useEffect, useRef, useState } from 'react';
 import { Value, Range } from 'react-calendar/dist/cjs/shared/types';
+import { ControllerRenderProps } from 'react-hook-form';
+import { TasksFilterFormSchema } from '@/modules/KanbanPage/utils/validationSchema';
 
 export function RangeCalendar({
    onChange,
    placeholder,
    registerOptions = {},
    fieldName = '',
+   // controller,
 }: {
    placeholder: string;
    onChange: Function;
    registerOptions?: object;
    fieldName?: string;
+   // controller?: ControllerRenderProps<TasksFilterFormSchema, "dateStart">;
 }) {
    //
    const [calendarShowing, setShowing] = useState(false);
    const [selectedRange, setSelectedRange] = useState<[Date?, Date?]>([undefined, undefined]);
    const wrapper = useRef<HTMLDivElement>(null);
    const input = useRef<HTMLInputElement>(null);
+   // const { ref, ...field } = controller;
+
+   // Добавление классов для ячеек
+   const tileClassName = ({ date }: { date: Date }) => {
+      // 
+      const startDateObj = selectedRange[0] ? new Date(selectedRange[0]) : null;
+      const endDateObj = selectedRange[1] ? new Date(selectedRange[1]) : null;
+
+      // debugger
+      // if (startDateObj && date < startDateObj) return style.disabledDate;
+      // if (startDateObj && date.toDateString() === startDateObj.toDateString()) return style.startDate;
+      if (endDateObj && date.toDateString() === endDateObj.toDateString()) return style.endDate;
+      if (startDateObj && endDateObj && date > startDateObj && date < endDateObj) {
+         console.log(style.range);
+         
+         // debugger         
+         return style.range;
+      }
+      return '';
+   };
 
    function rangePicked(dates: Range<Date | undefined>) {
       // console.log(dates);
@@ -28,7 +52,7 @@ export function RangeCalendar({
       // setTimeout(() => setShowing(false), 200)
       setShowing(false);
 
-      const [startDate, endDate] = dates;
+      const [startDate = null, endDate = null] = dates;
 
       onChange({ startDate, endDate });
    }
@@ -56,6 +80,7 @@ export function RangeCalendar({
             onClick={() => setShowing((v) => !v)}
             ref={input}
             {...registerOptions}
+            // {...controller}
             value={
                selectedRange.reduce((ac, it) => ac && !!it, true)
                   ? (selectedRange[0]?.toLocaleDateString('ru') || '') +
@@ -65,7 +90,19 @@ export function RangeCalendar({
             }
          />
          <span className={style.calendar_icon}>
-            <CalendarIcon />
+            {selectedRange[0] ? (
+               <span
+                  className={style.reset}
+                  onClick={() => {
+                     // selectedRange[0] ? setSelectedRange([void 0, void 0]) : '';
+                     selectedRange[0] ? rangePicked([void 0, void 0]) : '';
+                  }}
+               >
+                  ✘
+               </span>
+            ) : (
+               <CalendarIcon />
+            )}
          </span>
 
          {calendarShowing ? (
@@ -75,6 +112,7 @@ export function RangeCalendar({
                selectRange={true}
                className={style.calendar}
                defaultActiveStartDate={undefined}
+               tileClassName={tileClassName}
                formatMonthYear={(locale, date) =>
                   `${date.toLocaleString(locale, { month: 'long' })} ${date.getFullYear()}`
                }

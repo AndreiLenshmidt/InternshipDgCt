@@ -27,8 +27,6 @@ import CalendarCustom from '@/components/calendar_custom/CalendarCustom';
 import { RangeCalendar } from '@/components/range_calendar/RangeCalendar';
 
 
-// import { ScrollbarProps, Scrollbars } from 'react-custom-scrollbars';
-
 type FormSchema = z.infer<typeof tasksFilterFormSchema>;
 
 // const ScrollBar = Scrollbars as unknown as JSXElementConstructor<ScrollbarProps>;
@@ -59,6 +57,7 @@ export function KanbanPage() {
       watch,
       control,
       getValues,
+      reset,
       setValue: setFilterFormValue,
       formState: { errors, validatingFields, dirtyFields },
    } = useForm<FormSchema>({
@@ -182,7 +181,9 @@ export function KanbanPage() {
             <div>
                <label htmlFor="taskName">Название задачи</label>
                <input
-                  onInput={e => {if ((e.target as HTMLInputElement).value.length > 2) tasksRefetch()}}
+                  onInput={(e) => {
+                     if ((e.target as HTMLInputElement).value.length > 2) tasksRefetch();
+                  }}
                   style={{ backgroundColor: errors.taskName ? '#FFF1F0' : undefined }}
                   id="taskName"
                   type="search"
@@ -225,16 +226,19 @@ export function KanbanPage() {
                   <RangeCalendar
                      fieldName="dateStart"
                      placeholder="Дата начала"
-                     onChange={(data: object) => {
+                     onChange={(data: { startDate: string | null, endDate: string | null }) => {
                         console.log(data);
                         field.onChange(data);
+                        if (!data.startDate) {
+                           console.log(888);
+                           reset()
+                           setFilterFormValue('dateStart', data);                           
+                        }
                      }}
                   />
                )}
             />
             {errors.dateStart && <p className={style.error}>{errors.dateStart.message}</p>}
-
-            {/* {JSON.stringify(getValues())} */}
 
             {/* <RangeCalendar
                fieldName="dateEnd"
@@ -245,10 +249,7 @@ export function KanbanPage() {
                }}
             /> */}
 
-            {/* {errors.root && <p className={style.error}>{errors.root.message}</p>}
-
-            {JSON.stringify(validatingFields)}
-            {JSON.stringify(dirtyFields)} */}
+            {/* {errors.root && <p className={style.error}>{errors.root.message}</p>} */}
 
             <Controller
                name="dateEnd"
@@ -264,11 +265,9 @@ export function KanbanPage() {
                   />
                )}
             />
-
-            {/* <div>
-               <input name="username" type="text" placeholder="Дата завершения" />
-            </div> */}
          </div>
+
+         {JSON.stringify(getValues())}
 
          {modalInfo.modal ? (
             <InfoModal
