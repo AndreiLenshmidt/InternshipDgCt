@@ -226,13 +226,12 @@ export function KanbanPage() {
                   <RangeCalendar
                      fieldName="dateStart"
                      placeholder="Дата начала"
-                     onChange={(data: { startDate: string | null, endDate: string | null }) => {
-                        console.log(data);
+                     onChange={(data: { startDate: string | null; endDate: string | null }) => {
+                        // console.log(data);
                         field.onChange(data);
                         if (!data.startDate) {
-                           console.log(888);
-                           reset()
-                           setFilterFormValue('dateStart', data);                           
+                           reset();
+                           setFilterFormValue('dateStart', data);
                         }
                      }}
                   />
@@ -258,16 +257,20 @@ export function KanbanPage() {
                   <RangeCalendar
                      fieldName="dateEnd"
                      placeholder="Дата завершения"
-                     onChange={(data: object) => {
-                        console.log(data);
+                     onChange={(data: { startDate: string | null; endDate: string | null }) => {
+                        // console.log(data);
                         field.onChange(data);
+                        if (!data.startDate) {
+                           reset();
+                           setFilterFormValue('dateStart', data);
+                        }
                      }}
                   />
                )}
             />
          </div>
 
-         {JSON.stringify(getValues())}
+         {/* {JSON.stringify(getValues())} */}
 
          {modalInfo.modal ? (
             <InfoModal

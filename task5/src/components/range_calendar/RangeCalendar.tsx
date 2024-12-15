@@ -32,14 +32,11 @@ export function RangeCalendar({
       const startDateObj = selectedRange[0] ? new Date(selectedRange[0]) : null;
       const endDateObj = selectedRange[1] ? new Date(selectedRange[1]) : null;
 
-      // debugger
       // if (startDateObj && date < startDateObj) return style.disabledDate;
       // if (startDateObj && date.toDateString() === startDateObj.toDateString()) return style.startDate;
+      
       if (endDateObj && date.toDateString() === endDateObj.toDateString()) return style.endDate;
       if (startDateObj && endDateObj && date > startDateObj && date < endDateObj) {
-         console.log(style.range);
-         
-         // debugger         
          return style.range;
       }
       return '';
