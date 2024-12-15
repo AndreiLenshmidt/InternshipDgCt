@@ -20,3 +20,6 @@
    }
 }
 
+.range_calendar input{
+   cursor: pointer;
+}

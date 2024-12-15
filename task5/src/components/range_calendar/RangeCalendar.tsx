@@ -4,8 +4,17 @@ import style from './range-calendar.module.css';
 import { useEffect, useRef, useState } from 'react';
 import { Value, Range } from 'react-calendar/dist/cjs/shared/types';
 
-
-export function RangeCalendar({onChange}: {onChange: Function}) {
+export function RangeCalendar({
+   onChange,
+   placeholder,
+   registerOptions = {},
+   fieldName = '',
+}: {
+   placeholder: string;
+   onChange: Function;
+   registerOptions?: object;
+   fieldName?: string;
+}) {
    //
    const [calendarShowing, setShowing] = useState(false);
    const [selectedRange, setSelectedRange] = useState<[Date?, Date?]>([undefined, undefined]);
@@ -14,39 +23,45 @@ export function RangeCalendar({onChange}: {onChange: Function}) {
 
    function rangePicked(dates: Range<Date | undefined>) {
       // console.log(dates);
-      setSelectedRange(dates)
-      
-      // setTimeout(() => setShowing(false), 200)      
+      setSelectedRange(dates);
+
+      // setTimeout(() => setShowing(false), 200)
       setShowing(false);
-      onChange(dates);
+
+      const [startDate, endDate] = dates;
+
+      onChange({ startDate, endDate });
    }
 
    useEffect(() => {
-
       let focused = false;
 
-      wrapper.current?.addEventListener('focusin', (e) => focused = true);      
-      wrapper.current?.addEventListener('focusout', (e) => {         
+      wrapper.current?.addEventListener('focusin', (e) => (focused = true));
+      wrapper.current?.addEventListener('focusout', (e) => {
          focused = false;
-         setTimeout(() => { if (!focused) setShowing(false); }, 50)
+         setTimeout(() => {
+            if (!focused) setShowing(false);
+         }, 50);
       });
-
    }, [wrapper]);
 
    return (
-      <div className="range_calendar" tabIndex={0} ref={wrapper}>
+      <div className={`${'range_calendar'} ${style.range_calendar}`} tabIndex={0} ref={wrapper}>
          <input
-            name="username"
+            name={fieldName}
+            id={fieldName}
             type="text"
-            placeholder="Дата начала"
+            placeholder={placeholder}
             readOnly
             onClick={() => setShowing((v) => !v)}
             ref={input}
-            value={selectedRange.reduce((ac, it) => ac && !!it, true)
-               ?
-                  (selectedRange[0]?.toLocaleDateString('ru') || '') + ' - ' +
-                  (selectedRange[1]?.toLocaleDateString('ru') || '')
-               : ''
+            {...registerOptions}
+            value={
+               selectedRange.reduce((ac, it) => ac && !!it, true)
+                  ? (selectedRange[0]?.toLocaleDateString('ru') || '') +
+                    ' - ' +
+                    (selectedRange[1]?.toLocaleDateString('ru') || '')
+                  : ''
             }
          />
          <span className={style.calendar_icon}>

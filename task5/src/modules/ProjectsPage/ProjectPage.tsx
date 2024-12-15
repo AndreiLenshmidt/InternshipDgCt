@@ -33,7 +33,7 @@ export function ProjectPage() {
    const {
       register,
       clearErrors,
-      handleSubmit,
+      handleSubmit,      
       reset,
       // setFocus,
       formState: { isDirty, isSubmitting, errors },
@@ -50,7 +50,11 @@ export function ProjectPage() {
    }, [width]);
 
    const onSubmit: SubmitHandler<FormSchema> = (data) => {
-      setFilterData(data as typeof filterData);
+
+      if ((data.projectName?.length || 0) >= 3) {
+         setFilterData(data as typeof filterData);
+      }
+
       // filterData = data as typeof filterData;
       // просто выводим данные в консоль
       console.log(data);
@@ -99,7 +103,7 @@ export function ProjectPage() {
                   {...register('taskId', {
                      setValueAs: (v: string) => (v.length ? +v : ''),
                      required: false,
-                     // valueAsNumber: true,ы
+                     // valueAsNumber: true,
                   })}
                />
             </div>

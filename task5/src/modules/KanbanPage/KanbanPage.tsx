@@ -64,7 +64,7 @@ export function KanbanPage() {
       watch,
       control,
       setValue: setFilterFormValue,
-      formState: { errors },
+      formState: { errors, validatingFields, dirtyFields },
    } = useForm<FormSchema>({
       resolver: zodResolver(tasksFilterFormSchema),
    });
@@ -246,6 +246,8 @@ export function KanbanPage() {
                control={control}
                render={({ field }) => (
                   <RangeCalendar
+                     fieldName="dateStart"
+                     placeholder="Дата начала"
                      onChange={(data: object) => {
                         console.log(data);
                         field.onChange(data);
@@ -255,9 +257,38 @@ export function KanbanPage() {
             />
             {errors.dateStart && <p className={style.error}>{errors.dateStart.message}</p>}
 
-            <div>
+            {/* <RangeCalendar
+               fieldName="dateEnd"
+               registerOptions={register('dateEnd')}
+               placeholder="Дата завершения"
+               onChange={(data: object) => {
+                  console.log(data);
+               }}
+            /> */}
+
+            {/* {errors.root && <p className={style.error}>{errors.root.message}</p>}
+
+            {JSON.stringify(validatingFields)}
+            {JSON.stringify(dirtyFields)} */}
+
+            <Controller
+               name="dateEnd"
+               control={control}
+               render={({ field }) => (
+                  <RangeCalendar
+                     fieldName="dateEnd"
+                     placeholder="Дата завершения"
+                     onChange={(data: object) => {
+                        console.log(data);
+                        field.onChange(data);
+                     }}
+                  />
+               )}
+            />
+
+            {/* <div>
                <input name="username" type="text" placeholder="Дата завершения" />
-            </div>
+            </div> */}
          </div>
 
          {modalInfo.modal ? (
